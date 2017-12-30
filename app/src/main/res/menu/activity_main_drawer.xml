@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group>
+        <group>
+            <item
+                android:id="@+id/btn_authst_mnu"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/mnu_authorise_st"
+                 />
+        </group>
+        <item
+            android:id="@+id/btn_device_mnu"
+            android:icon="@android:drawable/ic_dialog_info"
+            android:title="@string/mnu_devices" />
+        <item
+            android:id="@+id/btn_routine_mnu"
+            android:icon="@android:drawable/btn_star_big_on"
+            android:title="@string/mnu_routine" />
+    </group>
+</menu>
