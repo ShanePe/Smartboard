@@ -6,6 +6,7 @@ import org.json.JSONObject;
  * Created by shane on 28/12/17.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class ComResult {
     private JSONObject mResult;
     private Exception mException;

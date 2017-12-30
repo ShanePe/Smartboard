@@ -8,6 +8,7 @@ import shane.pennihome.local.smartboard.Data.Routine;
  * Created by shane on 28/12/17.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class RoutineSorter implements Comparator<Routine> {
     @Override
     public int compare(Routine o1, Routine o2) {

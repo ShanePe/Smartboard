@@ -12,6 +12,7 @@ import shane.pennihome.local.smartboard.R;
  * Created by shane on 30/12/17.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class RoutineFragment extends ThingFragment {
     @Override
     public int getFragmentLayout() {

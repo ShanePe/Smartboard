@@ -17,6 +17,7 @@ import shane.pennihome.local.smartboard.R;
  * Created by shane on 29/12/17.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class DeviceViewAdapter extends ThingViewAdapter {
     public DeviceViewAdapter(List<Thing> items, ThingFragment.OnListFragmentInteractionListener listener) {
         super(items, listener);
@@ -67,13 +68,13 @@ public class DeviceViewAdapter extends ThingViewAdapter {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final Switch mSwitchView;
-        public final TextView mNameView;
-        public final TextView mTypeView;
-        public Device mItem;
+        final View mView;
+        final Switch mSwitchView;
+        final TextView mNameView;
+        final TextView mTypeView;
+        Device mItem;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mView = view;
             mNameView = view.findViewById(R.id.device_name);

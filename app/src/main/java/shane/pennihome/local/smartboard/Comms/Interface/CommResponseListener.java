@@ -6,6 +6,7 @@ import org.json.JSONObject;
  * Created by shane on 27/12/17.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public interface CommResponseListener {
     void Process(JSONObject obj);
 }

@@ -7,6 +7,7 @@ import java.net.URLEncoder;
  * Created by shane on 28/12/17.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class NameValuePair {
     private String mName;
     private String mValue;
@@ -16,26 +17,27 @@ public class NameValuePair {
         mValue = value;
     }
 
-    public String getName() {
+    private String getName() {
         return mName;
     }
 
+    @SuppressWarnings("unused")
     public void setName(String _name) {
         this.mName = _name;
     }
 
-    public String getValue() {
+    private String getValue() {
         return mValue;
     }
 
+    @SuppressWarnings("unused")
     public void setValue(String _value) {
         this.mValue = _value;
     }
 
     public String toParam() throws UnsupportedEncodingException {
-        String result = URLEncoder.encode(getName(), "UTF-8") +
+        return URLEncoder.encode(getName(), "UTF-8") +
                 "=" +
                 URLEncoder.encode(getValue(), "UTF-8");
-        return result;
     }
 }

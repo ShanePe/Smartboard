@@ -11,6 +11,7 @@ import java.util.Date;
  * Created by shane on 27/12/17.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class SmartThingsTokenInfo {
     private String mToken;
     private Date mExpires;
@@ -18,7 +19,7 @@ public class SmartThingsTokenInfo {
     private String mAuthCode;
     private String mRequestUrl;
 
-    public static SmartThingsTokenInfo fromJson(String json) {
+    private static SmartThingsTokenInfo fromJson(String json) {
         Gson gson = new Gson();
         return gson.fromJson(json, SmartThingsTokenInfo.class);
     }
@@ -51,11 +52,12 @@ public class SmartThingsTokenInfo {
         this.mExpires = expires;
     }
 
-    public String toJson() {
+    private String toJson() {
         Gson gson = new Gson();
         return gson.toJson(this);
     }
 
+    @SuppressWarnings("unused")
     public String getType() {
         return mType;
     }

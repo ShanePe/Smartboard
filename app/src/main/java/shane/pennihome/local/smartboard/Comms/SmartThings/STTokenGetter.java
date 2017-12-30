@@ -1,6 +1,7 @@
 package shane.pennihome.local.smartboard.Comms.SmartThings;
 
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -19,11 +20,12 @@ import shane.pennihome.local.smartboard.Data.NameValuePair;
 import shane.pennihome.local.smartboard.Data.SmartThingsTokenInfo;
 
 
+@SuppressLint("StaticFieldLeak")
 public class STTokenGetter extends AsyncTask<String, String, ComResult> {
     private ProgressDialog mDialog;
     private Boolean mSuccess;
-    private ProcessCompleteListener<STTokenGetter> mProcComplete;
-    private Context mContext;
+    private final ProcessCompleteListener<STTokenGetter> mProcComplete;
+    private final Context mContext;
 
     public STTokenGetter(ProcessCompleteListener<STTokenGetter> procComplete, Context context) {
         mProcComplete = procComplete;
@@ -48,24 +50,16 @@ public class STTokenGetter extends AsyncTask<String, String, ComResult> {
         Log.i(Globals.ACTIVITY, "doInBackground");
         SmartThingsTokenInfo smartThingsTokenInfo = SmartThingsTokenInfo.Load();
         HttpCommunicator coms = new HttpCommunicator();
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        List<NameValuePair> params = new ArrayList<>();
         params.add(new NameValuePair("code", smartThingsTokenInfo.getAuthCode()));
         params.add(new NameValuePair("client_id", Globals.CLIENT_ID));
         params.add(new NameValuePair("client_secret", Globals.CLIENT_SECRET));
         params.add(new NameValuePair("redirect_uri", Globals.REDIRECT_URI));
         params.add(new NameValuePair("grant_type", Globals.GRANT_TYPE));
 
-        /** GET requests to https://graph.api.smartthings.com/oauth/token will also work, but POST is preferred.
-         ** That will return a response like:
-         **  {
-         **      "access_token": "XXXXXXXXXXX",
-         **      "expires_in"  : 1576799999,
-         **      "token_type"  : "bearer"
-         **  }
-         **/
         ComResult ret = new ComResult();
         try {
-            ret.setResult(coms.postJson(Globals.TOKEN_URL, params));
+            ret.setResult(coms.postJson(params));
         } catch (Exception e) {
             ret.setException(e);
         }
@@ -103,6 +97,7 @@ public class STTokenGetter extends AsyncTask<String, String, ComResult> {
             mProcComplete.Complete(mSuccess, this);
     }
 
+    @SuppressWarnings("unused")
     public Boolean getSuccess() {
         return mSuccess;
     }

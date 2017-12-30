@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.Comms.SmartThings;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -20,16 +21,18 @@ import shane.pennihome.local.smartboard.Data.SmartThingsTokenInfo;
  * Created by shane on 28/12/17.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
+@SuppressLint("StaticFieldLeak")
 public class STThingToggler extends AsyncTask<String, String, ComResult> {
-    private Thing mThing;
-    private ProcessCompleteListener<STThingToggler> mProcessComplete;
+    private final Thing mThing;
+    private final ProcessCompleteListener<STThingToggler> mProcessComplete;
     private boolean mSuccess;
-    private Context mContext;
+    private final Context mContext;
 
-    public STThingToggler(Thing thing, ProcessCompleteListener<STThingToggler> processComplete, Context context) {
+    public STThingToggler(Thing thing, ProcessCompleteListener<STThingToggler> processComplete) {
         mThing = thing;
         mProcessComplete = processComplete;
-        mContext = context;
+        mContext = null;
     }
 
     @Override
@@ -41,7 +44,7 @@ public class STThingToggler extends AsyncTask<String, String, ComResult> {
     @Override
     protected ComResult doInBackground(String... strings) {
         ComResult ret = new ComResult();
-        HttpCommunicator coms = new HttpCommunicator();
+        HttpCommunicator httpCommunicator = new HttpCommunicator();
         SmartThingsTokenInfo smartThingsTokenInfo = SmartThingsTokenInfo.Load();
         try {
             String url = null;
@@ -61,7 +64,7 @@ public class STThingToggler extends AsyncTask<String, String, ComResult> {
             if(url == null)
                 throw new Exception("Could not determine endpoint");
 
-            coms.putJson(url, smartThingsTokenInfo.getToken(), null);
+            httpCommunicator.putJson(url, smartThingsTokenInfo.getToken());
             ret.setResult(new JSONObject());
         } catch (Exception e) {
             ret.setException(e);
@@ -85,7 +88,8 @@ public class STThingToggler extends AsyncTask<String, String, ComResult> {
             mProcessComplete.Complete(mSuccess, this);
     }
 
-    public boolean isSuccess() {
+    @SuppressWarnings("unused")
+    public boolean getSuccess() {
         return mSuccess;
     }
 }

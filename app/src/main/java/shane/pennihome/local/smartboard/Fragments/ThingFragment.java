@@ -4,6 +4,7 @@ package shane.pennihome.local.smartboard.Fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,7 @@ import shane.pennihome.local.smartboard.MainActivity;
  * Created by shane on 29/12/17.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public abstract class ThingFragment extends Fragment {
 
     // TODO: Customize parameter argument names
@@ -37,6 +39,7 @@ public abstract class ThingFragment extends Fragment {
     public ThingFragment() {
     }
 
+    @SuppressWarnings("unused")
     public List<Thing> getThings() {
         return mThings;
     }
@@ -56,11 +59,16 @@ public abstract class ThingFragment extends Fragment {
         }
 
         MainActivity activity = (MainActivity)getActivity();
-        activity.getSupportActionBar().show();
+        if(activity!=null)
+        {
+            ActionBar actionBar = activity.getSupportActionBar();
+            if(actionBar!=null)
+                actionBar.show();
+        }
     }
 
-    public abstract int getFragmentLayout();
-    public abstract RecyclerView.Adapter getAdapter(List<Thing> things, OnListFragmentInteractionListener onFragInt);
+    protected abstract int getFragmentLayout();
+    protected abstract RecyclerView.Adapter getAdapter(List<Thing> things, OnListFragmentInteractionListener onFragInt);
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -110,6 +118,7 @@ public abstract class ThingFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Thing item);
+        @SuppressWarnings("EmptyMethod")
+        void onListFragmentInteraction(@SuppressWarnings("unused") Thing item);
     }
 }

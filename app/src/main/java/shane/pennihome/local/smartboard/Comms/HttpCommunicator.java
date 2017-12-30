@@ -25,9 +25,10 @@ import shane.pennihome.local.smartboard.Data.NameValuePair;
  * Created by shane on 27/12/17.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class HttpCommunicator {
-    public JSONObject postJson(String address, List<NameValuePair> params) throws JSONException, IOException {
-        URL url = new URL(address);
+    public JSONObject postJson(List<NameValuePair> params) throws JSONException, IOException {
+        URL url = new URL(shane.pennihome.local.smartboard.Data.Globals.TOKEN_URL);
         HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
         conn.setReadTimeout(10000);
         conn.setConnectTimeout(15000);
@@ -48,9 +49,9 @@ public class HttpCommunicator {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "iso-8859-1"), 8);
         StringBuilder sb = new StringBuilder();
-        String line = null;
+        String line;
         while ((line = reader.readLine()) != null) {
-            sb.append(line + "n");
+            sb.append(line).append("n");
         }
 
         String json = sb.toString();
@@ -91,9 +92,9 @@ public class HttpCommunicator {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "iso-8859-1"), 8);
         StringBuilder sb = new StringBuilder();
-        String line = null;
+        String line;
         while ((line = reader.readLine()) != null) {
-            sb.append(line + "n");
+            sb.append(line).append("n");
         }
 
         String json = sb.toString();
@@ -116,7 +117,7 @@ public class HttpCommunicator {
 
     }
 
-    public void putJson(String address, String token, CommResponseListener comRes) throws IOException, JSONException {
+    public void putJson(String address, String token) throws IOException {
         Log.d("Url : ", address);
         URL url = new URL(address);
         HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();

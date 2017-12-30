@@ -16,6 +16,7 @@ import shane.pennihome.local.smartboard.R;
  * Created by shane on 30/12/17.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class RoutineViewAdapter extends ThingViewAdapter {
     public RoutineViewAdapter(List<Thing> items, ThingFragment.OnListFragmentInteractionListener listener) {
         super(items, listener);
@@ -56,21 +57,16 @@ public class RoutineViewAdapter extends ThingViewAdapter {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mNameView;
-        public final Button mButtonView;
-        public Routine mItem;
+        final View mView;
+        final TextView mNameView;
+        final Button mButtonView;
+        Routine mItem;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mView = view;
             mNameView = view.findViewById(R.id.routine_name);
             mButtonView = view.findViewById(R.id.routine_btn_execute);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString();
         }
     }
 }

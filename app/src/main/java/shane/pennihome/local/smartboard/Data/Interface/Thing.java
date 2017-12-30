@@ -7,6 +7,7 @@ import shane.pennihome.local.smartboard.Comms.SmartThings.STThingToggler;
  * Created by shane on 29/12/17.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public abstract class Thing {
     public enum Source {SmartThings}
 
@@ -16,7 +17,7 @@ public abstract class Thing {
     private onThingToggledListener mOnThingToggledListener;
 
     public Thing.Source getSource() { return mSource; }
-    public void setSource(Source _source) { this.mSource = _source; }
+    public void setSource(@SuppressWarnings("SameParameterValue") Source _source) { this.mSource = _source; }
 
     public String getName() {
         return mName;
@@ -32,7 +33,7 @@ public abstract class Thing {
         this.mId = _id;
     }
 
-    public abstract void successfulToggle(Thing thing);
+    protected abstract void successfulToggle(@SuppressWarnings("unused") Thing thing);
 
     public void setOnThingToggledListener(onThingToggledListener _onThingToggledListener) {
         this.mOnThingToggledListener = _onThingToggledListener;
@@ -40,7 +41,7 @@ public abstract class Thing {
 
     public void Toggle() {
         final Thing me = this;
-        STThingToggler toggler = new STThingToggler(this, new ProcessCompleteListener<STThingToggler>() {
+        STThingToggler stThingToggler = new STThingToggler(this, new ProcessCompleteListener<STThingToggler>() {
             @Override
             public void Complete(boolean success, STThingToggler source) {
                 if(success) {
@@ -49,7 +50,7 @@ public abstract class Thing {
                         mOnThingToggledListener.Toggled();
                 }
             }
-        }, null);
-        toggler.execute();
+        });
+        stThingToggler.execute();
     }
 }

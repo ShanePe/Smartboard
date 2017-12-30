@@ -1,15 +1,10 @@
 package shane.pennihome.local.smartboard.Adapters;
 
-/**
- * Created by shane on 29/12/17.
- */
-
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.Data.Interface.Thing;
@@ -20,7 +15,7 @@ import shane.pennihome.local.smartboard.Fragments.ThingFragment;
  * specified {@link ThingFragment.OnListFragmentInteractionListener}.
  *.
  */
-public abstract class ThingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+abstract class ThingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     final List<Thing> mValues;
     final ThingFragment.OnListFragmentInteractionListener mListener;
@@ -30,8 +25,8 @@ public abstract class ThingViewAdapter extends RecyclerView.Adapter<RecyclerView
         mListener = listener;
     }
 
-    public abstract int getFragmentLayout();
-    public abstract RecyclerView.ViewHolder getViewHolder(View view);
+    protected abstract int getFragmentLayout();
+    protected abstract RecyclerView.ViewHolder getViewHolder(View view);
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())

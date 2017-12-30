@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.Comms.SmartThings;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -23,18 +24,19 @@ import shane.pennihome.local.smartboard.Data.SmartThingsTokenInfo;
 import shane.pennihome.local.smartboard.Data.Sort.DeviceSorter;
 import shane.pennihome.local.smartboard.Data.Sort.RoutineSorter;
 
+@SuppressLint("StaticFieldLeak")
 public class STDevicesGetter extends AsyncTask<String, String, ComResult> {
-    private String mUriRequest;
+    private final String mUriRequest;
     private ProgressDialog mDialog;
     private List<Device> mDevices;
     private List<Routine> mRoutines;
     private boolean mSuccess;
-    private boolean mIncludeRoutine;
-    private Context mContext;
+    private final boolean mIncludeRoutine;
+    private final Context mContext;
 
-    private ProcessCompleteListener<STDevicesGetter> _processCompleteListener;
+    private final ProcessCompleteListener<STDevicesGetter> _processCompleteListener;
 
-    public STDevicesGetter(String uriRequest, boolean includeRoutine, Context context, ProcessCompleteListener<STDevicesGetter> processCompleteListener) {
+    public STDevicesGetter(String uriRequest, @SuppressWarnings("SameParameterValue") boolean includeRoutine, Context context, ProcessCompleteListener<STDevicesGetter> processCompleteListener) {
         mUriRequest = uriRequest;
         mIncludeRoutine = includeRoutine;
         mContext = context;
@@ -62,7 +64,6 @@ public class STDevicesGetter extends AsyncTask<String, String, ComResult> {
     protected ComResult doInBackground(String... args) {               //DevicesGet
 
         ComResult ret = new ComResult();
-        String path = "switches";
         SmartThingsTokenInfo smartThingsTokenInfo = SmartThingsTokenInfo.Load();
         final JSONArray devices = new JSONArray();
         final JSONArray routines = new JSONArray();
@@ -159,6 +160,7 @@ public class STDevicesGetter extends AsyncTask<String, String, ComResult> {
         return mRoutines;
     }
 
+    @SuppressWarnings("unused")
     public Boolean getSuccess() {
         return mSuccess;
     }

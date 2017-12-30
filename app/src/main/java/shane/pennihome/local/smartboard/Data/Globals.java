@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
  * Created by shane on 27/12/17.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class Globals {
     public final static String ACTIVITY = "SmartBoard";
     public final static String CLIENT_ID = "953f9b86-9a48-461a-91e9-c9544dd980c4";
@@ -22,7 +23,7 @@ public class Globals {
 //    private static Activity _context;
 
 
-    public static SharedPreferences getSharedPreferences() {
+    static SharedPreferences getSharedPreferences() {
         return mPrefs;
     }
 

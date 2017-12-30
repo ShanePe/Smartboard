@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.Comms.SmartThings;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -11,11 +12,12 @@ import shane.pennihome.local.smartboard.Comms.Interface.ProcessCompleteListener;
 import shane.pennihome.local.smartboard.Data.Globals;
 import shane.pennihome.local.smartboard.Data.SmartThingsTokenInfo;
 
+@SuppressLint("StaticFieldLeak")
 public class STEndPointGetter extends AsyncTask<String, String, ComResult> {
     private ProgressDialog mDialog;
     private Boolean mSuccess;
-    private ProcessCompleteListener<STEndPointGetter> mProcessCompleteListener;
-    private Activity mContext;
+    private final ProcessCompleteListener<STEndPointGetter> mProcessCompleteListener;
+    private final Activity mContext;
 
     public STEndPointGetter(ProcessCompleteListener<STEndPointGetter> processCompleteListener, Activity context) {
         mProcessCompleteListener = processCompleteListener;
@@ -39,26 +41,15 @@ public class STEndPointGetter extends AsyncTask<String, String, ComResult> {
     protected ComResult doInBackground(String... args) {                       //UriGet
         ComResult ret = new ComResult();
         SmartThingsTokenInfo smartThingsTokenInfo = SmartThingsTokenInfo.Load();
-        HttpCommunicator coms = new HttpCommunicator();
+        HttpCommunicator httpCommunicator = new HttpCommunicator();
         try {
-            ret.setResult(coms.getJson(Globals.ENDPOINT_URL, smartThingsTokenInfo.getToken(), null));
+            ret.setResult(httpCommunicator.getJson(Globals.ENDPOINT_URL, smartThingsTokenInfo.getToken(), null));
         } catch (Exception e) {
             ret.setException(e);
         }
         return ret;
         //Log.i("json : ", jsonUri.toString());
 
-        /** That will return a response like:
-         **  {
-         **    "oauthClient": {
-         **        "clientSecret": "CLIENT-SECRET",
-         **        "clientId": "CLIENT-ID"
-         **    },
-         **    "uri": "BASE-URL/api/smartapps/installations/INSTALLATION-ID",
-         **    "base_url": "BASE-URL",
-         **    "url": "/api/smartapps/installations/INSTALLATION-ID"
-         **  }
-         **/
     }
 
     @Override
@@ -85,6 +76,7 @@ public class STEndPointGetter extends AsyncTask<String, String, ComResult> {
             mProcessCompleteListener.Complete(mSuccess, this);
     }
 
+    @SuppressWarnings("unused")
     public Boolean getSuccess() {
         return mSuccess;
     }

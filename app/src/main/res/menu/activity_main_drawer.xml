@@ -4,13 +4,11 @@
     tools:showIn="navigation_view">
 
     <group>
-        <group>
-            <item
-                android:id="@+id/btn_authst_mnu"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="@string/mnu_authorise_st"
-                 />
-        </group>
+        <item
+            android:id="@+id/btn_authst_mnu"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/mnu_authorise_st"
+             />
         <item
             android:id="@+id/btn_device_mnu"
             android:icon="@android:drawable/ic_dialog_info"
