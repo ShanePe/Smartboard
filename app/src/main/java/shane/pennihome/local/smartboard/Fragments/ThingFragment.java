@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import shane.pennihome.local.smartboard.Adapters.ThingViewAdapter;
 import shane.pennihome.local.smartboard.Data.Interface.Thing;
+import shane.pennihome.local.smartboard.MainActivity;
 
 /**
  * Created by shane on 29/12/17.
@@ -28,7 +28,7 @@ public abstract class ThingFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    private List<Thing> _things = new ArrayList<>();
+    private List<Thing> mThings = new ArrayList<>();
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -38,11 +38,11 @@ public abstract class ThingFragment extends Fragment {
     }
 
     public List<Thing> getThings() {
-        return _things;
+        return mThings;
     }
 
     public void setThings(List<Thing> things) {
-        this._things = things;
+        this.mThings = things;
     }
 
     // TODO: Customize parameter initialization
@@ -54,6 +54,9 @@ public abstract class ThingFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
+        MainActivity activity = (MainActivity)getActivity();
+        activity.getSupportActionBar().show();
     }
 
     public abstract int getFragmentLayout();
@@ -72,7 +75,7 @@ public abstract class ThingFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(getAdapter(_things, mListener));
+            recyclerView.setAdapter(getAdapter(mThings, mListener));
         }
         return view;
     }

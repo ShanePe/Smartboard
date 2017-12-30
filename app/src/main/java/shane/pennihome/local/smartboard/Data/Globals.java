@@ -1,6 +1,5 @@
 package shane.pennihome.local.smartboard.Data;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -19,21 +18,23 @@ public class Globals {
     public final static String ENDPOINT_URL = "https://graph.api.smartthings.com/api/smartapps/endpoints";
     public final static String OAUTH_SCOPE = "app";
     public final static String SERVEUR_URI = "https://www.googleapis.com/auth/urlshortener";
-    private static SharedPreferences _prefs;
-    private static Activity _context;
+    private static SharedPreferences mPrefs;
+//    private static Activity _context;
 
 
     public static SharedPreferences getSharedPreferences() {
-        if (_prefs == null)
-            _prefs = getContext().getSharedPreferences("Prefs", Context.MODE_PRIVATE);
-        return _prefs;
+        return mPrefs;
     }
 
-    public static Activity getContext() {
+    public static void setSharedPreferences(Context c) {
+        mPrefs = c.getSharedPreferences("Prefs", Context.MODE_PRIVATE);
+    }
+
+  /*  public static Activity getContext() {
         return _context;
     }
 
     public static void setContext(Activity _context) {
         Globals._context = _context;
-    }
+    }*/
 }

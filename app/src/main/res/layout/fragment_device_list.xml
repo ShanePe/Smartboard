@@ -10,4 +10,6 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="shane.pennihome.local.smartboard.Fragments.DeviceFragment"
-    tools:listitem="@layout/fragment_device" />
+    tools:listitem="@layout/fragment_device" >
+
+</android.support.v7.widget.RecyclerView>

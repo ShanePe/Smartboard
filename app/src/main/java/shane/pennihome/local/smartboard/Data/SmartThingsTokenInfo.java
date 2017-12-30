@@ -12,11 +12,11 @@ import java.util.Date;
  */
 
 public class SmartThingsTokenInfo {
-    private String _token;
-    private Date _expires;
-    private String _type;
-    private String _authCode;
-    private String _requestUrl;
+    private String mToken;
+    private Date mExpires;
+    private String mType;
+    private String mAuthCode;
+    private String mRequestUrl;
 
     public static SmartThingsTokenInfo fromJson(String json) {
         Gson gson = new Gson();
@@ -32,23 +32,23 @@ public class SmartThingsTokenInfo {
     }
 
     public String getToken() {
-        return _token;
+        return mToken;
     }
 
     public void setToken(String token) {
-        this._token = token;
+        this.mToken = token;
     }
 
     public Date getExpires() {
-        if (_expires == null) {
+        if (mExpires == null) {
             Calendar c = Calendar.getInstance();
             return c.getTime();
         } else
-            return _expires;
+            return mExpires;
     }
 
     public void setExpires(Date expires) {
-        this._expires = expires;
+        this.mExpires = expires;
     }
 
     public String toJson() {
@@ -57,19 +57,19 @@ public class SmartThingsTokenInfo {
     }
 
     public String getType() {
-        return _type;
+        return mType;
     }
 
     public void setType(String type) {
-        this._type = type;
+        this.mType = type;
     }
 
     public String getAuthCode() {
-        return _authCode;
+        return mAuthCode;
     }
 
     public void setAuthCode(String authCode) {
-        _authCode = authCode;
+        mAuthCode = authCode;
     }
 
     public void Save() {
@@ -79,10 +79,10 @@ public class SmartThingsTokenInfo {
     }
 
     public String getRequestUrl() {
-        return _requestUrl;
+        return mRequestUrl;
     }
 
     public void setRequestUrl(String _requestUrl) {
-        this._requestUrl = _requestUrl;
+        this.mRequestUrl = _requestUrl;
     }
 }

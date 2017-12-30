@@ -1,7 +1,7 @@
 package shane.pennihome.local.smartboard.Data.Interface;
 
 import shane.pennihome.local.smartboard.Comms.Interface.ProcessCompleteListener;
-import shane.pennihome.local.smartboard.Data.Device;
+import shane.pennihome.local.smartboard.Comms.SmartThings.STThingToggler;
 
 /**
  * Created by shane on 29/12/17.
@@ -10,27 +10,46 @@ import shane.pennihome.local.smartboard.Data.Device;
 public abstract class Thing {
     public enum Source {SmartThings}
 
-    private String _id;
-    private String _name;
-    private Source _source;
+    private String mId;
+    private String mName;
+    private Source mSource;
+    private onThingToggledListener mOnThingToggledListener;
 
-    public Thing.Source getSource() { return _source; }
-    public void setSource(Source _source) { this._source = _source; }
+    public Thing.Source getSource() { return mSource; }
+    public void setSource(Source _source) { this.mSource = _source; }
 
     public String getName() {
-        return _name;
+        return mName;
     }
     public void setName(String _name) {
-        this._name = _name;
+        this.mName = _name;
     }
 
     public String getId() {
-        return _id;
+        return mId;
     }
     public void setId(String _id) {
-        this._id = _id;
+        this.mId = _id;
     }
 
+    public abstract void successfulToggle(Thing thing);
 
-    public abstract void Toggle(final ProcessCompleteListener processComplete);
+    public void setOnThingToggledListener(onThingToggledListener _onThingToggledListener) {
+        this.mOnThingToggledListener = _onThingToggledListener;
+    }
+
+    public void Toggle() {
+        final Thing me = this;
+        STThingToggler toggler = new STThingToggler(this, new ProcessCompleteListener<STThingToggler>() {
+            @Override
+            public void Complete(boolean success, STThingToggler source) {
+                if(success) {
+                    successfulToggle(me);
+                    if (mOnThingToggledListener != null)
+                        mOnThingToggledListener.Toggled();
+                }
+            }
+        }, null);
+        toggler.execute();
+    }
 }

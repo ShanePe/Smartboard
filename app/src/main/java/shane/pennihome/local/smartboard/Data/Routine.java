@@ -8,9 +8,8 @@ import shane.pennihome.local.smartboard.Data.Interface.Thing;
  */
 
 public class Routine extends Thing {
-
     @Override
-    public void Toggle(final ProcessCompleteListener processComplete) {
+    public void successfulToggle(Thing thing) {
 
     }
 }

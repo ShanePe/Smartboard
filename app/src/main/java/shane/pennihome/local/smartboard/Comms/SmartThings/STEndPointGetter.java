@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.Comms.SmartThings;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -11,23 +12,27 @@ import shane.pennihome.local.smartboard.Data.Globals;
 import shane.pennihome.local.smartboard.Data.SmartThingsTokenInfo;
 
 public class STEndPointGetter extends AsyncTask<String, String, ComResult> {
-    private ProgressDialog pDialog;
-    private Boolean _success;
-    private ProcessCompleteListener<STEndPointGetter> _processCompleteListener;
+    private ProgressDialog mDialog;
+    private Boolean mSuccess;
+    private ProcessCompleteListener<STEndPointGetter> mProcessCompleteListener;
+    private Activity mContext;
 
-    public STEndPointGetter(ProcessCompleteListener<STEndPointGetter> processCompleteListener) {
-        _processCompleteListener = processCompleteListener;
+    public STEndPointGetter(ProcessCompleteListener<STEndPointGetter> processCompleteListener, Activity context) {
+        mProcessCompleteListener = processCompleteListener;
+        mContext = context;
     }
 
     @Override
     protected void onPreExecute() {
-        _success = false;
+        mSuccess = false;
         super.onPreExecute();
-        pDialog = new ProgressDialog(Globals.getContext());
-        pDialog.setMessage("Contacting SmartThings ...");
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(true);
-        pDialog.show();
+        if (mContext != null) {
+            mDialog = new ProgressDialog(mContext);
+            mDialog.setMessage("Contacting SmartThings ...");
+            mDialog.setIndeterminate(false);
+            mDialog.setCancelable(true);
+            mDialog.show();
+        }
     }
 
     @Override
@@ -58,7 +63,10 @@ public class STEndPointGetter extends AsyncTask<String, String, ComResult> {
 
     @Override
     protected void onPostExecute(ComResult result) {                          //UriGet
-        pDialog.dismiss();
+        if (mDialog != null) {
+            mDialog.dismiss();
+            mDialog = null;
+        }
         try {
             if (!result.isSuccess())
                 throw result.getException();
@@ -66,17 +74,18 @@ public class STEndPointGetter extends AsyncTask<String, String, ComResult> {
             SmartThingsTokenInfo smartThingsTokenInfo = SmartThingsTokenInfo.Load();
             smartThingsTokenInfo.setRequestUrl(result.getResult().getString("uri"));
             smartThingsTokenInfo.Save();
-            _success = true;
+            mSuccess = true;
 
         } catch (Exception e) {
-            Toast.makeText(Globals.getContext(), "Uri Get Error", Toast.LENGTH_SHORT).show();
+            if (mContext != null)
+                Toast.makeText(mContext, "Uri Get Error", Toast.LENGTH_SHORT).show();
         }
 
-        if (_processCompleteListener != null)
-            _processCompleteListener.Complete(_success, this);
+        if (mProcessCompleteListener != null)
+            mProcessCompleteListener.Complete(mSuccess, this);
     }
 
     public Boolean getSuccess() {
-        return _success;
+        return mSuccess;
     }
 }

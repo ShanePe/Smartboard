@@ -8,28 +8,28 @@ import java.net.URLEncoder;
  */
 
 public class NameValuePair {
-    private String _name;
-    private String _value;
+    private String mName;
+    private String mValue;
 
     public NameValuePair(String name, String value) {
-        _name = name;
-        _value = value;
+        mName = name;
+        mValue = value;
     }
 
     public String getName() {
-        return _name;
+        return mName;
     }
 
     public void setName(String _name) {
-        this._name = _name;
+        this.mName = _name;
     }
 
     public String getValue() {
-        return _value;
+        return mValue;
     }
 
     public void setValue(String _value) {
-        this._value = _value;
+        this.mValue = _value;
     }
 
     public String toParam() throws UnsupportedEncodingException {

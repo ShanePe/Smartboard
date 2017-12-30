@@ -2,6 +2,7 @@ package shane.pennihome.local.smartboard.Comms.SmartThings;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -19,26 +20,29 @@ import shane.pennihome.local.smartboard.Data.SmartThingsTokenInfo;
 
 
 public class STTokenGetter extends AsyncTask<String, String, ComResult> {
-    private ProgressDialog pDialog;
-    private Boolean _success;
-    private ProcessCompleteListener<STTokenGetter> _procComplete;
+    private ProgressDialog mDialog;
+    private Boolean mSuccess;
+    private ProcessCompleteListener<STTokenGetter> mProcComplete;
+    private Context mContext;
 
-    public STTokenGetter(ProcessCompleteListener<STTokenGetter> procComplete) {
-        _procComplete = procComplete;
+    public STTokenGetter(ProcessCompleteListener<STTokenGetter> procComplete, Context context) {
+        mProcComplete = procComplete;
+        mContext = context;
     }
 
     @Override
     protected void onPreExecute() {
-        _success = false;
+        mSuccess = false;
         super.onPreExecute();
-        pDialog = new ProgressDialog(Globals.getContext());
-        pDialog.setMessage("Contacting SmartThings ...");
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(true);
-        //Code = pref.getString("Code", "");
-        pDialog.show();
+        if (mContext != null) {
+            mDialog = new ProgressDialog(mContext);
+            mDialog.setMessage("Contacting SmartThings ...");
+            mDialog.setIndeterminate(false);
+            mDialog.setCancelable(true);
+            //Code = pref.getString("Code", "");
+            mDialog.show();
+        }
     }
-
     @Override
     protected ComResult doInBackground(String... args) {
         Log.i(Globals.ACTIVITY, "doInBackground");
@@ -71,7 +75,10 @@ public class STTokenGetter extends AsyncTask<String, String, ComResult> {
 
     @Override
     protected void onPostExecute(ComResult result) {
-        pDialog.dismiss();
+        if(mDialog !=null) {
+            mDialog.dismiss();
+            mDialog = null;
+        }
         try {
             if (!result.isSuccess())
                 throw result.getException();
@@ -85,18 +92,19 @@ public class STTokenGetter extends AsyncTask<String, String, ComResult> {
             smartThingsTokenInfo.setExpires(c.getTime());
 
             smartThingsTokenInfo.Save();
-            _success = true;
+            mSuccess = true;
             Log.e("avancement : ", "Get EndPoint ");
         } catch (Exception ex) {
-            Toast.makeText(Globals.getContext(), "Token Get Error", Toast.LENGTH_SHORT).show();
+            if(mContext !=null)
+                Toast.makeText(mContext, "Token Get Error", Toast.LENGTH_SHORT).show();
         }
 
-        if(_procComplete != null)
-            _procComplete.Complete(_success, this);
+        if(mProcComplete != null)
+            mProcComplete.Complete(mSuccess, this);
     }
 
     public Boolean getSuccess() {
-        return _success;
+        return mSuccess;
     }
 }
 

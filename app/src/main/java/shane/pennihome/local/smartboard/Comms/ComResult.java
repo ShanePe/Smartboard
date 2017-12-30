@@ -7,29 +7,29 @@ import org.json.JSONObject;
  */
 
 public class ComResult {
-    private JSONObject _result;
-    private Exception _exception;
-    private boolean _success;
+    private JSONObject mResult;
+    private Exception mException;
+    private boolean mSuccess;
 
     public JSONObject getResult() {
-        return _result;
+        return mResult;
     }
 
     public void setResult(JSONObject result) {
-        this._result = result;
-        this._success = true;
+        this.mResult = result;
+        this.mSuccess = true;
     }
 
     public Exception getException() {
-        return _exception;
+        return mException;
     }
 
     public void setException(Exception _exception) {
-        this._exception = _exception;
-        this._success = false;
+        this.mException = _exception;
+        this.mSuccess = false;
     }
 
     public boolean isSuccess() {
-        return _success;
+        return mSuccess;
     }
 }

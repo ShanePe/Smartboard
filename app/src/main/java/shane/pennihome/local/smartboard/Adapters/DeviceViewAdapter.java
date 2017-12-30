@@ -7,9 +7,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import shane.pennihome.local.smartboard.Comms.Interface.ProcessCompleteListener;
 import shane.pennihome.local.smartboard.Data.Device;
 import shane.pennihome.local.smartboard.Data.Interface.Thing;
+import shane.pennihome.local.smartboard.Data.Interface.onThingToggledListener;
 import shane.pennihome.local.smartboard.Fragments.ThingFragment;
 import shane.pennihome.local.smartboard.R;
 
@@ -37,8 +37,8 @@ public class DeviceViewAdapter extends ThingViewAdapter {
         final ViewHolder vh = (ViewHolder)holder;
         Device d = (Device)mValues.get(position);
         vh.mItem = d;
-        vh.mContentView.setText(d.getName());
-        vh.mSwitch.setChecked(d.getOn());
+        vh.mNameView.setText(d.getName());
+        vh.mSwitchView.setChecked(d.getOn());
         vh.mTypeView.setText(d.getType());
         vh.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,38 +51,39 @@ public class DeviceViewAdapter extends ThingViewAdapter {
             }
         });
 
-        vh.mSwitch.setOnClickListener(new View.OnClickListener() {
+        vh.mSwitchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Switch sw = v.findViewById(R.id.switch1);
-                vh.mItem.Toggle(new ProcessCompleteListener<Device>() {
+                final Switch sw = v.findViewById(R.id.device_switch);
+                vh.mItem.setOnThingToggledListener(new onThingToggledListener() {
                     @Override
-                    public void Complete(boolean success, Device source) {
-                        sw.setChecked(source.getOn());
+                    public void Toggled() {
+                        sw.setChecked(vh.mItem.getOn());
                     }
                 });
+                vh.mItem.Toggle();
             }
         });
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final Switch mSwitch;
-        public final TextView mContentView;
+        public final Switch mSwitchView;
+        public final TextView mNameView;
         public final TextView mTypeView;
         public Device mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mContentView = view.findViewById(R.id.content);
-            mTypeView = view.findViewById(R.id.type);
-            mSwitch = view.findViewById(R.id.switch1);
+            mNameView = view.findViewById(R.id.device_name);
+            mTypeView = view.findViewById(R.id.device_type);
+            mSwitchView = view.findViewById(R.id.device_switch);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mNameView.getText() + "'";
         }
     }
 }

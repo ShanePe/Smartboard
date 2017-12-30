@@ -44,14 +44,16 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ThingFragment.OnListFragmentInteractionListener {
 
-    List<Device> _devices = new ArrayList<>();
-    List<Routine> _routines = new ArrayList<>();
+    List<Device> mDevices = new ArrayList<>();
+    List<Routine> mRoutines = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().hide();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -70,8 +72,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        Globals.setContext(this);
+        Globals.setSharedPreferences(this);
+        //Globals.setContext(this);
         init();
     }
 
@@ -90,21 +92,6 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -149,20 +136,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void getDevices() {
-        _devices = null;
-        _routines = null;
-
+        mDevices = null;
+        mRoutines = null;
+        final MainActivity me = this;
         STEndPointGetter endPointGetter = new STEndPointGetter(new ProcessCompleteListener<STEndPointGetter>() {
             @Override
             public void Complete(boolean success, STEndPointGetter source) {
                 if (success) {
                     SmartThingsTokenInfo smartThingsTokenInfo = SmartThingsTokenInfo.Load();
-                    STDevicesGetter devicesGetter = new STDevicesGetter(smartThingsTokenInfo.getRequestUrl(), true, new ProcessCompleteListener<STDevicesGetter>() {
+                    STDevicesGetter devicesGetter = new STDevicesGetter(smartThingsTokenInfo.getRequestUrl(), true, me, new ProcessCompleteListener<STDevicesGetter>() {
                         @Override
                         public void Complete(boolean success, STDevicesGetter source) {
                             if (success) {
-                                _devices = source.getDevices();
-                                _routines = source.getRoutines();
+                                mDevices = source.getDevices();
+                                mRoutines = source.getRoutines();
                             } else
                                 Toast.makeText(getApplicationContext(), "Could not get devices.", Toast.LENGTH_SHORT).show();
                         }
@@ -172,14 +159,14 @@ public class MainActivity extends AppCompatActivity
                 } else
                     Toast.makeText(getApplicationContext(), "Could not get endpoint.", Toast.LENGTH_SHORT).show();
             }
-        });
+        }, me);
 
         endPointGetter.execute();
     }
 
     private void deviceList() {
         DeviceFragment fragment = new DeviceFragment();
-        fragment.setThings((List<Thing>)(List<?>)_devices);
+        fragment.setThings((List<Thing>)(List<?>) mDevices);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.content_main, fragment);
         ft.commit();
@@ -187,7 +174,7 @@ public class MainActivity extends AppCompatActivity
 
     private void routineList() {
         RoutineFragment fragment = new RoutineFragment();
-        fragment.setThings((List<Thing>)(List<?>)_routines);
+        fragment.setThings((List<Thing>)(List<?>) mRoutines);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.content_main, fragment);
         ft.commit();
@@ -250,7 +237,7 @@ public class MainActivity extends AppCompatActivity
                         public void Complete(boolean success, STTokenGetter source) {
                             processComplete.Complete(success, null);
                         }
-                    });
+                    }, MainActivity.this);
                     tokenGetter.execute();
 
                 } else if (url.contains("error=access_denied")) {

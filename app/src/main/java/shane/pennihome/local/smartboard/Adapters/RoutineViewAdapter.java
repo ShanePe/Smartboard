@@ -2,6 +2,7 @@ package shane.pennihome.local.smartboard.Adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -33,39 +34,43 @@ public class RoutineViewAdapter extends ThingViewAdapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final ViewHolder vh = (ViewHolder)holder;
-        Routine r = (Routine)mValues.get(position);
+        final Routine r = (Routine)mValues.get(position);
         vh.mItem = r;
-        vh.mIdView.setText(r.getName());
-        vh.mContentView.setText(r.getName());
+        vh.mNameView.setText(r.getName());
 
         vh.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(vh.mItem);
                 }
+            }
+        });
+
+        vh.mButtonView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                r.Toggle();
             }
         });
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
+        public final TextView mNameView;
+        public final Button mButtonView;
         public Routine mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = view.findViewById(R.id.id);
-            mContentView = view.findViewById(R.id.content);
+            mNameView = view.findViewById(R.id.routine_name);
+            mButtonView = view.findViewById(R.id.routine_btn_execute);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString();
         }
     }
 }

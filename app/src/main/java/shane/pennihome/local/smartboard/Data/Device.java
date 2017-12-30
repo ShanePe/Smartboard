@@ -1,7 +1,5 @@
 package shane.pennihome.local.smartboard.Data;
 
-import shane.pennihome.local.smartboard.Comms.SmartThings.STDeviceToggler;
-import shane.pennihome.local.smartboard.Comms.Interface.ProcessCompleteListener;
 import shane.pennihome.local.smartboard.Data.Interface.Thing;
 
 /**
@@ -9,36 +7,25 @@ import shane.pennihome.local.smartboard.Data.Interface.Thing;
  */
 
 public class Device extends Thing{
-    private boolean _on;
-    private String _type;
+    private boolean mOn;
+    private String mType;
 
     public boolean getOn() {
-        return _on;
+        return mOn;
     }
     public void setOn(boolean _on) {
-        this._on = _on;
-    }
-
-    @Override
-    public void Toggle(final ProcessCompleteListener processComplete) {
-        final Device me = this;
-        STDeviceToggler toggler = new STDeviceToggler(this, new ProcessCompleteListener<STDeviceToggler>() {
-            @Override
-            public void Complete(boolean success, STDeviceToggler source) {
-                if (success)
-                    me.setOn(!me.getOn());
-                if (processComplete != null)
-                    processComplete.Complete(success, me);
-            }
-        });
-        toggler.execute();
+        this.mOn = _on;
     }
 
     public String getType() {
-        return _type;
+        return mType;
+    }
+    public void setType(String _type) {
+        this.mType = _type;
     }
 
-    public void setType(String _type) {
-        this._type = _type;
+    @Override
+    public void successfulToggle(Thing thing) {
+        setOn(!getOn());
     }
 }
