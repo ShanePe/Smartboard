@@ -42,11 +42,17 @@ import shane.pennihome.local.smartboard.Data.Routine;
 import shane.pennihome.local.smartboard.Data.SmartThingsTokenInfo;
 import shane.pennihome.local.smartboard.Fragments.DeviceFragment;
 import shane.pennihome.local.smartboard.Fragments.RoutineFragment;
+import shane.pennihome.local.smartboard.Fragments.SmartThingsFragment;
 import shane.pennihome.local.smartboard.Fragments.ThingFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        ThingFragment.OnListFragmentInteractionListener {
+        ThingFragment.OnListFragmentInteractionListener,
+        SmartThingsFragment.OnFragmentInteractionListener{
+
+    static {
+        System.loadLibrary("huesdk");
+    }
 
     private List<Device> mDevices = new ArrayList<>();
     private List<Routine> mRoutines = new ArrayList<>();
@@ -99,8 +105,8 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.btn_authst_mnu)
-            getAuthorToken();
+        if (id == R.id.btn_st_connect)
+            smartThingsConnect();
         else if (id == R.id.btn_device_mnu)
             deviceList();
         else if (id == R.id.btn_routine_mnu)
@@ -114,24 +120,40 @@ public class MainActivity extends AppCompatActivity
     private void init() {
         SmartThingsTokenInfo smartThingsTokenInfo = SmartThingsTokenInfo.Load();
         Calendar c = Calendar.getInstance();
-        if (smartThingsTokenInfo.getToken() == null ||
-                Objects.equals(smartThingsTokenInfo.getToken(), "") ||
-                smartThingsTokenInfo.getExpires().before(c.getTime()))
-            getAuthorToken();
-         else
+        if (smartThingsTokenInfo.getToken() != null &&
+                !Objects.equals(smartThingsTokenInfo.getToken(), "") &&
+                smartThingsTokenInfo.getExpires().after(c.getTime()))
             this.getDevices();
     }
 
-    private void getAuthorToken()
+    private void smartThingsConnect()
     {
         final MainActivity me = this;
-        this.authorise(new ProcessCompleteListener<Activity>() {
+
+        final SmartThingsFragment fragment = new SmartThingsFragment();
+        //noinspection unchecked
+        fragment.setmProcessComplete(new ProcessCompleteListener<Activity>() {
             @Override
             public void Complete(boolean success, Activity source) {
-                if(success)
+                if (success) {
                     me.getDevices();
+                }
             }
         });
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.content_main, fragment);
+        ft.commit();
+    }
+
+    public void setToMainActivity()
+    {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.remove(getFragmentManager().findFragmentById(R.id.content_main));
+        ft.commit();
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null)
+            actionBar.hide();
     }
 
     private void getDevices() {
@@ -181,95 +203,13 @@ public class MainActivity extends AppCompatActivity
         ft.commit();
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
-    private void authorise(final ProcessCompleteListener<Activity> processComplete) {
-        Log.i(Globals.ACTIVITY, "authorise");
-        final Dialog auth_dialog = new Dialog(MainActivity.this);
-        auth_dialog.setContentView(R.layout.auth_dialog);
-        WebView web = auth_dialog.findViewById(R.id.webv);
-        web.getSettings().setJavaScriptEnabled(true);
+    @Override
+    public void onListFragmentInteraction(Thing item) {
 
-        // check request
-        String requestUrl = (Globals.OAUTH_URL +
-                "?redirect_uri=" + Globals.REDIRECT_URI +
-                "&response_type=code&client_id=" + Globals.CLIENT_ID +
-                "&scope=" + Globals.OAUTH_SCOPE +
-                "&redirect_uri=" + Globals.SERVEUR_URI);
-
-        // Loading of the Smartthing Webside : For authorization
-        web.loadUrl(requestUrl);
-        web.setWebChromeClient(new WebChromeClient() {
-            public void onProgressChanged(WebView view, int progress) {
-                MainActivity.this.setTitle("Loading...");
-                MainActivity.this.setProgress(progress * 100);
-
-                if(progress == 100)
-                    MainActivity.this.setTitle(R.string.app_name);
-            }
-        });
-
-        web.setWebViewClient(new WebViewClient() {
-            boolean authComplete = false;
-            final Intent resultIntent = new Intent();
-
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                Log.i(Globals.ACTIVITY, "onPageStarted");
-                super.onPageStarted(view, url, favicon);
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                Log.i(Globals.ACTIVITY, "onPageFinished");
-                super.onPageFinished(view, url);
-                // Check if the answer contains a code
-                if (url.contains("?code=") && !authComplete) {
-                    // check answer
-
-                    Uri uri = Uri.parse(url);
-
-                    // Code recovery
-                    SmartThingsTokenInfo smartThingsTokenInfo = new SmartThingsTokenInfo();
-                    smartThingsTokenInfo.setAuthCode(uri.getQueryParameter("code"));
-                    Log.i(Globals.ACTIVITY, "Auth Code :" + smartThingsTokenInfo.getAuthCode());
-
-                    authComplete = true;
-                    resultIntent.putExtra("code", smartThingsTokenInfo.getAuthCode());
-
-                    MainActivity.this.setResult(Activity.RESULT_OK, resultIntent);
-                    setResult(Activity.RESULT_CANCELED, resultIntent);
-
-                    smartThingsTokenInfo.Save();
-                    auth_dialog.dismiss();
-
-                    // Application by Token
-                    STTokenGetter tokenGetter = new STTokenGetter(new ProcessCompleteListener<STTokenGetter>() {
-                        @Override
-                        public void Complete(boolean success, STTokenGetter source) {
-                            if(processComplete != null)
-                                processComplete.Complete(success, MainActivity.this);
-                        }
-                    }, MainActivity.this);
-                    tokenGetter.execute();
-
-                } else if (url.contains("error=access_denied")) {
-                    authComplete = true;
-                    setResult(Activity.RESULT_CANCELED, resultIntent);
-                    Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_SHORT).show();
-
-                    auth_dialog.dismiss();
-                    if(processComplete!=null)
-                        processComplete.Complete(false, MainActivity.this);
-                }
-            }
-        });
-
-        auth_dialog.show();
-        auth_dialog.setCancelable(true);
     }
 
     @Override
-    public void onListFragmentInteraction(Thing item) {
+    public void onFragmentInteraction(Uri uri) {
 
     }
 }

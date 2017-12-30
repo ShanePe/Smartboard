@@ -7,10 +7,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="list_image_content" tools:keep="@string/list_image_content">Device</string>
-    <string name="mnu_authorise_st">SmartThings Setup</string>
+    <string name="mnu_authorise_st">SmartThings Connect</string>
     <string name="mnu_authorise_harm" tools:ignore="UnusedResources">Harmony</string>
     <string name="mnu_devices">Devices</string>
     <string name="mnu_routine">Routines</string>
     <string name="btn_execute">Execute</string>
     <string name="content_desc_img">Image</string>
+
 </resources>
