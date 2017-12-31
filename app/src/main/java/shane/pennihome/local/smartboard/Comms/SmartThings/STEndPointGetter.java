@@ -6,20 +6,20 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import shane.pennihome.local.smartboard.Comms.ComResult;
-import shane.pennihome.local.smartboard.Comms.HttpCommunicator;
-import shane.pennihome.local.smartboard.Comms.Interface.ProcessCompleteListener;
+import shane.pennihome.local.smartboard.Comms.RESTCommunicatorResult;
+import shane.pennihome.local.smartboard.Comms.RESTCommunicator;
+import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Data.Globals;
-import shane.pennihome.local.smartboard.Data.SmartThingsTokenInfo;
+import shane.pennihome.local.smartboard.Data.SmartThingsToken;
 
 @SuppressLint("StaticFieldLeak")
-public class STEndPointGetter extends AsyncTask<String, String, ComResult> {
+public class STEndPointGetter extends AsyncTask<String, String, RESTCommunicatorResult> {
     private ProgressDialog mDialog;
     private Boolean mSuccess;
-    private final ProcessCompleteListener<STEndPointGetter> mProcessCompleteListener;
+    private final OnProcessCompleteListener<STEndPointGetter> mProcessCompleteListener;
     private final Activity mContext;
 
-    public STEndPointGetter(ProcessCompleteListener<STEndPointGetter> processCompleteListener, Activity context) {
+    public STEndPointGetter(OnProcessCompleteListener<STEndPointGetter> processCompleteListener, Activity context) {
         mProcessCompleteListener = processCompleteListener;
         mContext = context;
     }
@@ -38,12 +38,12 @@ public class STEndPointGetter extends AsyncTask<String, String, ComResult> {
     }
 
     @Override
-    protected ComResult doInBackground(String... args) {                       //UriGet
-        ComResult ret = new ComResult();
-        SmartThingsTokenInfo smartThingsTokenInfo = SmartThingsTokenInfo.Load();
-        HttpCommunicator httpCommunicator = new HttpCommunicator();
+    protected RESTCommunicatorResult doInBackground(String... args) {                       //UriGet
+        RESTCommunicatorResult ret = new RESTCommunicatorResult();
+        SmartThingsToken smartThingsTokenInfo = SmartThingsToken.Load();
+        RESTCommunicator httpCommunicator = new RESTCommunicator();
         try {
-            ret.setResult(httpCommunicator.getJson(Globals.ENDPOINT_URL, smartThingsTokenInfo.getToken(), null));
+            ret.setResult(httpCommunicator.getJson(Globals.ST_ENDPOINT_URL, smartThingsTokenInfo.getToken(), null));
         } catch (Exception e) {
             ret.setException(e);
         }
@@ -53,7 +53,7 @@ public class STEndPointGetter extends AsyncTask<String, String, ComResult> {
     }
 
     @Override
-    protected void onPostExecute(ComResult result) {                          //UriGet
+    protected void onPostExecute(RESTCommunicatorResult result) {                          //UriGet
         if (mDialog != null) {
             mDialog.dismiss();
             mDialog = null;
@@ -62,7 +62,7 @@ public class STEndPointGetter extends AsyncTask<String, String, ComResult> {
             if (!result.isSuccess())
                 throw result.getException();
 
-            SmartThingsTokenInfo smartThingsTokenInfo = SmartThingsTokenInfo.Load();
+            SmartThingsToken smartThingsTokenInfo = SmartThingsToken.Load();
             smartThingsTokenInfo.setRequestUrl(result.getResult().getString("uri"));
             smartThingsTokenInfo.Save();
             mSuccess = true;

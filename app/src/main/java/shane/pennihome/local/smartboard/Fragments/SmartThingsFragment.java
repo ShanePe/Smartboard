@@ -2,7 +2,6 @@ package shane.pennihome.local.smartboard.Fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -14,15 +13,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import shane.pennihome.local.smartboard.Comms.Interface.ProcessCompleteListener;
+import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Comms.SmartThings.STTokenGetter;
 import shane.pennihome.local.smartboard.Data.Globals;
-import shane.pennihome.local.smartboard.Data.SmartThingsTokenInfo;
+import shane.pennihome.local.smartboard.Data.SmartThingsToken;
 import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.R;
 
@@ -34,7 +32,7 @@ import shane.pennihome.local.smartboard.R;
  */
 public class SmartThingsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
-    private ProcessCompleteListener<Activity> mProcessComplete;
+    private OnProcessCompleteListener<Activity> mProcessComplete;
     public SmartThingsFragment() {
     }
 
@@ -64,11 +62,11 @@ public class SmartThingsFragment extends Fragment {
         web.getSettings().setJavaScriptEnabled(true);
 
         // check request
-        String requestUrl = (Globals.OAUTH_URL +
-                "?redirect_uri=" + Globals.REDIRECT_URI +
-                "&response_type=code&client_id=" + Globals.CLIENT_ID +
-                "&scope=" + Globals.OAUTH_SCOPE +
-                "&redirect_uri=" + Globals.SERVEUR_URI);
+        String requestUrl = (Globals.ST_OAUTH_URL +
+                "?redirect_uri=" + Globals.ST_REDIRECT_URI +
+                "&response_type=code&client_id=" + Globals.ST_CLIENT_ID +
+                "&scope=" + Globals.ST_OAUTH_SCOPE +
+                "&redirect_uri=" + Globals.ST_SERVER_URI);
 
         // Loading of the Smartthing Webside : For authorization
         web.loadUrl(requestUrl);
@@ -93,7 +91,7 @@ public class SmartThingsFragment extends Fragment {
                     Uri uri = Uri.parse(url);
 
                     // Code recovery
-                    SmartThingsTokenInfo smartThingsTokenInfo = new SmartThingsTokenInfo();
+                    SmartThingsToken smartThingsTokenInfo = new SmartThingsToken();
                     smartThingsTokenInfo.setAuthCode(uri.getQueryParameter("code"));
                     Log.i(Globals.ACTIVITY, "Auth Code :" + smartThingsTokenInfo.getAuthCode());
 
@@ -107,7 +105,7 @@ public class SmartThingsFragment extends Fragment {
                     activity.setToMainActivity();
 
                     // Application by Token
-                    STTokenGetter tokenGetter = new STTokenGetter(new ProcessCompleteListener<STTokenGetter>() {
+                    STTokenGetter tokenGetter = new STTokenGetter(new OnProcessCompleteListener<STTokenGetter>() {
                         @Override
                         public void Complete(boolean success, STTokenGetter source) {
                             if(mProcessComplete != null)
@@ -147,7 +145,7 @@ public class SmartThingsFragment extends Fragment {
         mListener = null;
     }
 
-    public void setmProcessComplete(ProcessCompleteListener<Activity> mProcessComplete) {
+    public void setmProcessComplete(OnProcessCompleteListener<Activity> mProcessComplete) {
         this.mProcessComplete = mProcessComplete;
     }
 

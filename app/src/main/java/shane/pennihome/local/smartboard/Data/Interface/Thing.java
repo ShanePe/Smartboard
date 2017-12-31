@@ -1,6 +1,6 @@
 package shane.pennihome.local.smartboard.Data.Interface;
 
-import shane.pennihome.local.smartboard.Comms.Interface.ProcessCompleteListener;
+import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Comms.SmartThings.STThingToggler;
 
 /**
@@ -9,7 +9,7 @@ import shane.pennihome.local.smartboard.Comms.SmartThings.STThingToggler;
 
 @SuppressWarnings("DefaultFileTemplate")
 public abstract class Thing {
-    public enum Source {SmartThings}
+    public enum Source {SmartThings, PhilipsHue}
 
     private String mId;
     private String mName;
@@ -41,7 +41,7 @@ public abstract class Thing {
 
     public void Toggle() {
         final Thing me = this;
-        STThingToggler stThingToggler = new STThingToggler(this, new ProcessCompleteListener<STThingToggler>() {
+        STThingToggler stThingToggler = new STThingToggler(this, new OnProcessCompleteListener<STThingToggler>() {
             @Override
             public void Complete(boolean success, STThingToggler source) {
                 if(success) {

@@ -25,9 +25,7 @@ import shane.pennihome.local.smartboard.MainActivity;
 @SuppressWarnings("DefaultFileTemplate")
 public abstract class ThingFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private List<Thing> mThings = new ArrayList<>();
@@ -47,8 +45,6 @@ public abstract class ThingFragment extends Fragment {
     public void setThings(List<Thing> things) {
         this.mThings = things;
     }
-
-    // TODO: Customize parameter initialization
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,7 +113,6 @@ public abstract class ThingFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         @SuppressWarnings("EmptyMethod")
         void onListFragmentInteraction(@SuppressWarnings("unused") Thing item);
     }

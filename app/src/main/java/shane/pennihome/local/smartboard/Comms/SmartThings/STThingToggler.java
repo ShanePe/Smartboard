@@ -9,13 +9,13 @@ import org.json.JSONObject;
 
 import java.net.URLEncoder;
 
-import shane.pennihome.local.smartboard.Comms.ComResult;
-import shane.pennihome.local.smartboard.Comms.HttpCommunicator;
-import shane.pennihome.local.smartboard.Comms.Interface.ProcessCompleteListener;
+import shane.pennihome.local.smartboard.Comms.RESTCommunicatorResult;
+import shane.pennihome.local.smartboard.Comms.RESTCommunicator;
+import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Data.Device;
 import shane.pennihome.local.smartboard.Data.Interface.Thing;
 import shane.pennihome.local.smartboard.Data.Routine;
-import shane.pennihome.local.smartboard.Data.SmartThingsTokenInfo;
+import shane.pennihome.local.smartboard.Data.SmartThingsToken;
 
 /**
  * Created by shane on 28/12/17.
@@ -23,13 +23,13 @@ import shane.pennihome.local.smartboard.Data.SmartThingsTokenInfo;
 
 @SuppressWarnings("DefaultFileTemplate")
 @SuppressLint("StaticFieldLeak")
-public class STThingToggler extends AsyncTask<String, String, ComResult> {
+public class STThingToggler extends AsyncTask<String, String, RESTCommunicatorResult> {
     private final Thing mThing;
-    private final ProcessCompleteListener<STThingToggler> mProcessComplete;
+    private final OnProcessCompleteListener<STThingToggler> mProcessComplete;
     private boolean mSuccess;
     private final Context mContext;
 
-    public STThingToggler(Thing thing, ProcessCompleteListener<STThingToggler> processComplete) {
+    public STThingToggler(Thing thing, OnProcessCompleteListener<STThingToggler> processComplete) {
         mThing = thing;
         mProcessComplete = processComplete;
         mContext = null;
@@ -42,10 +42,10 @@ public class STThingToggler extends AsyncTask<String, String, ComResult> {
     }
 
     @Override
-    protected ComResult doInBackground(String... strings) {
-        ComResult ret = new ComResult();
-        HttpCommunicator httpCommunicator = new HttpCommunicator();
-        SmartThingsTokenInfo smartThingsTokenInfo = SmartThingsTokenInfo.Load();
+    protected RESTCommunicatorResult doInBackground(String... strings) {
+        RESTCommunicatorResult ret = new RESTCommunicatorResult();
+        RESTCommunicator httpCommunicator = new RESTCommunicator();
+        SmartThingsToken smartThingsTokenInfo = SmartThingsToken.Load();
         try {
             String url = null;
             switch(mThing.getSource())
@@ -73,7 +73,7 @@ public class STThingToggler extends AsyncTask<String, String, ComResult> {
     }
 
     @Override
-    protected void onPostExecute(ComResult result) {
+    protected void onPostExecute(RESTCommunicatorResult result) {
         try {
             if (!result.isSuccess())
                 throw result.getException();

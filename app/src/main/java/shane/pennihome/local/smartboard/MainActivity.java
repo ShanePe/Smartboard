@@ -1,29 +1,21 @@
 package shane.pennihome.local.smartboard;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.FragmentTransaction;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -31,16 +23,20 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
+import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
+import shane.pennihome.local.smartboard.Comms.PhilipsHue.PHBridgeConnector;
+import shane.pennihome.local.smartboard.Comms.PhilipsHue.PHBridgeDeviceGetter;
 import shane.pennihome.local.smartboard.Comms.SmartThings.STDevicesGetter;
 import shane.pennihome.local.smartboard.Comms.SmartThings.STEndPointGetter;
-import shane.pennihome.local.smartboard.Comms.Interface.ProcessCompleteListener;
-import shane.pennihome.local.smartboard.Comms.SmartThings.STTokenGetter;
 import shane.pennihome.local.smartboard.Data.Device;
 import shane.pennihome.local.smartboard.Data.Globals;
+import shane.pennihome.local.smartboard.Data.HueBridge;
+import shane.pennihome.local.smartboard.Data.HueBridgeToken;
 import shane.pennihome.local.smartboard.Data.Interface.Thing;
 import shane.pennihome.local.smartboard.Data.Routine;
-import shane.pennihome.local.smartboard.Data.SmartThingsTokenInfo;
+import shane.pennihome.local.smartboard.Data.SmartThingsToken;
 import shane.pennihome.local.smartboard.Fragments.DeviceFragment;
+import shane.pennihome.local.smartboard.Fragments.HueBridgeFragment;
 import shane.pennihome.local.smartboard.Fragments.RoutineFragment;
 import shane.pennihome.local.smartboard.Fragments.SmartThingsFragment;
 import shane.pennihome.local.smartboard.Fragments.ThingFragment;
@@ -48,11 +44,8 @@ import shane.pennihome.local.smartboard.Fragments.ThingFragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ThingFragment.OnListFragmentInteractionListener,
-        SmartThingsFragment.OnFragmentInteractionListener{
-
-    static {
-        System.loadLibrary("huesdk");
-    }
+        SmartThingsFragment.OnFragmentInteractionListener,
+        HueBridgeFragment.OnListFragmentInteractionListener {
 
     private List<Device> mDevices = new ArrayList<>();
     private List<Routine> mRoutines = new ArrayList<>();
@@ -64,7 +57,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar!=null)
+        if (actionBar != null)
             actionBar.hide();
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -107,6 +100,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.btn_st_connect)
             smartThingsConnect();
+        else if (id == R.id.btn_ph_connect)
+            philipsHueConnect();
         else if (id == R.id.btn_device_mnu)
             deviceList();
         else if (id == R.id.btn_routine_mnu)
@@ -118,21 +113,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void init() {
-        SmartThingsTokenInfo smartThingsTokenInfo = SmartThingsTokenInfo.Load();
-        Calendar c = Calendar.getInstance();
-        if (smartThingsTokenInfo.getToken() != null &&
-                !Objects.equals(smartThingsTokenInfo.getToken(), "") &&
-                smartThingsTokenInfo.getExpires().after(c.getTime()))
-            this.getDevices();
+        this.getDevices();
     }
 
-    private void smartThingsConnect()
-    {
+    private void smartThingsConnect() {
         final MainActivity me = this;
 
         final SmartThingsFragment fragment = new SmartThingsFragment();
         //noinspection unchecked
-        fragment.setmProcessComplete(new ProcessCompleteListener<Activity>() {
+        fragment.setmProcessComplete(new OnProcessCompleteListener<Activity>() {
             @Override
             public void Complete(boolean success, Activity source) {
                 if (success) {
@@ -145,50 +134,130 @@ public class MainActivity extends AppCompatActivity
         ft.commit();
     }
 
-    public void setToMainActivity()
-    {
+    private void philipsHueConnect() {
+        final MainActivity me = this;
+
+        final HueBridgeFragment fragment = new HueBridgeFragment();
+        //noinspection unchecked
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.content_main, fragment);
+        ft.commit();
+    }
+
+
+    public void setToMainActivity() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.remove(getFragmentManager().findFragmentById(R.id.content_main));
         ft.commit();
 
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar!=null)
+        if (actionBar != null)
             actionBar.hide();
+    }
+
+    private void getPHDevices(final OnProcessCompleteListener<Activity> processComplete) {
+        final MainActivity me = this;
+        connectPHBridge(new OnProcessCompleteListener<HueBridge>() {
+            @Override
+            public void Complete(boolean success, HueBridge source) {
+                if (success) {
+                    PHBridgeDeviceGetter phBridgeDeviceGetter = new PHBridgeDeviceGetter(me, true, new OnProcessCompleteListener<PHBridgeDeviceGetter>() {
+                        @Override
+                        public void Complete(boolean success, PHBridgeDeviceGetter source) {
+
+                        }
+                    });
+                    phBridgeDeviceGetter.execute();
+                }
+            }
+        });
+    }
+
+    private void connectPHBridge(final OnProcessCompleteListener<HueBridge> processComplete) {
+        final MainActivity me = this;
+
+        final HueBridgeToken philipHueHub = HueBridgeToken.Load();
+
+        if (!philipHueHub.getAddress().equals("") && philipHueHub.getToken().equals("")) {
+            PHBridgeConnector phBridgeConnector = new PHBridgeConnector(me, new OnProcessCompleteListener<PHBridgeConnector>() {
+                @Override
+                public void Complete(boolean success, PHBridgeConnector source) {
+                    if (success) {
+                        philipHueHub.setToken(source.getConnectHueBridge().getToken());
+                        philipHueHub.Save();
+                        if (processComplete != null)
+                            processComplete.Complete(true, HueBridge.FromTokenInfo(philipHueHub));
+                    }
+                }
+            });
+            phBridgeConnector.execute();
+        } else if (!philipHueHub.getAddress().equals("") && !philipHueHub.getToken().equals("")) {
+            if (processComplete != null)
+                processComplete.Complete(true, HueBridge.FromTokenInfo(philipHueHub));
+        } else if (processComplete != null)
+            processComplete.Complete(false, null);
+    }
+
+    private void getSTDevices(final OnProcessCompleteListener<Activity> processComplete) {
+        final MainActivity me = this;
+
+        SmartThingsToken smartThingsTokenInfo = SmartThingsToken.Load();
+        Calendar c = Calendar.getInstance();
+
+        if (!Objects.equals(smartThingsTokenInfo.getToken(), "") && smartThingsTokenInfo.getExpires().after(c.getTime())) {
+            STEndPointGetter endPointGetter = new STEndPointGetter(new OnProcessCompleteListener<STEndPointGetter>() {
+                @Override
+                public void Complete(boolean success, STEndPointGetter source) {
+                    if (success) {
+                        SmartThingsToken smartThingsTokenInfo = SmartThingsToken.Load();
+                        STDevicesGetter devicesGetter = new STDevicesGetter(smartThingsTokenInfo.getRequestUrl(), true, me, new OnProcessCompleteListener<STDevicesGetter>() {
+                            @Override
+                            public void Complete(boolean success, STDevicesGetter source) {
+                                if (success) {
+                                    mDevices = source.getDevices();
+                                    mRoutines = source.getRoutines();
+
+                                    if (processComplete != null)
+                                        processComplete.Complete(true, me);
+                                } else
+                                    Toast.makeText(getApplicationContext(), "Could not get devices.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        devicesGetter.execute();
+
+                    } else
+                        Toast.makeText(getApplicationContext(), "Could not get endpoint.", Toast.LENGTH_SHORT).show();
+                }
+            }, me);
+
+            endPointGetter.execute();
+        } else {
+            if (processComplete != null)
+                processComplete.Complete(true, me);
+        }
     }
 
     private void getDevices() {
         mDevices = null;
         mRoutines = null;
-        final MainActivity me = this;
-        STEndPointGetter endPointGetter = new STEndPointGetter(new ProcessCompleteListener<STEndPointGetter>() {
+
+        getSTDevices(new OnProcessCompleteListener<Activity>() {
             @Override
-            public void Complete(boolean success, STEndPointGetter source) {
-                if (success) {
-                    SmartThingsTokenInfo smartThingsTokenInfo = SmartThingsTokenInfo.Load();
-                    STDevicesGetter devicesGetter = new STDevicesGetter(smartThingsTokenInfo.getRequestUrl(), true, me, new ProcessCompleteListener<STDevicesGetter>() {
-                        @Override
-                        public void Complete(boolean success, STDevicesGetter source) {
-                            if (success) {
-                                mDevices = source.getDevices();
-                                mRoutines = source.getRoutines();
-                            } else
-                                Toast.makeText(getApplicationContext(), "Could not get devices.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    devicesGetter.execute();
+            public void Complete(boolean success, Activity source) {
+                getPHDevices(new OnProcessCompleteListener<Activity>() {
+                    @Override
+                    public void Complete(boolean success, Activity source) {
 
-                } else
-                    Toast.makeText(getApplicationContext(), "Could not get endpoint.", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
-        }, me);
-
-        endPointGetter.execute();
+        });
     }
 
     private void deviceList() {
         DeviceFragment fragment = new DeviceFragment();
         //noinspection unchecked
-        fragment.setThings((List<Thing>)(List<?>) mDevices);
+        fragment.setThings((List<Thing>) (List<?>) mDevices);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.content_main, fragment);
         ft.commit();
@@ -197,7 +266,7 @@ public class MainActivity extends AppCompatActivity
     private void routineList() {
         RoutineFragment fragment = new RoutineFragment();
         //noinspection unchecked
-        fragment.setThings((List<Thing>)(List<?>) mRoutines);
+        fragment.setThings((List<Thing>) (List<?>) mRoutines);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.content_main, fragment);
         ft.commit();
@@ -211,5 +280,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onListFragmentInteraction(HueBridge item) {
+        HueBridgeToken philipHueHub = HueBridgeToken.Load();
+        philipHueHub.setAddress(item.getIp());
+        philipHueHub.setId(item.getId());
+        philipHueHub.setToken("");
+        philipHueHub.Save();
+
+        setToMainActivity();
+        getDevices();
     }
 }

@@ -13,19 +13,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import shane.pennihome.local.smartboard.Comms.ComResult;
-import shane.pennihome.local.smartboard.Comms.HttpCommunicator;
-import shane.pennihome.local.smartboard.Comms.Interface.CommResponseListener;
-import shane.pennihome.local.smartboard.Comms.Interface.ProcessCompleteListener;
+import shane.pennihome.local.smartboard.Comms.RESTCommunicatorResult;
+import shane.pennihome.local.smartboard.Comms.RESTCommunicator;
+import shane.pennihome.local.smartboard.Comms.Interface.OnCommResponseListener;
+import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Data.Device;
 import shane.pennihome.local.smartboard.Data.Interface.Thing;
 import shane.pennihome.local.smartboard.Data.Routine;
-import shane.pennihome.local.smartboard.Data.SmartThingsTokenInfo;
+import shane.pennihome.local.smartboard.Data.SmartThingsToken;
 import shane.pennihome.local.smartboard.Data.Sort.DeviceSorter;
 import shane.pennihome.local.smartboard.Data.Sort.RoutineSorter;
 
 @SuppressLint("StaticFieldLeak")
-public class STDevicesGetter extends AsyncTask<String, String, ComResult> {
+public class STDevicesGetter extends AsyncTask<String, String, RESTCommunicatorResult> {
     private final String mUriRequest;
     private ProgressDialog mDialog;
     private List<Device> mDevices;
@@ -34,13 +34,13 @@ public class STDevicesGetter extends AsyncTask<String, String, ComResult> {
     private final boolean mIncludeRoutine;
     private final Context mContext;
 
-    private final ProcessCompleteListener<STDevicesGetter> _processCompleteListener;
+    private final OnProcessCompleteListener<STDevicesGetter> mProcessCompleteListener;
 
-    public STDevicesGetter(String uriRequest, @SuppressWarnings("SameParameterValue") boolean includeRoutine, Context context, ProcessCompleteListener<STDevicesGetter> processCompleteListener) {
+    public STDevicesGetter(String uriRequest, @SuppressWarnings("SameParameterValue") boolean includeRoutine, Context context, OnProcessCompleteListener<STDevicesGetter> processCompleteListener) {
         mUriRequest = uriRequest;
         mIncludeRoutine = includeRoutine;
         mContext = context;
-        _processCompleteListener = processCompleteListener;
+        mProcessCompleteListener = processCompleteListener;
     }
 
     @Override
@@ -61,18 +61,18 @@ public class STDevicesGetter extends AsyncTask<String, String, ComResult> {
     }
 
     @Override
-    protected ComResult doInBackground(String... args) {               //DevicesGet
+    protected RESTCommunicatorResult doInBackground(String... args) {               //DevicesGet
 
-        ComResult ret = new ComResult();
-        SmartThingsTokenInfo smartThingsTokenInfo = SmartThingsTokenInfo.Load();
+        RESTCommunicatorResult ret = new RESTCommunicatorResult();
+        SmartThingsToken smartThingsTokenInfo = SmartThingsToken.Load();
         final JSONArray devices = new JSONArray();
         final JSONArray routines = new JSONArray();
 
-        HttpCommunicator coms = new HttpCommunicator();
+        RESTCommunicator coms = new RESTCommunicator();
         try {
             JSONObject jRet = new JSONObject();
 
-            coms.getJson(mUriRequest + "/switches", smartThingsTokenInfo.getToken(), new CommResponseListener() {
+            coms.getJson(mUriRequest + "/switches", smartThingsTokenInfo.getToken(), new OnCommResponseListener() {
                 @Override
                 public void Process(JSONObject obj) {
                     devices.put(obj);
@@ -81,7 +81,7 @@ public class STDevicesGetter extends AsyncTask<String, String, ComResult> {
             jRet.put("devices", devices);
 
             if (mIncludeRoutine) {
-                coms.getJson(mUriRequest + "/routines", smartThingsTokenInfo.getToken(), new CommResponseListener() {
+                coms.getJson(mUriRequest + "/routines", smartThingsTokenInfo.getToken(), new OnCommResponseListener() {
                     @Override
                     public void Process(JSONObject obj) {
                         routines.put(obj);
@@ -100,7 +100,7 @@ public class STDevicesGetter extends AsyncTask<String, String, ComResult> {
     }
 
     @Override
-    protected void onPostExecute(ComResult result) {              //DevicesGet
+    protected void onPostExecute(RESTCommunicatorResult result) {              //DevicesGet
         if (mDialog != null) {
             mDialog.dismiss();
             mDevices = null;
@@ -144,12 +144,12 @@ public class STDevicesGetter extends AsyncTask<String, String, ComResult> {
             mSuccess = true;
         } catch (Exception e) {
             if (mContext != null)
-                Toast.makeText(mContext, "Communication Request Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Could not get SmartThing Devices", Toast.LENGTH_SHORT).show();
             mSuccess = false;
         }
 
-        if (_processCompleteListener != null)
-            _processCompleteListener.Complete(mSuccess, this);
+        if (mProcessCompleteListener != null)
+            mProcessCompleteListener.Complete(mSuccess, this);
     }
 
     public List<Device> getDevices() {

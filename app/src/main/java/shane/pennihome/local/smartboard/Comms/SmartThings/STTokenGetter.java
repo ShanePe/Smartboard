@@ -12,22 +12,22 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import shane.pennihome.local.smartboard.Comms.ComResult;
-import shane.pennihome.local.smartboard.Comms.HttpCommunicator;
-import shane.pennihome.local.smartboard.Comms.Interface.ProcessCompleteListener;
+import shane.pennihome.local.smartboard.Comms.RESTCommunicatorResult;
+import shane.pennihome.local.smartboard.Comms.RESTCommunicator;
+import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Data.Globals;
 import shane.pennihome.local.smartboard.Data.NameValuePair;
-import shane.pennihome.local.smartboard.Data.SmartThingsTokenInfo;
+import shane.pennihome.local.smartboard.Data.SmartThingsToken;
 
 
 @SuppressLint("StaticFieldLeak")
-public class STTokenGetter extends AsyncTask<String, String, ComResult> {
+public class STTokenGetter extends AsyncTask<String, String, RESTCommunicatorResult> {
     private ProgressDialog mDialog;
     private Boolean mSuccess;
-    private final ProcessCompleteListener<STTokenGetter> mProcComplete;
+    private final OnProcessCompleteListener<STTokenGetter> mProcComplete;
     private final Context mContext;
 
-    public STTokenGetter(ProcessCompleteListener<STTokenGetter> procComplete, Context context) {
+    public STTokenGetter(OnProcessCompleteListener<STTokenGetter> procComplete, Context context) {
         mProcComplete = procComplete;
         mContext = context;
     }
@@ -46,20 +46,20 @@ public class STTokenGetter extends AsyncTask<String, String, ComResult> {
         }
     }
     @Override
-    protected ComResult doInBackground(String... args) {
+    protected RESTCommunicatorResult doInBackground(String... args) {
         Log.i(Globals.ACTIVITY, "doInBackground");
-        SmartThingsTokenInfo smartThingsTokenInfo = SmartThingsTokenInfo.Load();
-        HttpCommunicator coms = new HttpCommunicator();
+        SmartThingsToken smartThingsTokenInfo = SmartThingsToken.Load();
+        RESTCommunicator coms = new RESTCommunicator();
         List<NameValuePair> params = new ArrayList<>();
         params.add(new NameValuePair("code", smartThingsTokenInfo.getAuthCode()));
-        params.add(new NameValuePair("client_id", Globals.CLIENT_ID));
-        params.add(new NameValuePair("client_secret", Globals.CLIENT_SECRET));
-        params.add(new NameValuePair("redirect_uri", Globals.REDIRECT_URI));
-        params.add(new NameValuePair("grant_type", Globals.GRANT_TYPE));
+        params.add(new NameValuePair("client_id", Globals.ST_CLIENT_ID));
+        params.add(new NameValuePair("client_secret", Globals.ST_CLIENT_SECRET));
+        params.add(new NameValuePair("redirect_uri", Globals.ST_REDIRECT_URI));
+        params.add(new NameValuePair("grant_type", Globals.ST_GRANT_TYPE));
 
-        ComResult ret = new ComResult();
+        RESTCommunicatorResult ret = new RESTCommunicatorResult();
         try {
-            ret.setResult(coms.postJson(params));
+            ret.setResult(coms.postJson(Globals.ST_TOKEN_URL, params));
         } catch (Exception e) {
             ret.setException(e);
         }
@@ -68,7 +68,7 @@ public class STTokenGetter extends AsyncTask<String, String, ComResult> {
     }
 
     @Override
-    protected void onPostExecute(ComResult result) {
+    protected void onPostExecute(RESTCommunicatorResult result) {
         if(mDialog !=null) {
             mDialog.dismiss();
             mDialog = null;
@@ -76,7 +76,7 @@ public class STTokenGetter extends AsyncTask<String, String, ComResult> {
         try {
             if (!result.isSuccess())
                 throw result.getException();
-            SmartThingsTokenInfo smartThingsTokenInfo = SmartThingsTokenInfo.Load();
+            SmartThingsToken smartThingsTokenInfo = SmartThingsToken.Load();
             smartThingsTokenInfo.setToken(result.getResult().getString("access_token"));
             smartThingsTokenInfo.setType(result.getResult().getString("token_type"));
 

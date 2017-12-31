@@ -9,6 +9,10 @@
             android:icon="@drawable/icon_stlogo"
             android:title="@string/mnu_authorise_st" />
         <item
+            android:id="@+id/btn_ph_connect"
+            android:icon="@drawable/icon_phlogo"
+            android:title="@string/mnu_auth_ph" />
+        <item
             android:id="@+id/btn_device_mnu"
             android:icon="@drawable/icon_switch"
             android:title="@string/mnu_devices" />
