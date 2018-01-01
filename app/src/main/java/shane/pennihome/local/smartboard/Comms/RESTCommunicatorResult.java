@@ -30,6 +30,7 @@ public class RESTCommunicatorResult {
         this.mSuccess = false;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isSuccess() {
         return mSuccess;
     }

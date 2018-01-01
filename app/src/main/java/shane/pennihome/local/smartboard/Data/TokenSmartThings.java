@@ -1,18 +1,17 @@
 package shane.pennihome.local.smartboard.Data;
 
-import android.content.SharedPreferences;
-
-import com.google.gson.Gson;
-
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
+
+import shane.pennihome.local.smartboard.Data.Interface.TokenInfo;
 
 /**
  * Created by shane on 27/12/17.
  */
 
 @SuppressWarnings("DefaultFileTemplate")
-public class SmartThingsToken {
+public class TokenSmartThings extends TokenInfo {
     private String mToken;
     private Date mExpires;
     private String mType;
@@ -20,7 +19,7 @@ public class SmartThingsToken {
     private String mRequestUrl;
 
     public String getToken() {
-        if(mToken == null)
+        if (mToken == null)
             return "";
 
         return mToken;
@@ -30,7 +29,7 @@ public class SmartThingsToken {
         this.mToken = token;
     }
 
-    public Date getExpires() {
+    private Date getExpires() {
         if (mExpires == null) {
             Calendar c = Calendar.getInstance();
             return c.getTime();
@@ -46,7 +45,6 @@ public class SmartThingsToken {
     public String getType() {
         return mType;
     }
-
     public void setType(String type) {
         this.mType = type;
     }
@@ -54,40 +52,42 @@ public class SmartThingsToken {
     public String getAuthCode() {
         return mAuthCode;
     }
-
     public void setAuthCode(String authCode) {
         mAuthCode = authCode;
     }
 
     public String getRequestUrl() {
+        if(mRequestUrl == null)
+            return "";
         return mRequestUrl;
     }
-
     public void setRequestUrl(String _requestUrl) {
         this.mRequestUrl = _requestUrl;
     }
 
-    private static SmartThingsToken fromJson(String json) {
-        Gson gson = new Gson();
-        return gson.fromJson(json, SmartThingsToken.class);
+    @Override
+    protected String getKey() {
+        return "tokenInfo";
     }
 
-    private String toJson() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
+    @Override
+    public boolean isAuthorised() {
+        Calendar c = Calendar.getInstance();
+        return (!Objects.equals(getToken(), "") && getExpires().after(c.getTime()) && !getRequestUrl().equals(""));
     }
 
-    public static SmartThingsToken Load() {
-        String objJson = Globals.getSharedPreferences().getString("tokenInfo", "");
-        if (objJson.equals(""))
-            return new SmartThingsToken();
-        else
-            return SmartThingsToken.fromJson(objJson);
+    @Override
+    public boolean isAwaitingAuthorisation() {
+        Calendar c = Calendar.getInstance();
+        return (!Objects.equals(getToken(), "") && getExpires().after(c.getTime()) && getRequestUrl().equals(""));
     }
 
-    public void Save() {
-        SharedPreferences.Editor editor = Globals.getSharedPreferences().edit();
-        editor.putString("tokenInfo", this.toJson());
-        editor.commit();
+    public static TokenSmartThings Load()
+    {
+        try {
+            return TokenInfo.Load(TokenSmartThings.class);
+        } catch (Exception e) {
+            return new TokenSmartThings();
+        }
     }
 }

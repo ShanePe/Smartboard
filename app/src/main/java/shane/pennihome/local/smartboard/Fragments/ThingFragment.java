@@ -1,4 +1,3 @@
-
 package shane.pennihome.local.smartboard.Fragments;
 
 import android.app.Fragment;
@@ -54,17 +53,18 @@ public abstract class ThingFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
-        MainActivity activity = (MainActivity)getActivity();
-        if(activity!=null)
-        {
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null) {
             ActionBar actionBar = activity.getSupportActionBar();
-            if(actionBar!=null)
+            if (actionBar != null)
                 actionBar.show();
         }
     }
 
     protected abstract int getFragmentLayout();
+
     protected abstract RecyclerView.Adapter getAdapter(List<Thing> things, OnListFragmentInteractionListener onFragInt);
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

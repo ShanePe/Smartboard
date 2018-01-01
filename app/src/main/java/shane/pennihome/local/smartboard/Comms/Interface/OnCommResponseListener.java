@@ -8,5 +8,5 @@ import org.json.JSONObject;
 
 @SuppressWarnings("DefaultFileTemplate")
 public interface OnCommResponseListener {
-    void Process(JSONObject obj);
+    void process(JSONObject obj);
 }

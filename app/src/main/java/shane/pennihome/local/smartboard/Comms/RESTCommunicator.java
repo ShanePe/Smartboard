@@ -16,7 +16,6 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -31,22 +30,23 @@ import shane.pennihome.local.smartboard.Data.NameValuePair;
  * Created by shane on 27/12/17.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
+@SuppressWarnings({"DefaultFileTemplate", "unused"})
 public class RESTCommunicator {
 
     public JSONObject postJson(String address, JSONObject jsonObject) throws JSONException, IOException {
         return postJson(address, null, jsonObject);
     }
 
+    @SuppressWarnings("SameParameterValue")
     public JSONObject postJson(String address, List<NameValuePair> queryStringParameters) throws JSONException, IOException {
         return postJson(address, queryStringParameters, null);
     }
 
-    public JSONObject postJson(String address, List<NameValuePair> queryStringParameters, JSONObject jsonObject) throws JSONException, IOException {
+    private JSONObject postJson(String address, List<NameValuePair> queryStringParameters, JSONObject jsonObject) throws JSONException, IOException {
         URL url = new URL(address);
         HttpURLConnection conn;
 
-        if(url.getProtocol().toLowerCase().equals("https"))
+        if (url.getProtocol().toLowerCase().equals("https"))
             conn = NetCipher.getHttpsURLConnection(url);
         else
             conn = (HttpURLConnection) url.openConnection();
@@ -96,10 +96,9 @@ public class RESTCommunicator {
     private JSONObject buildReturnObject(String data) throws JSONException {
         Object json = new JSONTokener(data).nextValue();
         if (json instanceof JSONObject)
-            return (JSONObject)json;
-        else if (json instanceof JSONArray)
-        {
-            JSONArray array = (JSONArray)json;
+            return (JSONObject) json;
+        else if (json instanceof JSONArray) {
+            JSONArray array = (JSONArray) json;
             return array.getJSONObject(0);//return the first object
         }
 
@@ -127,13 +126,13 @@ public class RESTCommunicator {
         return getJson(address, null, comRes);
     }
 
-    public JSONObject getJson(String address, String token, OnCommResponseListener comRes) throws IOException, JSONException, NoSuchAlgorithmException, KeyManagementException {
+    public JSONObject getJson(String address, String token, OnCommResponseListener comRes) throws IOException, JSONException {
         Log.d("Url : ", address);
         URL url = new URL(address);
 
         HttpURLConnection conn;
 
-        if(url.getProtocol().toLowerCase().equals("https"))
+        if (url.getProtocol().toLowerCase().equals("https"))
             conn = NetCipher.getHttpsURLConnection(url);
         else
             conn = (HttpURLConnection) url.openConnection();
@@ -168,14 +167,13 @@ public class RESTCommunicator {
         JSONObject jObj = null;
         Object jsonToken = new JSONTokener(json).nextValue();
         if (jsonToken instanceof JSONObject)
-            return (JSONObject)jsonToken;
-        else if (jsonToken instanceof JSONArray)
-        {
-            JSONArray jObjURI = (JSONArray)jsonToken;
+            return (JSONObject) jsonToken;
+        else if (jsonToken instanceof JSONArray) {
+            JSONArray jObjURI = (JSONArray) jsonToken;
             for (int i = 0; i < jObjURI.length(); i++) {
                 jObj = jObjURI.getJSONObject(i);
                 if (comRes != null)
-                    comRes.Process(jObj);
+                    comRes.process(jObj);
             }
         }
 
@@ -185,19 +183,34 @@ public class RESTCommunicator {
     }
 
     public void putJson(String address) throws IOException {
-        putJson(address, null);
+        putJson(address, null, null);
     }
 
-    public void putJson(String address, String token) throws IOException {
+    void putJson(String address, String token) throws IOException {
+        putJson(address, token, null);
+    }
+
+    void putJson(String address, JSONObject body) throws IOException {
+        putJson(address, null, body);
+    }
+
+    private void putJson(String address, String token, JSONObject body) throws IOException {
         Log.d("Url : ", address);
         URL url = new URL(address);
 
         HttpURLConnection conn;
 
-        if(url.getProtocol().toLowerCase().equals("https"))
+        if (url.getProtocol().toLowerCase().equals("https"))
             conn = NetCipher.getHttpsURLConnection(url);
         else
             conn = (HttpURLConnection) url.openConnection();
+
+        if (body != null) {
+            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Connection", "close");
+        }
 
         conn.setReadTimeout(10000);
         conn.setConnectTimeout(15000);
@@ -207,8 +220,14 @@ public class RESTCommunicator {
         if (token != null)
             conn.setRequestProperty("Authorization", "Bearer " + token);
 
+        if (body != null) {
+            OutputStream os = conn.getOutputStream();
+            os.write((body.toString() + "\r\n").getBytes("UTF-8"));
+            os.close();
+        }
+
         int resCode = conn.getResponseCode();
-        if (resCode != HttpsURLConnection.HTTP_NO_CONTENT)
+        if (resCode != HttpsURLConnection.HTTP_NO_CONTENT && resCode != HttpsURLConnection.HTTP_OK)
             throw new IOException("Message not sent.");
     }
 }

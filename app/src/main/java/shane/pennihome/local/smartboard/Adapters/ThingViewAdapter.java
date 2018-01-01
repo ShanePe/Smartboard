@@ -13,7 +13,7 @@ import shane.pennihome.local.smartboard.Fragments.ThingFragment;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Thing} and makes a call to the
  * specified {@link ThingFragment.OnListFragmentInteractionListener}.
- *.
+ * .
  */
 abstract class ThingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -26,7 +26,9 @@ abstract class ThingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     protected abstract int getFragmentLayout();
+
     protected abstract RecyclerView.ViewHolder getViewHolder(View view);
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())

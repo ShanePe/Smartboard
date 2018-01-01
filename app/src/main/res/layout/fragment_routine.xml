@@ -8,7 +8,7 @@
     android:alignmentMode="alignBounds"
     android:animateLayoutChanges="true"
     android:background="@android:drawable/dialog_holo_dark_frame"
-    android:columnCount="3"
+    android:columnCount="4"
     android:layoutMode="clipBounds"
     android:orientation="horizontal"
     tools:orientation="horizontal">
@@ -24,6 +24,16 @@
 
     <TextView
         android:id="@+id/routine_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal|clip_horizontal|start"
+        android:layout_margin="@dimen/text_margin"
+        android:gravity="start|fill"
+        android:textAppearance="?attr/textAppearanceListItem" />
+
+    <TextView
+        android:id="@+id/routine_source"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_columnWeight="1"

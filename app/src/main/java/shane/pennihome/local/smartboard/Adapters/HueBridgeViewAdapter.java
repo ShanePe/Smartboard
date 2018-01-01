@@ -6,12 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import shane.pennihome.local.smartboard.Data.HueBridge;
 import shane.pennihome.local.smartboard.Fragments.HueBridgeFragment.OnListFragmentInteractionListener;
 import shane.pennihome.local.smartboard.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link shane.pennihome.local.smartboard.Data.HueBridge} and makes a call to the
@@ -20,12 +20,12 @@ import java.util.List;
  */
 public class HueBridgeViewAdapter extends RecyclerView.Adapter<HueBridgeViewAdapter.ViewHolder> {
 
-    private List<HueBridge> mValues = new ArrayList<>();
     private final OnListFragmentInteractionListener mListener;
+    private List<HueBridge> mValues = new ArrayList<>();
 
     public HueBridgeViewAdapter(List<HueBridge> items, OnListFragmentInteractionListener listener) {
         mValues = items;
-        if(mValues == null)
+        if (mValues == null)
             mValues = new ArrayList<>();
         mListener = listener;
     }
@@ -40,7 +40,10 @@ public class HueBridgeViewAdapter extends RecyclerView.Adapter<HueBridgeViewAdap
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getIp() + " [Id : " + mValues.get(position).getId() + "]");
+
+        holder.mIdView.setText(String.format(holder.mView.getContext().getString(R.string.plhldr_bridge_id),
+                mValues.get(position).getIp(),
+                mValues.get(position).getId()));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,15 +59,15 @@ public class HueBridgeViewAdapter extends RecyclerView.Adapter<HueBridgeViewAdap
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public HueBridge mItem;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        final View mView;
+        final TextView mIdView;
+        HueBridge mItem;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.hue_ip);
+            mIdView = view.findViewById(R.id.hue_ip);
         }
-}
+    }
 }

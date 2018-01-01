@@ -12,6 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import shane.pennihome.local.smartboard.Adapters.HueBridgeViewAdapter;
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Comms.PhilipsHue.PHBridgeDiscoverer;
@@ -19,21 +22,20 @@ import shane.pennihome.local.smartboard.Data.HueBridge;
 import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A fragment representing a list of Items.
  * <p/>
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
+@SuppressWarnings("unused")
 public class HueBridgeFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private List<HueBridge> mHueBridge = new ArrayList<>();
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -59,11 +61,10 @@ public class HueBridgeFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
-        MainActivity activity = (MainActivity)getActivity();
-        if(activity!=null)
-        {
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null) {
             ActionBar actionBar = activity.getSupportActionBar();
-            if(actionBar!=null)
+            if (actionBar != null)
                 actionBar.show();
         }
     }
@@ -85,12 +86,12 @@ public class HueBridgeFragment extends Fragment {
 
             PHBridgeDiscoverer discoverer = new PHBridgeDiscoverer(getActivity(), new OnProcessCompleteListener<PHBridgeDiscoverer>() {
                 @Override
-                public void Complete(boolean success, final PHBridgeDiscoverer source) {
-                    if(success)
+                public void complete(boolean success, final PHBridgeDiscoverer source) {
+                    if (success)
                         act.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                recyclerView.setAdapter(new HueBridgeViewAdapter(source.getBridgeDiscoveryResults(),  (OnListFragmentInteractionListener) act));
+                                recyclerView.setAdapter(new HueBridgeViewAdapter(source.getBridgeDiscoveryResults(), (OnListFragmentInteractionListener) act));
                             }
                         });
                 }

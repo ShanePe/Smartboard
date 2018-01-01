@@ -3,6 +3,8 @@ package shane.pennihome.local.smartboard.Data;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Random;
+
 /**
  * Created by shane on 27/12/17.
  */
@@ -21,15 +23,26 @@ public class Globals {
     public final static String PH_DISCOVER_URL = "https://www.meethue.com/api/nupnp";
     public final static String ST_SERVER_URI = "https://www.googleapis.com/auth/urlshortener";
     private static SharedPreferences mPrefs;
-//    private static Activity _context;
 
-
-    static SharedPreferences getSharedPreferences() {
+    public static SharedPreferences getSharedPreferences() {
         return mPrefs;
     }
 
     public static void setSharedPreferences(Context c) {
         mPrefs = c.getSharedPreferences("Prefs", Context.MODE_PRIVATE);
+        if (mPrefs.getString("uid", "").equals("")) {
+
+            char[] chars = "abcdefghijklmnopqrstuvwxyzABSDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
+            Random r = new Random(System.currentTimeMillis());
+            char[] id = new char[8];
+            for (int i = 0;  i < 8;  i++) {
+                id[i] = chars[r.nextInt(chars.length)];
+            }
+
+            SharedPreferences.Editor editor = mPrefs.edit();
+            editor.putString("uid",  new String(id));
+            editor.apply();
+        }
     }
 
   /*  public static Activity getContext() {

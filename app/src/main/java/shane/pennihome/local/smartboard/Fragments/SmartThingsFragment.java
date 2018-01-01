@@ -20,7 +20,7 @@ import android.widget.Toast;
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Comms.SmartThings.STTokenGetter;
 import shane.pennihome.local.smartboard.Data.Globals;
-import shane.pennihome.local.smartboard.Data.SmartThingsToken;
+import shane.pennihome.local.smartboard.Data.TokenSmartThings;
 import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.R;
 
@@ -30,9 +30,11 @@ import shane.pennihome.local.smartboard.R;
  * {@link SmartThingsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
+@SuppressWarnings("unused")
 public class SmartThingsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private OnProcessCompleteListener<Activity> mProcessComplete;
+
     public SmartThingsFragment() {
     }
 
@@ -40,11 +42,10 @@ public class SmartThingsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MainActivity activity = (MainActivity)getActivity();
-        if(activity!=null)
-        {
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null) {
             ActionBar actionBar = activity.getSupportActionBar();
-            if(actionBar!=null)
+            if (actionBar != null)
                 actionBar.show();
         }
     }
@@ -53,7 +54,7 @@ public class SmartThingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final MainActivity activity = (MainActivity)getActivity();
+        final MainActivity activity = (MainActivity) getActivity();
 
         View view = inflater.inflate(R.layout.fragment_smart_things, container, false);
         Log.i(Globals.ACTIVITY, "authorise");
@@ -71,8 +72,8 @@ public class SmartThingsFragment extends Fragment {
         // Loading of the Smartthing Webside : For authorization
         web.loadUrl(requestUrl);
         web.setWebViewClient(new WebViewClient() {
-            boolean authComplete = false;
             final Intent resultIntent = new Intent();
+            boolean authComplete = false;
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -91,27 +92,27 @@ public class SmartThingsFragment extends Fragment {
                     Uri uri = Uri.parse(url);
 
                     // Code recovery
-                    SmartThingsToken smartThingsTokenInfo = new SmartThingsToken();
-                    smartThingsTokenInfo.setAuthCode(uri.getQueryParameter("code"));
-                    Log.i(Globals.ACTIVITY, "Auth Code :" + smartThingsTokenInfo.getAuthCode());
+                    TokenSmartThings tokenSmartThingsInfo = new TokenSmartThings();
+                    tokenSmartThingsInfo.setAuthCode(uri.getQueryParameter("code"));
+                    Log.i(Globals.ACTIVITY, "Auth Code :" + tokenSmartThingsInfo.getAuthCode());
 
                     authComplete = true;
-                    resultIntent.putExtra("code", smartThingsTokenInfo.getAuthCode());
+                    resultIntent.putExtra("code", tokenSmartThingsInfo.getAuthCode());
 
                     activity.setResult(Activity.RESULT_OK, resultIntent);
                     activity.setResult(Activity.RESULT_CANCELED, resultIntent);
 
-                    smartThingsTokenInfo.Save();
+                    tokenSmartThingsInfo.Save();
                     activity.setToMainActivity();
 
                     // Application by Token
-                    STTokenGetter tokenGetter = new STTokenGetter(new OnProcessCompleteListener<STTokenGetter>() {
+                    STTokenGetter tokenGetter = new STTokenGetter(activity, new OnProcessCompleteListener<STTokenGetter>() {
                         @Override
-                        public void Complete(boolean success, STTokenGetter source) {
-                            if(mProcessComplete != null)
-                                mProcessComplete.Complete(success, activity);
+                        public void complete(boolean success, STTokenGetter source) {
+                            if (mProcessComplete != null)
+                                mProcessComplete.complete(success, activity);
                         }
-                    }, activity);
+                    });
                     tokenGetter.execute();
 
                 } else if (url.contains("error=access_denied")) {
@@ -119,8 +120,8 @@ public class SmartThingsFragment extends Fragment {
                     activity.setResult(Activity.RESULT_CANCELED, resultIntent);
                     Toast.makeText(activity, "Error Occured", Toast.LENGTH_SHORT).show();
 
-                    if(mProcessComplete!=null)
-                        mProcessComplete.Complete(false, activity);
+                    if (mProcessComplete != null)
+                        mProcessComplete.complete(false, activity);
                 }
             }
         });
@@ -160,6 +161,5 @@ public class SmartThingsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }
 }

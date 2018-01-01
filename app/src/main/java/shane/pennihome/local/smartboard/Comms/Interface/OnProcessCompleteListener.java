@@ -6,5 +6,5 @@ package shane.pennihome.local.smartboard.Comms.Interface;
 
 @SuppressWarnings("DefaultFileTemplate")
 public interface OnProcessCompleteListener<T> {
-    void Complete(boolean success, T source);
+    void complete(boolean success, T source);
 }

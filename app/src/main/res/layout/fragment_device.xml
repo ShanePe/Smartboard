@@ -8,7 +8,7 @@
     android:alignmentMode="alignBounds"
     android:animateLayoutChanges="true"
     android:background="@android:drawable/dialog_holo_dark_frame"
-    android:columnCount="4"
+    android:columnCount="5"
     android:layoutMode="clipBounds"
     android:orientation="horizontal"
     tools:orientation="horizontal">
@@ -17,6 +17,7 @@
         android:id="@+id/device_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_margin="@dimen/text_margin"
         android:contentDescription="@string/img_cnt_device"
         app:srcCompat="@drawable/icon_switch" />
@@ -33,6 +34,16 @@
 
     <TextView
         android:id="@+id/device_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal|clip_horizontal|start"
+        android:layout_margin="@dimen/text_margin"
+        android:gravity="start|fill"
+        android:textAppearance="?attr/textAppearanceListItem" />
+
+    <TextView
+        android:id="@+id/device_source"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_columnWeight="1"
