@@ -13,16 +13,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Comms.Monitor;
 import shane.pennihome.local.smartboard.Comms.PhilipsHue.PHBridgeController;
 import shane.pennihome.local.smartboard.Comms.SmartThings.STController;
+import shane.pennihome.local.smartboard.Data.Dashboard;
 import shane.pennihome.local.smartboard.Data.Globals;
 import shane.pennihome.local.smartboard.Data.HueBridge;
+import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
 import shane.pennihome.local.smartboard.Data.Interface.Thing;
+import shane.pennihome.local.smartboard.Data.SQL.DBEngine;
 import shane.pennihome.local.smartboard.Data.TokenHueBridge;
+import shane.pennihome.local.smartboard.Fragments.DashboardFragment;
 import shane.pennihome.local.smartboard.Fragments.DeviceFragment;
 import shane.pennihome.local.smartboard.Fragments.HueBridgeFragment;
 import shane.pennihome.local.smartboard.Fragments.RoutineFragment;
@@ -34,9 +39,12 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ThingFragment.OnListFragmentInteractionListener,
         SmartThingsFragment.OnFragmentInteractionListener,
-        HueBridgeFragment.OnListFragmentInteractionListener {
+        HueBridgeFragment.OnListFragmentInteractionListener,
+        DashboardFragment.OnListFragmentInteractionListener{
 
     private Monitor mMonitor = null;
+    private List<Dashboard> mDashboards = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +92,8 @@ public class MainActivity extends AppCompatActivity
             deviceList();
         else if (id == R.id.btn_routine_mnu)
             routineList();
+        else if (id == R.id.btn_dashboard_mnu)
+            dashboardList();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -91,6 +101,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void init() {
+        DBEngine db = new DBEngine(this);
+        mDashboards = new ArrayList<>();
+        for (IDatabaseObject d : db.readFromDatabaseByType(IDatabaseObject.Types.Dashboard))
+            mDashboards.add((Dashboard) d);
         mMonitor = new Monitor(this);
         mMonitor.Start();
     }
@@ -155,6 +169,15 @@ public class MainActivity extends AppCompatActivity
         ft.commit();
     }
 
+    private void dashboardList() {
+        DashboardFragment fragment = new DashboardFragment();
+        //noinspection unchecked
+        fragment.setDashboard((List<Dashboard>) mDashboards);
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.content_main, fragment);
+        ft.commit();
+    }
+
     @Override
     public void onListFragmentInteraction(Thing item) {
 
@@ -175,5 +198,10 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+    }
+
+    @Override
+    public void onListFragmentInteraction(Dashboard item) {
+
     }
 }

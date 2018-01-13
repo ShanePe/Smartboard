@@ -20,5 +20,9 @@
             android:id="@+id/btn_routine_mnu"
             android:icon="@drawable/icon_routine"
             android:title="@string/mnu_routine" />
+        <item
+            android:id="@+id/btn_dashboard_mnu"
+            android:icon="@drawable/icon_dashboard"
+            android:title="@string/mnu_dashboard" />
     </group>
 </menu>

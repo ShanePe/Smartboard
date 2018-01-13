@@ -20,5 +20,6 @@
     <string name="device_st_label">SmartThings</string>
     <string name="device_ph_label">Philips Hue</string>
     <string name="plhldr_bridge_id">%s [Id : %s]</string>
+    <string name="mnu_dashboard">Dashboards</string>
 
 </resources>
