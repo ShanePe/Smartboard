@@ -1,5 +1,7 @@
 package shane.pennihome.local.smartboard.Data.Interface;
 
+import com.google.gson.Gson;
+
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Comms.ThingToggler;
 
@@ -12,7 +14,7 @@ public abstract class Thing {
     private String mId;
     private String mName;
     private Source mSource;
-    private onThingListener mOnThingListener;
+    private transient onThingListener mOnThingListener;
 
     public Thing.Source getSource() {
         return mSource;
@@ -59,5 +61,22 @@ public abstract class Thing {
         thingToggler.execute();
     }
 
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
+    private static <V extends Thing> V fromJson(Class<V> cls, String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, cls);
+    }
+
+    public static <V extends Thing> V Load(Class<V> cls, String objJson) throws IllegalAccessException, InstantiationException {
+        V inst = cls.newInstance();
+        if (!objJson.equals(""))
+            inst = fromJson(cls, objJson);
+
+        return inst;
+    }
     public enum Source {SmartThings, PhilipsHue}
 }

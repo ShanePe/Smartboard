@@ -17,7 +17,23 @@
             android:layout_margin="16dp"
             android:orientation="vertical">
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/lbl_thing" />
+
+            <Spinner
+                android:id="@+id/sp_thing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -28,41 +44,48 @@
                     android:labelFor="@+id/txt_blk_name"
                     android:text="@string/lbl_name" />
 
-                <EditText
-                    android:id="@+id/txt_blk_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName" />
+            <EditText
+                android:id="@+id/txt_blk_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:labelFor="@+id/txt_blk_width"
+                    android:padding="4dp"
                     android:text="@string/lbl_width" />
 
-                <EditText
+                <NumberPicker
                     android:id="@+id/txt_blk_width"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="text|numberSigned" />
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/number_picker"
+                     />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:labelFor="@+id/txt_blk_height"
+                    android:padding="4dp"
                     android:text="@string/lbl_height" />
 
-                <EditText
+                <NumberPicker
                     android:id="@+id/txt_blk_height"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="text|numberSigned" />
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/number_picker"
+                    />
 
             </LinearLayout>
 

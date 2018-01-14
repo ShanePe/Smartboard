@@ -20,6 +20,8 @@ import java.util.List;
 
 import shane.pennihome.local.smartboard.Adapters.DashboardViewAdapter;
 import shane.pennihome.local.smartboard.Data.Dashboard;
+import shane.pennihome.local.smartboard.Data.Device;
+import shane.pennihome.local.smartboard.Data.Routine;
 import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
@@ -45,7 +47,20 @@ public class DashboardFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.mnu_dash_add)
         {
+            final MainActivity activity = (MainActivity) getActivity();
             Intent dashAdd = new Intent(getActivity(), SmartboardActivity.class);
+
+            ArrayList<String> devices = new ArrayList<>();
+            ArrayList<String> routines = new ArrayList<>();
+
+            for(Routine r: activity.getMonitor().getRoutines())
+                devices.add(r.toJson());
+            for(Device d : activity.getMonitor().getDevices())
+                routines.add(d.toJson());
+
+            dashAdd.putStringArrayListExtra("devices", devices);
+            dashAdd.putStringArrayListExtra("routines", routines);
+
             startActivity(dashAdd);
         }
         return super.onOptionsItemSelected(item);

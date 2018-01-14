@@ -1,6 +1,7 @@
 package shane.pennihome.local.smartboard.Adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
@@ -11,18 +12,32 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorSelectedListener;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
+
 import shane.pennihome.local.smartboard.Adapters.Interface.OnDashboardAdapterListener;
 import shane.pennihome.local.smartboard.Adapters.Interface.OnPropertyWindowListener;
+import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Data.Block;
 import shane.pennihome.local.smartboard.Data.Dashboard;
+import shane.pennihome.local.smartboard.Data.Device;
+import shane.pennihome.local.smartboard.Data.Interface.Thing;
+import shane.pennihome.local.smartboard.Data.Routine;
 import shane.pennihome.local.smartboard.Data.Row;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
@@ -132,7 +147,7 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
         }
 
         ImageButton btnExpand = (ImageButton)convertView.findViewById(R.id.btn_add_expanded);
-        TextView txtName = (TextView)convertView.findViewById(R.id.txt_row_name);
+        final TextView txtName = (TextView)convertView.findViewById(R.id.txt_row_name);
         ImageButton btnProps = (ImageButton)convertView.findViewById(R.id.btn_add_prop);
         ImageButton btnAdd = (ImageButton)convertView.findViewById(R.id.btn_add_block);
 
@@ -166,35 +181,132 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 if(mDashboardListener!=null) {
-                    final Block block = createBlockInstance();
+                    final Block block = createBlockInstance(row);
+
                     mSmartboardActivity.showPropertyWindow("Add Block", R.layout.prop_block, new OnPropertyWindowListener() {
                         @Override
                         public void onWindowShown(View view) {
-                            EditText txtWidth = (EditText)view.findViewById(R.id.txt_blk_width);
-                            EditText txtHeight = (EditText)view.findViewById(R.id.txt_blk_height);
+                            Spinner spThings = (Spinner)view.findViewById(R.id.sp_thing);
+                            final EditText txtBlkName = (EditText)view.findViewById(R.id.txt_blk_name);
+                            NumberPicker txtWidth = (NumberPicker)view.findViewById(R.id.txt_blk_width);
+                            NumberPicker txtHeight = (NumberPicker)view.findViewById(R.id.txt_blk_height);
 
-                            Button btnBGOff = (Button)view.findViewById(R.id.btn_clr_bg_Off);
-                            Button btnBGOn = (Button)view.findViewById(R.id.btn_clr_bg_On);
-                            Button btnFGOff = (Button)view.findViewById(R.id.btn_clr_fg_Off);
-                            Button btnFGOn = (Button)view.findViewById(R.id.btn_clr_fg_On);
+                            final Button btnBGOff = (Button)view.findViewById(R.id.btn_clr_bg_Off);
+                            final Button btnBGOn = (Button)view.findViewById(R.id.btn_clr_bg_On);
+                            final Button btnFGOff = (Button)view.findViewById(R.id.btn_clr_fg_Off);
+                            final Button btnFGOn = (Button)view.findViewById(R.id.btn_clr_fg_On);
 
-                            txtWidth.setText(String.valueOf(block.getWidth()));
-                            txtHeight.setText(String.valueOf(block.getHeight()));
+                            SpinnerThingAdapter aptr = new SpinnerThingAdapter(mSmartboardActivity);
+                            aptr.setThings(mSmartboardActivity.getThings());
+                            spThings.setAdapter(aptr);
+
+                            spThings.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    Thing thing = (Thing)parent.getItemAtPosition(position);
+                                    txtBlkName.setText(thing.getName());
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
+
+                            txtWidth.setMaxValue(4);
+                            txtWidth.setMinValue(1);
+                            txtHeight.setMaxValue(4);
+                            txtHeight.setMinValue(1);
+                            txtWidth.setWrapSelectorWheel(true);
+                            txtHeight.setWrapSelectorWheel(true);
+
+                            txtWidth.setValue(block.getWidth());
+                            txtHeight.setValue(block.getHeight());
 
                             btnBGOff.setBackgroundColor(block.getBackgroundColourOff());
                             btnBGOn.setBackgroundColor(block.getBackgroundColourOn());
                             btnFGOff.setBackgroundColor(block.getForeColourOff());
                             btnFGOn.setBackgroundColor(block.getForeColourOn());
 
+                            btnBGOff.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    GetColour(block.getBackgroundColourOff(), new OnProcessCompleteListener() {
+                                        @Override
+                                        public void complete(boolean success, Object source) {
+                                            @ColorInt int clr = (int)source;
+                                            block.setBackgroundColourOff(clr);
+                                            row.setDefaultBlockBackgroundColourOff(clr);
+                                            btnBGOff.setBackgroundColor(block.getBackgroundColourOff());
+                                        }
+                                    });
+                                }
+                            });
+
+                            btnFGOff.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    GetColour(block.getForeColourOn(), new OnProcessCompleteListener() {
+                                        @Override
+                                        public void complete(boolean success, Object source) {
+                                            @ColorInt int clr = (int)source;
+                                            block.setForeColourOff(clr);
+                                            row.setDefaultBlockForeColourOff(clr);
+                                            btnFGOff.setBackgroundColor(block.getForeColourOff());
+
+                                        }
+                                    });
+                                }
+                            });
+
+                            btnBGOn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    GetColour(block.getBackgroundColourOn(), new OnProcessCompleteListener() {
+                                        @Override
+                                        public void complete(boolean success, Object source) {
+                                            @ColorInt int clr = (int)source;
+                                            block.setBackgroundColourOn(clr);
+                                            row.setDefaultBlockBackgroundColourOn(clr);
+                                            btnBGOn.setBackgroundColor(block.getBackgroundColourOn());
+                                        }
+                                    });
+                                }
+                            });
+
+                            btnFGOn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    GetColour(block.getForeColourOn(), new OnProcessCompleteListener() {
+                                        @Override
+                                        public void complete(boolean success, Object source) {
+                                            @ColorInt int clr = (int)source;
+                                            block.setForeColourOn(clr);
+                                            row.setDefaultBlockForeColourOn(clr);
+                                            btnFGOn.setBackgroundColor(block.getForeColourOn());
+                                        }
+                                    });
+                                }
+                            });
                         }
 
                         @Override
                         public void onOkSelected(View view) {
+                            Spinner spThings = (Spinner)view.findViewById(R.id.sp_thing);
+                            final EditText txtBlkName = (EditText)view.findViewById(R.id.txt_blk_name);
+                            NumberPicker txtWidth = (NumberPicker)view.findViewById(R.id.txt_blk_width);
+                            NumberPicker txtHeight = (NumberPicker)view.findViewById(R.id.txt_blk_height);
 
+                            block.setThing((Thing)spThings.getSelectedItem());
+                            block.setName(txtBlkName.getText().toString());
+                            block.setWidth(txtWidth.getValue());
+                            block.setHeight(txtHeight.getValue());
+
+                            row.getBlocks().add(block);
+                            listView.expandGroup(groupPosition);
+                            mSmartboardActivity.getRowAdapter().notifyDataSetChanged();
                         }
                     });
-
-                    mDashboardListener.AddBlock(row);
                 }
             }
         });
@@ -213,17 +325,57 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-    private Block createBlockInstance()
+    private void GetColour(@ColorInt int colour, final OnProcessCompleteListener onProcessCompleteListener)
+    {
+        ColorPickerDialogBuilder
+                .with(mSmartboardActivity)
+                .setTitle("Choose colour")
+                .initialColor(colour)
+                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                .density(12)
+                .setOnColorSelectedListener(new OnColorSelectedListener() {
+                    @Override
+                    public void onColorSelected(int selectedColor) {
+
+                    }
+                })
+                .setPositiveButton("ok", new ColorPickerClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+                       if(onProcessCompleteListener!=null)
+                           onProcessCompleteListener.complete(true, selectedColor);
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .build()
+                .show();
+    }
+
+    private Block createBlockInstance(Row row)
     {
         Block block = new Block();
         block.setWidth(1);
         block.setHeight(1);
 
-        block.setBackgroundColourOff(Color.parseColor("#ff5a595b"));
-        block.setBackgroundColourOn(Color.parseColor("#FF4081"));
 
-        block.setForeColourOff(Color.parseColor("white"));
-        block.setForeColourOn(Color.parseColor("black"));
+        block.setBackgroundColourOff(row.getDefaultBlockBackgroundColourOff() !=0 ?
+                                        row.getDefaultBlockBackgroundColourOff() :
+                                        Color.parseColor("#ff5a595b"));
+        block.setBackgroundColourOn(row.getDefaultBlockBackgroundColourOn() != 0?
+                row.getDefaultBlockBackgroundColourOn():
+                Color.parseColor("#FF4081"));
+
+        block.setForeColourOff(row.getDefaultBlockForeColourOff() != 0 ?
+                row.getDefaultBlockForeColourOff() :
+                Color.parseColor("white"));
+        block.setForeColourOn(row.getDefaultBlockForeColourOn() != 0 ?
+                row.getDefaultBlockForeColourOn():
+                Color.parseColor("black"));
 
         return block;
     }
@@ -239,8 +391,44 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
             convertView = layoutInflater.inflate(R.layout.dashboard_block, null);
         }
 
-        TextView txtName = (TextView)convertView.findViewById(R.id.txt_block_name);
-        txtName.setText(block.getThing() == null?"Not Set.":block.getThing().getName());
+        LinearLayout layout = (LinearLayout)convertView.findViewById(R.id.block_area);
+        TextView baName = (TextView)convertView.findViewById(R.id.ba_name);
+        ImageView baImg = (ImageView) convertView.findViewById(R.id.ba_image);
+        TextView baDevice = (TextView)convertView.findViewById(R.id.ba_device);
+        TextView baSize = (TextView)convertView.findViewById(R.id.ba_size);
+        TextView baType = (TextView)convertView.findViewById(R.id.ba_type);
+
+        baName.setText(block.getName());
+        if (block.getThing().getSource() == Thing.Source.SmartThings) {
+            baImg.setImageResource(R.drawable.icon_switch);
+        } else if (block.getThing().getSource() == Thing.Source.PhilipsHue) {
+            baImg.setImageResource(R.drawable.icon_phlogo);
+        }
+
+        baDevice.setText(block.getThing().getName());
+        baSize.setText(String.format("%s x %s", block.getWidth(), block.getHeight()));
+        if(block.getThing() instanceof Device)
+            baType.setText(R.string.lbl_device);
+        else if(block.getThing() instanceof Routine)
+            baType.setText(R.string.lbl_routine);
+
+        if((childPosition % 2) == 1)
+        {
+            layout.setBackgroundColor(block.getBackgroundColourOff());
+            baName.setTextColor(block.getForeColourOff());
+            baDevice.setTextColor(block.getForeColourOff());
+            baSize.setTextColor(block.getForeColourOff());
+            baType.setTextColor(block.getForeColourOff());
+        }
+        else
+        {
+            layout.setBackgroundColor(block.getBackgroundColourOn());
+            baName.setTextColor(block.getForeColourOn());
+            baDevice.setTextColor(block.getForeColourOn());
+            baSize.setTextColor(block.getForeColourOn());
+            baType.setTextColor(block.getForeColourOn());
+        }
+
 
         return convertView;
     }

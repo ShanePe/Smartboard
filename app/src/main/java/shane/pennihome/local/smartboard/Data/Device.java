@@ -54,4 +54,13 @@ public class Device extends Thing {
         else if (getState() == States.On)
             setState(States.Off);
     }
+
+    public static Device Load(String json)
+    {
+        try {
+            return Thing.Load(Device.class, json);
+        } catch (Exception e) {
+            return new Device();
+        }
+    }
 }

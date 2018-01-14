@@ -12,4 +12,13 @@ public class Routine extends Thing {
     public void successfulToggle(Thing thing) {
 
     }
+
+    public static Routine Load(String json)
+    {
+        try {
+            return Thing.Load(Routine.class, json);
+        } catch (Exception e) {
+            return new Routine();
+        }
+    }
 }

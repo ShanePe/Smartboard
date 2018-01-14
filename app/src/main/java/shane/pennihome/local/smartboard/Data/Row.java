@@ -1,5 +1,7 @@
 package shane.pennihome.local.smartboard.Data;
 
+import android.support.annotation.ColorInt;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,10 @@ public class Row extends IDatabaseObject {
     private boolean mDisplayName = false;
     final List<Block> mBlocks = new ArrayList<>();
     private boolean mExpanded = false;
+    private @ColorInt int mDefaultBlockForeColourOff;
+    private @ColorInt int mDefaultBlockBackColourOff;
+    private @ColorInt int mDefaultBlockForeColourOn;
+    private @ColorInt int mDefaultBlockBackColourOn;
 
     public Row(){}
     public Row(String name){
@@ -54,5 +60,36 @@ public class Row extends IDatabaseObject {
 
     public void setExpanded(boolean expanded) {
         this.mExpanded = expanded;
+    }
+    public @ColorInt int getDefaultBlockForeColourOff() {
+        return mDefaultBlockForeColourOff;
+    }
+
+    public void setDefaultBlockForeColourOff(@ColorInt int foreColour) {
+        mDefaultBlockForeColourOff = foreColour;
+    }
+
+    public @ColorInt int getDefaultBlockBackgroundColourOff() {
+        return mDefaultBlockBackColourOff;
+    }
+
+    public void setDefaultBlockBackgroundColourOff(@ColorInt int backgroundColour) {
+        this.mDefaultBlockBackColourOff = backgroundColour;
+    }
+
+    public @ColorInt int getDefaultBlockForeColourOn() {
+        return mDefaultBlockForeColourOn;
+    }
+
+    public void setDefaultBlockForeColourOn(@ColorInt int foreColour) {
+        mDefaultBlockForeColourOn = foreColour;
+    }
+
+    public @ColorInt int getDefaultBlockBackgroundColourOn() {
+        return mDefaultBlockBackColourOn;
+    }
+
+    public void setDefaultBlockBackgroundColourOn(@ColorInt int backgroundColour) {
+        this.mDefaultBlockBackColourOn = backgroundColour;
     }
 }

@@ -120,6 +120,11 @@ public class MainActivity extends AppCompatActivity
         mMonitor.Start();
     }
 
+    public Monitor getMonitor()
+    {
+        return mMonitor;
+    }
+
     private void smartThingsConnect() {
         @SuppressWarnings("unused") final MainActivity me = this;
 

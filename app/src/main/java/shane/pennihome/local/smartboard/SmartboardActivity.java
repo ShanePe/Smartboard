@@ -22,12 +22,18 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import shane.pennihome.local.smartboard.Adapters.DashboardRowAdapter;
 import shane.pennihome.local.smartboard.Adapters.Interface.OnDashboardAdapterListener;
 import shane.pennihome.local.smartboard.Adapters.Interface.OnPropertyWindowListener;
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Data.Block;
 import shane.pennihome.local.smartboard.Data.Dashboard;
+import shane.pennihome.local.smartboard.Data.Device;
+import shane.pennihome.local.smartboard.Data.Interface.Thing;
+import shane.pennihome.local.smartboard.Data.Routine;
 import shane.pennihome.local.smartboard.Data.Row;
 import shane.pennihome.local.smartboard.Fragments.Tabs.SmartboardFragment;
 import shane.pennihome.local.smartboard.Fragments.Tabs.RowsFragment;
@@ -49,6 +55,7 @@ public class SmartboardActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
     private DashboardRowAdapter mRowAdapter;
+    private List<Thing> mThings = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +88,24 @@ public class SmartboardActivity extends AppCompatActivity {
                 row.setDisplayName(displayName);
             }
         });
+
+        Bundle extras = getIntent().getExtras();
+        ArrayList<String> devices = extras.getStringArrayList("devices");
+        ArrayList<String> routines = extras.getStringArrayList("routines");
+
+        for(String j : devices)
+            try {
+                mThings.add(Device.Load(j));
+            } catch(Exception ex){}
+        for(String j : routines)
+            try {
+                mThings.add(Routine.Load(j));
+            } catch(Exception ex){}
+    }
+
+    public List<Thing> getThings()
+    {
+        return mThings;
     }
 
     public void showPropertyWindow(String title, int resource, final OnPropertyWindowListener onPropertyWindowListener)
