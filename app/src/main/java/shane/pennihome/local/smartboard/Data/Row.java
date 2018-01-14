@@ -11,7 +11,14 @@ import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
 
 @SuppressWarnings("DefaultFileTemplate")
 public class Row extends IDatabaseObject {
+    private String mName = "";
+    private boolean mDisplayName = false;
     final List<Block> mBlocks = new ArrayList<>();
+
+    public Row(){}
+    public Row(String name){
+        this.setName(name);
+    }
 
     public List<Block> getBlocks(){return mBlocks;}
     @Override
@@ -26,5 +33,26 @@ public class Row extends IDatabaseObject {
         } catch (Exception e) {
             return new Row();
         }
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public void setName(String name) {
+        this.mName = name;
+    }
+
+    public boolean getDisplayName() {
+        return mDisplayName;
+    }
+
+    public void setDisplayName(boolean displayName) {
+        this.mDisplayName = displayName;
+    }
+
+    public Block getBlockAt(int index)
+    {
+        return mBlocks.get(index);
     }
 }

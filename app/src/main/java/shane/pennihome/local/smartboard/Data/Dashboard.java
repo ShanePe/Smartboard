@@ -31,4 +31,9 @@ public class Dashboard extends IDatabaseObject{
             return new Dashboard();
         }
     }
+
+    public Row getRowAt(int index)
+    {
+        return mRows.get(index);
+    }
 }

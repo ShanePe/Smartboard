@@ -28,6 +28,7 @@ import shane.pennihome.local.smartboard.Data.Interface.Thing;
 import shane.pennihome.local.smartboard.Data.SQL.DBEngine;
 import shane.pennihome.local.smartboard.Data.TokenHueBridge;
 import shane.pennihome.local.smartboard.Fragments.DashboardFragment;
+import shane.pennihome.local.smartboard.Fragments.Tabs.SmartboardFragment;
 import shane.pennihome.local.smartboard.Fragments.DeviceFragment;
 import shane.pennihome.local.smartboard.Fragments.HueBridgeFragment;
 import shane.pennihome.local.smartboard.Fragments.RoutineFragment;
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction().addToBackStack("smartThingsConnect");
         ft.replace(R.id.content_main, fragment);
         ft.commit();
     }
@@ -136,7 +137,7 @@ public class MainActivity extends AppCompatActivity
 
         final HueBridgeFragment fragment = new HueBridgeFragment();
         //noinspection unchecked
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction().addToBackStack("huebridgeConnect");
         ft.replace(R.id.content_main, fragment);
         ft.commit();
     }
@@ -155,7 +156,7 @@ public class MainActivity extends AppCompatActivity
         DeviceFragment fragment = new DeviceFragment();
         //noinspection unchecked
         fragment.setThings((List<Thing>) (List<?>) mMonitor.getDevices());
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction().addToBackStack("deviceList");
         ft.replace(R.id.content_main, fragment);
         ft.commit();
     }
@@ -164,7 +165,7 @@ public class MainActivity extends AppCompatActivity
         RoutineFragment fragment = new RoutineFragment();
         //noinspection unchecked
         fragment.setThings((List<Thing>) (List<?>) mMonitor.getRoutines());
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction().addToBackStack("routineList");
         ft.replace(R.id.content_main, fragment);
         ft.commit();
     }
@@ -173,7 +174,7 @@ public class MainActivity extends AppCompatActivity
         DashboardFragment fragment = new DashboardFragment();
         //noinspection unchecked
         fragment.setDashboard((List<Dashboard>) mDashboards);
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction().addToBackStack("dashboardList");
         ft.replace(R.id.content_main, fragment);
         ft.commit();
     }

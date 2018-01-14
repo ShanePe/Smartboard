@@ -2,7 +2,9 @@ package shane.pennihome.local.smartboard.Fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +20,8 @@ import shane.pennihome.local.smartboard.Adapters.DashboardViewAdapter;
 import shane.pennihome.local.smartboard.Data.Dashboard;
 import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.SmartboardActivity;
+
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -41,7 +45,7 @@ public class DashboardFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MainActivity activity = (MainActivity) getActivity();
+        final MainActivity activity = (MainActivity) getActivity();
         if (activity != null) {
             ActionBar actionBar = activity.getSupportActionBar();
             if (actionBar != null)
@@ -62,10 +66,10 @@ public class DashboardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard_list, container, false);
-
+        final Context context = view.getContext();
         // Set the adapter
         if (view instanceof RecyclerView) {
-            Context context = view.getContext();
+
             RecyclerView recyclerView = (RecyclerView) view;
             int mColumnCount = 1;
             if (mColumnCount <= 1) {
@@ -75,6 +79,19 @@ public class DashboardFragment extends Fragment {
             }
             recyclerView.setAdapter(new DashboardViewAdapter(mDashboard, mListener));
         }
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_add_dashboard);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent dashAdd = new Intent(context, SmartboardActivity.class);
+                startActivity(dashAdd);
+
+                //Intent launchGame = new Intent(this, PlayGame.class);
+                //startActivity(launchGame);
+            }
+        });
+
         return view;
     }
 

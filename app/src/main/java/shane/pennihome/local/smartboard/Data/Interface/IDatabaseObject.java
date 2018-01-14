@@ -37,4 +37,9 @@ public abstract class IDatabaseObject {
         return inst;
     }
 
+    public long getIdAsLong()
+    {
+        UUID uid = UUID.fromString(getID());
+        return uid.getMostSignificantBits();
+    }
 }

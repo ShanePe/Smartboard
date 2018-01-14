@@ -7,22 +7,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import shane.pennihome.local.smartboard.Data.Dashboard;
-import shane.pennihome.local.smartboard.Fragments.DashboardFragment.OnListFragmentInteractionListener;
+import shane.pennihome.local.smartboard.Fragments.DashboardFragment;
 import shane.pennihome.local.smartboard.R;
 
 import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Dashboard} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * specified {@link DashboardFragment.OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdapter.ViewHolder> {
 
     private final List<Dashboard> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final DashboardFragment.OnListFragmentInteractionListener mListener;
 
-    public DashboardViewAdapter(List<Dashboard> items, OnListFragmentInteractionListener listener) {
+    public DashboardViewAdapter(List<Dashboard> items, DashboardFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }

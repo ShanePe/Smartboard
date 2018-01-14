@@ -1,6 +1,7 @@
 package shane.pennihome.local.smartboard.Data;
 
 import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
+import shane.pennihome.local.smartboard.Data.Interface.Thing;
 
 /**
  * Created by shane on 13/01/18.
@@ -8,6 +9,7 @@ import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
 
 @SuppressWarnings("DefaultFileTemplate")
 public class Block extends IDatabaseObject {
+    private Thing mThing;
     @Override
     public Types getType() {
         return Types.Dashboard;
@@ -20,5 +22,13 @@ public class Block extends IDatabaseObject {
         } catch (Exception e) {
             return new Block();
         }
+    }
+
+    public Thing getThing() {
+        return mThing;
+    }
+
+    public void setThing(Thing thing) {
+        mThing = thing;
     }
 }
