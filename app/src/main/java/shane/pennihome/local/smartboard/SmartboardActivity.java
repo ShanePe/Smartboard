@@ -17,6 +17,7 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -110,7 +111,9 @@ public class SmartboardActivity extends AppCompatActivity {
             }
         });
 
-        builder.show();
+        android.app.AlertDialog dialog = builder.create();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.show();
     }
 
     public void ShowInput(String title, final OnProcessCompleteListener onProcessCompleteListener)

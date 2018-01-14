@@ -11,11 +11,7 @@ import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
 
 @SuppressWarnings("DefaultFileTemplate")
 public class Dashboard extends IDatabaseObject{
-    private String mName = "";
     private final List<Row> mRows = new ArrayList<>();
-
-    public String getName(){return mName;}
-    public void setName(String name){mName = name;}
     public List<Row> getRows(){return mRows; }
 
     @Override

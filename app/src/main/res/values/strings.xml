@@ -38,5 +38,11 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="lbl_width">Width</string>
+    <string name="lbl_height">Height</string>
+    <string name="lbl_on_clrs">On Colours</string>
+    <string name="lbl_back_clr">Background</string>
+    <string name="lbl_fore_clr">Foreground</string>
+    <string name="lbl_off_clrs">Off Colours</string>
 
 </resources>

@@ -1,6 +1,10 @@
 package shane.pennihome.local.smartboard.Adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.support.annotation.ColorInt;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
@@ -160,8 +165,37 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mDashboardListener!=null)
+                if(mDashboardListener!=null) {
+                    final Block block = createBlockInstance();
+                    mSmartboardActivity.showPropertyWindow("Add Block", R.layout.prop_block, new OnPropertyWindowListener() {
+                        @Override
+                        public void onWindowShown(View view) {
+                            EditText txtWidth = (EditText)view.findViewById(R.id.txt_blk_width);
+                            EditText txtHeight = (EditText)view.findViewById(R.id.txt_blk_height);
+
+                            Button btnBGOff = (Button)view.findViewById(R.id.btn_clr_bg_Off);
+                            Button btnBGOn = (Button)view.findViewById(R.id.btn_clr_bg_On);
+                            Button btnFGOff = (Button)view.findViewById(R.id.btn_clr_fg_Off);
+                            Button btnFGOn = (Button)view.findViewById(R.id.btn_clr_fg_On);
+
+                            txtWidth.setText(String.valueOf(block.getWidth()));
+                            txtHeight.setText(String.valueOf(block.getHeight()));
+
+                            btnBGOff.setBackgroundColor(block.getBackgroundColourOff());
+                            btnBGOn.setBackgroundColor(block.getBackgroundColourOn());
+                            btnFGOff.setBackgroundColor(block.getForeColourOff());
+                            btnFGOn.setBackgroundColor(block.getForeColourOn());
+
+                        }
+
+                        @Override
+                        public void onOkSelected(View view) {
+
+                        }
+                    });
+
                     mDashboardListener.AddBlock(row);
+                }
             }
         });
 
@@ -177,6 +211,21 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
         //listView.expandGroup(groupPosition);
 
         return convertView;
+    }
+
+    private Block createBlockInstance()
+    {
+        Block block = new Block();
+        block.setWidth(1);
+        block.setHeight(1);
+
+        block.setBackgroundColourOff(Color.parseColor("#ff5a595b"));
+        block.setBackgroundColourOn(Color.parseColor("#FF4081"));
+
+        block.setForeColourOff(Color.parseColor("white"));
+        block.setForeColourOn(Color.parseColor("black"));
+
+        return block;
     }
 
     @Override

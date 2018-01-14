@@ -13,8 +13,12 @@ public abstract class IDatabaseObject {
     public enum Types{Dashboard,Row,Block}
 
     private final String mId = UUID.randomUUID().toString();
+    private String mName = "";
 
     public String getID() {return mId;}
+
+    public String getName(){return mName;}
+    public void setName(String name){mName = name;}
 
     @SuppressWarnings("SameReturnValue")
     public abstract Types getType();

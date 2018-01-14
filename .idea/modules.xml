@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Smartboard.iml" filepath="$PROJECT_DIR$/Smartboard.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/colourPicker/colourPicker.iml" filepath="$PROJECT_DIR$/colourPicker/colourPicker.iml" />
     </modules>
   </component>
 </project>

@@ -11,7 +11,6 @@ import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
 
 @SuppressWarnings("DefaultFileTemplate")
 public class Row extends IDatabaseObject {
-    private String mName = "";
     private boolean mDisplayName = false;
     final List<Block> mBlocks = new ArrayList<>();
     private boolean mExpanded = false;
@@ -34,14 +33,6 @@ public class Row extends IDatabaseObject {
         } catch (Exception e) {
             return new Row();
         }
-    }
-
-    public String getName() {
-        return mName;
-    }
-
-    public void setName(String name) {
-        this.mName = name;
     }
 
     public boolean getDisplayName() {
