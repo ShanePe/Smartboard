@@ -19,18 +19,5 @@
 
         </android.support.v7.widget.RecyclerView>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_add_dashboard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/list"
-        android:layout_alignEnd="@+id/list"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@drawable/icon_add"
-        app:backgroundTint="@color/colorPrimaryDark" />
-
 </RelativeLayout>
 

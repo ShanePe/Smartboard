@@ -1,12 +1,12 @@
 package shane.pennihome.local.smartboard.Adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -14,13 +14,13 @@ import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import java.util.zip.Inflater;
-
 import shane.pennihome.local.smartboard.Adapters.Interface.OnDashboardAdapterListener;
+import shane.pennihome.local.smartboard.Adapters.Interface.OnPropertyWindowListener;
 import shane.pennihome.local.smartboard.Data.Block;
 import shane.pennihome.local.smartboard.Data.Dashboard;
 import shane.pennihome.local.smartboard.Data.Row;
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.SmartboardActivity;
 
 /**
  * Created by shane on 13/01/18.
@@ -28,11 +28,11 @@ import shane.pennihome.local.smartboard.R;
 
 public class DashboardRowAdapter extends BaseExpandableListAdapter {
     private Dashboard mDashboard;
-    private Context mContext;
+    private SmartboardActivity mSmartboardActivity;
     private OnDashboardAdapterListener mDashboardListener;
 
-    public DashboardRowAdapter(Context context, Dashboard mDashboard, OnDashboardAdapterListener mDashboardListener) {
-        mContext = context;
+    public DashboardRowAdapter(SmartboardActivity smartboardActivity, Dashboard mDashboard, OnDashboardAdapterListener mDashboardListener) {
+        mSmartboardActivity = smartboardActivity;
         this.mDashboard = mDashboard;
         this.mDashboardListener = mDashboardListener;
     }
@@ -72,54 +72,88 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
+    private void RotateImage(View v, final boolean expanded)
+    {
+        final ImageButton image= (ImageButton) v.findViewById(R.id.btn_add_expanded);
+
+        RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        rotate.setDuration(300);
+        rotate.setInterpolator(new LinearInterpolator());
+        rotate.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if(expanded)
+                    image.setRotation(180);
+                else
+                    image.setRotation(0);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+
+        image.startAnimation(rotate);
+    }
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        final DashboardRowAdapter me = this;
         final Row row = mDashboard.getRowAt(groupPosition);
+        final ExpandableListView listView = (ExpandableListView) parent;
 
         if(convertView == null)
         {
-            LayoutInflater layoutInflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater layoutInflater = (LayoutInflater) mSmartboardActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.dashboard_row_list, null);
+            final View meView = convertView;
+            listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+                @Override
+                public void onGroupExpand(int groupPosition) {
+                    if(!row.isExpanded())
+                        me.RotateImage(meView, true);
+                    row.setExpanded(true);
+                }
+            });
+            listView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+                @Override
+                public void onGroupCollapse(int groupPosition) {
+                    if(row.isExpanded())
+                        me.RotateImage(meView, false);
+                    row.setExpanded(false);
+                }
+            });
         }
-        ExpandableListView mExpandableListView = (ExpandableListView) parent;
 
+        ImageButton btnExpand = (ImageButton)convertView.findViewById(R.id.btn_add_expanded);
         TextView txtName = (TextView)convertView.findViewById(R.id.txt_row_name);
-            ImageButton btnProps = (ImageButton)convertView.findViewById(R.id.btn_add_prop);
+        ImageButton btnProps = (ImageButton)convertView.findViewById(R.id.btn_add_prop);
         ImageButton btnAdd = (ImageButton)convertView.findViewById(R.id.btn_add_block);
 
         txtName.setText(row.getName());
         btnProps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle("Row Properties");
-
-                LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View view = (View)inflater.inflate(R.layout.dashboard_row, null);
-                final EditText txtName = (EditText)view.findViewById(R.id.txt_row_dl_name);
-                final Switch swDispName = (Switch)view.findViewById(R.id.sw_row_dl_dispname);
-
-                txtName.setText(row.getName());
-                swDispName.setChecked(row.getDisplayName());
-
-                builder.setView(view);
-
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                mSmartboardActivity.showPropertyWindow("Row Properties", R.layout.prop_row, new OnPropertyWindowListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onWindowShown(View view) {
+                        EditText txtName = (EditText)view.findViewById(R.id.txt_row_dl_name);
+                        Switch swDispName = (Switch)view.findViewById(R.id.sw_row_dl_dispname);
+
+                        txtName.setText(row.getName());
+                        swDispName.setChecked(row.getDisplayName());
+                    }
+
+                    @Override
+                    public void onOkSelected(View view) {
+                        EditText txtName = (EditText)view.findViewById(R.id.txt_row_dl_name);
+                        Switch swDispName = (Switch)view.findViewById(R.id.sw_row_dl_dispname);
+
                         row.setName(txtName.getText().toString());
                         row.setDisplayName(swDispName.isChecked());
                     }
                 });
-
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
             }
         });
 
@@ -131,7 +165,16 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
             }
         });
 
-        mExpandableListView.expandGroup(groupPosition);
+        btnExpand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(row.isExpanded())
+                    listView.collapseGroup(groupPosition);
+                else
+                    listView.expandGroup(groupPosition);
+            }
+        });
+        //listView.expandGroup(groupPosition);
 
         return convertView;
     }
@@ -143,7 +186,7 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
 
         if(convertView == null)
         {
-            LayoutInflater layoutInflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater layoutInflater = (LayoutInflater) mSmartboardActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.dashboard_block, null);
         }
 

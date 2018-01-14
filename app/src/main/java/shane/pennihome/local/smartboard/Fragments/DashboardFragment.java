@@ -4,12 +4,14 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,7 +34,22 @@ public class DashboardFragment extends Fragment {
 
     private List<Dashboard> mDashboard = new ArrayList<>();
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.mnu_add_frag, menu);
+    }
+
     private OnListFragmentInteractionListener mListener;
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.mnu_dash_add)
+        {
+            Intent dashAdd = new Intent(getActivity(), SmartboardActivity.class);
+            startActivity(dashAdd);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -51,16 +68,15 @@ public class DashboardFragment extends Fragment {
             if (actionBar != null)
                 actionBar.show();
         }
+        setHasOptionsMenu(true);
     }
 
     public List<Dashboard> getDashboards() {
         return mDashboard;
     }
-
     public void setDashboard(List<Dashboard> dashboards) {
         this.mDashboard = dashboards;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,18 +95,6 @@ public class DashboardFragment extends Fragment {
             }
             recyclerView.setAdapter(new DashboardViewAdapter(mDashboard, mListener));
         }
-
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_add_dashboard);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent dashAdd = new Intent(context, SmartboardActivity.class);
-                startActivity(dashAdd);
-
-                //Intent launchGame = new Intent(this, PlayGame.class);
-                //startActivity(launchGame);
-            }
-        });
 
         return view;
     }

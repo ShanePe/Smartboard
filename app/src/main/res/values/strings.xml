@@ -33,5 +33,10 @@
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="tooltip_add_block">Add a new block to the row</string>
+    <string name="lbl_add_dashboard">Add Dashboard</string>
+    <string name="title_activity_deleteme">deleteme</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 
 </resources>

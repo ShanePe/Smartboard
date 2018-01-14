@@ -56,8 +56,9 @@ public abstract class ThingFragment extends Fragment {
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null) {
             ActionBar actionBar = activity.getSupportActionBar();
-            if (actionBar != null)
+            if (actionBar != null) {
                 actionBar.show();
+            }
         }
     }
 

@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
@@ -34,31 +37,40 @@ public class RowsFragment extends Fragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.mnu_dash_add)
+        {
+            final SmartboardActivity smartboardActivity = (SmartboardActivity)getContext();
+            smartboardActivity.ShowInput("Please supply a row name.", new OnProcessCompleteListener() {
+                @Override
+                public void complete(boolean success, Object source) {
+                    smartboardActivity.getRowAdapter()
+                            .getDashboard()
+                            .getRows()
+                            .add(new Row((String)source));
+                }
+            });
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.mnu_add_frag, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.smartboard_tab_rows, container, false);
         ExpandableListView list = (ExpandableListView) rootView.findViewById(R.id.list_rows);
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_add_row);
 
         final SmartboardActivity smartboardActivity = (SmartboardActivity)getContext();
         list.setAdapter(smartboardActivity.getRowAdapter());
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                smartboardActivity.ShowInput("Please supply a row name.", new OnProcessCompleteListener() {
-                    @Override
-                    public void complete(boolean success, Object source) {
-                        smartboardActivity.getRowAdapter()
-                                .getDashboard()
-                                .getRows()
-                                .add(new Row((String)source));
-                    }
-                });
-            }
-        });
-
+        setHasOptionsMenu(true);
         return rootView;
     }
 }

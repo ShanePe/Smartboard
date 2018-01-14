@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
@@ -28,7 +29,6 @@ import shane.pennihome.local.smartboard.Data.Interface.Thing;
 import shane.pennihome.local.smartboard.Data.SQL.DBEngine;
 import shane.pennihome.local.smartboard.Data.TokenHueBridge;
 import shane.pennihome.local.smartboard.Fragments.DashboardFragment;
-import shane.pennihome.local.smartboard.Fragments.Tabs.SmartboardFragment;
 import shane.pennihome.local.smartboard.Fragments.DeviceFragment;
 import shane.pennihome.local.smartboard.Fragments.HueBridgeFragment;
 import shane.pennihome.local.smartboard.Fragments.RoutineFragment;
@@ -47,8 +47,18 @@ public class MainActivity extends AppCompatActivity
     private List<Dashboard> mDashboards = null;
 
     @Override
+    protected void onPostResume() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
+            actionBar.hide();
+
+        super.onPostResume();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -65,7 +75,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         Globals.setSharedPreferences(this);
-        //Globals.setContext(this);
+
         init();
     }
 

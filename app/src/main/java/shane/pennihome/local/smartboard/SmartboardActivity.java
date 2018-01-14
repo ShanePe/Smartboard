@@ -15,11 +15,15 @@ import android.os.Bundle;
 import android.text.InputType;
 
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.Adapters.DashboardRowAdapter;
 import shane.pennihome.local.smartboard.Adapters.Interface.OnDashboardAdapterListener;
+import shane.pennihome.local.smartboard.Adapters.Interface.OnPropertyWindowListener;
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Data.Block;
 import shane.pennihome.local.smartboard.Data.Dashboard;
@@ -76,6 +80,37 @@ public class SmartboardActivity extends AppCompatActivity {
                 row.setDisplayName(displayName);
             }
         });
+    }
+
+    public void showPropertyWindow(String title, int resource, final OnPropertyWindowListener onPropertyWindowListener)
+    {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle(title);
+
+        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View view = (View)inflater.inflate(resource, null);
+
+        if(onPropertyWindowListener!=null)
+            onPropertyWindowListener.onWindowShown(view);
+
+        builder.setView(view);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(onPropertyWindowListener!=null)
+                    onPropertyWindowListener.onOkSelected(view);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 
     public void ShowInput(String title, final OnProcessCompleteListener onProcessCompleteListener)

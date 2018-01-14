@@ -14,6 +14,7 @@ public class Row extends IDatabaseObject {
     private String mName = "";
     private boolean mDisplayName = false;
     final List<Block> mBlocks = new ArrayList<>();
+    private boolean mExpanded = false;
 
     public Row(){}
     public Row(String name){
@@ -54,5 +55,13 @@ public class Row extends IDatabaseObject {
     public Block getBlockAt(int index)
     {
         return mBlocks.get(index);
+    }
+
+    public boolean isExpanded() {
+        return mExpanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.mExpanded = expanded;
     }
 }
