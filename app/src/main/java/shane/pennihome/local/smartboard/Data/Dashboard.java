@@ -10,17 +10,10 @@ import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
  */
 
 @SuppressWarnings("DefaultFileTemplate")
-public class Dashboard extends IDatabaseObject{
+public class Dashboard extends IDatabaseObject {
     private final List<Row> mRows = new ArrayList<>();
-    public List<Row> getRows(){return mRows; }
 
-    @Override
-    public Types getType() {
-        return Types.Dashboard;
-    }
-
-    public static Dashboard Load(String json)
-    {
+    public static Dashboard Load(String json) {
         try {
             return IDatabaseObject.Load(Dashboard.class, json);
         } catch (Exception e) {
@@ -28,8 +21,16 @@ public class Dashboard extends IDatabaseObject{
         }
     }
 
-    public Row getRowAt(int index)
-    {
+    public List<Row> getRows() {
+        return mRows;
+    }
+
+    @Override
+    public Types getType() {
+        return Types.Dashboard;
+    }
+
+    public Row getRowAt(int index) {
         return mRows.get(index);
     }
 }

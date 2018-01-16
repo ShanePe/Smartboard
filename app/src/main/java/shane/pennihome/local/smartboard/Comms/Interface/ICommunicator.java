@@ -93,13 +93,10 @@ public abstract class ICommunicator<T> extends AsyncTask<String, String, RESTCom
         int max = 5;
         int current = 0;
 
-        while(current<=max)
-        {
+        while (current <= max) {
             try {
                 return Process();
-            }
-            catch (IOException ioe)
-            {
+            } catch (IOException ioe) {
                 Thread.sleep(2000);
                 current++;
             }

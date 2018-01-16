@@ -8,5 +8,6 @@ import shane.pennihome.local.smartboard.Data.Row;
 
 public interface OnDashboardAdapterListener {
     void AddBlock(Row row);
+
     void RowDisplayNameChanged(Row row, boolean displayName);
 }

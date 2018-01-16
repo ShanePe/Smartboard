@@ -12,6 +12,14 @@ public class TokenHueBridge extends TokenInfo {
     private String mId;
     private String mToken;
 
+    public static TokenHueBridge Load() {
+        try {
+            return TokenInfo.Load(TokenHueBridge.class);
+        } catch (Exception e) {
+            return new TokenHueBridge();
+        }
+    }
+
     public String getAddress() {
         if (mAddress == null)
             return "";
@@ -25,7 +33,8 @@ public class TokenHueBridge extends TokenInfo {
     public String getId() {
         return mId;
     }
-   public void setId(String id) {
+
+    public void setId(String id) {
         this.mId = id;
     }
 
@@ -52,14 +61,5 @@ public class TokenHueBridge extends TokenInfo {
     @Override
     public boolean isAwaitingAuthorisation() {
         return (!getAddress().equals("") && getToken().equals(""));
-    }
-
-    public static TokenHueBridge Load()
-    {
-        try {
-            return TokenInfo.Load(TokenHueBridge.class);
-        } catch (Exception e) {
-            return new TokenHueBridge();
-        }
     }
 }

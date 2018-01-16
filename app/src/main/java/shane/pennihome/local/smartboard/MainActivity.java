@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity
         ThingFragment.OnListFragmentInteractionListener,
         SmartThingsFragment.OnFragmentInteractionListener,
         HueBridgeFragment.OnListFragmentInteractionListener,
-        DashboardFragment.OnListFragmentInteractionListener{
+        DashboardFragment.OnListFragmentInteractionListener {
 
     private Monitor mMonitor = null;
     private List<Dashboard> mDashboards = null;
@@ -120,8 +119,7 @@ public class MainActivity extends AppCompatActivity
         mMonitor.Start();
     }
 
-    public Monitor getMonitor()
-    {
+    public Monitor getMonitor() {
         return mMonitor;
     }
 

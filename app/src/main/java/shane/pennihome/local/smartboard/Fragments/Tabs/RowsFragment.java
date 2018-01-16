@@ -1,7 +1,6 @@
 package shane.pennihome.local.smartboard.Fragments.Tabs;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,7 +21,9 @@ public class RowsFragment extends Fragment {
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
-    public RowsFragment(){}
+
+    public RowsFragment() {
+    }
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -38,16 +39,16 @@ public class RowsFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.mnu_dash_add)
-        {
-            final SmartboardActivity smartboardActivity = (SmartboardActivity)getContext();
+        if (item.getItemId() == R.id.mnu_dash_add) {
+            final SmartboardActivity smartboardActivity = (SmartboardActivity) getContext();
             smartboardActivity.ShowInput("Please supply a row name.", new OnProcessCompleteListener() {
                 @Override
                 public void complete(boolean success, Object source) {
                     smartboardActivity.getRowAdapter()
                             .getDashboard()
                             .getRows()
-                            .add(new Row((String)source));
+                            .add(new Row((String) source));
+                    smartboardActivity.getRowAdapter().notifyDataSetChanged();
                 }
             });
         }
@@ -67,7 +68,7 @@ public class RowsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.smartboard_tab_rows, container, false);
         ExpandableListView list = (ExpandableListView) rootView.findViewById(R.id.list_rows);
 
-        final SmartboardActivity smartboardActivity = (SmartboardActivity)getContext();
+        final SmartboardActivity smartboardActivity = (SmartboardActivity) getContext();
         list.setAdapter(smartboardActivity.getRowAdapter());
 
         setHasOptionsMenu(true);

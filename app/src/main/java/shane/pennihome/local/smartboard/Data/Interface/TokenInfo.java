@@ -14,8 +14,24 @@ import shane.pennihome.local.smartboard.Data.Globals;
 @SuppressWarnings("ALL")
 public abstract class TokenInfo {
 
+    private static <V extends TokenInfo> V fromJson(Class<V> cls, String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, cls);
+    }
+
+    public static <V extends TokenInfo> V Load(Class<V> cls) throws IllegalAccessException, InstantiationException {
+        V inst = cls.newInstance();
+        String objJson = Globals.getSharedPreferences().getString(inst.getKey(), "");
+        if (!objJson.equals(""))
+            inst = fromJson(cls, objJson);
+
+        return inst;
+    }
+
     protected abstract String getKey();
+
     public abstract boolean isAuthorised();
+
     public abstract boolean isAwaitingAuthorisation();
 
     private String toJson() {
@@ -28,19 +44,5 @@ public abstract class TokenInfo {
         SharedPreferences.Editor editor = Globals.getSharedPreferences().edit();
         editor.putString(getKey(), this.toJson());
         editor.commit();
-    }
-
-    private static <V extends TokenInfo> V fromJson(Class<V> cls,String json) {
-        Gson gson = new Gson();
-        return gson.fromJson(json, cls);
-    }
-
-    public static <V extends TokenInfo> V Load(Class<V> cls) throws IllegalAccessException, InstantiationException {
-        V inst = cls.newInstance();
-        String objJson = Globals.getSharedPreferences().getString(inst.getKey(), "");
-        if (!objJson.equals(""))
-            inst = fromJson(cls, objJson);
-
-        return inst;
     }
 }

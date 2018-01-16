@@ -35,12 +35,12 @@ public class Globals {
             char[] chars = "abcdefghijklmnopqrstuvwxyzABSDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
             Random r = new Random(System.currentTimeMillis());
             char[] id = new char[8];
-            for (int i = 0;  i < 8;  i++) {
+            for (int i = 0; i < 8; i++) {
                 id[i] = chars[r.nextInt(chars.length)];
             }
 
             SharedPreferences.Editor editor = mPrefs.edit();
-            editor.putString("uid",  new String(id));
+            editor.putString("uid", new String(id));
             editor.apply();
         }
     }

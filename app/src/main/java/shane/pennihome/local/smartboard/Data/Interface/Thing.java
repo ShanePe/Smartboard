@@ -16,6 +16,19 @@ public abstract class Thing {
     private Source mSource;
     private transient onThingListener mOnThingListener;
 
+    private static <V extends Thing> V fromJson(Class<V> cls, String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, cls);
+    }
+
+    public static <V extends Thing> V Load(Class<V> cls, String objJson) throws IllegalAccessException, InstantiationException {
+        V inst = cls.newInstance();
+        if (!objJson.equals(""))
+            inst = fromJson(cls, objJson);
+
+        return inst;
+    }
+
     public Thing.Source getSource() {
         return mSource;
     }
@@ -66,17 +79,5 @@ public abstract class Thing {
         return gson.toJson(this);
     }
 
-    private static <V extends Thing> V fromJson(Class<V> cls, String json) {
-        Gson gson = new Gson();
-        return gson.fromJson(json, cls);
-    }
-
-    public static <V extends Thing> V Load(Class<V> cls, String objJson) throws IllegalAccessException, InstantiationException {
-        V inst = cls.newInstance();
-        if (!objJson.equals(""))
-            inst = fromJson(cls, objJson);
-
-        return inst;
-    }
     public enum Source {SmartThings, PhilipsHue}
 }

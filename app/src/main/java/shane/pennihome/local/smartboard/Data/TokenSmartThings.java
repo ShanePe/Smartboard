@@ -18,6 +18,14 @@ public class TokenSmartThings extends TokenInfo {
     private String mAuthCode;
     private String mRequestUrl;
 
+    public static TokenSmartThings Load() {
+        try {
+            return TokenInfo.Load(TokenSmartThings.class);
+        } catch (Exception e) {
+            return new TokenSmartThings();
+        }
+    }
+
     public String getToken() {
         if (mToken == null)
             return "";
@@ -45,6 +53,7 @@ public class TokenSmartThings extends TokenInfo {
     public String getType() {
         return mType;
     }
+
     public void setType(String type) {
         this.mType = type;
     }
@@ -52,15 +61,17 @@ public class TokenSmartThings extends TokenInfo {
     public String getAuthCode() {
         return mAuthCode;
     }
+
     public void setAuthCode(String authCode) {
         mAuthCode = authCode;
     }
 
     public String getRequestUrl() {
-        if(mRequestUrl == null)
+        if (mRequestUrl == null)
             return "";
         return mRequestUrl;
     }
+
     public void setRequestUrl(String _requestUrl) {
         this.mRequestUrl = _requestUrl;
     }
@@ -80,14 +91,5 @@ public class TokenSmartThings extends TokenInfo {
     public boolean isAwaitingAuthorisation() {
         Calendar c = Calendar.getInstance();
         return (!Objects.equals(getToken(), "") && getExpires().after(c.getTime()) && getRequestUrl().equals(""));
-    }
-
-    public static TokenSmartThings Load()
-    {
-        try {
-            return TokenInfo.Load(TokenSmartThings.class);
-        } catch (Exception e) {
-            return new TokenSmartThings();
-        }
     }
 }

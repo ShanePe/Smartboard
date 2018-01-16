@@ -35,27 +35,32 @@ import shane.pennihome.local.smartboard.SmartboardActivity;
 public class DashboardFragment extends Fragment {
 
     private List<Dashboard> mDashboard = new ArrayList<>();
+    private OnListFragmentInteractionListener mListener;
+
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
+    public DashboardFragment() {
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.mnu_add_frag, menu);
     }
 
-    private OnListFragmentInteractionListener mListener;
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.mnu_dash_add)
-        {
+        if (item.getItemId() == R.id.mnu_dash_add) {
             final MainActivity activity = (MainActivity) getActivity();
             Intent dashAdd = new Intent(getActivity(), SmartboardActivity.class);
 
             ArrayList<String> devices = new ArrayList<>();
             ArrayList<String> routines = new ArrayList<>();
 
-            for(Routine r: activity.getMonitor().getRoutines())
+            for (Routine r : activity.getMonitor().getRoutines())
                 devices.add(r.toJson());
-            for(Device d : activity.getMonitor().getDevices())
+            for (Device d : activity.getMonitor().getDevices())
                 routines.add(d.toJson());
 
             dashAdd.putStringArrayListExtra("devices", devices);
@@ -64,13 +69,6 @@ public class DashboardFragment extends Fragment {
             startActivity(dashAdd);
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public DashboardFragment() {
     }
 
     @Override
@@ -89,6 +87,7 @@ public class DashboardFragment extends Fragment {
     public List<Dashboard> getDashboards() {
         return mDashboard;
     }
+
     public void setDashboard(List<Dashboard> dashboards) {
         this.mDashboard = dashboards;
     }

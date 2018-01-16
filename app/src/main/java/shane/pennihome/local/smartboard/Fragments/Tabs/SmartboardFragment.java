@@ -11,13 +11,12 @@ import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
 
 public class SmartboardFragment extends Fragment {
-    private SmartboardActivity mContext;
-
     /**
      * The fragment argument representing the section number for this
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private SmartboardActivity mContext;
 
     public SmartboardFragment() {
     }

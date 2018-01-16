@@ -2,10 +2,8 @@ package shane.pennihome.local.smartboard.Adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -35,12 +31,11 @@ import shane.pennihome.local.smartboard.Adapters.Interface.OnPropertyWindowListe
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Data.Block;
 import shane.pennihome.local.smartboard.Data.Dashboard;
-import shane.pennihome.local.smartboard.Data.Device;
 import shane.pennihome.local.smartboard.Data.Interface.Thing;
-import shane.pennihome.local.smartboard.Data.Routine;
 import shane.pennihome.local.smartboard.Data.Row;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
+import shane.pennihome.local.smartboard.UI.RowViewHandler;
 
 /**
  * Created by shane on 13/01/18.
@@ -64,7 +59,7 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-       return mDashboard.getRowAt(groupPosition).getBlocks().size();
+        return mDashboard.getRowAt(groupPosition).getBlocks().size() == 0 ? 0 : 1;
     }
 
     @Override
@@ -74,7 +69,7 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return mDashboard.getRowAt(groupPosition).getBlockAt(childPosition);
+        return mDashboard.getRowAt(groupPosition).getBlocks();
     }
 
     @Override
@@ -92,46 +87,47 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    private void RotateImage(View v, final boolean expanded)
-    {
-        final ImageButton image= (ImageButton) v.findViewById(R.id.btn_add_expanded);
+    private void RotateImage(View v, final boolean expanded) {
+        final ImageButton image = (ImageButton) v.findViewById(R.id.btn_add_expanded);
 
         RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         rotate.setDuration(300);
         rotate.setInterpolator(new LinearInterpolator());
         rotate.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                if(expanded)
+                if (expanded)
                     image.setRotation(180);
                 else
                     image.setRotation(0);
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {
+            }
         });
 
         image.startAnimation(rotate);
     }
+
     @Override
     public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         final DashboardRowAdapter me = this;
         final Row row = mDashboard.getRowAt(groupPosition);
         final ExpandableListView listView = (ExpandableListView) parent;
 
-        if(convertView == null)
-        {
+        if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) mSmartboardActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.dashboard_row_list, null);
             final View meView = convertView;
             listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
                 @Override
                 public void onGroupExpand(int groupPosition) {
-                    if(!row.isExpanded())
+                    if (!row.isExpanded())
                         me.RotateImage(meView, true);
                     row.setExpanded(true);
                 }
@@ -139,17 +135,17 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
             listView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
                 @Override
                 public void onGroupCollapse(int groupPosition) {
-                    if(row.isExpanded())
+                    if (row.isExpanded())
                         me.RotateImage(meView, false);
                     row.setExpanded(false);
                 }
             });
         }
 
-        ImageButton btnExpand = (ImageButton)convertView.findViewById(R.id.btn_add_expanded);
-        final TextView txtName = (TextView)convertView.findViewById(R.id.txt_row_name);
-        ImageButton btnProps = (ImageButton)convertView.findViewById(R.id.btn_add_prop);
-        ImageButton btnAdd = (ImageButton)convertView.findViewById(R.id.btn_add_block);
+        ImageButton btnExpand = (ImageButton) convertView.findViewById(R.id.btn_add_expanded);
+        final TextView txtName = (TextView) convertView.findViewById(R.id.txt_row_name);
+        ImageButton btnProps = (ImageButton) convertView.findViewById(R.id.btn_add_prop);
+        ImageButton btnAdd = (ImageButton) convertView.findViewById(R.id.btn_add_block);
 
         txtName.setText(row.getName());
         btnProps.setOnClickListener(new View.OnClickListener() {
@@ -158,8 +154,8 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
                 mSmartboardActivity.showPropertyWindow("Row Properties", R.layout.prop_row, new OnPropertyWindowListener() {
                     @Override
                     public void onWindowShown(View view) {
-                        EditText txtName = (EditText)view.findViewById(R.id.txt_row_dl_name);
-                        Switch swDispName = (Switch)view.findViewById(R.id.sw_row_dl_dispname);
+                        EditText txtName = (EditText) view.findViewById(R.id.txt_row_dl_name);
+                        Switch swDispName = (Switch) view.findViewById(R.id.sw_row_dl_dispname);
 
                         txtName.setText(row.getName());
                         swDispName.setChecked(row.getDisplayName());
@@ -167,8 +163,8 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
 
                     @Override
                     public void onOkSelected(View view) {
-                        EditText txtName = (EditText)view.findViewById(R.id.txt_row_dl_name);
-                        Switch swDispName = (Switch)view.findViewById(R.id.sw_row_dl_dispname);
+                        EditText txtName = (EditText) view.findViewById(R.id.txt_row_dl_name);
+                        Switch swDispName = (Switch) view.findViewById(R.id.sw_row_dl_dispname);
 
                         row.setName(txtName.getText().toString());
                         row.setDisplayName(swDispName.isChecked());
@@ -180,21 +176,21 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mDashboardListener!=null) {
+                if (mDashboardListener != null) {
                     final Block block = createBlockInstance(row);
 
                     mSmartboardActivity.showPropertyWindow("Add Block", R.layout.prop_block, new OnPropertyWindowListener() {
                         @Override
                         public void onWindowShown(View view) {
-                            Spinner spThings = (Spinner)view.findViewById(R.id.sp_thing);
-                            final EditText txtBlkName = (EditText)view.findViewById(R.id.txt_blk_name);
-                            NumberPicker txtWidth = (NumberPicker)view.findViewById(R.id.txt_blk_width);
-                            NumberPicker txtHeight = (NumberPicker)view.findViewById(R.id.txt_blk_height);
+                            Spinner spThings = (Spinner) view.findViewById(R.id.sp_thing);
+                            final EditText txtBlkName = (EditText) view.findViewById(R.id.txt_blk_name);
+                            NumberPicker txtWidth = (NumberPicker) view.findViewById(R.id.txt_blk_width);
+                            NumberPicker txtHeight = (NumberPicker) view.findViewById(R.id.txt_blk_height);
 
-                            final Button btnBGOff = (Button)view.findViewById(R.id.btn_clr_bg_Off);
-                            final Button btnBGOn = (Button)view.findViewById(R.id.btn_clr_bg_On);
-                            final Button btnFGOff = (Button)view.findViewById(R.id.btn_clr_fg_Off);
-                            final Button btnFGOn = (Button)view.findViewById(R.id.btn_clr_fg_On);
+                            final Button btnBGOff = (Button) view.findViewById(R.id.btn_clr_bg_Off);
+                            final Button btnBGOn = (Button) view.findViewById(R.id.btn_clr_bg_On);
+                            final Button btnFGOff = (Button) view.findViewById(R.id.btn_clr_fg_Off);
+                            final Button btnFGOn = (Button) view.findViewById(R.id.btn_clr_fg_On);
 
                             SpinnerThingAdapter aptr = new SpinnerThingAdapter(mSmartboardActivity);
                             aptr.setThings(mSmartboardActivity.getThings());
@@ -203,7 +199,7 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
                             spThings.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                    Thing thing = (Thing)parent.getItemAtPosition(position);
+                                    Thing thing = (Thing) parent.getItemAtPosition(position);
                                     txtBlkName.setText(thing.getName());
                                 }
 
@@ -234,7 +230,7 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
                                     GetColour(block.getBackgroundColourOff(), new OnProcessCompleteListener() {
                                         @Override
                                         public void complete(boolean success, Object source) {
-                                            @ColorInt int clr = (int)source;
+                                            @ColorInt int clr = (int) source;
                                             block.setBackgroundColourOff(clr);
                                             row.setDefaultBlockBackgroundColourOff(clr);
                                             btnBGOff.setBackgroundColor(block.getBackgroundColourOff());
@@ -249,7 +245,7 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
                                     GetColour(block.getForeColourOn(), new OnProcessCompleteListener() {
                                         @Override
                                         public void complete(boolean success, Object source) {
-                                            @ColorInt int clr = (int)source;
+                                            @ColorInt int clr = (int) source;
                                             block.setForeColourOff(clr);
                                             row.setDefaultBlockForeColourOff(clr);
                                             btnFGOff.setBackgroundColor(block.getForeColourOff());
@@ -265,7 +261,7 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
                                     GetColour(block.getBackgroundColourOn(), new OnProcessCompleteListener() {
                                         @Override
                                         public void complete(boolean success, Object source) {
-                                            @ColorInt int clr = (int)source;
+                                            @ColorInt int clr = (int) source;
                                             block.setBackgroundColourOn(clr);
                                             row.setDefaultBlockBackgroundColourOn(clr);
                                             btnBGOn.setBackgroundColor(block.getBackgroundColourOn());
@@ -280,7 +276,7 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
                                     GetColour(block.getForeColourOn(), new OnProcessCompleteListener() {
                                         @Override
                                         public void complete(boolean success, Object source) {
-                                            @ColorInt int clr = (int)source;
+                                            @ColorInt int clr = (int) source;
                                             block.setForeColourOn(clr);
                                             row.setDefaultBlockForeColourOn(clr);
                                             btnFGOn.setBackgroundColor(block.getForeColourOn());
@@ -292,12 +288,12 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
 
                         @Override
                         public void onOkSelected(View view) {
-                            Spinner spThings = (Spinner)view.findViewById(R.id.sp_thing);
-                            final EditText txtBlkName = (EditText)view.findViewById(R.id.txt_blk_name);
-                            NumberPicker txtWidth = (NumberPicker)view.findViewById(R.id.txt_blk_width);
-                            NumberPicker txtHeight = (NumberPicker)view.findViewById(R.id.txt_blk_height);
+                            Spinner spThings = (Spinner) view.findViewById(R.id.sp_thing);
+                            final EditText txtBlkName = (EditText) view.findViewById(R.id.txt_blk_name);
+                            NumberPicker txtWidth = (NumberPicker) view.findViewById(R.id.txt_blk_width);
+                            NumberPicker txtHeight = (NumberPicker) view.findViewById(R.id.txt_blk_height);
 
-                            block.setThing((Thing)spThings.getSelectedItem());
+                            block.setThing((Thing) spThings.getSelectedItem());
                             block.setName(txtBlkName.getText().toString());
                             block.setWidth(txtWidth.getValue());
                             block.setHeight(txtHeight.getValue());
@@ -314,7 +310,7 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
         btnExpand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(row.isExpanded())
+                if (row.isExpanded())
                     listView.collapseGroup(groupPosition);
                 else
                     listView.expandGroup(groupPosition);
@@ -325,8 +321,7 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-    private void GetColour(@ColorInt int colour, final OnProcessCompleteListener onProcessCompleteListener)
-    {
+    private void GetColour(@ColorInt int colour, final OnProcessCompleteListener onProcessCompleteListener) {
         ColorPickerDialogBuilder
                 .with(mSmartboardActivity)
                 .setTitle("Choose colour")
@@ -342,8 +337,8 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
                 .setPositiveButton("ok", new ColorPickerClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
-                       if(onProcessCompleteListener!=null)
-                           onProcessCompleteListener.complete(true, selectedColor);
+                        if (onProcessCompleteListener != null)
+                            onProcessCompleteListener.complete(true, selectedColor);
                     }
                 })
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -356,82 +351,47 @@ public class DashboardRowAdapter extends BaseExpandableListAdapter {
                 .show();
     }
 
-    private Block createBlockInstance(Row row)
-    {
+    private Block createBlockInstance(Row row) {
         Block block = new Block();
         block.setWidth(1);
         block.setHeight(1);
 
-
-        block.setBackgroundColourOff(row.getDefaultBlockBackgroundColourOff() !=0 ?
-                                        row.getDefaultBlockBackgroundColourOff() :
-                                        Color.parseColor("#ff5a595b"));
-        block.setBackgroundColourOn(row.getDefaultBlockBackgroundColourOn() != 0?
-                row.getDefaultBlockBackgroundColourOn():
+        block.setBackgroundColourOff(row.getDefaultBlockBackgroundColourOff() != 0 ?
+                row.getDefaultBlockBackgroundColourOff() :
+                Color.parseColor("#ff5a595b"));
+        block.setBackgroundColourOn(row.getDefaultBlockBackgroundColourOn() != 0 ?
+                row.getDefaultBlockBackgroundColourOn() :
                 Color.parseColor("#FF4081"));
 
         block.setForeColourOff(row.getDefaultBlockForeColourOff() != 0 ?
                 row.getDefaultBlockForeColourOff() :
                 Color.parseColor("white"));
         block.setForeColourOn(row.getDefaultBlockForeColourOn() != 0 ?
-                row.getDefaultBlockForeColourOn():
+                row.getDefaultBlockForeColourOn() :
                 Color.parseColor("black"));
 
+        block.setGroupId(row.getBlocks().size() + 1);
         return block;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         final Row row = mDashboard.getRowAt(groupPosition);
-        final Block block = row.getBlockAt(childPosition);
-
-        if(convertView == null)
-        {
+        if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) mSmartboardActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(R.layout.dashboard_block, null);
+            convertView = layoutInflater.inflate(R.layout.dashboard_block_list, null);
         }
 
-        LinearLayout layout = (LinearLayout)convertView.findViewById(R.id.block_area);
-        TextView baName = (TextView)convertView.findViewById(R.id.ba_name);
-        ImageView baImg = (ImageView) convertView.findViewById(R.id.ba_image);
-        TextView baDevice = (TextView)convertView.findViewById(R.id.ba_device);
-        TextView baSize = (TextView)convertView.findViewById(R.id.ba_size);
-        TextView baType = (TextView)convertView.findViewById(R.id.ba_type);
-
-        baName.setText(block.getName());
-        if (block.getThing().getSource() == Thing.Source.SmartThings) {
-            baImg.setImageResource(R.drawable.icon_switch);
-        } else if (block.getThing().getSource() == Thing.Source.PhilipsHue) {
-            baImg.setImageResource(R.drawable.icon_phlogo);
+        if (row.getRowViewHandler() == null)
+            row.setRowViewHandler(new RowViewHandler(mSmartboardActivity, convertView, row.getBlocks()));
+        else {
+            row.getRowViewHandler().getDashboardBlockAdapter().setValues(row.getBlocks());
+            row.getRowViewHandler().getDashboardBlockAdapter().notifyDataSetChanged();
         }
-
-        baDevice.setText(block.getThing().getName());
-        baSize.setText(String.format("%s x %s", block.getWidth(), block.getHeight()));
-        if(block.getThing() instanceof Device)
-            baType.setText(R.string.lbl_device);
-        else if(block.getThing() instanceof Routine)
-            baType.setText(R.string.lbl_routine);
-
-        if((childPosition % 2) == 1)
-        {
-            layout.setBackgroundColor(block.getBackgroundColourOff());
-            baName.setTextColor(block.getForeColourOff());
-            baDevice.setTextColor(block.getForeColourOff());
-            baSize.setTextColor(block.getForeColourOff());
-            baType.setTextColor(block.getForeColourOff());
-        }
-        else
-        {
-            layout.setBackgroundColor(block.getBackgroundColourOn());
-            baName.setTextColor(block.getForeColourOn());
-            baDevice.setTextColor(block.getForeColourOn());
-            baSize.setTextColor(block.getForeColourOn());
-            baType.setTextColor(block.getForeColourOn());
-        }
-
 
         return convertView;
     }
+
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {

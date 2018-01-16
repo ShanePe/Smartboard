@@ -35,36 +35,31 @@ public class DBEngine extends SQLiteOpenHelper {
 
     }
 
-    public void WriteToDatabase(IDatabaseObject data)
-    {
+    public void WriteToDatabase(IDatabaseObject data) {
         SQLiteDatabase db = null;
         try {
             db = this.getWritableDatabase();
             db.execSQL(Queries.getUpdateDatastore(data));
-        }finally {
-            if(db != null)
+        } finally {
+            if (db != null)
                 db.close();
         }
     }
 
-    public List<IDatabaseObject> ReadAllFromDatabase()
-    {
-        return  getDataObjects(Queries.getAllDatastores());
+    public List<IDatabaseObject> ReadAllFromDatabase() {
+        return getDataObjects(Queries.getAllDatastores());
     }
 
-    public IDatabaseObject readFromDatabase(String Id)
-    {
+    public IDatabaseObject readFromDatabase(String Id) {
         List<IDatabaseObject> items = getDataObjects(Queries.getDatastore(Id));
         return items.size() == 0 ? null : items.get(0);
     }
 
-    public List<IDatabaseObject> readFromDatabaseByType(@SuppressWarnings("SameParameterValue") IDatabaseObject.Types type)
-    {
+    public List<IDatabaseObject> readFromDatabaseByType(@SuppressWarnings("SameParameterValue") IDatabaseObject.Types type) {
         return getDataObjects(Queries.getDatastoreByType(type));
     }
 
-    List<IDatabaseObject> getDataObjects(String query)
-    {
+    List<IDatabaseObject> getDataObjects(String query) {
         SQLiteDatabase db = null;
         try {
             List<IDatabaseObject> items = new ArrayList<>();
@@ -82,8 +77,8 @@ public class DBEngine extends SQLiteOpenHelper {
             c.close();
             return items;
 
-        }finally {
-            if(db != null)
+        } finally {
+            if (db != null)
                 db.close();
         }
     }
@@ -94,23 +89,20 @@ public class DBEngine extends SQLiteOpenHelper {
             return "CREATE TABLE IF NOT EXISTS datastore (id text PRIMARY KEY unique,type text not null, object text not null)";
         }
 
-        public static String getUpdateDatastore(IDatabaseObject object){
+        public static String getUpdateDatastore(IDatabaseObject object) {
             return String.format("replace into datastore (id, type, object) values('%s','%s','%s')", object.getID(), object.getType(), object.toJson());
         }
 
         @SuppressWarnings("SameReturnValue")
-        public static String getAllDatastores()
-        {
+        public static String getAllDatastores() {
             return "select id, type, object from datastore";
         }
 
-        public static String getDatastore(String Id)
-        {
+        public static String getDatastore(String Id) {
             return String.format("select id, type, object from datastore where id = '%s'", Id);
         }
 
-        public static String getDatastoreByType(IDatabaseObject.Types type)
-        {
+        public static String getDatastoreByType(IDatabaseObject.Types type) {
             return String.format("select id, type, object from datastore where type = '%s'", type);
         }
     }

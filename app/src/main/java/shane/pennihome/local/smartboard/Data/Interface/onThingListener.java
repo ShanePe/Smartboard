@@ -7,6 +7,9 @@ package shane.pennihome.local.smartboard.Data.Interface;
 @SuppressWarnings({"DefaultFileTemplate", "EmptyMethod"})
 public abstract class onThingListener {
     @SuppressWarnings("WeakerAccess")
-    public void Toggled(){}
-    public void StateChanged(){}
+    public void Toggled() {
+    }
+
+    public void StateChanged() {
+    }
 }

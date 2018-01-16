@@ -8,5 +8,6 @@ import android.view.View;
 
 public interface OnPropertyWindowListener {
     void onWindowShown(View view);
+
     void onOkSelected(View view);
 }

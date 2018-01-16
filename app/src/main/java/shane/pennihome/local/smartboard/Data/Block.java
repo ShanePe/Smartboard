@@ -1,8 +1,6 @@
 package shane.pennihome.local.smartboard.Data;
 
-import android.content.res.Resources;
 import android.support.annotation.ColorInt;
-import android.util.TypedValue;
 
 import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
 import shane.pennihome.local.smartboard.Data.Interface.Thing;
@@ -16,15 +14,32 @@ public class Block extends IDatabaseObject {
     private Thing mThing;
     private int mHeight;
     private int mWidth;
-    private @ColorInt int mForeColourOff;
-    private @ColorInt int mBackColourOff;
-    private @ColorInt int mForeColourOn;
-    private @ColorInt int mBackColourOn;
+    private @ColorInt
+    int mForeColourOff;
+    private @ColorInt
+    int mBackColourOff;
+    private @ColorInt
+    int mForeColourOn;
+    private @ColorInt
+    int mBackColourOn;
+    private long mGroupId;
+
+    public Block() {
+    }
+
+    public static Block Load(String json) {
+        try {
+            return IDatabaseObject.Load(Block.class, json);
+        } catch (Exception e) {
+            return new Block();
+        }
+    }
 
     @Override
     public Types getType() {
         return Types.Dashboard;
     }
+
     public Thing getThing() {
         return mThing;
     }
@@ -49,7 +64,8 @@ public class Block extends IDatabaseObject {
         mWidth = width;
     }
 
-    public @ColorInt int getForeColourOff() {
+    public @ColorInt
+    int getForeColourOff() {
         return mForeColourOff;
     }
 
@@ -57,7 +73,8 @@ public class Block extends IDatabaseObject {
         mForeColourOff = foreColour;
     }
 
-    public @ColorInt int getBackgroundColourOff() {
+    public @ColorInt
+    int getBackgroundColourOff() {
         return mBackColourOff;
     }
 
@@ -65,7 +82,8 @@ public class Block extends IDatabaseObject {
         this.mBackColourOff = backgroundColour;
     }
 
-    public @ColorInt int getForeColourOn() {
+    public @ColorInt
+    int getForeColourOn() {
         return mForeColourOn;
     }
 
@@ -73,7 +91,8 @@ public class Block extends IDatabaseObject {
         mForeColourOn = foreColour;
     }
 
-    public @ColorInt int getBackgroundColourOn() {
+    public @ColorInt
+    int getBackgroundColourOn() {
         return mBackColourOn;
     }
 
@@ -81,16 +100,11 @@ public class Block extends IDatabaseObject {
         this.mBackColourOn = backgroundColour;
     }
 
-    public Block(){}
-
-    public static Block Load(String json)
-    {
-        try {
-            return IDatabaseObject.Load(Block.class, json);
-        } catch (Exception e) {
-            return new Block();
-        }
+    public long getGroupId() {
+        return mGroupId;
     }
 
-
+    public void setGroupId(long groupId) {
+        this.mGroupId = groupId;
+    }
 }

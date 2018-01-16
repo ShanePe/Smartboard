@@ -6,11 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 import shane.pennihome.local.smartboard.Data.Dashboard;
 import shane.pennihome.local.smartboard.Fragments.DashboardFragment;
 import shane.pennihome.local.smartboard.R;
-
-import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Dashboard} and makes a call to the

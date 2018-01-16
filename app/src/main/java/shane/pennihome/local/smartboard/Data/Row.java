@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
+import shane.pennihome.local.smartboard.UI.RowViewHandler;
 
 /**
  * Created by shane on 13/01/18.
@@ -13,32 +14,41 @@ import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
 
 @SuppressWarnings("DefaultFileTemplate")
 public class Row extends IDatabaseObject {
-    private boolean mDisplayName = false;
     final List<Block> mBlocks = new ArrayList<>();
+    private boolean mDisplayName = false;
     private boolean mExpanded = false;
-    private @ColorInt int mDefaultBlockForeColourOff;
-    private @ColorInt int mDefaultBlockBackColourOff;
-    private @ColorInt int mDefaultBlockForeColourOn;
-    private @ColorInt int mDefaultBlockBackColourOn;
+    private @ColorInt
+    int mDefaultBlockForeColourOff;
+    private @ColorInt
+    int mDefaultBlockBackColourOff;
+    private @ColorInt
+    int mDefaultBlockForeColourOn;
+    private @ColorInt
+    int mDefaultBlockBackColourOn;
+    private RowViewHandler mRowViewHandler;
 
-    public Row(){}
-    public Row(String name){
+    public Row() {
+    }
+
+    public Row(String name) {
         this.setName(name);
     }
 
-    public List<Block> getBlocks(){return mBlocks;}
-    @Override
-    public Types getType() {
-        return Types.Dashboard;
-    }
-
-    public static Row Load(String json)
-    {
+    public static Row Load(String json) {
         try {
             return IDatabaseObject.Load(Row.class, json);
         } catch (Exception e) {
             return new Row();
         }
+    }
+
+    public List<Block> getBlocks() {
+        return mBlocks;
+    }
+
+    @Override
+    public Types getType() {
+        return Types.Dashboard;
     }
 
     public boolean getDisplayName() {
@@ -49,8 +59,7 @@ public class Row extends IDatabaseObject {
         this.mDisplayName = displayName;
     }
 
-    public Block getBlockAt(int index)
-    {
+    public Block getBlockAt(int index) {
         return mBlocks.get(index);
     }
 
@@ -61,7 +70,9 @@ public class Row extends IDatabaseObject {
     public void setExpanded(boolean expanded) {
         this.mExpanded = expanded;
     }
-    public @ColorInt int getDefaultBlockForeColourOff() {
+
+    public @ColorInt
+    int getDefaultBlockForeColourOff() {
         return mDefaultBlockForeColourOff;
     }
 
@@ -69,7 +80,8 @@ public class Row extends IDatabaseObject {
         mDefaultBlockForeColourOff = foreColour;
     }
 
-    public @ColorInt int getDefaultBlockBackgroundColourOff() {
+    public @ColorInt
+    int getDefaultBlockBackgroundColourOff() {
         return mDefaultBlockBackColourOff;
     }
 
@@ -77,7 +89,8 @@ public class Row extends IDatabaseObject {
         this.mDefaultBlockBackColourOff = backgroundColour;
     }
 
-    public @ColorInt int getDefaultBlockForeColourOn() {
+    public @ColorInt
+    int getDefaultBlockForeColourOn() {
         return mDefaultBlockForeColourOn;
     }
 
@@ -85,11 +98,20 @@ public class Row extends IDatabaseObject {
         mDefaultBlockForeColourOn = foreColour;
     }
 
-    public @ColorInt int getDefaultBlockBackgroundColourOn() {
+    public @ColorInt
+    int getDefaultBlockBackgroundColourOn() {
         return mDefaultBlockBackColourOn;
     }
 
     public void setDefaultBlockBackgroundColourOn(@ColorInt int backgroundColour) {
         this.mDefaultBlockBackColourOn = backgroundColour;
+    }
+
+    public RowViewHandler getRowViewHandler() {
+        return mRowViewHandler;
+    }
+
+    public void setRowViewHandler(RowViewHandler rowViewHandler) {
+        this.mRowViewHandler = rowViewHandler;
     }
 }

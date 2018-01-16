@@ -2,24 +2,21 @@ package shane.pennihome.local.smartboard;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -35,8 +32,8 @@ import shane.pennihome.local.smartboard.Data.Device;
 import shane.pennihome.local.smartboard.Data.Interface.Thing;
 import shane.pennihome.local.smartboard.Data.Routine;
 import shane.pennihome.local.smartboard.Data.Row;
-import shane.pennihome.local.smartboard.Fragments.Tabs.SmartboardFragment;
 import shane.pennihome.local.smartboard.Fragments.Tabs.RowsFragment;
+import shane.pennihome.local.smartboard.Fragments.Tabs.SmartboardFragment;
 
 public class SmartboardActivity extends AppCompatActivity {
 
@@ -56,6 +53,7 @@ public class SmartboardActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private DashboardRowAdapter mRowAdapter;
     private List<Thing> mThings = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +74,7 @@ public class SmartboardActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        mRowAdapter = new DashboardRowAdapter(this, new Dashboard(), new OnDashboardAdapterListener(){
+        mRowAdapter = new DashboardRowAdapter(this, new Dashboard(), new OnDashboardAdapterListener() {
             @Override
             public void AddBlock(Row row) {
                 row.getBlocks().add(new Block());
@@ -93,30 +91,30 @@ public class SmartboardActivity extends AppCompatActivity {
         ArrayList<String> devices = extras.getStringArrayList("devices");
         ArrayList<String> routines = extras.getStringArrayList("routines");
 
-        for(String j : devices)
+        for (String j : devices)
             try {
                 mThings.add(Device.Load(j));
-            } catch(Exception ex){}
-        for(String j : routines)
+            } catch (Exception ex) {
+            }
+        for (String j : routines)
             try {
                 mThings.add(Routine.Load(j));
-            } catch(Exception ex){}
+            } catch (Exception ex) {
+            }
     }
 
-    public List<Thing> getThings()
-    {
+    public List<Thing> getThings() {
         return mThings;
     }
 
-    public void showPropertyWindow(String title, int resource, final OnPropertyWindowListener onPropertyWindowListener)
-    {
+    public void showPropertyWindow(String title, int resource, final OnPropertyWindowListener onPropertyWindowListener) {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle(title);
 
-        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View view = (View)inflater.inflate(resource, null);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View view = (View) inflater.inflate(resource, null);
 
-        if(onPropertyWindowListener!=null)
+        if (onPropertyWindowListener != null)
             onPropertyWindowListener.onWindowShown(view);
 
         builder.setView(view);
@@ -124,7 +122,7 @@ public class SmartboardActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(onPropertyWindowListener!=null)
+                if (onPropertyWindowListener != null)
                     onPropertyWindowListener.onOkSelected(view);
             }
         });
@@ -141,8 +139,7 @@ public class SmartboardActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void ShowInput(String title, final OnProcessCompleteListener onProcessCompleteListener)
-    {
+    public void ShowInput(String title, final OnProcessCompleteListener onProcessCompleteListener) {
         final Context me = this;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
@@ -154,15 +151,14 @@ public class SmartboardActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(onProcessCompleteListener != null)
-                {
-                    try{
-                        String val =  input.getText().toString();
-                        if(TextUtils.isEmpty(val))
+                if (onProcessCompleteListener != null) {
+                    try {
+                        String val = input.getText().toString();
+                        if (TextUtils.isEmpty(val))
                             throw new Exception("Value not supplied");
                         onProcessCompleteListener.complete(true, val);
-                    }catch(Exception ex){
-                        Toast.makeText(me, "Error : " + ex.getMessage(),Toast.LENGTH_SHORT).show();
+                    } catch (Exception ex) {
+                        Toast.makeText(me, "Error : " + ex.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -180,12 +176,14 @@ public class SmartboardActivity extends AppCompatActivity {
     public DashboardRowAdapter getRowAdapter() {
         return mRowAdapter;
     }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         private SmartboardActivity mContext;
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -194,11 +192,13 @@ public class SmartboardActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            switch (position)
-            {
-                case 0: return SmartboardFragment.newInstance(1);
-                case 1: return RowsFragment.newInstance(2);
-                default: return null;
+            switch (position) {
+                case 0:
+                    return SmartboardFragment.newInstance(1);
+                case 1:
+                    return RowsFragment.newInstance(2);
+                default:
+                    return null;
             }
         }
 

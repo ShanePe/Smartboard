@@ -31,4 +31,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.2'
     compile 'info.guardianproject.netcipher:netcipher:1.2'
     implementation project(':colourPicker')
+    implementation 'com.android.support:cardview-v7:26.1.0'
+    implementation ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.11.0@aar'){
+        transitive=true
+    }
 }

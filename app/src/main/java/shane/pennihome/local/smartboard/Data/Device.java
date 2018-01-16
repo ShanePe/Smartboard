@@ -9,11 +9,17 @@ import shane.pennihome.local.smartboard.Data.Interface.onThingListener;
 
 @SuppressWarnings({"ALL", "unused"})
 public class Device extends Thing {
-    public enum States {Off, On, Unreachable}
-
     private States mState;
     private String mType;
     private onThingListener mOnThingListener;
+
+    public static Device Load(String json) {
+        try {
+            return Thing.Load(Device.class, json);
+        } catch (Exception e) {
+            return new Device();
+        }
+    }
 
     public onThingListener getOnThingListener() {
         return mOnThingListener;
@@ -31,7 +37,7 @@ public class Device extends Thing {
         States pre = getState();
         this.mState = state;
 
-        if(pre != state && mOnThingListener != null)
+        if (pre != state && mOnThingListener != null)
             mOnThingListener.StateChanged();
     }
 
@@ -55,12 +61,5 @@ public class Device extends Thing {
             setState(States.Off);
     }
 
-    public static Device Load(String json)
-    {
-        try {
-            return Thing.Load(Device.class, json);
-        } catch (Exception e) {
-            return new Device();
-        }
-    }
+    public enum States {Off, On, Unreachable}
 }

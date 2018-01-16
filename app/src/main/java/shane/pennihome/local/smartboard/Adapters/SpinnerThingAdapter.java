@@ -47,18 +47,17 @@ public class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null)
-        {
+        if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) mSmartboardActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.spinner_thing, null);
         }
 
-        Thing thing = (Thing)getItem(position);
+        Thing thing = (Thing) getItem(position);
 
-        ImageView img = (ImageView)convertView.findViewById(R.id.img_spin_icon);
+        ImageView img = (ImageView) convertView.findViewById(R.id.img_spin_icon);
         TextView txtType = (TextView) convertView.findViewById(R.id.txt_spin_type);
-        TextView txtName = (TextView)convertView.findViewById(R.id.txt_spin_name);
-        TextView txtSrc = (TextView)convertView.findViewById(R.id.txt_spin_source);
+        TextView txtName = (TextView) convertView.findViewById(R.id.txt_spin_name);
+        TextView txtSrc = (TextView) convertView.findViewById(R.id.txt_spin_source);
 
         if (thing.getSource() == Thing.Source.SmartThings) {
             img.setImageResource(R.drawable.icon_switch);
@@ -68,9 +67,9 @@ public class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
             txtSrc.setText(R.string.device_ph_label);
         }
 
-        if(thing instanceof Device)
+        if (thing instanceof Device)
             txtType.setText(R.string.lbl_device);
-        else if(thing instanceof Routine)
+        else if (thing instanceof Routine)
             txtType.setText(R.string.lbl_routine);
 
         txtName.setText(thing.getName());
@@ -78,12 +77,11 @@ public class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
         return convertView;
     }
 
-    public void setThings(List<Thing> mThings) {
-        this.mThings = mThings;
+    public List<Thing> getThings() {
+        return mThings;
     }
 
-    public List<Thing> getThings()
-    {
-        return mThings;
+    public void setThings(List<Thing> mThings) {
+        this.mThings = mThings;
     }
 }

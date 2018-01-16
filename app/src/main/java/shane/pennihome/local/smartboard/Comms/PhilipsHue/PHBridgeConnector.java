@@ -38,7 +38,7 @@ public class PHBridgeConnector extends ICommunicator<PHBridgeConnector> {
         String url = "http://" + tokenHueBridge.getAddress() + "/api";
 
         JSONObject req = new JSONObject("{\"devicetype\":\"" + Globals.ACTIVITY + "#" +
-                Globals.getSharedPreferences().getString("uid","unknown") + "\"}");
+                Globals.getSharedPreferences().getString("uid", "unknown") + "\"}");
 
         RESTCommunicator httpsCommunicator = new RESTCommunicator();
         JSONObject jObj = httpsCommunicator.postJson(url, req);
