@@ -22,17 +22,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import shane.pennihome.local.smartboard.Adapters.DashboardRowAdapter;
-import shane.pennihome.local.smartboard.Adapters.Interface.OnDashboardAdapterListener;
+import shane.pennihome.local.smartboard.Adapters.DashboardGroupAdapter;
 import shane.pennihome.local.smartboard.Adapters.Interface.OnPropertyWindowListener;
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.Data.Block;
 import shane.pennihome.local.smartboard.Data.Dashboard;
 import shane.pennihome.local.smartboard.Data.Device;
 import shane.pennihome.local.smartboard.Data.Interface.Thing;
 import shane.pennihome.local.smartboard.Data.Routine;
-import shane.pennihome.local.smartboard.Data.Row;
-import shane.pennihome.local.smartboard.Fragments.Tabs.RowsFragment;
+import shane.pennihome.local.smartboard.Data.SQL.DBEngine;
+import shane.pennihome.local.smartboard.Fragments.Tabs.GroupsFragment;
 import shane.pennihome.local.smartboard.Fragments.Tabs.SmartboardFragment;
 
 public class SmartboardActivity extends AppCompatActivity {
@@ -51,8 +49,9 @@ public class SmartboardActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    private DashboardRowAdapter mRowAdapter;
+    private DashboardGroupAdapter mRowAdapter;
     private List<Thing> mThings = new ArrayList<>();
+    private Dashboard mDashboard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,22 +73,12 @@ public class SmartboardActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        mRowAdapter = new DashboardRowAdapter(this, new Dashboard(), new OnDashboardAdapterListener() {
-            @Override
-            public void AddBlock(Row row) {
-                row.getBlocks().add(new Block());
-                mRowAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void RowDisplayNameChanged(Row row, boolean displayName) {
-                row.setDisplayName(displayName);
-            }
-        });
+        mRowAdapter = new DashboardGroupAdapter(this);
 
         Bundle extras = getIntent().getExtras();
         ArrayList<String> devices = extras.getStringArrayList("devices");
         ArrayList<String> routines = extras.getStringArrayList("routines");
+        mDashboard = Dashboard.Load(extras.getString("dashboard"));
 
         for (String j : devices)
             try {
@@ -105,6 +94,32 @@ public class SmartboardActivity extends AppCompatActivity {
 
     public List<Thing> getThings() {
         return mThings;
+    }
+
+    public void WriteDashboardToDatabase() {
+        if (mDashboard == null)
+            return;
+
+        final SmartboardActivity me = this;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (TextUtils.isEmpty(mDashboard.getName()))
+                    mDashboard.setName("My Dashboard");
+
+                DBEngine db = new DBEngine(me);
+                db.WriteToDatabase(mDashboard);
+            }
+        }).start();
+    }
+
+    public void DataChanged() {
+        WriteDashboardToDatabase();
+        mRowAdapter.notifyDataSetChanged();
+    }
+
+    public Dashboard getDashboard() {
+        return mDashboard;
     }
 
     public void showPropertyWindow(String title, int resource, final OnPropertyWindowListener onPropertyWindowListener) {
@@ -173,7 +188,7 @@ public class SmartboardActivity extends AppCompatActivity {
         builder.show();
     }
 
-    public DashboardRowAdapter getRowAdapter() {
+    public DashboardGroupAdapter getRowAdapter() {
         return mRowAdapter;
     }
 
@@ -196,7 +211,7 @@ public class SmartboardActivity extends AppCompatActivity {
                 case 0:
                     return SmartboardFragment.newInstance(1);
                 case 1:
-                    return RowsFragment.newInstance(2);
+                    return GroupsFragment.newInstance(2);
                 default:
                     return null;
             }
@@ -206,14 +221,6 @@ public class SmartboardActivity extends AppCompatActivity {
         public int getCount() {
             // Show 3 total pages.
             return 2;
-        }
-
-        public SmartboardActivity getContext() {
-            return mContext;
-        }
-
-        public void setContext(SmartboardActivity context) {
-            mContext = context;
         }
     }
 }

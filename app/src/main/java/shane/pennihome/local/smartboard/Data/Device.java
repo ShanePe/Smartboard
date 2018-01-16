@@ -1,7 +1,6 @@
 package shane.pennihome.local.smartboard.Data;
 
 import shane.pennihome.local.smartboard.Data.Interface.Thing;
-import shane.pennihome.local.smartboard.Data.Interface.onThingListener;
 
 /**
  * Created by shane on 28/12/17.
@@ -11,7 +10,6 @@ import shane.pennihome.local.smartboard.Data.Interface.onThingListener;
 public class Device extends Thing {
     private States mState;
     private String mType;
-    private onThingListener mOnThingListener;
 
     public static Device Load(String json) {
         try {
@@ -19,14 +17,6 @@ public class Device extends Thing {
         } catch (Exception e) {
             return new Device();
         }
-    }
-
-    public onThingListener getOnThingListener() {
-        return mOnThingListener;
-    }
-
-    public void setOnThingListener(onThingListener onThingListener) {
-        mOnThingListener = onThingListener;
     }
 
     public States getState() {

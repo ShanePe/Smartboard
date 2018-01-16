@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:layout_margin="4dp">
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:layout_margin="4dp"
+    app:cardCornerRadius="4dp">
 
     <FrameLayout
         android:id="@+id/cv_dashboard_block"
@@ -16,45 +19,47 @@
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/block_area"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/ba_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center" />
+                android:gravity="center"
+                android:textAppearance="?attr/textAppearanceListItem" />
 
             <ImageView
                 android:id="@+id/ba_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:contentDescription="@string/content_desc_img" />
 
             <TextView
                 android:id="@+id/ba_device"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center" />
+                android:layout_gravity="center"
+                android:textAppearance="?attr/textAppearanceListItem" />
 
             <TextView
                 android:id="@+id/ba_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center" />
+                android:layout_gravity="center"
+                android:textAppearance="?attr/textAppearanceListItem" />
 
             <TextView
                 android:id="@+id/ba_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center" />
+                android:layout_gravity="center"
+                android:textAppearance="?attr/textAppearanceListItem" />
         </LinearLayout>
 
 
     </FrameLayout>
-    <View
-        android:id="@+id/drag_handle"
-        android:layout_width="50dp"
-        android:layout_height="match_parent" />
-</FrameLayout>
+
+</android.support.v7.widget.CardView>

@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.Adapters;
 
+import android.support.annotation.ColorInt;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,19 +81,14 @@ public class DashboardBlockAdapter extends RecyclerView.Adapter<DashboardBlockAd
         else if (holder.mItem.getThing() instanceof Routine)
             holder.mBaType.setText(R.string.lbl_routine);
 
-        if ((position % 2) == 1) {
-            holder.mLayout.setBackgroundColor(holder.mItem.getBackgroundColourOff());
-            holder.mBaName.setTextColor(holder.mItem.getForeColourOff());
-            holder.mBaDevice.setTextColor(holder.mItem.getForeColourOff());
-            holder.mBaSize.setTextColor(holder.mItem.getForeColourOff());
-            holder.mBaType.setTextColor(holder.mItem.getForeColourOff());
-        } else {
-            holder.mLayout.setBackgroundColor(holder.mItem.getBackgroundColourOn());
-            holder.mBaName.setTextColor(holder.mItem.getForeColourOn());
-            holder.mBaDevice.setTextColor(holder.mItem.getForeColourOn());
-            holder.mBaSize.setTextColor(holder.mItem.getForeColourOn());
-            holder.mBaType.setTextColor(holder.mItem.getForeColourOn());
-        }
+        @ColorInt int bgClr = getThingColour(holder.mItem.getThing(), holder.mItem.getBackgroundColourOff(), holder.mItem.getBackgroundColourOn());
+        @ColorInt int fgClr = getThingColour(holder.mItem.getThing(), holder.mItem.getForeColourOff(), holder.mItem.getForeColourOn());
+
+        holder.mLayout.setBackgroundColor(bgClr);
+        holder.mBaName.setTextColor(fgClr);
+        holder.mBaDevice.setTextColor(fgClr);
+        holder.mBaSize.setTextColor(fgClr);
+        holder.mBaType.setTextColor(fgClr);
 
         final int dragState = holder.getDragStateFlags();
 
@@ -112,6 +108,21 @@ public class DashboardBlockAdapter extends RecyclerView.Adapter<DashboardBlockAd
 
             holder.mContainer.setBackgroundResource(bgResId);
         }
+    }
+
+    private @ColorInt
+    int getThingColour(Thing thing, int Off, int On) {
+        if (thing instanceof Routine)
+            return Off;
+        if (thing instanceof Device)
+            switch (((Device) thing).getState()) {
+                case On:
+                    return On;
+                default:
+                    return Off;
+            }
+        else
+            return 0;
     }
 
     @Override
@@ -172,20 +183,18 @@ public class DashboardBlockAdapter extends RecyclerView.Adapter<DashboardBlockAd
         public final TextView mBaType;
         public Block mItem;
         public FrameLayout mContainer;
-        public View mDragHandle;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mContainer = view.findViewById(R.id.cv_dashboard_block);
-            mDragHandle = view.findViewById(R.id.drag_handle);
 
-            mLayout = (LinearLayout) view.findViewById(R.id.block_area);
-            mBaName = (TextView) view.findViewById(R.id.ba_name);
-            mBaImg = (ImageView) view.findViewById(R.id.ba_image);
-            mBaDevice = (TextView) view.findViewById(R.id.ba_device);
-            mBaSize = (TextView) view.findViewById(R.id.ba_size);
-            mBaType = (TextView) view.findViewById(R.id.ba_type);
+            mLayout = view.findViewById(R.id.block_area);
+            mBaName = view.findViewById(R.id.ba_name);
+            mBaImg = view.findViewById(R.id.ba_image);
+            mBaDevice = view.findViewById(R.id.ba_device);
+            mBaSize = view.findViewById(R.id.ba_size);
+            mBaType = view.findViewById(R.id.ba_type);
         }
 
         @Override

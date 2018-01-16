@@ -26,12 +26,6 @@ import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
 public class DashboardFragment extends Fragment {
 
     private List<Dashboard> mDashboard = new ArrayList<>();
@@ -51,24 +45,33 @@ public class DashboardFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.mnu_dash_add) {
-            final MainActivity activity = (MainActivity) getActivity();
-            Intent dashAdd = new Intent(getActivity(), SmartboardActivity.class);
+        if (item.getItemId() == R.id.mnu_dash_add)
+            LoadDashboard(null);
 
-            ArrayList<String> devices = new ArrayList<>();
-            ArrayList<String> routines = new ArrayList<>();
-
-            for (Routine r : activity.getMonitor().getRoutines())
-                devices.add(r.toJson());
-            for (Device d : activity.getMonitor().getDevices())
-                routines.add(d.toJson());
-
-            dashAdd.putStringArrayListExtra("devices", devices);
-            dashAdd.putStringArrayListExtra("routines", routines);
-
-            startActivity(dashAdd);
-        }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void LoadDashboard(Dashboard dashboard)
+    {
+        final MainActivity activity = (MainActivity) getActivity();
+        Intent dashAdd = new Intent(getActivity(), SmartboardActivity.class);
+
+        ArrayList<String> devices = new ArrayList<>();
+        ArrayList<String> routines = new ArrayList<>();
+
+        for (Device d : activity.getMonitor().getDevices())
+            devices.add(d.toJson());
+
+        for (Routine r : activity.getMonitor().getRoutines())
+            routines.add(r.toJson());
+
+        if(dashboard == null)
+            dashboard = new Dashboard();
+
+        dashAdd.putStringArrayListExtra("devices", devices);
+        dashAdd.putStringArrayListExtra("routines", routines);
+        dashAdd.putExtra("dashboard", dashboard.toJson());
+        startActivity(dashAdd);
     }
 
     @Override
@@ -107,42 +110,18 @@ public class DashboardFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new DashboardViewAdapter(mDashboard, mListener));
+            recyclerView.setAdapter(new DashboardViewAdapter(mDashboard, new OnListFragmentInteractionListener() {
+                @Override
+                public void onListFragmentInteraction(Dashboard item) {
+                    LoadDashboard(item);
+                }
+            }));
         }
 
         return view;
     }
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
+     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(Dashboard item);
     }
 }

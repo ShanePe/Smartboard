@@ -22,13 +22,13 @@ import shane.pennihome.local.smartboard.R;
 /**
  * Created by shane on 15/01/18.
  */
-public class RowViewHandler {
+public class GroupViewHandler {
     private RecyclerView mRecyclerView;
     private RecyclerViewDragDropManager mRecyclerViewDragDropManager;
     private RecyclerView.Adapter mWrappedAdapter;
     private DashboardBlockAdapter mDashboardBlockAdapter;
 
-    public RowViewHandler(Context context, View view, List<Block> blocks) {
+    public GroupViewHandler(Context context, View view, List<Block> blocks) {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.dash_block_list_rv);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 8);
 
@@ -45,7 +45,7 @@ public class RowViewHandler {
         mRecyclerViewDragDropManager.setDragStartItemAnimationDuration(250);
         mRecyclerViewDragDropManager.setDraggingItemAlpha(0.8f);
         mRecyclerViewDragDropManager.setDraggingItemScale(1.3f);
-        mRecyclerViewDragDropManager.setDraggingItemRotation(15.0f);
+        //mRecyclerViewDragDropManager.setDraggingItemRotation(15.0f);
 
         //adapter
         mDashboardBlockAdapter = new DashboardBlockAdapter(new DashboardFragment.OnListFragmentInteractionListener() {

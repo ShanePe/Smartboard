@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
@@ -16,7 +16,7 @@ public class SmartboardFragment extends Fragment {
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private SmartboardActivity mContext;
+    private SmartboardActivity mSmartboardActivity;
 
     public SmartboardFragment() {
     }
@@ -36,8 +36,22 @@ public class SmartboardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        mSmartboardActivity = (SmartboardActivity) getContext();
+
         View rootView = inflater.inflate(R.layout.smartboard_tab_dash, container, false);
-        TextView textView = (TextView) rootView.findViewById(R.id.txt_db_name);
+        final EditText editText = (EditText) rootView.findViewById(R.id.txt_db_name);
+        editText.setText(mSmartboardActivity.getDashboard().getName());
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (!b) {
+                    mSmartboardActivity.getDashboard().setName(editText.getText().toString());
+                    mSmartboardActivity.DataChanged();
+                }
+            }
+        });
         return rootView;
     }
 }

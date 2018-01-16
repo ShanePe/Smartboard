@@ -36,14 +36,7 @@ public class DBEngine extends SQLiteOpenHelper {
     }
 
     public void WriteToDatabase(IDatabaseObject data) {
-        SQLiteDatabase db = null;
-        try {
-            db = this.getWritableDatabase();
-            db.execSQL(Queries.getUpdateDatastore(data));
-        } finally {
-            if (db != null)
-                db.close();
-        }
+        ExecuteSQL(Queries.getUpdateDatastore(data));
     }
 
     public List<IDatabaseObject> ReadAllFromDatabase() {
@@ -59,6 +52,21 @@ public class DBEngine extends SQLiteOpenHelper {
         return getDataObjects(Queries.getDatastoreByType(type));
     }
 
+    public void CleanDataStore() {
+        ExecuteSQL(Queries.getCleanDatastore());
+    }
+
+    private void ExecuteSQL(String query) {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            db.execSQL(query);
+        } finally {
+            if (db != null)
+                db.close();
+        }
+    }
+
     List<IDatabaseObject> getDataObjects(String query) {
         SQLiteDatabase db = null;
         try {
@@ -70,8 +78,10 @@ public class DBEngine extends SQLiteOpenHelper {
                 switch (IDatabaseObject.Types.valueOf(c.getString(1))) {
                     case Dashboard:
                         items.add(Dashboard.Load(c.getString(2)));
+                        break;
                     case Block:
                         items.add(Block.Load(c.getString(2)));
+                        break;
                 }
             }
             c.close();
@@ -87,6 +97,10 @@ public class DBEngine extends SQLiteOpenHelper {
         @SuppressWarnings("SameReturnValue")
         public static String getCreateDatastore() {
             return "CREATE TABLE IF NOT EXISTS datastore (id text PRIMARY KEY unique,type text not null, object text not null)";
+        }
+
+        public static String getCleanDatastore() {
+            return "delete from datastore ";
         }
 
         public static String getUpdateDatastore(IDatabaseObject object) {

@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.Adapters;
 
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -68,7 +69,7 @@ public class RoutineViewAdapter extends ThingViewAdapter {
         final View mView;
         final ImageView mImgView;
         final TextView mNameView;
-        final Button mButtonView;
+        final AppCompatImageButton mButtonView;
         final TextView mSourceView;
         Routine mItem;
 

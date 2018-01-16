@@ -107,4 +107,5 @@ public class Block extends IDatabaseObject {
     public void setGroupId(long groupId) {
         this.mGroupId = groupId;
     }
+
 }

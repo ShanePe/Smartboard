@@ -1,13 +1,13 @@
 package shane.pennihome.local.smartboard.Adapters.Interface;
 
-import shane.pennihome.local.smartboard.Data.Row;
+import shane.pennihome.local.smartboard.Data.Group;
 
 /**
  * Created by shane on 13/01/18.
  */
 
 public interface OnDashboardAdapterListener {
-    void AddBlock(Row row);
+    void AddBlock(Group group);
 
-    void RowDisplayNameChanged(Row row, boolean displayName);
+    void RowDisplayNameChanged(Group group, boolean displayName);
 }

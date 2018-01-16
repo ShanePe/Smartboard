@@ -14,7 +14,13 @@ public abstract class Thing {
     private String mId;
     private String mName;
     private Source mSource;
-    private transient onThingListener mOnThingListener;
+    private String mInstance;
+
+    protected transient onThingListener mOnThingListener;
+
+    public Thing() {
+        mInstance = this.getClass().getSimpleName();
+    }
 
     private static <V extends Thing> V fromJson(Class<V> cls, String json) {
         Gson gson = new Gson();
@@ -55,8 +61,8 @@ public abstract class Thing {
 
     protected abstract void successfulToggle(@SuppressWarnings("unused") Thing thing);
 
-    public void setOnThingToggledListener(onThingListener _onThingListener) {
-        this.mOnThingListener = _onThingListener;
+    public void setOnThingListener(onThingListener onThingListener) {
+        mOnThingListener = onThingListener;
     }
 
     public void Toggle() {

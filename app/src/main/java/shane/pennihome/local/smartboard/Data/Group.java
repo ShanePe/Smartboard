@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
-import shane.pennihome.local.smartboard.UI.RowViewHandler;
+import shane.pennihome.local.smartboard.UI.GroupViewHandler;
 
 /**
  * Created by shane on 13/01/18.
  */
 
 @SuppressWarnings("DefaultFileTemplate")
-public class Row extends IDatabaseObject {
+public class Group extends IDatabaseObject {
     final List<Block> mBlocks = new ArrayList<>();
     private boolean mDisplayName = false;
     private boolean mExpanded = false;
@@ -25,20 +25,20 @@ public class Row extends IDatabaseObject {
     int mDefaultBlockForeColourOn;
     private @ColorInt
     int mDefaultBlockBackColourOn;
-    private RowViewHandler mRowViewHandler;
+    private transient GroupViewHandler mGroupViewHandler;
 
-    public Row() {
+    public Group() {
     }
 
-    public Row(String name) {
+    public Group(String name) {
         this.setName(name);
     }
 
-    public static Row Load(String json) {
+    public static Group Load(String json) {
         try {
-            return IDatabaseObject.Load(Row.class, json);
+            return IDatabaseObject.Load(Group.class, json);
         } catch (Exception e) {
-            return new Row();
+            return new Group();
         }
     }
 
@@ -107,11 +107,11 @@ public class Row extends IDatabaseObject {
         this.mDefaultBlockBackColourOn = backgroundColour;
     }
 
-    public RowViewHandler getRowViewHandler() {
-        return mRowViewHandler;
+    public GroupViewHandler getRowViewHandler() {
+        return mGroupViewHandler;
     }
 
-    public void setRowViewHandler(RowViewHandler rowViewHandler) {
-        this.mRowViewHandler = rowViewHandler;
+    public void setRowViewHandler(GroupViewHandler groupViewHandler) {
+        this.mGroupViewHandler = groupViewHandler;
     }
 }

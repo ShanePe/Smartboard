@@ -111,12 +111,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void init() {
+        mMonitor = new Monitor(this);
+        mMonitor.Start();
+    }
+
+    public void populateDashbboards() {
         DBEngine db = new DBEngine(this);
         mDashboards = new ArrayList<>();
         for (IDatabaseObject d : db.readFromDatabaseByType(IDatabaseObject.Types.Dashboard))
             mDashboards.add((Dashboard) d);
-        mMonitor = new Monitor(this);
-        mMonitor.Start();
+
     }
 
     public Monitor getMonitor() {
@@ -143,6 +147,17 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction ft = getFragmentManager().beginTransaction().addToBackStack("smartThingsConnect");
         ft.replace(R.id.content_main, fragment);
         ft.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        populateDashbboards();
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
+            actionBar.hide();
+
+        super.onResume();
     }
 
     private void hueBridgeConnect() {
