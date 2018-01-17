@@ -14,7 +14,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
-    tools:context="shane.pennihome.local.smartboard.Fragments.Tabs.SmartboardFragment"
+    tools:context="shane.pennihome.local.smartboard.fragments.tabs.SmartboardFragment"
     tools:listitem="@layout/fragment_dashboard">
 
 </android.support.v7.widget.RecyclerView>

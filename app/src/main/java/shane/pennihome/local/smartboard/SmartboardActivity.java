@@ -12,14 +12,16 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 
-import shane.pennihome.local.smartboard.Adapters.DashboardGroupAdapter;
-import shane.pennihome.local.smartboard.Data.Dashboard;
-import shane.pennihome.local.smartboard.Data.Switch;
-import shane.pennihome.local.smartboard.Data.Routine;
-import shane.pennihome.local.smartboard.Data.SQL.DBEngine;
-import shane.pennihome.local.smartboard.Data.Things;
-import shane.pennihome.local.smartboard.Fragments.Tabs.GroupsFragment;
-import shane.pennihome.local.smartboard.Fragments.Tabs.SmartboardFragment;
+import shane.pennihome.local.smartboard.adapters.DashboardGroupAdapter;
+import shane.pennihome.local.smartboard.blocks.interfaces.IBlock;
+import shane.pennihome.local.smartboard.data.Dashboard;
+import shane.pennihome.local.smartboard.data.Group;
+import shane.pennihome.local.smartboard.data.sql.DBEngine;
+import shane.pennihome.local.smartboard.fragments.tabs.GroupsFragment;
+import shane.pennihome.local.smartboard.fragments.tabs.SmartboardFragment;
+import shane.pennihome.local.smartboard.things.Routine.Routine;
+import shane.pennihome.local.smartboard.things.Switch.Switch;
+import shane.pennihome.local.smartboard.things.Things;
 
 public class SmartboardActivity extends AppCompatActivity {
 
@@ -37,7 +39,7 @@ public class SmartboardActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    private DashboardGroupAdapter mRowAdapter;
+    private DashboardGroupAdapter mDashboardGroupAdapter;
     private Things mThings = new Things();
     private Dashboard mDashboard;
 
@@ -61,7 +63,7 @@ public class SmartboardActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        mRowAdapter = new DashboardGroupAdapter(this);
+        mDashboardGroupAdapter = new DashboardGroupAdapter(this);
 
         Bundle extras = getIntent().getExtras();
         ArrayList<String> devices = extras.getStringArrayList("devices");
@@ -78,6 +80,16 @@ public class SmartboardActivity extends AppCompatActivity {
                 mThings.add(Routine.Load(j));
             } catch (Exception ex) {
             }
+
+        for (Group g : mDashboard.getGroups())
+            for (IBlock b : g.getBlocks())
+                if (b.getThing() != null) {
+                    int thingPos = mThings.GetIndex(b.getThing());
+                    if (thingPos != -1)
+                        b.setThing(mThings.get(thingPos));
+                    else
+                        b.setThing(null);
+                }
     }
 
     public Things getThings() {
@@ -113,15 +125,15 @@ public class SmartboardActivity extends AppCompatActivity {
 
     public void DataChanged() {
         WriteDashboardToDatabase();
-        mRowAdapter.notifyDataSetChanged();
+        mDashboardGroupAdapter.notifyDataSetChanged();
     }
 
     public Dashboard getDashboard() {
         return mDashboard;
     }
 
-    public DashboardGroupAdapter getRowAdapter() {
-        return mRowAdapter;
+    public DashboardGroupAdapter getGroupAdapter() {
+        return mDashboardGroupAdapter;
     }
 
     /**

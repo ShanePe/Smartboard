@@ -16,23 +16,23 @@ import android.webkit.CookieManager;
 
 import java.util.List;
 
-import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.Comms.Monitor;
-import shane.pennihome.local.smartboard.Comms.PhilipsHue.PHBridgeController;
-import shane.pennihome.local.smartboard.Comms.SmartThings.STController;
-import shane.pennihome.local.smartboard.Data.Dashboard;
-import shane.pennihome.local.smartboard.Data.Dashboards;
-import shane.pennihome.local.smartboard.Data.Globals;
-import shane.pennihome.local.smartboard.Data.HueBridge;
-import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
-import shane.pennihome.local.smartboard.Data.SQL.DBEngine;
-import shane.pennihome.local.smartboard.Data.TokenHueBridge;
-import shane.pennihome.local.smartboard.Fragments.DashboardFragment;
-import shane.pennihome.local.smartboard.Fragments.DeviceFragment;
-import shane.pennihome.local.smartboard.Fragments.HueBridgeFragment;
-import shane.pennihome.local.smartboard.Fragments.Interface.IFragment;
-import shane.pennihome.local.smartboard.Fragments.RoutineFragment;
-import shane.pennihome.local.smartboard.Fragments.SmartThingsFragment;
+import shane.pennihome.local.smartboard.comms.Monitor;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
+import shane.pennihome.local.smartboard.comms.philipshue.PHBridgeController;
+import shane.pennihome.local.smartboard.comms.smartthings.STController;
+import shane.pennihome.local.smartboard.data.Dashboard;
+import shane.pennihome.local.smartboard.data.Dashboards;
+import shane.pennihome.local.smartboard.data.Globals;
+import shane.pennihome.local.smartboard.data.HueBridge;
+import shane.pennihome.local.smartboard.data.TokenHueBridge;
+import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
+import shane.pennihome.local.smartboard.data.sql.DBEngine;
+import shane.pennihome.local.smartboard.fragments.DashboardFragment;
+import shane.pennihome.local.smartboard.fragments.DeviceFragment;
+import shane.pennihome.local.smartboard.fragments.HueBridgeFragment;
+import shane.pennihome.local.smartboard.fragments.RoutineFragment;
+import shane.pennihome.local.smartboard.fragments.SmartThingsFragment;
+import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
 
 @SuppressWarnings("unused")
 public class MainActivity extends AppCompatActivity
@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity
 
     public void populateDashbboards() {
         DBEngine db = new DBEngine(this);
+        // db.CleanDataStore();
         if (mDashboards == null)
             mDashboards = new Dashboards();
         else
