@@ -1,10 +1,10 @@
 package shane.pennihome.local.smartboard;
 
-import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -12,8 +12,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.webkit.CookieManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
@@ -21,29 +21,26 @@ import shane.pennihome.local.smartboard.Comms.Monitor;
 import shane.pennihome.local.smartboard.Comms.PhilipsHue.PHBridgeController;
 import shane.pennihome.local.smartboard.Comms.SmartThings.STController;
 import shane.pennihome.local.smartboard.Data.Dashboard;
+import shane.pennihome.local.smartboard.Data.Dashboards;
 import shane.pennihome.local.smartboard.Data.Globals;
 import shane.pennihome.local.smartboard.Data.HueBridge;
 import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
-import shane.pennihome.local.smartboard.Data.Interface.Thing;
 import shane.pennihome.local.smartboard.Data.SQL.DBEngine;
 import shane.pennihome.local.smartboard.Data.TokenHueBridge;
 import shane.pennihome.local.smartboard.Fragments.DashboardFragment;
 import shane.pennihome.local.smartboard.Fragments.DeviceFragment;
 import shane.pennihome.local.smartboard.Fragments.HueBridgeFragment;
+import shane.pennihome.local.smartboard.Fragments.Interface.IFragment;
 import shane.pennihome.local.smartboard.Fragments.RoutineFragment;
 import shane.pennihome.local.smartboard.Fragments.SmartThingsFragment;
-import shane.pennihome.local.smartboard.Fragments.ThingFragment;
 
 @SuppressWarnings("unused")
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        ThingFragment.OnListFragmentInteractionListener,
-        SmartThingsFragment.OnFragmentInteractionListener,
-        HueBridgeFragment.OnListFragmentInteractionListener,
-        DashboardFragment.OnListFragmentInteractionListener {
+        HueBridgeFragment.OnListFragmentInteractionListener {
 
     private Monitor mMonitor = null;
-    private List<Dashboard> mDashboards = null;
+    private Dashboards mDashboards = null;
 
     @Override
     protected void onPostResume() {
@@ -75,16 +72,33 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         Globals.setSharedPreferences(this);
 
+        CookieManager.getInstance().setAcceptCookie(true);
+
         init();
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+        boolean handled = false;
+        for (Fragment f : fragmentList) {
+            if (f instanceof IFragment) {
+                handled = ((IFragment) f).onBackPressed(this);
+
+                if (handled) {
+                    break;
+                }
+            }
+        }
+
+        if (!handled) {
+
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -117,9 +131,14 @@ public class MainActivity extends AppCompatActivity
 
     public void populateDashbboards() {
         DBEngine db = new DBEngine(this);
-        mDashboards = new ArrayList<>();
+        if (mDashboards == null)
+            mDashboards = new Dashboards();
+        else
+            mDashboards.clear();
+
         for (IDatabaseObject d : db.readFromDatabaseByType(IDatabaseObject.Types.Dashboard))
             mDashboards.add((Dashboard) d);
+
 
     }
 
@@ -132,9 +151,9 @@ public class MainActivity extends AppCompatActivity
 
         final SmartThingsFragment fragment = new SmartThingsFragment();
         //noinspection unchecked
-        fragment.setmProcessComplete(new OnProcessCompleteListener<Activity>() {
+        fragment.setmProcessComplete(new OnProcessCompleteListener<AppCompatActivity>() {
             @Override
-            public void complete(boolean success, Activity source) {
+            public void complete(boolean success, AppCompatActivity source) {
                 if (success) {
                     mMonitor.getSmartThingsThings(new OnProcessCompleteListener<STController>() {
                         @Override
@@ -144,7 +163,7 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-        FragmentTransaction ft = getFragmentManager().beginTransaction().addToBackStack("smartThingsConnect");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("smartThingsConnect");
         ft.replace(R.id.content_main, fragment);
         ft.commit();
     }
@@ -165,14 +184,14 @@ public class MainActivity extends AppCompatActivity
 
         final HueBridgeFragment fragment = new HueBridgeFragment();
         //noinspection unchecked
-        FragmentTransaction ft = getFragmentManager().beginTransaction().addToBackStack("huebridgeConnect");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("huebridgeConnect");
         ft.replace(R.id.content_main, fragment);
         ft.commit();
     }
 
-    public void setToMainActivity() {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.remove(getFragmentManager().findFragmentById(R.id.content_main));
+    public void backToMainActivity() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.remove(getSupportFragmentManager().findFragmentById(R.id.content_main));
         ft.commit();
 
         ActionBar actionBar = getSupportActionBar();
@@ -183,8 +202,7 @@ public class MainActivity extends AppCompatActivity
     private void deviceList() {
         DeviceFragment fragment = new DeviceFragment();
         //noinspection unchecked
-        fragment.setThings((List<Thing>) (List<?>) mMonitor.getDevices());
-        FragmentTransaction ft = getFragmentManager().beginTransaction().addToBackStack("deviceList");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("deviceList");
         ft.replace(R.id.content_main, fragment);
         ft.commit();
     }
@@ -192,8 +210,7 @@ public class MainActivity extends AppCompatActivity
     private void routineList() {
         RoutineFragment fragment = new RoutineFragment();
         //noinspection unchecked
-        fragment.setThings((List<Thing>) (List<?>) mMonitor.getRoutines());
-        FragmentTransaction ft = getFragmentManager().beginTransaction().addToBackStack("routineList");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("routineList");
         ft.replace(R.id.content_main, fragment);
         ft.commit();
     }
@@ -201,15 +218,14 @@ public class MainActivity extends AppCompatActivity
     private void dashboardList() {
         DashboardFragment fragment = new DashboardFragment();
         //noinspection unchecked
-        fragment.setDashboard((List<Dashboard>) mDashboards);
-        FragmentTransaction ft = getFragmentManager().beginTransaction().addToBackStack("dashboardList");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("dashboardList");
         ft.replace(R.id.content_main, fragment);
+
         ft.commit();
     }
 
-    @Override
-    public void onListFragmentInteraction(Thing item) {
-
+    public List<Dashboard> getDashboards() {
+        return mDashboards;
     }
 
     @Override
@@ -220,17 +236,12 @@ public class MainActivity extends AppCompatActivity
         philipHueHub.setToken("");
         philipHueHub.Save();
 
-        setToMainActivity();
+        backToMainActivity();
         mMonitor.getHueBridgeThings(new OnProcessCompleteListener<PHBridgeController>() {
             @Override
             public void complete(boolean success, PHBridgeController source) {
 
             }
         });
-    }
-
-    @Override
-    public void onListFragmentInteraction(Dashboard item) {
-
     }
 }

@@ -7,22 +7,14 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import shane.pennihome.local.smartboard.Data.Interface.Thing;
-import shane.pennihome.local.smartboard.Fragments.ThingFragment;
+import shane.pennihome.local.smartboard.Data.Interface.IThing;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link Thing} and makes a call to the
- * specified {@link ThingFragment.OnListFragmentInteractionListener}.
- * .
- */
 abstract class ThingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    final List<Thing> mValues;
-    final ThingFragment.OnListFragmentInteractionListener mListener;
+    final List<IThing> mValues;
 
-    ThingViewAdapter(List<Thing> items, ThingFragment.OnListFragmentInteractionListener listener) {
+    ThingViewAdapter(List<IThing> items) {
         mValues = items;
-        mListener = listener;
     }
 
     protected abstract int getFragmentLayout();

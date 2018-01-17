@@ -2,13 +2,11 @@ package shane.pennihome.local.smartboard.Fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,19 +19,13 @@ import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListene
 import shane.pennihome.local.smartboard.Comms.SmartThings.STTokenGetter;
 import shane.pennihome.local.smartboard.Data.Globals;
 import shane.pennihome.local.smartboard.Data.TokenSmartThings;
+import shane.pennihome.local.smartboard.Fragments.Interface.IFragment;
 import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SmartThingsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- */
 @SuppressWarnings("unused")
-public class SmartThingsFragment extends Fragment {
-    private OnFragmentInteractionListener mListener;
-    private OnProcessCompleteListener<Activity> mProcessComplete;
+public class SmartThingsFragment extends IFragment {
+    private OnProcessCompleteListener<AppCompatActivity> mProcessComplete;
 
     public SmartThingsFragment() {
     }
@@ -41,13 +33,6 @@ public class SmartThingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        MainActivity activity = (MainActivity) getActivity();
-        if (activity != null) {
-            ActionBar actionBar = activity.getSupportActionBar();
-            if (actionBar != null)
-                actionBar.show();
-        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -61,7 +46,7 @@ public class SmartThingsFragment extends Fragment {
 
         WebView web = view.findViewById(R.id.st_webview);
         web.getSettings().setJavaScriptEnabled(true);
-
+        web.getSettings().setAllowContentAccess(true);
         // check request
         String requestUrl = (Globals.ST_OAUTH_URL +
                 "?redirect_uri=" + Globals.ST_REDIRECT_URI +
@@ -103,7 +88,7 @@ public class SmartThingsFragment extends Fragment {
                     activity.setResult(Activity.RESULT_CANCELED, resultIntent);
 
                     tokenSmartThingsInfo.Save();
-                    activity.setToMainActivity();
+                    activity.backToMainActivity();
 
                     // Application by Token
                     STTokenGetter tokenGetter = new STTokenGetter(activity, new OnProcessCompleteListener<STTokenGetter>() {
@@ -129,37 +114,7 @@ public class SmartThingsFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public void setmProcessComplete(OnProcessCompleteListener<Activity> mProcessComplete) {
+    public void setmProcessComplete(OnProcessCompleteListener<AppCompatActivity> mProcessComplete) {
         this.mProcessComplete = mProcessComplete;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
     }
 }

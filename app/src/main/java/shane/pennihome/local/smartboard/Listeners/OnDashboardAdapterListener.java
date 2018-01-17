@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.Adapters.Interface;
+package shane.pennihome.local.smartboard.Listeners;
 
 import shane.pennihome.local.smartboard.Data.Group;
 

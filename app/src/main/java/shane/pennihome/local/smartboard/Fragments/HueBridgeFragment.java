@@ -1,7 +1,6 @@
 package shane.pennihome.local.smartboard.Fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -19,6 +18,7 @@ import shane.pennihome.local.smartboard.Adapters.HueBridgeViewAdapter;
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Comms.PhilipsHue.PHBridgeDiscoverer;
 import shane.pennihome.local.smartboard.Data.HueBridge;
+import shane.pennihome.local.smartboard.Fragments.Interface.IFragment;
 import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.R;
 
@@ -29,11 +29,10 @@ import shane.pennihome.local.smartboard.R;
  * interface.
  */
 @SuppressWarnings("unused")
-public class HueBridgeFragment extends Fragment {
+public class HueBridgeFragment extends IFragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
     private List<HueBridge> mHueBridge = new ArrayList<>();
 
     /**
@@ -43,7 +42,6 @@ public class HueBridgeFragment extends Fragment {
     public HueBridgeFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static HueBridgeFragment newInstance(int columnCount) {
         HueBridgeFragment fragment = new HueBridgeFragment();
@@ -101,24 +99,6 @@ public class HueBridgeFragment extends Fragment {
         return view;
     }
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
     public List<shane.pennihome.local.smartboard.Data.HueBridge> getHueBridge() {
         return mHueBridge;
     }
@@ -127,18 +107,7 @@ public class HueBridgeFragment extends Fragment {
         mHueBridge = hueBridge;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(HueBridge item);
     }
 }

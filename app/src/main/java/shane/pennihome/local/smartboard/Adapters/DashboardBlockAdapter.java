@@ -22,10 +22,14 @@ import java.util.List;
 
 import shane.pennihome.local.smartboard.Data.Block;
 import shane.pennihome.local.smartboard.Data.Device;
-import shane.pennihome.local.smartboard.Data.Interface.Thing;
+import shane.pennihome.local.smartboard.Data.Group;
+import shane.pennihome.local.smartboard.Data.Interface.IThing;
 import shane.pennihome.local.smartboard.Data.Routine;
 import shane.pennihome.local.smartboard.Fragments.DashboardFragment;
+import shane.pennihome.local.smartboard.Listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.SmartboardActivity;
+import shane.pennihome.local.smartboard.UI.UIHelper;
 
 /**
  * Created by shane on 15/01/18.
@@ -36,10 +40,14 @@ public class DashboardBlockAdapter extends RecyclerView.Adapter<DashboardBlockAd
     private final DashboardFragment.OnListFragmentInteractionListener mListener;
     private List<Block> mValues;
     private int mItemMoveMode = RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT;
+    private SmartboardActivity mSmartboardActivity;
+    private Group mGroup;
 
-    public DashboardBlockAdapter(DashboardFragment.OnListFragmentInteractionListener listener) {
+    public DashboardBlockAdapter(SmartboardActivity smartboardActivity, Group group, DashboardFragment.OnListFragmentInteractionListener listener) {
         mValues = new ArrayList<>();
         mListener = listener;
+        mSmartboardActivity = smartboardActivity;
+        mGroup = group;
         setHasStableIds(true);
     }
 
@@ -68,20 +76,20 @@ public class DashboardBlockAdapter extends RecyclerView.Adapter<DashboardBlockAd
         holder.mItem = mValues.get(position);
 
         holder.mBaName.setText(holder.mItem.getName());
-        if (holder.mItem.getThing().getSource() == Thing.Source.SmartThings) {
+        if (holder.mItem.getThing().getSource() == IThing.Source.SmartThings) {
             holder.mBaImg.setImageResource(R.drawable.icon_switch);
-        } else if (holder.mItem.getThing().getSource() == Thing.Source.PhilipsHue) {
+        } else if (holder.mItem.getThing().getSource() == IThing.Source.PhilipsHue) {
             holder.mBaImg.setImageResource(R.drawable.icon_phlogo);
         }
 
         holder.mBaDevice.setText(holder.mItem.getThing().getName());
-        holder.mBaSize.setText(String.format("%s x %s", holder.mItem.getWidth(), holder.mItem.getHeight()));
+        holder.mBaSize.setText(String.format("%s x %s o:%s", holder.mItem.getWidth(), holder.mItem.getHeight(), holder.mItem.getGroupId()));
         if (holder.mItem.getThing() instanceof Device)
             holder.mBaType.setText(R.string.lbl_device);
         else if (holder.mItem.getThing() instanceof Routine)
             holder.mBaType.setText(R.string.lbl_routine);
 
-        @ColorInt int bgClr = getThingColour(holder.mItem.getThing(), holder.mItem.getBackgroundColourOff(), holder.mItem.getBackgroundColourOn());
+        @ColorInt final int bgClr = getThingColour(holder.mItem.getThing(), holder.mItem.getBackgroundColourOff(), holder.mItem.getBackgroundColourOn());
         @ColorInt int fgClr = getThingColour(holder.mItem.getThing(), holder.mItem.getForeColourOff(), holder.mItem.getForeColourOn());
 
         holder.mLayout.setBackgroundColor(bgClr);
@@ -107,11 +115,25 @@ public class DashboardBlockAdapter extends RecyclerView.Adapter<DashboardBlockAd
             }
 
             holder.mContainer.setBackgroundResource(bgResId);
+
+            holder.mContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UIHelper.showBlockPropertyWindow(mSmartboardActivity, mSmartboardActivity.getThings(), holder.mItem, new OnBlockSetListener() {
+                        @Override
+                        public void OnSet(Block block) {
+                            holder.mItem = block;
+                            mGroup.getRowViewHandler().getDashboardBlockAdapter().notifyDataSetChanged();
+                            mSmartboardActivity.DataChanged();
+                        }
+                    });
+                }
+            });
         }
     }
 
     private @ColorInt
-    int getThingColour(Thing thing, int Off, int On) {
+    int getThingColour(IThing thing, int Off, int On) {
         if (thing instanceof Routine)
             return Off;
         if (thing instanceof Device)
@@ -152,6 +174,7 @@ public class DashboardBlockAdapter extends RecyclerView.Adapter<DashboardBlockAd
         //} else {
         //    mProvider.swapItem(fromPosition, toPosition);
         //}
+
         Collections.swap(mValues, fromPosition, toPosition);
     }
 

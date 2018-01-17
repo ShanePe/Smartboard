@@ -9,9 +9,11 @@ import shane.pennihome.local.smartboard.Comms.PhilipsHue.PHBridgeController;
 import shane.pennihome.local.smartboard.Comms.SmartThings.STController;
 import shane.pennihome.local.smartboard.Data.Device;
 import shane.pennihome.local.smartboard.Data.Devices;
-import shane.pennihome.local.smartboard.Data.Interface.Thing;
+import shane.pennihome.local.smartboard.Data.Interface.IThing;
 import shane.pennihome.local.smartboard.Data.Interface.TokenInfo;
+import shane.pennihome.local.smartboard.Data.Routine;
 import shane.pennihome.local.smartboard.Data.Routines;
+import shane.pennihome.local.smartboard.Data.Things;
 import shane.pennihome.local.smartboard.Data.TokenHueBridge;
 import shane.pennihome.local.smartboard.Data.TokenSmartThings;
 
@@ -21,19 +23,20 @@ import shane.pennihome.local.smartboard.Data.TokenSmartThings;
 
 @SuppressWarnings("ALL")
 public class Monitor {
-    private static final int SECOND_CHECK = 30;
+    private static final int SECOND_CHECK = 120;
     private final Activity mActivity;
     private Thread mMonitorThread = null;
-    private Devices mDevices = new Devices();
-    private Routines mRoutines = new Routines();
+    //private Devices mDevices = new Devices();
+    //private Routines mRoutines = new Routines();
+    private Things mThings = new Things();
 
     public Monitor(Activity activity) {
         mActivity = activity;
 
-        getThings(Thing.Source.SmartThings, new OnProcessCompleteListener<IController>() {
+        getThings(IThing.Source.SmartThings, new OnProcessCompleteListener<IController>() {
             @Override
             public void complete(boolean success, IController source) {
-                getThings(Thing.Source.PhilipsHue, new OnProcessCompleteListener<IController>() {
+                getThings(IThing.Source.PhilipsHue, new OnProcessCompleteListener<IController>() {
                     @Override
                     public void complete(boolean success, IController source) {
                     }
@@ -43,23 +46,21 @@ public class Monitor {
     }
 
     public Devices getDevices() {
-        return mDevices;
+        Devices ret = new Devices();
+        ret.addAll(mThings.getOfType(Device.class));
+        ret.sort();
+        return ret;
     }
 
-    public void setDevices(Devices devices) {
-        this.mDevices = devices;
-    }
-
-    public shane.pennihome.local.smartboard.Data.Routines getRoutines() {
-        return mRoutines;
-    }
-
-    public void setRoutines(shane.pennihome.local.smartboard.Data.Routines routines) {
-        mRoutines = routines;
+    public Routines getRoutines() {
+        Routines ret = new Routines();
+        ret.addAll(mThings.getOfType(Routine.class));
+        ret.sort();
+        return ret;
     }
 
     public void getSmartThingsThings(final OnProcessCompleteListener<STController> processComplete) {
-        getThings(Thing.Source.SmartThings, new OnProcessCompleteListener<IController>() {
+        getThings(IThing.Source.SmartThings, new OnProcessCompleteListener<IController>() {
             @Override
             public void complete(boolean success, IController source) {
                 if (processComplete != null)
@@ -69,7 +70,7 @@ public class Monitor {
     }
 
     public void getHueBridgeThings(final OnProcessCompleteListener<PHBridgeController> processComplete) {
-        getThings(Thing.Source.PhilipsHue, new OnProcessCompleteListener<IController>() {
+        getThings(IThing.Source.PhilipsHue, new OnProcessCompleteListener<IController>() {
             @Override
             public void complete(boolean success, IController source) {
                 if (processComplete != null)
@@ -78,11 +79,11 @@ public class Monitor {
         });
     }
 
-    private void getThings(Thing.Source type, final OnProcessCompleteListener<IController> processComplete) {
+    private void getThings(IThing.Source type, final OnProcessCompleteListener<IController> processComplete) {
         try {
-            mDevices.remove(type);
-            mRoutines.remove(type);
-
+            //mDevices.remove(type);
+            //mRoutines.remove(type);
+            mThings.remove(type);
             SourceInfo s = new SourceInfo(type, mActivity);
 
             if (s.getToken().isAwaitingAuthorisation())
@@ -90,9 +91,8 @@ public class Monitor {
                     @Override
                     public void complete(boolean success, IController source) {
                         if (success) {
-                            mDevices.addAll(source.Devices());
-                            mRoutines.addAll(source.Routine());
-                            sortThings();
+                            mThings.addAll(source.Devices());
+                            mThings.addAll(source.Routine());
                         }
                         if (processComplete != null)
                             processComplete.complete(success, source);
@@ -103,9 +103,8 @@ public class Monitor {
                     @Override
                     public void complete(boolean success, IController source) {
                         if (success) {
-                            mDevices.addAll(source.Devices());
-                            mRoutines.addAll(source.Routine());
-                            sortThings();
+                            mThings.addAll(source.Devices());
+                            mThings.addAll(source.Routine());
                         }
 
                         if (processComplete != null)
@@ -120,11 +119,11 @@ public class Monitor {
                 Toast.makeText(mActivity, "Error gettings things for " + type.name(), Toast.LENGTH_SHORT).show();
 
             if (processComplete != null)
-                processComplete.complete(false, null);
+                processComplete.complete(true, null);
         }
     }
 
-    private void monitorThings(final Thing.Source type) {
+    private void monitorThings(final IThing.Source type) {
         try {
             SourceInfo s = new SourceInfo(type);
             if (s.getToken().isAuthorised()) {
@@ -140,8 +139,8 @@ public class Monitor {
         }//Don't crash on monitor thread.
     }
 
-    private void checkStateChange(Devices src, Thing.Source type) {
-        for (Device d : mDevices) {
+    private void checkStateChange(Devices src, IThing.Source type) {
+        for (Device d : getDevices()) {
             if (d.getSource() == type) {
                 Device s = src.getbyId(d.getId());
                 if (s == null)
@@ -154,10 +153,8 @@ public class Monitor {
             }
         }
 
-        if (src.size() != 0) {
-            mDevices.addAll(src);
-            mDevices.sort();
-        }
+        if (src.size() != 0)
+            mThings.addAll(src);
     }
 
     public void Start() {
@@ -170,8 +167,8 @@ public class Monitor {
                     try {
                         Thread.sleep(1000 * Monitor.SECOND_CHECK);
 
-                        monitorThings(Thing.Source.SmartThings);
-                        monitorThings(Thing.Source.PhilipsHue);
+                        monitorThings(IThing.Source.SmartThings);
+                        monitorThings(IThing.Source.PhilipsHue);
                     } catch (Exception ex) {
                     }
 
@@ -189,30 +186,25 @@ public class Monitor {
         }
     }
 
-    private void sortThings() {
-        mDevices.sort();
-        mRoutines.sort();
-    }
-
     private class SourceInfo {
         private TokenInfo mToken = null;
         private IController mController = null;
         private Activity mActivity = null;
 
-        public SourceInfo(Thing.Source source, Activity activity) throws Exception {
+        public SourceInfo(IThing.Source source, Activity activity) throws Exception {
             mActivity = activity;
             getTokenAndController(source);
         }
 
-        public SourceInfo(Thing.Source source) throws Exception {
+        public SourceInfo(IThing.Source source) throws Exception {
             getTokenAndController(source);
         }
 
-        private void getTokenAndController(Thing.Source type) throws Exception {
-            if (type == Thing.Source.SmartThings) {
+        private void getTokenAndController(IThing.Source type) throws Exception {
+            if (type == IThing.Source.SmartThings) {
                 mToken = TokenInfo.Load(TokenSmartThings.class);
                 mController = new STController(mActivity);
-            } else if (type == Thing.Source.PhilipsHue) {
+            } else if (type == IThing.Source.PhilipsHue) {
                 mToken = TokenInfo.Load(TokenHueBridge.class);
                 mController = new PHBridgeController(mActivity);
             } else

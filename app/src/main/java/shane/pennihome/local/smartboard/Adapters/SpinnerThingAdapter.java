@@ -9,25 +9,24 @@ import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.Data.Device;
-import shane.pennihome.local.smartboard.Data.Interface.Thing;
+import shane.pennihome.local.smartboard.Data.Interface.IThing;
 import shane.pennihome.local.smartboard.Data.Routine;
+import shane.pennihome.local.smartboard.Data.Things;
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.SmartboardActivity;
 
 /**
  * Created by shane on 14/01/18.
  */
 
 public class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
-    private List<Thing> mThings = new ArrayList<>();
-    private SmartboardActivity mSmartboardActivity;
+    private Things mThings = new Things();
+    private Context mContext;
 
-    public SpinnerThingAdapter(SmartboardActivity mSmartboardActivity) {
-        this.mSmartboardActivity = mSmartboardActivity;
+    public SpinnerThingAdapter(Context context) {
+        this.mContext = context;
     }
 
     @Override
@@ -48,21 +47,21 @@ public class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            LayoutInflater layoutInflater = (LayoutInflater) mSmartboardActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.spinner_thing, null);
         }
 
-        Thing thing = (Thing) getItem(position);
+        IThing thing = (IThing) getItem(position);
 
         ImageView img = (ImageView) convertView.findViewById(R.id.img_spin_icon);
         TextView txtType = (TextView) convertView.findViewById(R.id.txt_spin_type);
         TextView txtName = (TextView) convertView.findViewById(R.id.txt_spin_name);
         TextView txtSrc = (TextView) convertView.findViewById(R.id.txt_spin_source);
 
-        if (thing.getSource() == Thing.Source.SmartThings) {
+        if (thing.getSource() == IThing.Source.SmartThings) {
             img.setImageResource(R.drawable.icon_switch);
             txtSrc.setText(R.string.device_st_label);
-        } else if (thing.getSource() == Thing.Source.PhilipsHue) {
+        } else if (thing.getSource() == IThing.Source.PhilipsHue) {
             img.setImageResource(R.drawable.icon_phlogo);
             txtSrc.setText(R.string.device_ph_label);
         }
@@ -77,11 +76,11 @@ public class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
         return convertView;
     }
 
-    public List<Thing> getThings() {
+    public List<IThing> getThings() {
         return mThings;
     }
 
-    public void setThings(List<Thing> mThings) {
+    public void setThings(Things mThings) {
         this.mThings = mThings;
     }
 }

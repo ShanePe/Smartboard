@@ -7,7 +7,7 @@ import java.net.URLEncoder;
 import shane.pennihome.local.smartboard.Comms.Interface.ICommunicator;
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Data.Device;
-import shane.pennihome.local.smartboard.Data.Interface.Thing;
+import shane.pennihome.local.smartboard.Data.Interface.IThing;
 import shane.pennihome.local.smartboard.Data.Routine;
 import shane.pennihome.local.smartboard.Data.TokenHueBridge;
 import shane.pennihome.local.smartboard.Data.TokenSmartThings;
@@ -18,9 +18,9 @@ import shane.pennihome.local.smartboard.Data.TokenSmartThings;
 
 @SuppressWarnings("ALL")
 public class ThingToggler extends ICommunicator<ThingToggler> {
-    private final Thing mThing;
+    private final IThing mThing;
 
-    public ThingToggler(Thing thing, OnProcessCompleteListener<ThingToggler> processComplete) {
+    public ThingToggler(IThing thing, OnProcessCompleteListener<ThingToggler> processComplete) {
         super(null, processComplete);
         mThing = thing;
     }

@@ -3,15 +3,13 @@ package shane.pennihome.local.smartboard.Adapters;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
-import shane.pennihome.local.smartboard.Data.Interface.Thing;
+import shane.pennihome.local.smartboard.Data.Interface.IThing;
 import shane.pennihome.local.smartboard.Data.Routine;
-import shane.pennihome.local.smartboard.Fragments.ThingFragment;
 import shane.pennihome.local.smartboard.R;
 
 /**
@@ -20,8 +18,8 @@ import shane.pennihome.local.smartboard.R;
 
 @SuppressWarnings("DefaultFileTemplate")
 public class RoutineViewAdapter extends ThingViewAdapter {
-    public RoutineViewAdapter(List<Thing> items, ThingFragment.OnListFragmentInteractionListener listener) {
-        super(items, listener);
+    public RoutineViewAdapter(List<IThing> items) {
+        super(items);
     }
 
     @Override
@@ -41,21 +39,13 @@ public class RoutineViewAdapter extends ThingViewAdapter {
         vh.mItem = r;
         vh.mNameView.setText(r.getName());
 
-        if (vh.mItem.getSource() == Thing.Source.SmartThings) {
+        if (vh.mItem.getSource() == IThing.Source.SmartThings) {
             vh.mImgView.setImageResource(R.drawable.icon_switch);
             vh.mSourceView.setText(R.string.device_st_label);
-        } else if (vh.mItem.getSource() == Thing.Source.PhilipsHue) {
+        } else if (vh.mItem.getSource() == IThing.Source.PhilipsHue) {
             vh.mImgView.setImageResource(R.drawable.icon_phlogo);
             vh.mSourceView.setText(R.string.device_ph_label);
         }
-        vh.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    mListener.onListFragmentInteraction(vh.mItem);
-                }
-            }
-        });
 
         vh.mButtonView.setOnClickListener(new View.OnClickListener() {
             @Override

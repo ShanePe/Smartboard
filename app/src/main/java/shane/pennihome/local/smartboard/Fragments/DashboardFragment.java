@@ -1,10 +1,8 @@
 package shane.pennihome.local.smartboard.Fragments;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,25 +14,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import shane.pennihome.local.smartboard.Adapters.DashboardViewAdapter;
 import shane.pennihome.local.smartboard.Data.Dashboard;
 import shane.pennihome.local.smartboard.Data.Device;
 import shane.pennihome.local.smartboard.Data.Routine;
+import shane.pennihome.local.smartboard.Fragments.Interface.IFragment;
 import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
 
-public class DashboardFragment extends Fragment {
+public class DashboardFragment extends IFragment {
+    DashboardViewAdapter mDashboardAptr;
 
-    private List<Dashboard> mDashboard = new ArrayList<>();
-    private OnListFragmentInteractionListener mListener;
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public DashboardFragment() {
     }
 
@@ -51,8 +43,7 @@ public class DashboardFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void LoadDashboard(Dashboard dashboard)
-    {
+    public void LoadDashboard(Dashboard dashboard) {
         final MainActivity activity = (MainActivity) getActivity();
         Intent dashAdd = new Intent(getActivity(), SmartboardActivity.class);
 
@@ -65,41 +56,50 @@ public class DashboardFragment extends Fragment {
         for (Routine r : activity.getMonitor().getRoutines())
             routines.add(r.toJson());
 
-        if(dashboard == null)
+        if (dashboard == null)
             dashboard = new Dashboard();
+
+        Bundle options = new Bundle();
 
         dashAdd.putStringArrayListExtra("devices", devices);
         dashAdd.putStringArrayListExtra("routines", routines);
         dashAdd.putExtra("dashboard", dashboard.toJson());
-        startActivity(dashAdd);
+        startActivityForResult(dashAdd, 0, options);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        MainActivity main = (MainActivity) getActivity();
+        main.populateDashbboards();
+        if (mDashboardAptr != null) {
+            mDashboardAptr.setValues(main.getDashboards());
+            mDashboardAptr.notifyDataSetChanged();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final MainActivity activity = (MainActivity) getActivity();
-        if (activity != null) {
-            ActionBar actionBar = activity.getSupportActionBar();
-            if (actionBar != null)
-                actionBar.show();
-        }
         setHasOptionsMenu(true);
     }
 
-    public List<Dashboard> getDashboards() {
-        return mDashboard;
+    /*public List<Dashboard> getDashboards() {
+        return mDashboards;
     }
 
     public void setDashboard(List<Dashboard> dashboards) {
-        this.mDashboard = dashboards;
-    }
+        this.mDashboards = dashboards;
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard_list, container, false);
         final Context context = view.getContext();
+        MainActivity activity = (MainActivity) getActivity();
+
         // Set the adapter
         if (view instanceof RecyclerView) {
 
@@ -110,18 +110,20 @@ public class DashboardFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new DashboardViewAdapter(mDashboard, new OnListFragmentInteractionListener() {
+            mDashboardAptr = new DashboardViewAdapter(activity.getDashboards(), new OnListFragmentInteractionListener() {
                 @Override
                 public void onListFragmentInteraction(Dashboard item) {
                     LoadDashboard(item);
                 }
-            }));
+            });
+
+            recyclerView.setAdapter(mDashboardAptr);
         }
 
         return view;
     }
 
-     public interface OnListFragmentInteractionListener {
+    public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(Dashboard item);
     }
 }

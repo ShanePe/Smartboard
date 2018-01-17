@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +21,11 @@ import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
 public class DBEngine extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "smartboard";
+    private Context mContext;
 
     public DBEngine(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mContext = context;
     }
 
     @Override
@@ -61,6 +64,9 @@ public class DBEngine extends SQLiteOpenHelper {
         try {
             db = this.getWritableDatabase();
             db.execSQL(query);
+        } catch (Exception ex) {
+            if (mContext != null)
+                Toast.makeText(mContext, "Write Error : " + ex.getMessage(), Toast.LENGTH_LONG).show();
         } finally {
             if (db != null)
                 db.close();
@@ -74,7 +80,7 @@ public class DBEngine extends SQLiteOpenHelper {
 
             db = this.getReadableDatabase();
             Cursor c = db.rawQuery(query, null);
-            if (c.moveToFirst()) {
+            while (c.moveToNext()) {
                 switch (IDatabaseObject.Types.valueOf(c.getString(1))) {
                     case Dashboard:
                         items.add(Dashboard.Load(c.getString(2)));

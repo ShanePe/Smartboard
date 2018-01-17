@@ -14,7 +14,7 @@ import shane.pennihome.local.smartboard.Comms.RESTCommunicator;
 import shane.pennihome.local.smartboard.Comms.RESTCommunicatorResult;
 import shane.pennihome.local.smartboard.Data.Device;
 import shane.pennihome.local.smartboard.Data.Devices;
-import shane.pennihome.local.smartboard.Data.Interface.Thing;
+import shane.pennihome.local.smartboard.Data.Interface.IThing;
 import shane.pennihome.local.smartboard.Data.TokenSmartThings;
 
 @SuppressLint("StaticFieldLeak")
@@ -74,7 +74,7 @@ public class STDevicesGetter extends ICommunicator<STDevicesGetter> {
             d.setName(jDev.getString("name"));
             d.setState(getState(jDev));
             d.setType(jDev.getString("type"));
-            d.setSource(Thing.Source.SmartThings);
+            d.setSource(IThing.Source.SmartThings);
             mDevices.add(d);
         }
 

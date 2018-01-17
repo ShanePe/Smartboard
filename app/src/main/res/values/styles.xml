@@ -55,4 +55,18 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:padding">8dp</item>
     </style>
+
+    <style name="blockItemStyle">
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="blockItemStyleSmall">
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 </resources>

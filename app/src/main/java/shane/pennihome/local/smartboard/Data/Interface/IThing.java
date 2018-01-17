@@ -10,24 +10,23 @@ import shane.pennihome.local.smartboard.Comms.ThingToggler;
  */
 
 @SuppressWarnings({"DefaultFileTemplate", "unused"})
-public abstract class Thing {
+public abstract class IThing {
+    protected transient onThingListener mOnThingListener;
     private String mId;
     private String mName;
     private Source mSource;
     private String mInstance;
 
-    protected transient onThingListener mOnThingListener;
-
-    public Thing() {
+    public IThing() {
         mInstance = this.getClass().getSimpleName();
     }
 
-    private static <V extends Thing> V fromJson(Class<V> cls, String json) {
+    private static <V extends IThing> V fromJson(Class<V> cls, String json) {
         Gson gson = new Gson();
         return gson.fromJson(json, cls);
     }
 
-    public static <V extends Thing> V Load(Class<V> cls, String objJson) throws IllegalAccessException, InstantiationException {
+    public static <V extends IThing> V Load(Class<V> cls, String objJson) throws IllegalAccessException, InstantiationException {
         V inst = cls.newInstance();
         if (!objJson.equals(""))
             inst = fromJson(cls, objJson);
@@ -35,7 +34,7 @@ public abstract class Thing {
         return inst;
     }
 
-    public Thing.Source getSource() {
+    public IThing.Source getSource() {
         return mSource;
     }
 
@@ -59,14 +58,14 @@ public abstract class Thing {
         this.mId = id;
     }
 
-    protected abstract void successfulToggle(@SuppressWarnings("unused") Thing thing);
+    protected abstract void successfulToggle(@SuppressWarnings("unused") IThing thing);
 
     public void setOnThingListener(onThingListener onThingListener) {
         mOnThingListener = onThingListener;
     }
 
     public void Toggle() {
-        final Thing me = this;
+        final IThing me = this;
         ThingToggler thingToggler = new ThingToggler(this, new OnProcessCompleteListener<ThingToggler>() {
             @Override
             public void complete(boolean success, ThingToggler source) {

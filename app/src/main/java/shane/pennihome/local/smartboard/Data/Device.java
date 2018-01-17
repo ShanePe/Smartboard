@@ -1,19 +1,19 @@
 package shane.pennihome.local.smartboard.Data;
 
-import shane.pennihome.local.smartboard.Data.Interface.Thing;
+import shane.pennihome.local.smartboard.Data.Interface.IThing;
 
 /**
  * Created by shane on 28/12/17.
  */
 
 @SuppressWarnings({"ALL", "unused"})
-public class Device extends Thing {
+public class Device extends IThing {
     private States mState;
     private String mType;
 
     public static Device Load(String json) {
         try {
-            return Thing.Load(Device.class, json);
+            return IThing.Load(Device.class, json);
         } catch (Exception e) {
             return new Device();
         }
@@ -44,7 +44,7 @@ public class Device extends Thing {
     }
 
     @Override
-    public void successfulToggle(Thing thing) {
+    public void successfulToggle(IThing thing) {
         if (getState() == States.Off)
             setState(States.On);
         else if (getState() == States.On)

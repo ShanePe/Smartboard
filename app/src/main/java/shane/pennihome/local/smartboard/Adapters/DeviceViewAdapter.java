@@ -9,9 +9,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.Data.Device;
-import shane.pennihome.local.smartboard.Data.Interface.Thing;
+import shane.pennihome.local.smartboard.Data.Interface.IThing;
 import shane.pennihome.local.smartboard.Data.Interface.onThingListener;
-import shane.pennihome.local.smartboard.Fragments.ThingFragment;
 import shane.pennihome.local.smartboard.R;
 
 /**
@@ -20,8 +19,8 @@ import shane.pennihome.local.smartboard.R;
 
 @SuppressWarnings("DefaultFileTemplate")
 public class DeviceViewAdapter extends ThingViewAdapter {
-    public DeviceViewAdapter(List<Thing> items, ThingFragment.OnListFragmentInteractionListener listener) {
-        super(items, listener);
+    public DeviceViewAdapter(List<IThing> items) {
+        super(items);
     }
 
     @Override
@@ -45,23 +44,13 @@ public class DeviceViewAdapter extends ThingViewAdapter {
         vh.mSwitchView.setEnabled(d.getState() != Device.States.Unreachable);
         vh.mTypeView.setText(d.getType());
 
-        if (vh.mItem.getSource() == Thing.Source.SmartThings) {
+        if (vh.mItem.getSource() == IThing.Source.SmartThings) {
             vh.mImgView.setImageResource(R.drawable.icon_switch);
             vh.mSourceView.setText(R.string.device_st_label);
-        } else if (vh.mItem.getSource() == Thing.Source.PhilipsHue) {
+        } else if (vh.mItem.getSource() == IThing.Source.PhilipsHue) {
             vh.mImgView.setImageResource(R.drawable.icon_phlogo);
             vh.mSourceView.setText(R.string.device_ph_label);
         }
-        vh.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(vh.mItem);
-                }
-            }
-        });
 
         vh.mSwitchView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -61,20 +61,18 @@ public abstract class IController<T> {
         getDevices(new OnProcessCompleteListener<Devices>() {
             @Override
             public void complete(boolean success, Devices source) {
-                if (success) {
-                    mDevices = source;
-                    getRoutines(new OnProcessCompleteListener<Routines>() {
-                        @Override
-                        public void complete(boolean success, Routines source) {
-                            if (success) {
-                                mRoutines = source;
-                                if (onProcessCompleteListener != null)
-                                    //noinspection ConstantConditions
-                                    onProcessCompleteListener.complete(success, (T) me);
-                            }
-                        }
-                    });
-                }
+                mDevices = success ? source : new Devices();
+
+                getRoutines(new OnProcessCompleteListener<Routines>() {
+                    @Override
+                    public void complete(boolean success, Routines source) {
+                        mRoutines = success ? source : new Routines();
+
+                        if (onProcessCompleteListener != null)
+                            //noinspection ConstantConditions
+                            onProcessCompleteListener.complete(success, (T) me);
+                    }
+                });
             }
         });
     }

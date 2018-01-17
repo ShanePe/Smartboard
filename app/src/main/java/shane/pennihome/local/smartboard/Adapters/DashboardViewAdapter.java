@@ -19,12 +19,16 @@ import shane.pennihome.local.smartboard.R;
  */
 public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdapter.ViewHolder> {
 
-    private final List<Dashboard> mValues;
     private final DashboardFragment.OnListFragmentInteractionListener mListener;
+    private List<Dashboard> mValues;
 
     public DashboardViewAdapter(List<Dashboard> items, DashboardFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+    }
+
+    public void setValues(List<Dashboard> values) {
+        mValues = values;
     }
 
     @Override

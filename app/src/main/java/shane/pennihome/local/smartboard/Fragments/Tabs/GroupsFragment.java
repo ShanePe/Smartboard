@@ -14,6 +14,7 @@ import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListene
 import shane.pennihome.local.smartboard.Data.Group;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
+import shane.pennihome.local.smartboard.UI.UIHelper;
 
 public class GroupsFragment extends Fragment {
     /**
@@ -41,7 +42,7 @@ public class GroupsFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.mnu_dash_add) {
             final SmartboardActivity smartboardActivity = (SmartboardActivity) getContext();
-            smartboardActivity.ShowInput(getString(R.string.lbl_add_group_msg), new OnProcessCompleteListener() {
+            UIHelper.ShowInput(smartboardActivity, getString(R.string.lbl_add_group_msg), new OnProcessCompleteListener() {
                 @Override
                 public void complete(boolean success, Object source) {
                     smartboardActivity

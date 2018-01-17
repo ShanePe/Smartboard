@@ -37,6 +37,8 @@ public class STController extends IController<STController> {
             public void complete(boolean success, STDevicesGetter source) {
                 if (success)
                     processCompleteListener.complete(success, source.getDevices());
+                else
+                    processCompleteListener.complete(success, null);
             }
         });
         dGet.execute();
@@ -49,6 +51,8 @@ public class STController extends IController<STController> {
             public void complete(boolean success, STRoutineGetter source) {
                 if (success)
                     processCompleteListener.complete(success, source.getRoutines());
+                else
+                    processCompleteListener.complete(success, null);
             }
         });
         rGet.execute();

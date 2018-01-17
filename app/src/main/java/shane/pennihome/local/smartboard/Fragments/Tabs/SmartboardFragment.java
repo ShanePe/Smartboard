@@ -2,6 +2,8 @@ package shane.pennihome.local.smartboard.Fragments.Tabs;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,13 +45,20 @@ public class SmartboardFragment extends Fragment {
         final EditText editText = (EditText) rootView.findViewById(R.id.txt_db_name);
         editText.setText(mSmartboardActivity.getDashboard().getName());
 
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if (!b) {
-                    mSmartboardActivity.getDashboard().setName(editText.getText().toString());
-                    mSmartboardActivity.DataChanged();
-                }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mSmartboardActivity.getDashboard().setName(s.toString());
             }
         });
         return rootView;

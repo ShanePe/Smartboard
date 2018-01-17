@@ -11,7 +11,7 @@ import shane.pennihome.local.smartboard.Comms.Interface.OnCommResponseListener;
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Comms.RESTCommunicator;
 import shane.pennihome.local.smartboard.Comms.RESTCommunicatorResult;
-import shane.pennihome.local.smartboard.Data.Interface.Thing;
+import shane.pennihome.local.smartboard.Data.Interface.IThing;
 import shane.pennihome.local.smartboard.Data.Routine;
 import shane.pennihome.local.smartboard.Data.Routines;
 import shane.pennihome.local.smartboard.Data.TokenSmartThings;
@@ -73,7 +73,7 @@ public class STRoutineGetter extends ICommunicator<STRoutineGetter> {
             Routine r = new Routine();
             r.setId(jRout.getString("id"));
             r.setName(jRout.getString("name"));
-            r.setSource(Thing.Source.SmartThings);
+            r.setSource(IThing.Source.SmartThings);
             mRoutines.add(r);
         }
     }

@@ -3,7 +3,7 @@ package shane.pennihome.local.smartboard.Data;
 import android.support.annotation.ColorInt;
 
 import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
-import shane.pennihome.local.smartboard.Data.Interface.Thing;
+import shane.pennihome.local.smartboard.Data.Interface.IThing;
 
 /**
  * Created by shane on 13/01/18.
@@ -11,7 +11,7 @@ import shane.pennihome.local.smartboard.Data.Interface.Thing;
 
 @SuppressWarnings("DefaultFileTemplate")
 public class Block extends IDatabaseObject {
-    private Thing mThing;
+    private IThing mThing;
     private int mHeight;
     private int mWidth;
     private @ColorInt
@@ -40,11 +40,11 @@ public class Block extends IDatabaseObject {
         return Types.Dashboard;
     }
 
-    public Thing getThing() {
+    public IThing getThing() {
         return mThing;
     }
 
-    public void setThing(Thing thing) {
+    public void setThing(IThing thing) {
         mThing = thing;
     }
 
