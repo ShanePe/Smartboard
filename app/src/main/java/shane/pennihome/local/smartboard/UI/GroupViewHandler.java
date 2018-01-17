@@ -24,9 +24,11 @@ public class GroupViewHandler {
     private RecyclerView mRecyclerView;
     private RecyclerViewDragDropManager mRecyclerViewDragDropManager;
     private RecyclerView.Adapter mWrappedAdapter;
-    DashboardBlockAdapter mDashboardBlockAdapter;
+    private DashboardBlockAdapter mDashboardBlockAdapter;
+    private SmartboardActivity mSmartboardActivity;
 
     public GroupViewHandler(SmartboardActivity smartboardActivity, View view, Group group) {
+        mSmartboardActivity = smartboardActivity;
         mRecyclerView = (RecyclerView) view.findViewById(R.id.dash_block_list_rv);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(smartboardActivity, 8);
 
@@ -66,6 +68,12 @@ public class GroupViewHandler {
         //noinspection StatementWithEmptyBody
 
         mRecyclerViewDragDropManager.attachRecyclerView(mRecyclerView);
+    }
+
+    public void NotifyChanged()
+    {
+        getDashboardBlockAdapter().notifyDataSetChanged();
+        mSmartboardActivity.DataChanged();
     }
 
     public DashboardBlockAdapter getDashboardBlockAdapter() {

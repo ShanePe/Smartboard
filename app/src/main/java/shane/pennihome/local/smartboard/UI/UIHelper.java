@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.UI;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.ColorInt;
@@ -39,15 +40,15 @@ import shane.pennihome.local.smartboard.R;
  */
 
 public class UIHelper {
-    public static void showBlockPropertyWindow(Context context, Things things, IBlock switchBlock, OnBlockSetListener onBlockSetListener) {
-        showBlockPropertyWindow(context, things, switchBlock, null, onBlockSetListener);
+    public static void showBlockPropertyWindow(Activity activity, Things things, IBlock switchBlock, OnBlockSetListener onBlockSetListener) {
+        showBlockPropertyWindow(activity, things, switchBlock, null, onBlockSetListener);
     }
 
-    public static void showBlockPropertyWindow(final Context context, final Things things, final IBlock block, final Group group, final OnBlockSetListener onBlockSetListener) {
-        showPropertyWindow(context, "Add Block", R.layout.prop_block, new OnPropertyWindowListener() {
+    public static void showBlockPropertyWindow(final Activity activity, final Things things, final IBlock block, final Group group, final OnBlockSetListener onBlockSetListener) {
+        showPropertyWindow(activity, "Add Block", R.layout.prop_block, new OnPropertyWindowListener() {
             @Override
             public void onWindowShown(View view) {
-                block.getUIHandler().buildBlockPropertyView(context, view, things, group);
+                block.getUIHandler().buildBlockPropertyView(activity, view, things, group);
             }
 
             @Override

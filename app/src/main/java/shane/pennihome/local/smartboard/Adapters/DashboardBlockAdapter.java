@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.Adapters;
 
+import android.icu.util.ValueIterator;
 import android.support.annotation.ColorInt;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -60,8 +61,6 @@ public class DashboardBlockAdapter extends RecyclerView.Adapter<IBlockUI.BaseEdi
         return IBlock.GetTypeID(block);
     }
 
-
-
     @Override
     public IBlockUI.BaseEditorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         IBlock block = IBlock.CreateByTypeID(viewType);
@@ -75,7 +74,32 @@ public class DashboardBlockAdapter extends RecyclerView.Adapter<IBlockUI.BaseEdi
 
     @Override
     public void onBindViewHolder(IBlockUI.BaseEditorViewHolder holder, int position) {
+        final int dragState = holder.getDragStateFlags();
 
+        int bgResId = 0;
+
+        if (((dragState & DashboardBlockAdapter.Draggable.STATE_FLAG_IS_UPDATED) != 0)) {
+
+            if ((dragState & DashboardBlockAdapter.Draggable.STATE_FLAG_IS_ACTIVE) != 0) {
+                bgResId = R.drawable.bg_item_dragging_active_state;
+
+                // need to clear drawable state here to get correct appearance of the dragging item.
+                //DrawableUtils.clearState(holder.mContainer.getForeground());
+            } else if ((dragState & DashboardBlockAdapter.Draggable.STATE_FLAG_DRAGGING) != 0) {
+                bgResId = R.drawable.bg_item_dragging_state;
+            } else {
+                bgResId = R.drawable.bg_item_normal_state;
+            }
+        }
+
+        IBlock block = mValues.get(position);
+        IBlockUI handler = block.getUIHandler();
+        handler.BindViewHolder(holder, bgResId, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mGroup.getRowViewHandler().NotifyChanged();
+            }
+        });
     }
 
     @Override
@@ -134,35 +158,5 @@ public class DashboardBlockAdapter extends RecyclerView.Adapter<IBlockUI.BaseEdi
     }
 
     private interface Draggable extends DraggableItemConstants {
-    }
-
-    public class ViewHolder extends AbstractDraggableItemViewHolder {
-        public final View mView;
-        public final LinearLayout mLayout;
-        public final TextView mBaName;
-        public final ImageView mBaImg;
-        public final TextView mBaDevice;
-        public final TextView mBaSize;
-        public final TextView mBaType;
-        public SwitchBlock mItem;
-        public FrameLayout mContainer;
-
-        public ViewHolder(View view) {
-            super(view);
-            mView = view;
-            mContainer = view.findViewById(R.id.cv_dashboard_block);
-
-            mLayout = view.findViewById(R.id.block_area);
-            mBaName = view.findViewById(R.id.ba_name);
-            mBaImg = view.findViewById(R.id.ba_image);
-            mBaDevice = view.findViewById(R.id.ba_device);
-            mBaSize = view.findViewById(R.id.ba_size);
-            mBaType = view.findViewById(R.id.ba_type);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mBaName.getText() + "'";
-        }
     }
 }

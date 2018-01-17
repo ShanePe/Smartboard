@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.UI.Interface;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 
@@ -15,16 +16,17 @@ import shane.pennihome.local.smartboard.Listeners.OnBlockSetListener;
  */
 
 public abstract class IBlockUI {
-    IBlock mIBlock;
+    private IBlock mIBlock;
 
-    public abstract void buildBlockPropertyView(final Context context, View view, Things things, final Group group);
+    public abstract void buildBlockPropertyView(Activity activity, View view, Things things, Group group);
     public abstract void populateBlockFromView(View view, OnBlockSetListener onBlockSetListener);
     public abstract BaseEditorViewHolder GetEditorViewHolder(View view);
+    public abstract void BindViewHolder(BaseEditorViewHolder viewHolder, int backgroundResourceId, View.OnClickListener onClickListener);
 
     public IBlockUI(IBlock block)
     {
         mIBlock = block;
-    }
+     }
 
     public IBlock getBlock(){return mIBlock;}
 

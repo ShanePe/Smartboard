@@ -35,7 +35,7 @@ public class Dashboard extends IDatabaseObject {
                     JsonObject jThing = json.getAsJsonObject();
 
                     switch (jThing.get("mInstance").getAsString().toLowerCase()) {
-                        case "device":
+                        case "switch":
                             return Switch.Load(jThing.toString());
                         case "routine":
                             return Routine.Load(jThing.toString());

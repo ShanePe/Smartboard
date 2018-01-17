@@ -29,11 +29,13 @@ public abstract class IBlock extends IDatabaseObject {
     private @ColorInt
     int mBackColourOn;
     private long mGroupId;
+    private String mInstance;
 
     public abstract IBlockUI getUIHandler();
     public abstract int GetViewResourceID();
 
     public IBlock() {
+        mInstance = this.getClass().getSimpleName();
     }
 
     @Override

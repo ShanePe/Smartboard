@@ -1,7 +1,7 @@
 package shane.pennihome.local.smartboard.UI;
 
+import android.app.Activity;
 import android.content.Context;
-import android.provider.Contacts;
 import android.support.annotation.ColorInt;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,9 +14,6 @@ import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
-
-import shane.pennihome.local.smartboard.Adapters.DashboardBlockAdapter;
 import shane.pennihome.local.smartboard.Adapters.SpinnerThingAdapter;
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Data.Group;
@@ -40,7 +37,7 @@ public class SwitchBlockHandler extends IBlockUI {
     }
 
     @Override
-    public void buildBlockPropertyView(final Context context, View view, Things things, final Group group) {
+    public void buildBlockPropertyView(final Activity activity, View view, Things things, final Group group) {
         Spinner spThings = view.findViewById(R.id.sp_thing);
         final EditText txtBlkName = view.findViewById(R.id.txt_blk_name);
         NumberPicker txtWidth = view.findViewById(R.id.txt_blk_width);
@@ -51,7 +48,7 @@ public class SwitchBlockHandler extends IBlockUI {
         final Button btnFGOff = view.findViewById(R.id.btn_clr_fg_Off);
         final Button btnFGOn = view.findViewById(R.id.btn_clr_fg_On);
 
-        SpinnerThingAdapter aptr = new SpinnerThingAdapter(context);
+        SpinnerThingAdapter aptr = new SpinnerThingAdapter(activity);
         aptr.setThings(things);
         spThings.setAdapter(aptr);
 
@@ -94,7 +91,7 @@ public class SwitchBlockHandler extends IBlockUI {
         btnBGOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.showColourPicker(context, getBlock().getBackgroundColourOff(), new OnProcessCompleteListener() {
+                UIHelper.showColourPicker(activity, getBlock().getBackgroundColourOff(), new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
                         @ColorInt int clr = (int) source;
@@ -111,7 +108,7 @@ public class SwitchBlockHandler extends IBlockUI {
         btnFGOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.showColourPicker(context, getBlock().getForeColourOn(), new OnProcessCompleteListener() {
+                UIHelper.showColourPicker(activity, getBlock().getForeColourOn(), new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
                         @ColorInt int clr = (int) source;
@@ -128,7 +125,7 @@ public class SwitchBlockHandler extends IBlockUI {
         btnBGOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.showColourPicker(context, getBlock().getBackgroundColourOn(), new OnProcessCompleteListener() {
+                UIHelper.showColourPicker(activity, getBlock().getBackgroundColourOn(), new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
                         @ColorInt int clr = (int) source;
@@ -144,7 +141,7 @@ public class SwitchBlockHandler extends IBlockUI {
         btnFGOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.showColourPicker(context, getBlock().getForeColourOn(), new OnProcessCompleteListener() {
+                UIHelper.showColourPicker(activity, getBlock().getForeColourOn(), new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
                         @ColorInt int clr = (int) source;
@@ -179,10 +176,10 @@ public class SwitchBlockHandler extends IBlockUI {
     public BaseEditorViewHolder GetEditorViewHolder(View view) {
         return null;
     }
-/*
-    public void Test(View view, DashboardBlockAdapter aptr)
+
+    public void BindViewHolder(BaseEditorViewHolder viewHolder, int backgroundResourceId, final View.OnClickListener onClickListener)
     {
-        EditorViewHolder holder =(EditorViewHolder)GetEditorViewHolder(view);
+        EditorViewHolder holder =(EditorViewHolder)viewHolder;
         //holder.mItem = mValues.get(position);
 
         holder.mBaName.setText(holder.mItem.getName());
@@ -208,39 +205,17 @@ public class SwitchBlockHandler extends IBlockUI {
         holder.mBaSize.setTextColor(fgClr);
         holder.mBaType.setTextColor(fgClr);
 
-        final int dragState = holder.getDragStateFlags();
+        if(backgroundResourceId != 0)
+            holder.mContainer.setBackgroundResource(backgroundResourceId);
 
-        if (((dragState & DashboardBlockAdapter.Draggable.STATE_FLAG_IS_UPDATED) != 0)) {
-            int bgResId;
-
-            if ((dragState & DashboardBlockAdapter.Draggable.STATE_FLAG_IS_ACTIVE) != 0) {
-                bgResId = R.drawable.bg_item_dragging_active_state;
-
-                // need to clear drawable state here to get correct appearance of the dragging item.
-                //DrawableUtils.clearState(holder.mContainer.getForeground());
-            } else if ((dragState & DashboardBlockAdapter.Draggable.STATE_FLAG_DRAGGING) != 0) {
-                bgResId = R.drawable.bg_item_dragging_state;
-            } else {
-                bgResId = R.drawable.bg_item_normal_state;
+        holder.mContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(onClickListener != null)
+                    onClickListener.onClick(v);
             }
-
-            holder.mContainer.setBackgroundResource(bgResId);
-
-            holder.mContainer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    UIHelper.showBlockPropertyWindow(mSmartboardActivity, mSmartboardActivity.getThings(), holder.mItem, new OnBlockSetListener() {
-                        @Override
-                        public void OnSet(SwitchBlock switchBlock) {
-                            holder.mItem = switchBlock;
-                            mGroup.getRowViewHandler().getDashboardBlockAdapter().notifyDataSetChanged();
-                            mSmartboardActivity.DataChanged();
-                        }
-                    });
-                }
-            });
-        }
-    }*/
+        });
+    }
 
     public class EditorViewHolder extends IBlockUI.BaseEditorViewHolder
     {

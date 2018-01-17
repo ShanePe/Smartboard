@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity
 
     public void populateDashbboards() {
         DBEngine db = new DBEngine(this);
+        db.CleanDataStore();
         if (mDashboards == null)
             mDashboards = new Dashboards();
         else
