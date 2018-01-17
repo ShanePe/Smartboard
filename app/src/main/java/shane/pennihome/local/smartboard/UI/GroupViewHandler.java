@@ -24,7 +24,7 @@ public class GroupViewHandler {
     private RecyclerView mRecyclerView;
     private RecyclerViewDragDropManager mRecyclerViewDragDropManager;
     private RecyclerView.Adapter mWrappedAdapter;
-    private DashboardBlockAdapter mDashboardBlockAdapter;
+    DashboardBlockAdapter mDashboardBlockAdapter;
 
     public GroupViewHandler(SmartboardActivity smartboardActivity, View view, Group group) {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.dash_block_list_rv);

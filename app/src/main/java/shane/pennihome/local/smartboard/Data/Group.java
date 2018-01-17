@@ -5,6 +5,7 @@ import android.support.annotation.ColorInt;
 import java.util.ArrayList;
 import java.util.List;
 
+import shane.pennihome.local.smartboard.Data.Interface.IBlock;
 import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
 import shane.pennihome.local.smartboard.UI.GroupViewHandler;
 
@@ -14,7 +15,7 @@ import shane.pennihome.local.smartboard.UI.GroupViewHandler;
 
 @SuppressWarnings("DefaultFileTemplate")
 public class Group extends IDatabaseObject {
-    final List<Block> mBlocks = new ArrayList<>();
+    final List<IBlock> mBlocks = new ArrayList<>();
     private boolean mDisplayName = false;
     private boolean mExpanded = false;
     private @ColorInt
@@ -42,7 +43,7 @@ public class Group extends IDatabaseObject {
         }
     }
 
-    public List<Block> getBlocks() {
+    public List<IBlock> getBlocks() {
         return mBlocks;
     }
 
@@ -59,7 +60,7 @@ public class Group extends IDatabaseObject {
         this.mDisplayName = displayName;
     }
 
-    public Block getBlockAt(int index) {
+    public IBlock getBlockAt(int index) {
         return mBlocks.get(index);
     }
 

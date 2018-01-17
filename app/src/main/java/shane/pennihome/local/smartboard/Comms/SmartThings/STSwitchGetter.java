@@ -12,31 +12,31 @@ import shane.pennihome.local.smartboard.Comms.Interface.OnCommResponseListener;
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Comms.RESTCommunicator;
 import shane.pennihome.local.smartboard.Comms.RESTCommunicatorResult;
-import shane.pennihome.local.smartboard.Data.Device;
-import shane.pennihome.local.smartboard.Data.Devices;
+import shane.pennihome.local.smartboard.Data.Switch;
+import shane.pennihome.local.smartboard.Data.Switches;
 import shane.pennihome.local.smartboard.Data.Interface.IThing;
 import shane.pennihome.local.smartboard.Data.TokenSmartThings;
 
 @SuppressLint("StaticFieldLeak")
-public class STDevicesGetter extends ICommunicator<STDevicesGetter> {
-    private final Devices mDevices = new Devices();
+public class STSwitchGetter extends ICommunicator<STSwitchGetter> {
+    private final Switches mSwitches = new Switches();
 
-    STDevicesGetter(Context mContext, OnProcessCompleteListener<STDevicesGetter> mProcessCompleteListener) {
+    STSwitchGetter(Context mContext, OnProcessCompleteListener<STSwitchGetter> mProcessCompleteListener) {
         super(mContext, mProcessCompleteListener);
     }
 
-    Devices getDevices() {
-        return mDevices;
+    Switches getDevices() {
+        return mSwitches;
     }
 
     @Override
     public void PreProcess() {
-        mDevices.clear();
+        mSwitches.clear();
     }
 
     @Override
     public String getFailedMessage() {
-        return "Could not get SmartThing Devices";
+        return "Could not get SmartThing Switches";
     }
 
     @Override
@@ -69,21 +69,21 @@ public class STDevicesGetter extends ICommunicator<STDevicesGetter> {
         for (int i = 0; i < devices.length(); i++) {
             JSONObject jDev = devices.getJSONObject(i);
 
-            Device d = new Device();
+            Switch d = new Switch();
             d.setId(jDev.getString("id"));
             d.setName(jDev.getString("name"));
             d.setState(getState(jDev));
             d.setType(jDev.getString("type"));
             d.setSource(IThing.Source.SmartThings);
-            mDevices.add(d);
+            mSwitches.add(d);
         }
 
     }
 
-    private Device.States getState(JSONObject j) throws JSONException {
+    private Switch.States getState(JSONObject j) throws JSONException {
         if (j.getString("value").equals("on"))
-            return Device.States.On;
+            return Switch.States.On;
         else
-            return Device.States.Off;
+            return Switch.States.Off;
     }
 }

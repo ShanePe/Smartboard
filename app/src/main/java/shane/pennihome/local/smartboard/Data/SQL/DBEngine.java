@@ -9,7 +9,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import shane.pennihome.local.smartboard.Data.Block;
+import shane.pennihome.local.smartboard.Data.SwitchBlock;
 import shane.pennihome.local.smartboard.Data.Dashboard;
 import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
 
@@ -86,7 +86,7 @@ public class DBEngine extends SQLiteOpenHelper {
                         items.add(Dashboard.Load(c.getString(2)));
                         break;
                     case Block:
-                        items.add(Block.Load(c.getString(2)));
+                        items.add(SwitchBlock.Load(c.getString(2)));
                         break;
                 }
             }

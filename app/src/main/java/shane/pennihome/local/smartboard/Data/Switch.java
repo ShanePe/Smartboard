@@ -7,15 +7,15 @@ import shane.pennihome.local.smartboard.Data.Interface.IThing;
  */
 
 @SuppressWarnings({"ALL", "unused"})
-public class Device extends IThing {
+public class Switch extends IThing {
     private States mState;
     private String mType;
 
-    public static Device Load(String json) {
+    public static Switch Load(String json) {
         try {
-            return IThing.Load(Device.class, json);
+            return IThing.Load(Switch.class, json);
         } catch (Exception e) {
-            return new Device();
+            return new Switch();
         }
     }
 

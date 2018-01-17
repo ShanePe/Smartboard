@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Smartboard.iml" filepath="$PROJECT_DIR$/Smartboard.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SmartBoard.iml" filepath="$PROJECT_DIR$/SmartBoard.iml" />
       <module fileurl="file://$PROJECT_DIR$/advrecycleview/advrecycleview.iml" filepath="$PROJECT_DIR$/advrecycleview/advrecycleview.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/colourPicker/colourPicker.iml" filepath="$PROJECT_DIR$/colourPicker/colourPicker.iml" />

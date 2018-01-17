@@ -2,7 +2,7 @@ package shane.pennihome.local.smartboard.Comms.Interface;
 
 import android.app.Activity;
 
-import shane.pennihome.local.smartboard.Data.Devices;
+import shane.pennihome.local.smartboard.Data.Switches;
 import shane.pennihome.local.smartboard.Data.Routines;
 
 /**
@@ -12,7 +12,7 @@ import shane.pennihome.local.smartboard.Data.Routines;
 @SuppressWarnings({"ALL", "ConstantConditions"})
 public abstract class IController<T> {
     protected final Activity mActivity;
-    private Devices mDevices;
+    private Switches mSwitches;
     private Routines mRoutines;
 
     protected IController(Activity activity) {
@@ -21,12 +21,12 @@ public abstract class IController<T> {
 
     protected abstract void Connect(OnProcessCompleteListener<T> processCompleteListener);
 
-    public abstract void getDevices(OnProcessCompleteListener<Devices> processCompleteListener);
+    public abstract void getDevices(OnProcessCompleteListener<Switches> processCompleteListener);
 
     protected abstract void getRoutines(OnProcessCompleteListener<Routines> processCompleteListener);
 
-    public Devices Devices() {
-        return mDevices;
+    public Switches Devices() {
+        return mSwitches;
     }
 
     public Routines Routine() {
@@ -34,7 +34,7 @@ public abstract class IController<T> {
     }
 
     public void getAll(final OnProcessCompleteListener<T> onProcessCompleteListener) {
-        mDevices = new Devices();
+        mSwitches = new Switches();
         mRoutines = new Routines();
 
         final IController<T> me = this;
@@ -58,10 +58,10 @@ public abstract class IController<T> {
 
     public void getThings(final OnProcessCompleteListener<T> onProcessCompleteListener) {
         final IController<T> me = this;
-        getDevices(new OnProcessCompleteListener<Devices>() {
+        getDevices(new OnProcessCompleteListener<Switches>() {
             @Override
-            public void complete(boolean success, Devices source) {
-                mDevices = success ? source : new Devices();
+            public void complete(boolean success, Switches source) {
+                mSwitches = success ? source : new Switches();
 
                 getRoutines(new OnProcessCompleteListener<Routines>() {
                     @Override

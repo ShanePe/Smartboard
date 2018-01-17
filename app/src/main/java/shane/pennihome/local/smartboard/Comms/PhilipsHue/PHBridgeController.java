@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import shane.pennihome.local.smartboard.Comms.Interface.IController;
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.Data.Devices;
+import shane.pennihome.local.smartboard.Data.Switches;
 import shane.pennihome.local.smartboard.Data.Routines;
 
 /**
@@ -31,7 +31,7 @@ public class PHBridgeController extends IController<PHBridgeController> {
     }
 
     @Override
-    public void getDevices(final OnProcessCompleteListener<Devices> processCompleteListener) {
+    public void getDevices(final OnProcessCompleteListener<Switches> processCompleteListener) {
         @SuppressWarnings("unused") final PHBridgeController me = this;
         PHBridgeDeviceGetter dGet = new PHBridgeDeviceGetter(mActivity, new OnProcessCompleteListener<PHBridgeDeviceGetter>() {
             @Override

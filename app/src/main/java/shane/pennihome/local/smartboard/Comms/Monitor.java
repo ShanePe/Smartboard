@@ -7,8 +7,8 @@ import shane.pennihome.local.smartboard.Comms.Interface.IController;
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Comms.PhilipsHue.PHBridgeController;
 import shane.pennihome.local.smartboard.Comms.SmartThings.STController;
-import shane.pennihome.local.smartboard.Data.Device;
-import shane.pennihome.local.smartboard.Data.Devices;
+import shane.pennihome.local.smartboard.Data.Switch;
+import shane.pennihome.local.smartboard.Data.Switches;
 import shane.pennihome.local.smartboard.Data.Interface.IThing;
 import shane.pennihome.local.smartboard.Data.Interface.TokenInfo;
 import shane.pennihome.local.smartboard.Data.Routine;
@@ -26,7 +26,7 @@ public class Monitor {
     private static final int SECOND_CHECK = 120;
     private final Activity mActivity;
     private Thread mMonitorThread = null;
-    //private Devices mDevices = new Devices();
+    //private Switches mDevices = new Switches();
     //private Routines mRoutines = new Routines();
     private Things mThings = new Things();
 
@@ -45,9 +45,9 @@ public class Monitor {
         });
     }
 
-    public Devices getDevices() {
-        Devices ret = new Devices();
-        ret.addAll(mThings.getOfType(Device.class));
+    public Switches getDevices() {
+        Switches ret = new Switches();
+        ret.addAll(mThings.getOfType(Switch.class));
         ret.sort();
         return ret;
     }
@@ -127,9 +127,9 @@ public class Monitor {
         try {
             SourceInfo s = new SourceInfo(type);
             if (s.getToken().isAuthorised()) {
-                s.getController().getDevices(new OnProcessCompleteListener<Devices>() {
+                s.getController().getDevices(new OnProcessCompleteListener<Switches>() {
                     @Override
-                    public void complete(boolean success, Devices source) {
+                    public void complete(boolean success, Switches source) {
                         if (success)
                             checkStateChange(source, type);
                     }
@@ -139,12 +139,12 @@ public class Monitor {
         }//Don't crash on monitor thread.
     }
 
-    private void checkStateChange(Devices src, IThing.Source type) {
-        for (Device d : getDevices()) {
+    private void checkStateChange(Switches src, IThing.Source type) {
+        for (Switch d : getDevices()) {
             if (d.getSource() == type) {
-                Device s = src.getbyId(d.getId());
+                Switch s = src.getbyId(d.getId());
                 if (s == null)
-                    d.setState(Device.States.Unreachable);
+                    d.setState(Switch.States.Unreachable);
                 else {
                     if (s.getState() != d.getState())
                         d.setState(s.getState());

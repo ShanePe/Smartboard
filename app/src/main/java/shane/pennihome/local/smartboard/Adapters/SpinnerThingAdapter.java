@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import shane.pennihome.local.smartboard.Data.Device;
+import shane.pennihome.local.smartboard.Data.Switch;
 import shane.pennihome.local.smartboard.Data.Interface.IThing;
 import shane.pennihome.local.smartboard.Data.Routine;
 import shane.pennihome.local.smartboard.Data.Things;
@@ -66,7 +66,7 @@ public class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
             txtSrc.setText(R.string.device_ph_label);
         }
 
-        if (thing instanceof Device)
+        if (thing instanceof Switch)
             txtType.setText(R.string.lbl_device);
         else if (thing instanceof Routine)
             txtType.setText(R.string.lbl_routine);

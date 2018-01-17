@@ -7,9 +7,9 @@ import shane.pennihome.local.smartboard.Data.Interface.IThingCollection;
  */
 
 @SuppressWarnings("ALL")
-public class Devices extends IThingCollection<Device> {
+public class Switches extends IThingCollection<Switch> {
     @Override
-    public int SortCompare(Device a, Device b) {
+    public int SortCompare(Switch a, Switch b) {
         return a.getName().compareTo(b.getName());
     }
 }

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import shane.pennihome.local.smartboard.Adapters.DashboardGroupAdapter;
 import shane.pennihome.local.smartboard.Data.Dashboard;
-import shane.pennihome.local.smartboard.Data.Device;
+import shane.pennihome.local.smartboard.Data.Switch;
 import shane.pennihome.local.smartboard.Data.Routine;
 import shane.pennihome.local.smartboard.Data.SQL.DBEngine;
 import shane.pennihome.local.smartboard.Data.Things;
@@ -70,7 +70,7 @@ public class SmartboardActivity extends AppCompatActivity {
 
         for (String j : devices)
             try {
-                mThings.add(Device.Load(j));
+                mThings.add(Switch.Load(j));
             } catch (Exception ex) {
             }
         for (String j : routines)

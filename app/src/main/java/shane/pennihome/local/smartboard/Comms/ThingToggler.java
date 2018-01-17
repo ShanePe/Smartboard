@@ -6,7 +6,7 @@ import java.net.URLEncoder;
 
 import shane.pennihome.local.smartboard.Comms.Interface.ICommunicator;
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.Data.Device;
+import shane.pennihome.local.smartboard.Data.Switch;
 import shane.pennihome.local.smartboard.Data.Interface.IThing;
 import shane.pennihome.local.smartboard.Data.Routine;
 import shane.pennihome.local.smartboard.Data.TokenHueBridge;
@@ -44,10 +44,10 @@ public class ThingToggler extends ICommunicator<ThingToggler> {
             case SmartThings:
                 TokenSmartThings tokenSmartThingsInfo = TokenSmartThings.Load();
 
-                if (mThing instanceof Device)
+                if (mThing instanceof Switch)
                     url = tokenSmartThingsInfo.getRequestUrl() + "/switches/" +
                             URLEncoder.encode(mThing.getId(), "UTF-8") + "/" +
-                            (((Device) mThing).isOn() ? "off" : "on");
+                            (((Switch) mThing).isOn() ? "off" : "on");
                 else if (mThing instanceof Routine)
                     url = tokenSmartThingsInfo.getRequestUrl() + "/routines/" +
                             URLEncoder.encode(mThing.getId(), "UTF-8");
@@ -61,8 +61,8 @@ public class ThingToggler extends ICommunicator<ThingToggler> {
                 TokenHueBridge token = TokenHueBridge.Load();
                 JSONObject body = new JSONObject();
 
-                if (mThing instanceof Device) {
-                    body.put("on", !((Device) mThing).isOn());
+                if (mThing instanceof Switch) {
+                    body.put("on", !((Switch) mThing).isOn());
                     url = "http://" + token.getAddress() + "/api/" + token.getToken() + "/lights/" + mThing.getId() + "/state";
                 } else if (mThing instanceof Routine) {
                     body.put("scene", mThing.getId());

@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import shane.pennihome.local.smartboard.Comms.Interface.IController;
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.Data.Devices;
+import shane.pennihome.local.smartboard.Data.Switches;
 import shane.pennihome.local.smartboard.Data.Routines;
 
 /**
@@ -31,10 +31,10 @@ public class STController extends IController<STController> {
     }
 
     @Override
-    public void getDevices(final OnProcessCompleteListener<Devices> processCompleteListener) {
-        STDevicesGetter dGet = new STDevicesGetter(mActivity, new OnProcessCompleteListener<STDevicesGetter>() {
+    public void getDevices(final OnProcessCompleteListener<Switches> processCompleteListener) {
+        STSwitchGetter dGet = new STSwitchGetter(mActivity, new OnProcessCompleteListener<STSwitchGetter>() {
             @Override
-            public void complete(boolean success, STDevicesGetter source) {
+            public void complete(boolean success, STSwitchGetter source) {
                 if (success)
                     processCompleteListener.complete(success, source.getDevices());
                 else

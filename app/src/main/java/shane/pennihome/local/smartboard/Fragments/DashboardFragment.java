@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 import shane.pennihome.local.smartboard.Adapters.DashboardViewAdapter;
 import shane.pennihome.local.smartboard.Data.Dashboard;
-import shane.pennihome.local.smartboard.Data.Device;
+import shane.pennihome.local.smartboard.Data.Switch;
 import shane.pennihome.local.smartboard.Data.Routine;
 import shane.pennihome.local.smartboard.Fragments.Interface.IFragment;
 import shane.pennihome.local.smartboard.MainActivity;
@@ -50,7 +50,7 @@ public class DashboardFragment extends IFragment {
         ArrayList<String> devices = new ArrayList<>();
         ArrayList<String> routines = new ArrayList<>();
 
-        for (Device d : activity.getMonitor().getDevices())
+        for (Switch d : activity.getMonitor().getDevices())
             devices.add(d.toJson());
 
         for (Routine r : activity.getMonitor().getRoutines())

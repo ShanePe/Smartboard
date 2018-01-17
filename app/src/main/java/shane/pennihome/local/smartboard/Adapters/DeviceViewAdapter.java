@@ -3,12 +3,11 @@ package shane.pennihome.local.smartboard.Adapters;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.List;
 
-import shane.pennihome.local.smartboard.Data.Device;
+import shane.pennihome.local.smartboard.Data.Switch;
 import shane.pennihome.local.smartboard.Data.Interface.IThing;
 import shane.pennihome.local.smartboard.Data.Interface.onThingListener;
 import shane.pennihome.local.smartboard.R;
@@ -36,12 +35,12 @@ public class DeviceViewAdapter extends ThingViewAdapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final ViewHolder vh = (ViewHolder) holder;
-        Device d = (Device) mValues.get(position);
+        Switch d = (Switch) mValues.get(position);
 
         vh.mItem = d;
         vh.mNameView.setText(d.getName());
         vh.mSwitchView.setChecked(d.isOn());
-        vh.mSwitchView.setEnabled(d.getState() != Device.States.Unreachable);
+        vh.mSwitchView.setEnabled(d.getState() != Switch.States.Unreachable);
         vh.mTypeView.setText(d.getType());
 
         if (vh.mItem.getSource() == IThing.Source.SmartThings) {
@@ -63,7 +62,7 @@ public class DeviceViewAdapter extends ThingViewAdapter {
             @Override
             public void StateChanged() {
                 vh.mSwitchView.setChecked(vh.mItem.isOn());
-                vh.mSwitchView.setEnabled(vh.mItem.getState() != Device.States.Unreachable);
+                vh.mSwitchView.setEnabled(vh.mItem.getState() != Switch.States.Unreachable);
             }
         });
     }
@@ -71,11 +70,11 @@ public class DeviceViewAdapter extends ThingViewAdapter {
     public class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final ImageView mImgView;
-        final Switch mSwitchView;
+        final android.widget.Switch mSwitchView;
         final TextView mNameView;
         final TextView mTypeView;
         final TextView mSourceView;
-        Device mItem;
+        Switch mItem;
 
         ViewHolder(View view) {
             super(view);

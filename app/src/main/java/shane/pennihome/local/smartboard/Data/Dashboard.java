@@ -36,7 +36,7 @@ public class Dashboard extends IDatabaseObject {
 
                     switch (jThing.get("mInstance").getAsString().toLowerCase()) {
                         case "device":
-                            return Device.Load(jThing.toString());
+                            return Switch.Load(jThing.toString());
                         case "routine":
                             return Routine.Load(jThing.toString());
                         default:

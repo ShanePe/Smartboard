@@ -12,8 +12,8 @@ import shane.pennihome.local.smartboard.Comms.Interface.ICommunicator;
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.Comms.RESTCommunicator;
 import shane.pennihome.local.smartboard.Comms.RESTCommunicatorResult;
-import shane.pennihome.local.smartboard.Data.Device;
-import shane.pennihome.local.smartboard.Data.Devices;
+import shane.pennihome.local.smartboard.Data.Switch;
+import shane.pennihome.local.smartboard.Data.Switches;
 import shane.pennihome.local.smartboard.Data.Interface.IThing;
 import shane.pennihome.local.smartboard.Data.TokenHueBridge;
 
@@ -23,20 +23,20 @@ import shane.pennihome.local.smartboard.Data.TokenHueBridge;
 
 @SuppressWarnings("ALL")
 public class PHBridgeDeviceGetter extends ICommunicator<PHBridgeDeviceGetter> {
-    private final Devices mDevices = new Devices();
+    private final Switches mSwitches = new Switches();
 
     PHBridgeDeviceGetter(Context mContext, OnProcessCompleteListener<PHBridgeDeviceGetter> mProcessCompleteListener) {
         super(mContext, mProcessCompleteListener);
     }
 
-    public Devices getDevices() {
-        return mDevices;
+    public Switches getDevices() {
+        return mSwitches;
     }
 
     @Override
     public void PreProcess() {
         super.PreProcess();
-        mDevices.clear();
+        mSwitches.clear();
     }
 
     @Override
@@ -76,23 +76,23 @@ public class PHBridgeDeviceGetter extends ICommunicator<PHBridgeDeviceGetter> {
         JSONArray jDevices = result.getResult().getJSONArray("devices");
         for (int i = 0; i < jDevices.length(); i++) {
             JSONObject jDev = jDevices.getJSONObject(i);
-            Device d = new Device();
+            Switch d = new Switch();
             d.setId(jDev.getString("id"));
             d.setName(jDev.getString("name"));
             d.setState(getState(jDev));
             d.setType(jDev.getString("type"));
             d.setSource(IThing.Source.PhilipsHue);
-            mDevices.add(d);
+            mSwitches.add(d);
         }
     }
 
-    private Device.States getState(JSONObject j) throws JSONException {
+    private Switch.States getState(JSONObject j) throws JSONException {
         JSONObject jState = j.getJSONObject("state");
         if (!jState.getBoolean("reachable"))
-            return Device.States.Unreachable;
+            return Switch.States.Unreachable;
         if (jState.getBoolean("on"))
-            return Device.States.On;
+            return Switch.States.On;
         else
-            return Device.States.Off;
+            return Switch.States.Off;
     }
 }

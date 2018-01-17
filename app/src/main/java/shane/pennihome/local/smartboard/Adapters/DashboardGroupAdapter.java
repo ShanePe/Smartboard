@@ -16,7 +16,8 @@ import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import shane.pennihome.local.smartboard.Data.Block;
+import shane.pennihome.local.smartboard.Data.Interface.IBlock;
+import shane.pennihome.local.smartboard.Data.SwitchBlock;
 import shane.pennihome.local.smartboard.Data.Group;
 import shane.pennihome.local.smartboard.Listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.Listeners.OnPropertyWindowListener;
@@ -165,9 +166,10 @@ public class DashboardGroupAdapter extends BaseExpandableListAdapter {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 UIHelper.showBlockPropertyWindow(mSmartboardActivity, mSmartboardActivity.getThings(), createBlockInstance(group), group, new OnBlockSetListener() {
                     @Override
-                    public void OnSet(Block block) {
+                    public void OnSet(IBlock block) {
                         group.getBlocks().add(block);
                         listView.expandGroup(groupPosition);
                         mSmartboardActivity.DataChanged();
@@ -192,27 +194,27 @@ public class DashboardGroupAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-    private Block createBlockInstance(Group group) {
-        Block block = new Block();
-        block.setWidth(1);
-        block.setHeight(1);
+    private SwitchBlock createBlockInstance(Group group) {
+        SwitchBlock switchBlock = new SwitchBlock();
+        switchBlock.setWidth(1);
+        switchBlock.setHeight(1);
 
-        block.setBackgroundColourOff(group.getDefaultBlockBackgroundColourOff() != 0 ?
+        switchBlock.setBackgroundColourOff(group.getDefaultBlockBackgroundColourOff() != 0 ?
                 group.getDefaultBlockBackgroundColourOff() :
                 Color.parseColor("#ff5a595b"));
-        block.setBackgroundColourOn(group.getDefaultBlockBackgroundColourOn() != 0 ?
+        switchBlock.setBackgroundColourOn(group.getDefaultBlockBackgroundColourOn() != 0 ?
                 group.getDefaultBlockBackgroundColourOn() :
                 Color.parseColor("#FF4081"));
 
-        block.setForeColourOff(group.getDefaultBlockForeColourOff() != 0 ?
+        switchBlock.setForeColourOff(group.getDefaultBlockForeColourOff() != 0 ?
                 group.getDefaultBlockForeColourOff() :
                 Color.parseColor("white"));
-        block.setForeColourOn(group.getDefaultBlockForeColourOn() != 0 ?
+        switchBlock.setForeColourOn(group.getDefaultBlockForeColourOn() != 0 ?
                 group.getDefaultBlockForeColourOn() :
                 Color.parseColor("black"));
 
-        block.setGroupId(group.getBlocks().size() + 1);
-        return block;
+        switchBlock.setGroupId(group.getBlocks().size() + 1);
+        return switchBlock;
     }
 
     @Override

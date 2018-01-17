@@ -23,7 +23,10 @@ import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 import shane.pennihome.local.smartboard.Adapters.SpinnerThingAdapter;
 import shane.pennihome.local.smartboard.Comms.Interface.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.Data.Block;
+import shane.pennihome.local.smartboard.Data.Interface.IBlock;
+import shane.pennihome.local.smartboard.Data.Routine;
+import shane.pennihome.local.smartboard.Data.Switch;
+import shane.pennihome.local.smartboard.Data.SwitchBlock;
 import shane.pennihome.local.smartboard.Data.Group;
 import shane.pennihome.local.smartboard.Data.Interface.IThing;
 import shane.pennihome.local.smartboard.Data.Things;
@@ -36,150 +39,40 @@ import shane.pennihome.local.smartboard.R;
  */
 
 public class UIHelper {
-    public static void showBlockPropertyWindow(Context context, Things things, Block block, OnBlockSetListener onBlockSetListener) {
-        showBlockPropertyWindow(context, things, block, null, onBlockSetListener);
+    public static void showBlockPropertyWindow(Context context, Things things, IBlock switchBlock, OnBlockSetListener onBlockSetListener) {
+        showBlockPropertyWindow(context, things, switchBlock, null, onBlockSetListener);
     }
 
-    public static void showBlockPropertyWindow(final Context context, final Things things, final Block block, final Group group, final OnBlockSetListener onBlockSetListener) {
+    public static void showBlockPropertyWindow(final Context context, final Things things, final IBlock block, final Group group, final OnBlockSetListener onBlockSetListener) {
         showPropertyWindow(context, "Add Block", R.layout.prop_block, new OnPropertyWindowListener() {
             @Override
             public void onWindowShown(View view) {
-                Spinner spThings = view.findViewById(R.id.sp_thing);
-                final EditText txtBlkName = view.findViewById(R.id.txt_blk_name);
-                NumberPicker txtWidth = view.findViewById(R.id.txt_blk_width);
-                NumberPicker txtHeight = view.findViewById(R.id.txt_blk_height);
-
-                final Button btnBGOff = view.findViewById(R.id.btn_clr_bg_Off);
-                final Button btnBGOn = view.findViewById(R.id.btn_clr_bg_On);
-                final Button btnFGOff = view.findViewById(R.id.btn_clr_fg_Off);
-                final Button btnFGOn = view.findViewById(R.id.btn_clr_fg_On);
-
-                SpinnerThingAdapter aptr = new SpinnerThingAdapter(context);
-                aptr.setThings(things);
-                spThings.setAdapter(aptr);
-
-                final int spAtInx = block.getThing() == null ? -1 : things.GetIndex(block.getThing());
-                if (spAtInx != -1) {
-                    spThings.setSelection(spAtInx);
-                    txtBlkName.setText(block.getName());
-                }
-
-                spThings.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        if (block.getThing() == null) {
-                            IThing thing = (IThing) parent.getItemAtPosition(position);
-                            txtBlkName.setText(thing.getName());
-                        }
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
-
-                txtWidth.setMaxValue(4);
-                txtWidth.setMinValue(1);
-                txtHeight.setMaxValue(4);
-                txtHeight.setMinValue(1);
-                txtWidth.setWrapSelectorWheel(true);
-                txtHeight.setWrapSelectorWheel(true);
-
-                txtWidth.setValue(block.getWidth());
-                txtHeight.setValue(block.getHeight());
-
-                btnBGOff.setBackgroundColor(block.getBackgroundColourOff());
-                btnBGOn.setBackgroundColor(block.getBackgroundColourOn());
-                btnFGOff.setBackgroundColor(block.getForeColourOff());
-                btnFGOn.setBackgroundColor(block.getForeColourOn());
-
-                btnBGOff.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showColourPicker(context, block.getBackgroundColourOff(), new OnProcessCompleteListener() {
-                            @Override
-                            public void complete(boolean success, Object source) {
-                                @ColorInt int clr = (int) source;
-                                block.setBackgroundColourOff(clr);
-                                if (group != null)
-                                    group.setDefaultBlockBackgroundColourOff(clr);
-                                btnBGOff.setBackgroundColor(block.getBackgroundColourOff());
-                            }
-                        });
-                    }
-                });
-
-                btnFGOff.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showColourPicker(context, block.getForeColourOn(), new OnProcessCompleteListener() {
-                            @Override
-                            public void complete(boolean success, Object source) {
-                                @ColorInt int clr = (int) source;
-                                block.setForeColourOff(clr);
-                                if (group != null)
-                                    group.setDefaultBlockForeColourOff(clr);
-                                btnFGOff.setBackgroundColor(block.getForeColourOff());
-
-                            }
-                        });
-                    }
-                });
-
-                btnBGOn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showColourPicker(context, block.getBackgroundColourOn(), new OnProcessCompleteListener() {
-                            @Override
-                            public void complete(boolean success, Object source) {
-                                @ColorInt int clr = (int) source;
-                                block.setBackgroundColourOn(clr);
-                                if (group != null)
-                                    group.setDefaultBlockBackgroundColourOn(clr);
-                                btnBGOn.setBackgroundColor(block.getBackgroundColourOn());
-                            }
-                        });
-                    }
-                });
-
-                btnFGOn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showColourPicker(context, block.getForeColourOn(), new OnProcessCompleteListener() {
-                            @Override
-                            public void complete(boolean success, Object source) {
-                                @ColorInt int clr = (int) source;
-                                block.setForeColourOn(clr);
-                                if (group != null)
-                                    group.setDefaultBlockForeColourOn(clr);
-                                btnFGOn.setBackgroundColor(block.getForeColourOn());
-                            }
-                        });
-                    }
-                });
+                block.getUIHandler().buildBlockPropertyView(context, view, things, group);
             }
 
             @Override
             public void onOkSelected(View view) {
-                Spinner spThings = view.findViewById(R.id.sp_thing);
-                final EditText txtBlkName = view.findViewById(R.id.txt_blk_name);
-                NumberPicker txtWidth = view.findViewById(R.id.txt_blk_width);
-                NumberPicker txtHeight = view.findViewById(R.id.txt_blk_height);
-
-                block.setThing((IThing) spThings.getSelectedItem());
-                block.setName(txtBlkName.getText().toString());
-                block.setWidth(txtWidth.getValue());
-                block.setHeight(txtHeight.getValue());
-
-                if (onBlockSetListener != null) {
-                    onBlockSetListener.OnSet(block);
-                }
+                block.getUIHandler().populateBlockFromView(view, onBlockSetListener);
             }
         });
     }
 
-    private static void showColourPicker(Context context, @ColorInt int colour, final OnProcessCompleteListener onProcessCompleteListener) {
+    @ColorInt
+    public static int getThingColour(IThing thing, int Off, int On) {
+        if (thing instanceof Routine)
+            return Off;
+        if (thing instanceof Switch)
+            switch (((Switch) thing).getState()) {
+                case On:
+                    return On;
+                default:
+                    return Off;
+            }
+        else
+            return 0;
+    }
+
+    public static void showColourPicker(Context context, @ColorInt int colour, final OnProcessCompleteListener onProcessCompleteListener) {
         ColorPickerDialogBuilder
                 .with(context)
                 .setTitle("Choose colour")
