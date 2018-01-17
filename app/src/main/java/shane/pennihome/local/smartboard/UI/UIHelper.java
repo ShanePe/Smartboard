@@ -60,6 +60,9 @@ public class UIHelper {
 
     @ColorInt
     public static int getThingColour(IThing thing, int Off, int On) {
+        if(thing==null)
+            return Off;
+
         if (thing instanceof Routine)
             return Off;
         if (thing instanceof Switch)

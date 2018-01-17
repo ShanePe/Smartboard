@@ -47,11 +47,11 @@ public class DashboardFragment extends IFragment {
         final MainActivity activity = (MainActivity) getActivity();
         Intent dashAdd = new Intent(getActivity(), SmartboardActivity.class);
 
-        ArrayList<String> devices = new ArrayList<>();
+        ArrayList<String> switches = new ArrayList<>();
         ArrayList<String> routines = new ArrayList<>();
 
-        for (Switch d : activity.getMonitor().getDevices())
-            devices.add(d.toJson());
+        for (Switch s : activity.getMonitor().getDevices())
+            switches.add(s.toJson());
 
         for (Routine r : activity.getMonitor().getRoutines())
             routines.add(r.toJson());
@@ -61,7 +61,7 @@ public class DashboardFragment extends IFragment {
 
         Bundle options = new Bundle();
 
-        dashAdd.putStringArrayListExtra("devices", devices);
+        dashAdd.putStringArrayListExtra("devices", switches);
         dashAdd.putStringArrayListExtra("routines", routines);
         dashAdd.putExtra("dashboard", dashboard.toJson());
         startActivityForResult(dashAdd, 0, options);

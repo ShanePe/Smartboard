@@ -174,30 +174,31 @@ public class SwitchBlockHandler extends IBlockUI {
 
     @Override
     public BaseEditorViewHolder GetEditorViewHolder(View view) {
-        return null;
+        return new EditorViewHolder(view);
     }
 
     public void BindViewHolder(BaseEditorViewHolder viewHolder, int backgroundResourceId, final View.OnClickListener onClickListener)
     {
         EditorViewHolder holder =(EditorViewHolder)viewHolder;
-        //holder.mItem = mValues.get(position);
 
-        holder.mBaName.setText(holder.mItem.getName());
-        if (holder.mItem.getThing().getSource() == IThing.Source.SmartThings) {
+        holder.mBaName.setText(getBlock().getName());
+        if(getBlock().getThing()!=null)
+        if (getBlock().getThing().getSource() == IThing.Source.SmartThings) {
             holder.mBaImg.setImageResource(R.drawable.icon_switch);
-        } else if (holder.mItem.getThing().getSource() == IThing.Source.PhilipsHue) {
+        } else if (getBlock().getThing().getSource() == IThing.Source.PhilipsHue) {
             holder.mBaImg.setImageResource(R.drawable.icon_phlogo);
         }
 
-        holder.mBaDevice.setText(holder.mItem.getThing().getName());
-        holder.mBaSize.setText(String.format("%s x %s o:%s", holder.mItem.getWidth(), holder.mItem.getHeight(), holder.mItem.getGroupId()));
-        if (holder.mItem.getThing() instanceof Switch)
+        holder.mBaDevice.setText(getBlock().getThing().getName());
+        holder.mBaSize.setText(String.format("%s x %s o:%s", getBlock().getWidth(), getBlock().getHeight(), getBlock().getGroupId()));
+        if(getBlock().getThing()!=null)
+        if (getBlock().getThing() instanceof Switch)
             holder.mBaType.setText(R.string.lbl_device);
-        else if (holder.mItem.getThing() instanceof Routine)
+        else if (getBlock().getThing() instanceof Routine)
             holder.mBaType.setText(R.string.lbl_routine);
 
-        @ColorInt final int bgClr = UIHelper.getThingColour(holder.mItem.getThing(), holder.mItem.getBackgroundColourOff(), holder.mItem.getBackgroundColourOn());
-        @ColorInt int fgClr = UIHelper.getThingColour(holder.mItem.getThing(), holder.mItem.getForeColourOff(), holder.mItem.getForeColourOn());
+        @ColorInt final int bgClr = UIHelper.getThingColour(getBlock().getThing(), getBlock().getBackgroundColourOff(), getBlock().getBackgroundColourOn());
+        @ColorInt int fgClr = UIHelper.getThingColour(getBlock().getThing(), getBlock().getForeColourOff(), getBlock().getForeColourOn());
 
         holder.mLayout.setBackgroundColor(bgClr);
         holder.mBaName.setTextColor(fgClr);
@@ -226,14 +227,12 @@ public class SwitchBlockHandler extends IBlockUI {
         public final TextView mBaDevice;
         public final TextView mBaSize;
         public final TextView mBaType;
-        public IBlock mItem;
         public FrameLayout mContainer;
 
         public EditorViewHolder(View view) {
             super(view);
             mView = view;
             mContainer = view.findViewById(R.id.cv_dashboard_block);
-            mItem = getBlock();
             mLayout = view.findViewById(R.id.block_area);
             mBaName = view.findViewById(R.id.ba_name);
             mBaImg = view.findViewById(R.id.ba_image);

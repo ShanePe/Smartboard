@@ -14,6 +14,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import shane.pennihome.local.smartboard.Data.Interface.IBlock;
 import shane.pennihome.local.smartboard.Data.Interface.IDatabaseObject;
 import shane.pennihome.local.smartboard.Data.Interface.IThing;
 
@@ -41,6 +42,20 @@ public class Dashboard extends IDatabaseObject {
                             return Routine.Load(jThing.toString());
                         default:
                             throw new JsonParseException("Invalid type of thing : " + jThing.get("mInstance").getAsString());
+                    }
+                }
+            });
+
+            builder.registerTypeAdapter(IBlock.class, new JsonDeserializer<IBlock>() {
+                @Override
+                public IBlock deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                    JsonObject jBlock = json.getAsJsonObject();
+
+                    switch (jBlock.get("mInstance").getAsString().toLowerCase()) {
+                        case "switchblock":
+                            return SwitchBlock.Load(jBlock.toString());
+                        default:
+                            throw new JsonParseException("Invalid type of thing : " + jBlock.get("mInstance").getAsString());
                     }
                 }
             });

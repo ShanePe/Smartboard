@@ -131,7 +131,6 @@ public class MainActivity extends AppCompatActivity
 
     public void populateDashbboards() {
         DBEngine db = new DBEngine(this);
-        db.CleanDataStore();
         if (mDashboards == null)
             mDashboards = new Dashboards();
         else
@@ -139,8 +138,6 @@ public class MainActivity extends AppCompatActivity
 
         for (IDatabaseObject d : db.readFromDatabaseByType(IDatabaseObject.Types.Dashboard))
             mDashboards.add((Dashboard) d);
-
-
     }
 
     public Monitor getMonitor() {
