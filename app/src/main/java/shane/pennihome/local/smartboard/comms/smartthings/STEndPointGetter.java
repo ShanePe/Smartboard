@@ -9,7 +9,7 @@ import shane.pennihome.local.smartboard.comms.RESTCommunicatorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Globals;
-import shane.pennihome.local.smartboard.data.TokenSmartThings;
+import shane.pennihome.local.smartboard.data.ITokenSmartThings;
 
 public class STEndPointGetter extends ICommunicator<STEndPointGetter> {
 
@@ -29,14 +29,14 @@ public class STEndPointGetter extends ICommunicator<STEndPointGetter> {
 
     @Override
     public JSONObject Process() throws Exception {
-        TokenSmartThings tokenSmartThingsInfo = TokenSmartThings.Load();
+        ITokenSmartThings tokenSmartThingsInfo = ITokenSmartThings.Load();
         RESTCommunicator httpCommunicator = new RESTCommunicator();
         return httpCommunicator.getJson(Globals.ST_ENDPOINT_URL, tokenSmartThingsInfo.getToken(), null);
     }
 
     @Override
     public void Complete(RESTCommunicatorResult result) throws Exception {
-        TokenSmartThings tokenSmartThingsInfo = TokenSmartThings.Load();
+        ITokenSmartThings tokenSmartThingsInfo = ITokenSmartThings.Load();
         tokenSmartThingsInfo.setRequestUrl(result.getResult().getString("uri"));
         tokenSmartThingsInfo.Save();
     }

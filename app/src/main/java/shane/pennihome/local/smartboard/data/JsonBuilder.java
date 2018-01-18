@@ -12,12 +12,12 @@ import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
 
-import shane.pennihome.local.smartboard.blocks.interfaces.IBlock;
-import shane.pennihome.local.smartboard.blocks.routineblock.RoutineBlock;
-import shane.pennihome.local.smartboard.blocks.switchblock.SwitchBlock;
-import shane.pennihome.local.smartboard.things.Interface.IThing;
-import shane.pennihome.local.smartboard.things.Routine.Routine;
-import shane.pennihome.local.smartboard.things.Switch.Switch;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
+import shane.pennihome.local.smartboard.things.routines.block.RoutineBlock;
+import shane.pennihome.local.smartboard.things.switches.block.SwitchBlock;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
+import shane.pennihome.local.smartboard.things.routines.Routine;
+import shane.pennihome.local.smartboard.things.switches.Switch;
 
 /**
  * Created by shane on 17/01/18.

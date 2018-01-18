@@ -198,6 +198,13 @@ public class RecyclerViewDragDropManager implements DraggableItemConstants {
         }
     }
 
+    public interface OnCustomOnMoveListener {
+        void OnMove(RecyclerView rv, MotionEvent e);
+        void OnUpOrCancel(RecyclerView rv, MotionEvent e);
+        void OnClick(RecyclerView rv, MotionEvent e);
+        void OnStartDrag(RecyclerView rv);
+    }
+
     private RecyclerView mRecyclerView;
     private Interpolator mSwapTargetTranslationInterpolator = DEFAULT_SWAP_TARGET_TRANSITION_INTERPOLATOR;
     private ScrollOnDraggingProcessRunnable mScrollOnDraggingProcess;
@@ -263,6 +270,14 @@ public class RecyclerViewDragDropManager implements DraggableItemConstants {
 
     private SwapTarget mTempSwapTarget = new SwapTarget();
     private FindSwapTargetContext mFindSwapTargetContext = new FindSwapTargetContext();
+
+    private OnCustomOnMoveListener mOnCustomOnMoveListener;
+
+    public void setOnCustomOnMoveListener(OnCustomOnMoveListener onCustomOnMoveListener)
+    {
+        mOnCustomOnMoveListener = onCustomOnMoveListener;
+    }
+
 
     /**
      * Constructor.
@@ -583,6 +598,8 @@ public class RecyclerViewDragDropManager implements DraggableItemConstants {
             case MotionEvent.ACTION_DOWN:
                 if (!isDragging()) {
                     handled = handleActionDown(rv, e);
+                    if(mOnCustomOnMoveListener != null)
+                        mOnCustomOnMoveListener.OnClick(rv, e);
                 }
                 break;
 
@@ -617,10 +634,15 @@ public class RecyclerViewDragDropManager implements DraggableItemConstants {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 handleActionUpOrCancel(action, true);
+                if(mOnCustomOnMoveListener != null)
+                    mOnCustomOnMoveListener.OnUpOrCancel(rv, e);
                 break;
 
             case MotionEvent.ACTION_MOVE:
                 handleActionMoveWhileDragging(rv, e);
+                if(mOnCustomOnMoveListener != null)
+                    mOnCustomOnMoveListener.OnMove(rv, e);
+
                 break;
 
         }
@@ -791,6 +813,9 @@ public class RecyclerViewDragDropManager implements DraggableItemConstants {
             mItemDragEventListener.onItemDragStarted(mWrapperAdapter.getDraggingItemInitialPosition());
             mItemDragEventListener.onItemDragMoveDistanceUpdated(0, 0);
         }
+
+        if(mOnCustomOnMoveListener != null)
+            mOnCustomOnMoveListener.OnStartDrag(getRecyclerView());
     }
 
     /**

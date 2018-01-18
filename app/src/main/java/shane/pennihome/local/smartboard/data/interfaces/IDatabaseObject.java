@@ -3,6 +3,7 @@ package shane.pennihome.local.smartboard.data.interfaces;
 import java.util.UUID;
 
 import shane.pennihome.local.smartboard.data.JsonBuilder;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.Annotations;
 
 /**
  * Created by shane on 13/01/18.
@@ -10,7 +11,8 @@ import shane.pennihome.local.smartboard.data.JsonBuilder;
 
 @SuppressWarnings("DefaultFileTemplate")
 public abstract class IDatabaseObject {
-    private final String mId = UUID.randomUUID().toString();
+    @Annotations.IgnoreOnCopy
+    private final String mDataId = UUID.randomUUID().toString();
     private String mName = "";
 
     private static <V extends IDatabaseObject> V fromJson(Class<V> cls, String json) {
@@ -25,12 +27,12 @@ public abstract class IDatabaseObject {
         return inst;
     }
 
-    public String getID() {
-        return mId;
+    public String getDataID() {
+        return mDataId;
     }
 
     public String getName() {
-        return mName;
+        return mName == null ? "" : mName;
     }
 
     public void setName(String name) {
@@ -38,16 +40,16 @@ public abstract class IDatabaseObject {
     }
 
     @SuppressWarnings("SameReturnValue")
-    public abstract Types getType();
+    public abstract Types getDatabaseType();
 
     public String toJson() {
         return JsonBuilder.Get().toJson(this);
     }
 
     public long getIdAsLong() {
-        UUID uid = UUID.fromString(getID());
+        UUID uid = UUID.fromString(getDataID());
         return uid.getMostSignificantBits();
     }
 
-    public enum Types {Dashboard, Group, Block}
+    public enum Types {Dashboard, Group, Thing, Block}
 }

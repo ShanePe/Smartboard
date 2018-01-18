@@ -11,10 +11,10 @@ import shane.pennihome.local.smartboard.comms.RESTCommunicator;
 import shane.pennihome.local.smartboard.comms.RESTCommunicatorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.data.TokenHueBridge;
-import shane.pennihome.local.smartboard.things.Interface.IThing;
-import shane.pennihome.local.smartboard.things.Routine.Routine;
-import shane.pennihome.local.smartboard.things.Routine.Routines;
+import shane.pennihome.local.smartboard.data.ITokenHueBridge;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
+import shane.pennihome.local.smartboard.things.routines.Routine;
+import shane.pennihome.local.smartboard.things.routines.Routines;
 
 /**
  * Created by shane on 31/12/17.
@@ -52,7 +52,7 @@ public class PHBridgeRoutineGetter extends ICommunicator<PHBridgeRoutineGetter> 
     public JSONObject Process() throws Exception {
         JSONObject jRet = new JSONObject();
 
-        TokenHueBridge tokenHueBridge = TokenHueBridge.Load();
+        ITokenHueBridge tokenHueBridge = ITokenHueBridge.Load();
         RESTCommunicator restCommunicator = new RESTCommunicator();
         String url = "http://" + tokenHueBridge.getAddress() + "/api/" + tokenHueBridge.getToken() + "/groups";
         final JSONArray groups = new JSONArray();
@@ -113,7 +113,7 @@ public class PHBridgeRoutineGetter extends ICommunicator<PHBridgeRoutineGetter> 
                 Routine r = new Routine();
                 r.setId(jRout.getString("id"));
                 r.setName(jRout.getString("name") + " in all");
-                r.setSource(IThing.Source.PhilipsHue);
+                r.setSource(IThing.Sources.PhilipsHue);
                 mRoutines.add(r);
             } else {
                 for (int x = 0; x < jGroups.length(); x++) {
@@ -121,7 +121,7 @@ public class PHBridgeRoutineGetter extends ICommunicator<PHBridgeRoutineGetter> 
                     Routine r = new Routine();
                     r.setId(jRout.getString("id"));
                     r.setName(jRout.getString("name") + " in " + jGroup.getString("name"));
-                    r.setSource(IThing.Source.PhilipsHue);
+                    r.setSource(IThing.Sources.PhilipsHue);
                     mRoutines.add(r);
                 }
             }

@@ -9,7 +9,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import shane.pennihome.local.smartboard.blocks.switchblock.SwitchBlock;
+import shane.pennihome.local.smartboard.things.switches.block.SwitchBlock;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 
@@ -110,7 +110,7 @@ public class DBEngine extends SQLiteOpenHelper {
         }
 
         public static String getUpdateDatastore(IDatabaseObject object) {
-            return String.format("replace into datastore (id, type, object) values('%s','%s','%s')", object.getID(), object.getType(), object.toJson());
+            return String.format("replace into datastore (id, type, object) values('%s','%s','%s')", object.getDataID(), object.getDatabaseType(), object.toJson());
         }
 
         @SuppressWarnings("SameReturnValue")

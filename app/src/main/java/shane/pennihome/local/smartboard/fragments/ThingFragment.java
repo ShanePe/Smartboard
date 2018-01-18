@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
-import shane.pennihome.local.smartboard.things.Interface.IThingCollection;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 /**
  * Created by shane on 29/12/17.
@@ -54,7 +54,7 @@ public abstract class ThingFragment extends IFragment {
 
     protected abstract int getFragmentLayout();
 
-    protected abstract RecyclerView.Adapter getAdapter(IThingCollection things);
+    protected abstract RecyclerView.Adapter getAdapter(IThings things);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,5 +75,5 @@ public abstract class ThingFragment extends IFragment {
         return view;
     }
 
-    abstract IThingCollection getDataSource();
+    abstract IThings getDataSource();
 }

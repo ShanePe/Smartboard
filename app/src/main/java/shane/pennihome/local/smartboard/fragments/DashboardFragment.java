@@ -21,8 +21,8 @@ import shane.pennihome.local.smartboard.SmartboardActivity;
 import shane.pennihome.local.smartboard.adapters.DashboardViewAdapter;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
-import shane.pennihome.local.smartboard.things.Routine.Routine;
-import shane.pennihome.local.smartboard.things.Switch.Switch;
+import shane.pennihome.local.smartboard.things.routines.Routine;
+import shane.pennihome.local.smartboard.things.switches.Switch;
 
 public class DashboardFragment extends IFragment {
     DashboardViewAdapter mDashboardAptr;

@@ -24,7 +24,7 @@ import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Dashboards;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.HueBridge;
-import shane.pennihome.local.smartboard.data.TokenHueBridge;
+import shane.pennihome.local.smartboard.data.ITokenHueBridge;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.fragments.DashboardFragment;
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity
 
     public void populateDashbboards() {
         DBEngine db = new DBEngine(this);
-        // db.CleanDataStore();
+        //db.CleanDataStore();
         if (mDashboards == null)
             mDashboards = new Dashboards();
         else
@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(HueBridge item) {
-        TokenHueBridge philipHueHub = TokenHueBridge.Load();
+        ITokenHueBridge philipHueHub = ITokenHueBridge.Load();
         philipHueHub.setAddress(item.getIp());
         philipHueHub.setId(item.getId());
         philipHueHub.setToken("");

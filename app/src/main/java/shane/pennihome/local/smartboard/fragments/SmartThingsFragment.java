@@ -20,7 +20,7 @@ import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.comms.smartthings.STTokenGetter;
 import shane.pennihome.local.smartboard.data.Globals;
-import shane.pennihome.local.smartboard.data.TokenSmartThings;
+import shane.pennihome.local.smartboard.data.ITokenSmartThings;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
 
 @SuppressWarnings("unused")
@@ -79,7 +79,7 @@ public class SmartThingsFragment extends IFragment {
                     Uri uri = Uri.parse(url);
 
                     // Code recovery
-                    TokenSmartThings tokenSmartThingsInfo = new TokenSmartThings();
+                    ITokenSmartThings tokenSmartThingsInfo = new ITokenSmartThings();
                     tokenSmartThingsInfo.setAuthCode(uri.getQueryParameter("code"));
                     Log.i(Globals.ACTIVITY, "Auth Code :" + tokenSmartThingsInfo.getAuthCode());
 

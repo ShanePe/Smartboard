@@ -2,11 +2,8 @@ package shane.pennihome.local.smartboard.data;
 
 import android.support.annotation.ColorInt;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import shane.pennihome.local.smartboard.blocks.interfaces.IBlock;
-import shane.pennihome.local.smartboard.blocks.interfaces.IBlocks;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
+import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.ui.GroupViewHandler;
 
@@ -16,7 +13,7 @@ import shane.pennihome.local.smartboard.ui.GroupViewHandler;
 
 @SuppressWarnings("DefaultFileTemplate")
 public class Group extends IDatabaseObject {
-    final IBlocks mBlocks = new IBlocks();
+    final Things mThings = new Things();
     private boolean mDisplayName = false;
     private boolean mExpanded = false;
     private @ColorInt
@@ -44,12 +41,12 @@ public class Group extends IDatabaseObject {
         }
     }
 
-    public IBlocks getBlocks() {
-        return mBlocks;
+    public Things getThings() {
+        return mThings;
     }
 
     @Override
-    public Types getType() {
+    public Types getDatabaseType() {
         return Types.Group;
     }
 
@@ -61,8 +58,8 @@ public class Group extends IDatabaseObject {
         this.mDisplayName = displayName;
     }
 
-    public IBlock getBlockAt(int index) {
-        return mBlocks.get(index);
+    public IThing getThingsAt(int index) {
+        return mThings.get(index);
     }
 
     public boolean isExpanded() {

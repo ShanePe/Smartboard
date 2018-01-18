@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flask.colorpicker.ColorPickerView;
@@ -23,25 +24,24 @@ import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.blocks.Listeners.OnBlockSetListener;
-import shane.pennihome.local.smartboard.blocks.interfaces.IBlock;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.listeners.OnPropertyWindowListener;
 import shane.pennihome.local.smartboard.listeners.OnThingSelectListener;
-import shane.pennihome.local.smartboard.things.Adapters.ThingSelectionAdapter;
-import shane.pennihome.local.smartboard.things.Interface.IThing;
-import shane.pennihome.local.smartboard.things.Routine.Routine;
-import shane.pennihome.local.smartboard.things.Switch.Switch;
-import shane.pennihome.local.smartboard.things.Things;
+import shane.pennihome.local.smartboard.things.routines.Routine;
+import shane.pennihome.local.smartboard.things.switches.Switch;
+import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.adapters.ThingSelectionAdapter;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
 
 /**
  * Created by shane on 16/01/18.
  */
 
 public class UIHelper {
-    public static void showBlockPropertyWindow(Activity activity, Things things, IBlock block, OnBlockSetListener onBlockSetListener) {
-        showBlockPropertyWindow(activity, things, block, null, onBlockSetListener);
+    public static void showThingPropertyWindow(Activity activity, Things things, IThing thing, OnThingSetListener onThingSetListener) {
+        showThingPropertyWindow(activity, things, thing, null, onThingSetListener);
     }
 
     public static void ShowThingsSelectionWindow(Activity activity, final OnThingSelectListener onThingSelectListener) {
@@ -63,20 +63,20 @@ public class UIHelper {
                 });
     }
 
-    public static void showBlockPropertyWindow(final Activity activity, final Things things, final IBlock block,
-                                               final Group group, final OnBlockSetListener onBlockSetListener) {
-        if(block == null)
+    public static void showThingPropertyWindow(final Activity activity, final Things things, final IThing thing,
+                                               final Group group, final OnThingSetListener onThingSetListener) {
+        if (thing == null)
             return;
 
-        showPropertyWindow(activity, "Add Block", block.getEditorViewResourceID(), new OnPropertyWindowListener() {
+        showPropertyWindow(activity, "Add Block", thing.getUIHandler().getEditorViewResourceID(), new OnPropertyWindowListener() {
             @Override
             public void onWindowShown(View view) {
-                block.getUIHandler().buildBlockPropertyView(activity, view, things, group);
+                thing.getUIHandler().buildBlockPropertyView(activity, view, things, group);
             }
 
             @Override
             public void onOkSelected(View view) {
-                block.getUIHandler().populateBlockFromView(view, onBlockSetListener);
+                thing.getUIHandler().populateBlockFromView(view, onThingSetListener);
             }
         });
     }
@@ -88,14 +88,18 @@ public class UIHelper {
 
         if (thing instanceof Routine)
             return Off;
-        if (thing instanceof Switch)
-            switch (((Switch) thing).getState()) {
+        else if (thing instanceof Switch) {
+            Switch sw = (Switch) thing;
+            if (sw.getState() == null)
+                return Off;
+
+            switch (sw.getState()) {
                 case On:
                     return On;
                 default:
                     return Off;
             }
-        else
+        } else
             return 0;
     }
 
@@ -144,9 +148,8 @@ public class UIHelper {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View view = (View) inflater.inflate(resource, null);
 
-        if(adapter != null)
-            if(view instanceof RecyclerView)
-            {
+        if (adapter != null)
+            if (view instanceof RecyclerView) {
                 RecyclerView recyclerView = (RecyclerView) view;
                 if (columnCount <= 1) {
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -154,7 +157,7 @@ public class UIHelper {
                     recyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
                 }
 
-            recyclerView.setAdapter(adapter);
+                recyclerView.setAdapter(adapter);
 
             }
 
@@ -183,7 +186,7 @@ public class UIHelper {
         android.app.AlertDialog dialog = builder.create();
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
-        if(onShowListener != null)
+        if (onShowListener != null)
             dialog.setOnShowListener(new DialogInterface.OnShowListener() {
                 @Override
                 public void onShow(DialogInterface dialog) {
@@ -223,6 +226,45 @@ public class UIHelper {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    public static void ShowConfirm(final Context context, String title, String text, final OnProcessCompleteListener onProcessCompleteListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title);
+
+        final TextView confirm = new TextView(context);
+        confirm.setPadding(16,16,16,16);
+        confirm.setText(text);
+        builder.setView(confirm);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (onProcessCompleteListener != null) {
+                    onProcessCompleteListener.complete(true, null);
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                if(onProcessCompleteListener != null)
+                    onProcessCompleteListener.complete(false,null);
+            }
+        });
+
+        //builder.setCancelable(false);
+        builder.setIcon(R.drawable.icon_cog);
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                if(onProcessCompleteListener != null)
+                    onProcessCompleteListener.complete(false,null);
             }
         });
 

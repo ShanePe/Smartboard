@@ -12,10 +12,10 @@ import shane.pennihome.local.smartboard.comms.RESTCommunicator;
 import shane.pennihome.local.smartboard.comms.RESTCommunicatorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.data.TokenHueBridge;
-import shane.pennihome.local.smartboard.things.Interface.IThing;
-import shane.pennihome.local.smartboard.things.Switch.Switch;
-import shane.pennihome.local.smartboard.things.Switch.Switches;
+import shane.pennihome.local.smartboard.data.ITokenHueBridge;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
+import shane.pennihome.local.smartboard.things.switches.Switch;
+import shane.pennihome.local.smartboard.things.switches.Switches;
 
 /**
  * Created by shane on 31/12/17.
@@ -51,7 +51,7 @@ public class PHBridgeDeviceGetter extends ICommunicator<PHBridgeDeviceGetter> {
 
     @Override
     public JSONObject Process() throws Exception {
-        TokenHueBridge tokenHueBridge = TokenHueBridge.Load();
+        ITokenHueBridge tokenHueBridge = ITokenHueBridge.Load();
 
         String url = "http://" + tokenHueBridge.getAddress() + "/api/" + tokenHueBridge.getToken() + "/lights";
         final JSONArray devices = new JSONArray();
@@ -81,7 +81,7 @@ public class PHBridgeDeviceGetter extends ICommunicator<PHBridgeDeviceGetter> {
             d.setName(jDev.getString("name"));
             d.setState(getState(jDev));
             d.setType(jDev.getString("type"));
-            d.setSource(IThing.Source.PhilipsHue);
+            d.setSource(IThing.Sources.PhilipsHue);
             mSwitches.add(d);
         }
     }

@@ -4,8 +4,8 @@ import android.app.Activity;
 
 import shane.pennihome.local.smartboard.comms.interfaces.IController;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.things.Routine.Routines;
-import shane.pennihome.local.smartboard.things.Switch.Switches;
+import shane.pennihome.local.smartboard.things.routines.Routines;
+import shane.pennihome.local.smartboard.things.switches.Switches;
 
 /**
  * Created by shane on 01/01/18.

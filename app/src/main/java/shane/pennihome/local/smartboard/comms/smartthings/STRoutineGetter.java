@@ -11,10 +11,10 @@ import shane.pennihome.local.smartboard.comms.RESTCommunicatorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnCommResponseListener;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.data.TokenSmartThings;
-import shane.pennihome.local.smartboard.things.Interface.IThing;
-import shane.pennihome.local.smartboard.things.Routine.Routine;
-import shane.pennihome.local.smartboard.things.Routine.Routines;
+import shane.pennihome.local.smartboard.data.ITokenSmartThings;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
+import shane.pennihome.local.smartboard.things.routines.Routine;
+import shane.pennihome.local.smartboard.things.routines.Routines;
 
 @SuppressWarnings("unused")
 @SuppressLint("StaticFieldLeak")
@@ -47,7 +47,7 @@ public class STRoutineGetter extends ICommunicator<STRoutineGetter> {
 
     @Override
     public JSONObject Process() throws Exception {
-        TokenSmartThings tokenSmartThingsInfo = TokenSmartThings.Load();
+        ITokenSmartThings tokenSmartThingsInfo = ITokenSmartThings.Load();
         @SuppressWarnings("unused") final JSONArray devices = new JSONArray();
         final JSONArray routines = new JSONArray();
 
@@ -73,7 +73,7 @@ public class STRoutineGetter extends ICommunicator<STRoutineGetter> {
             Routine r = new Routine();
             r.setId(jRout.getString("id"));
             r.setName(jRout.getString("name"));
-            r.setSource(IThing.Source.SmartThings);
+            r.setSource(IThing.Sources.SmartThings);
             mRoutines.add(r);
         }
     }

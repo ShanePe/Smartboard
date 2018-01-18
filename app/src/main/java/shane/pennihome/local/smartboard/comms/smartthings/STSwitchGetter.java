@@ -12,10 +12,10 @@ import shane.pennihome.local.smartboard.comms.RESTCommunicatorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnCommResponseListener;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.data.TokenSmartThings;
-import shane.pennihome.local.smartboard.things.Interface.IThing;
-import shane.pennihome.local.smartboard.things.Switch.Switch;
-import shane.pennihome.local.smartboard.things.Switch.Switches;
+import shane.pennihome.local.smartboard.data.ITokenSmartThings;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
+import shane.pennihome.local.smartboard.things.switches.Switch;
+import shane.pennihome.local.smartboard.things.switches.Switches;
 
 @SuppressLint("StaticFieldLeak")
 public class STSwitchGetter extends ICommunicator<STSwitchGetter> {
@@ -46,7 +46,7 @@ public class STSwitchGetter extends ICommunicator<STSwitchGetter> {
 
     @Override
     public JSONObject Process() throws Exception {
-        TokenSmartThings tokenSmartThingsInfo = TokenSmartThings.Load();
+        ITokenSmartThings tokenSmartThingsInfo = ITokenSmartThings.Load();
         final JSONArray devices = new JSONArray();
 
         RESTCommunicator coms = new RESTCommunicator();
@@ -74,7 +74,7 @@ public class STSwitchGetter extends ICommunicator<STSwitchGetter> {
             d.setName(jDev.getString("name"));
             d.setState(getState(jDev));
             d.setType(jDev.getString("type"));
-            d.setSource(IThing.Source.SmartThings);
+            d.setSource(IThing.Sources.SmartThings);
             mSwitches.add(d);
         }
 

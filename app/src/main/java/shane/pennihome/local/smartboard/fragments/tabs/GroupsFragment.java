@@ -1,7 +1,9 @@
 package shane.pennihome.local.smartboard.fragments.tabs;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
@@ -25,6 +29,8 @@ public class GroupsFragment extends Fragment {
 
     public GroupsFragment() {
     }
+
+
 
     /**
      * Returns a new instance of this fragment for the given section

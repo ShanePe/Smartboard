@@ -1,7 +1,6 @@
 package shane.pennihome.local.smartboard.listeners;
 
-import shane.pennihome.local.smartboard.things.Interface.IThing;
-import shane.pennihome.local.smartboard.things.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
 /**
  * Created by shane on 17/01/18.

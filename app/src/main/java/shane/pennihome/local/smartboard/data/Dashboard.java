@@ -31,7 +31,7 @@ public class Dashboard extends IDatabaseObject {
     }
 
     @Override
-    public Types getType() {
+    public Types getDatabaseType() {
         return Types.Dashboard;
     }
 

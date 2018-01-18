@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    >
+
 
     <ExpandableListView
         android:id="@+id/list_rows"
@@ -11,8 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:groupIndicator="@android:color/transparent"
-        android:labelFor="@+id/txt_db_name">
+        android:labelFor="@+id/txt_db_name"
+        android:clipChildren="false">
+
 
     </ExpandableListView>
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
