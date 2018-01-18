@@ -1,9 +1,11 @@
 package shane.pennihome.local.smartboard.things.Interface;
 
+import shane.pennihome.local.smartboard.blocks.interfaces.IBlock;
 import shane.pennihome.local.smartboard.comms.ThingToggler;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.things.Listeners.onThingListener;
+import shane.pennihome.local.smartboard.things.Things;
 
 /**
  * Created by shane on 29/12/17.
@@ -59,6 +61,13 @@ public abstract class IThing {
 
     protected abstract void successfulToggle(@SuppressWarnings("unused") IThing thing);
 
+    public abstract String getFriendlyName();
+
+    public abstract Things getFilteredView(Things source);
+
+    public abstract Class getBlockType();
+
+    public abstract int getDefaultIconResource();
     public void setOnThingListener(onThingListener onThingListener) {
         mOnThingListener = onThingListener;
     }

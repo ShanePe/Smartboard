@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.blocks.interfaces.IBlock;
+import shane.pennihome.local.smartboard.blocks.interfaces.IBlocks;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.ui.GroupViewHandler;
 
@@ -15,7 +16,7 @@ import shane.pennihome.local.smartboard.ui.GroupViewHandler;
 
 @SuppressWarnings("DefaultFileTemplate")
 public class Group extends IDatabaseObject {
-    final List<IBlock> mBlocks = new ArrayList<>();
+    final IBlocks mBlocks = new IBlocks();
     private boolean mDisplayName = false;
     private boolean mExpanded = false;
     private @ColorInt
@@ -43,13 +44,13 @@ public class Group extends IDatabaseObject {
         }
     }
 
-    public List<IBlock> getBlocks() {
+    public IBlocks getBlocks() {
         return mBlocks;
     }
 
     @Override
     public Types getType() {
-        return Types.Dashboard;
+        return Types.Group;
     }
 
     public boolean getDisplayName() {

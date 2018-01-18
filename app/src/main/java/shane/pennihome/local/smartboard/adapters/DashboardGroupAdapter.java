@@ -15,6 +15,7 @@ import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
@@ -23,6 +24,8 @@ import shane.pennihome.local.smartboard.blocks.interfaces.IBlock;
 import shane.pennihome.local.smartboard.blocks.switchblock.SwitchBlock;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.listeners.OnPropertyWindowListener;
+import shane.pennihome.local.smartboard.listeners.OnThingSelectListener;
+import shane.pennihome.local.smartboard.things.Interface.IThing;
 import shane.pennihome.local.smartboard.ui.GroupViewHandler;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 
@@ -166,15 +169,20 @@ public class DashboardGroupAdapter extends BaseExpandableListAdapter {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                UIHelper.showBlockPropertyWindow(mSmartboardActivity, mSmartboardActivity.getThings(), createBlockInstance(group), group, new OnBlockSetListener() {
-                    @Override
-                    public void OnSet(IBlock block) {
-                        group.getBlocks().add(block);
-                        listView.expandGroup(groupPosition);
-                        mSmartboardActivity.DataChanged();
-                    }
-                });
+            UIHelper.ShowThingsSelectionWindow(mSmartboardActivity, new OnThingSelectListener() {
+                @Override
+                public void ThingSelected(IThing thing) {
+                    UIHelper.showBlockPropertyWindow(mSmartboardActivity, thing.getFilteredView(mSmartboardActivity.getThings()),
+                            createBlockInstance(thing, group), group, new OnBlockSetListener() {
+                        @Override
+                        public void OnSet(IBlock block) {
+                                group.getBlocks().add(block);
+                                listView.expandGroup(groupPosition);
+                                mSmartboardActivity.DataChanged();
+                        }
+                    });
+                }
+            });
             }
         });
 
@@ -194,27 +202,35 @@ public class DashboardGroupAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-    private SwitchBlock createBlockInstance(Group group) {
-        SwitchBlock switchBlock = new SwitchBlock();
-        switchBlock.setWidth(1);
-        switchBlock.setHeight(1);
+    private IBlock createBlockInstance(IThing thing,Group group) {
+        try {
+            IBlock block = (IBlock) thing.getBlockType().newInstance();
+            block.setWidth(1);
+            block.setHeight(1);
 
-        switchBlock.setBackgroundColourOff(group.getDefaultBlockBackgroundColourOff() != 0 ?
-                group.getDefaultBlockBackgroundColourOff() :
-                Color.parseColor("#ff5a595b"));
-        switchBlock.setBackgroundColourOn(group.getDefaultBlockBackgroundColourOn() != 0 ?
-                group.getDefaultBlockBackgroundColourOn() :
-                Color.parseColor("#FF4081"));
+            block.setBackgroundColourOff(group.getDefaultBlockBackgroundColourOff() != 0 ?
+                    group.getDefaultBlockBackgroundColourOff() :
+                    Color.parseColor("#ff5a595b"));
+            block.setBackgroundColourOn(group.getDefaultBlockBackgroundColourOn() != 0 ?
+                    group.getDefaultBlockBackgroundColourOn() :
+                    Color.parseColor("#FF4081"));
 
-        switchBlock.setForeColourOff(group.getDefaultBlockForeColourOff() != 0 ?
-                group.getDefaultBlockForeColourOff() :
-                Color.parseColor("white"));
-        switchBlock.setForeColourOn(group.getDefaultBlockForeColourOn() != 0 ?
-                group.getDefaultBlockForeColourOn() :
-                Color.parseColor("black"));
+            block.setForeColourOff(group.getDefaultBlockForeColourOff() != 0 ?
+                    group.getDefaultBlockForeColourOff() :
+                    Color.parseColor("white"));
+            block.setForeColourOn(group.getDefaultBlockForeColourOn() != 0 ?
+                    group.getDefaultBlockForeColourOn() :
+                    Color.parseColor("black"));
 
-        switchBlock.setGroupId(group.getBlocks().size() + 1);
-        return switchBlock;
+            block.setGroupId(group.getBlocks().size() + 1);
+
+            return block;
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(mSmartboardActivity, "Error creating block instance", Toast.LENGTH_LONG).show();
+            return null;
+        }
     }
 
     @Override
@@ -228,7 +244,7 @@ public class DashboardGroupAdapter extends BaseExpandableListAdapter {
         if (group.getGroupViewHandler() == null)
             group.setGroupViewHandler(new GroupViewHandler(mSmartboardActivity, convertView, group));
         else {
-            group.getGroupViewHandler().getDashboardBlockAdapter().setValues(group.getBlocks());
+            group.getGroupViewHandler().getDashboardBlockAdapter().setIBlocks(group.getBlocks());
             mSmartboardActivity.DataChanged();
         }
 

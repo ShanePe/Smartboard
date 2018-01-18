@@ -37,4 +37,6 @@
     <string name="lbl_device">Device</string>
     <string name="lbl_routine">Routine</string>
     <string name="lbl_add_group_msg">Please supply a group name.</string>
+    <string name="block_name_switch">Switch</string>
+    <string name="lbl_colours">Colours</string>
 </resources>

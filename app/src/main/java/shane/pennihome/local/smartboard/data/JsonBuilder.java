@@ -13,6 +13,7 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 
 import shane.pennihome.local.smartboard.blocks.interfaces.IBlock;
+import shane.pennihome.local.smartboard.blocks.routineblock.RoutineBlock;
 import shane.pennihome.local.smartboard.blocks.switchblock.SwitchBlock;
 import shane.pennihome.local.smartboard.things.Interface.IThing;
 import shane.pennihome.local.smartboard.things.Routine.Routine;
@@ -49,6 +50,8 @@ public class JsonBuilder {
                 switch (jBlock.get("mInstance").getAsString().toLowerCase()) {
                     case "switchblock":
                         return SwitchBlock.Load(jBlock.toString());
+                    case "routineblock":
+                        return RoutineBlock.Load(jBlock.toString());
                     default:
                         throw new JsonParseException("Invalid type of block : " + jBlock.get("mInstance").getAsString());
                 }
@@ -60,7 +63,7 @@ public class JsonBuilder {
             public JsonElement serialize(IThing src, Type typeOfSrc, JsonSerializationContext context) {
                 if (src instanceof Switch)
                     return context.serialize((Switch) src);
-                if (src instanceof Routine)
+                else if (src instanceof Routine)
                     return context.serialize((Routine) src);
                 else
                     throw new JsonParseException("Invalid type of thing : " + src.toString());
@@ -72,6 +75,8 @@ public class JsonBuilder {
             public JsonElement serialize(IBlock src, Type typeOfSrc, JsonSerializationContext context) {
                 if (src instanceof SwitchBlock)
                     return context.serialize((SwitchBlock) src);
+                else if (src instanceof RoutineBlock)
+                    return context.serialize((RoutineBlock) src);
                 else
                     throw new JsonParseException("Invalid type of block : " + src.toString());
             }

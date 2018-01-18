@@ -43,5 +43,4 @@ public abstract class IThingCollection<T extends IThing> extends ArrayList<T> {
 
         return -1;
     }
-
 }

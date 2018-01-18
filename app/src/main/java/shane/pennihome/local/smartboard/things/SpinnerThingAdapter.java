@@ -53,7 +53,6 @@ public class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
         IThing thing = (IThing) getItem(position);
 
         ImageView img = (ImageView) convertView.findViewById(R.id.img_spin_icon);
-        TextView txtType = (TextView) convertView.findViewById(R.id.txt_spin_type);
         TextView txtName = (TextView) convertView.findViewById(R.id.txt_spin_name);
         TextView txtSrc = (TextView) convertView.findViewById(R.id.txt_spin_source);
 
@@ -64,11 +63,6 @@ public class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
             img.setImageResource(R.drawable.icon_phlogo);
             txtSrc.setText(R.string.device_ph_label);
         }
-
-        if (thing instanceof Switch)
-            txtType.setText(R.string.lbl_device);
-        else if (thing instanceof Routine)
-            txtType.setText(R.string.lbl_routine);
 
         txtName.setText(thing.getName());
 

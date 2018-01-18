@@ -1,10 +1,14 @@
 package shane.pennihome.local.smartboard.blocks.interfaces;
 
+import android.app.Activity;
 import android.support.annotation.ColorInt;
 
+import shane.pennihome.local.smartboard.blocks.routineblock.RoutineBlock;
 import shane.pennihome.local.smartboard.blocks.switchblock.SwitchBlock;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.things.Interface.IThing;
+import shane.pennihome.local.smartboard.things.Routine.Routine;
+import shane.pennihome.local.smartboard.things.Things;
 import shane.pennihome.local.smartboard.ui.interfaces.IBlockUI;
 
 /**
@@ -33,24 +37,26 @@ public abstract class IBlock extends IDatabaseObject {
     public static int GetTypeID(IBlock block) {
         if (block instanceof SwitchBlock)
             return 0;
-
+        else if(block instanceof RoutineBlock)
+            return 1;
         return -1;
     }
 
     public static IBlock CreateByTypeID(int i) {
         if (i == 0)
             return new SwitchBlock();
-
+        else if(i == 1)
+            return new RoutineBlock();
         return null;
     }
 
     public abstract IBlockUI getUIHandler();
 
-    public abstract int GetViewResourceID();
-
+    public abstract int getViewResourceID();
+    public abstract int getEditorViewResourceID();
     @Override
     public IDatabaseObject.Types getType() {
-        return IDatabaseObject.Types.Dashboard;
+        return Types.Block;
     }
 
     public IThing getThing() {
@@ -120,5 +126,4 @@ public abstract class IBlock extends IDatabaseObject {
     public void setGroupId(long groupId) {
         this.mGroupId = groupId;
     }
-
 }

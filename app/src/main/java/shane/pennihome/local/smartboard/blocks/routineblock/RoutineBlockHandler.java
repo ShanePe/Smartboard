@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.blocks.switchblock;
+package shane.pennihome.local.smartboard.blocks.routineblock;
 
 import android.app.Activity;
 import android.support.annotation.ColorInt;
@@ -20,9 +20,7 @@ import shane.pennihome.local.smartboard.blocks.interfaces.IBlock;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.things.Interface.IThing;
-import shane.pennihome.local.smartboard.things.Routine.Routine;
 import shane.pennihome.local.smartboard.things.SpinnerThingAdapter;
-import shane.pennihome.local.smartboard.things.Switch.Switch;
 import shane.pennihome.local.smartboard.things.Things;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 import shane.pennihome.local.smartboard.ui.interfaces.IBlockUI;
@@ -31,22 +29,20 @@ import shane.pennihome.local.smartboard.ui.interfaces.IBlockUI;
  * Created by SPennicott on 17/01/2018.
  */
 
-public class SwitchBlockHandler extends IBlockUI {
-    public SwitchBlockHandler(IBlock block) {
+public class RoutineBlockHandler extends IBlockUI {
+    public RoutineBlockHandler(IBlock block) {
         super(block);
     }
 
     @Override
     public void buildBlockPropertyView(final Activity activity, View view, Things things, final Group group) {
-        Spinner spThings = view.findViewById(R.id.sp_thing);
-        final EditText txtBlkName = view.findViewById(R.id.txt_blk_name);
-        NumberPicker txtWidth = view.findViewById(R.id.txt_blk_width);
-        NumberPicker txtHeight = view.findViewById(R.id.txt_blk_height);
+        Spinner spThings = view.findViewById(R.id.rt_sp_thing);
+        final EditText txtBlkName = view.findViewById(R.id.rt_txt_blk_name);
+        NumberPicker txtWidth = view.findViewById(R.id.rt_txt_blk_width);
+        NumberPicker txtHeight = view.findViewById(R.id.rt_txt_blk_height);
 
-        final Button btnBGOff = view.findViewById(R.id.btn_clr_bg_Off);
-        final Button btnBGOn = view.findViewById(R.id.btn_clr_bg_On);
-        final Button btnFGOff = view.findViewById(R.id.btn_clr_fg_Off);
-        final Button btnFGOn = view.findViewById(R.id.btn_clr_fg_On);
+        final Button btnBGOff = view.findViewById(R.id.rt_btn_clr_bg_Off);
+        final Button btnFGOff = view.findViewById(R.id.rt_btn_clr_fg_Off);
 
         SpinnerThingAdapter aptr = new SpinnerThingAdapter(activity);
         aptr.setThings(things);
@@ -84,9 +80,7 @@ public class SwitchBlockHandler extends IBlockUI {
         txtHeight.setValue(getBlock().getHeight());
 
         btnBGOff.setBackgroundColor(getBlock().getBackgroundColourOff());
-        btnBGOn.setBackgroundColor(getBlock().getBackgroundColourOn());
         btnFGOff.setBackgroundColor(getBlock().getForeColourOff());
-        btnFGOn.setBackgroundColor(getBlock().getForeColourOn());
 
         btnBGOff.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,46 +115,14 @@ public class SwitchBlockHandler extends IBlockUI {
                 });
             }
         });
-
-        btnBGOn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UIHelper.showColourPicker(activity, getBlock().getBackgroundColourOn(), new OnProcessCompleteListener() {
-                    @Override
-                    public void complete(boolean success, Object source) {
-                        @ColorInt int clr = (int) source;
-                        getBlock().setBackgroundColourOn(clr);
-                        if (group != null)
-                            group.setDefaultBlockBackgroundColourOn(clr);
-                        btnBGOn.setBackgroundColor(getBlock().getBackgroundColourOn());
-                    }
-                });
-            }
-        });
-
-        btnFGOn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UIHelper.showColourPicker(activity, getBlock().getForeColourOn(), new OnProcessCompleteListener() {
-                    @Override
-                    public void complete(boolean success, Object source) {
-                        @ColorInt int clr = (int) source;
-                        getBlock().setForeColourOn(clr);
-                        if (group != null)
-                            group.setDefaultBlockForeColourOn(clr);
-                        btnFGOn.setBackgroundColor(getBlock().getForeColourOn());
-                    }
-                });
-            }
-        });
     }
 
     @Override
     public void populateBlockFromView(View view, OnBlockSetListener onBlockSetListener) {
-        Spinner spThings = view.findViewById(R.id.sp_thing);
-        final EditText txtBlkName = view.findViewById(R.id.txt_blk_name);
-        NumberPicker txtWidth = view.findViewById(R.id.txt_blk_width);
-        NumberPicker txtHeight = view.findViewById(R.id.txt_blk_height);
+        Spinner spThings = view.findViewById(R.id.rt_sp_thing);
+        final EditText txtBlkName = view.findViewById(R.id.rt_txt_blk_name);
+        NumberPicker txtWidth = view.findViewById(R.id.rt_txt_blk_width);
+        NumberPicker txtHeight = view.findViewById(R.id.rt_txt_blk_height);
 
         getBlock().setThing((IThing) spThings.getSelectedItem());
         getBlock().setName(txtBlkName.getText().toString());
@@ -207,7 +169,7 @@ public class SwitchBlockHandler extends IBlockUI {
         });
     }
 
-    public class EditorViewHolder extends IBlockUI.BaseEditorViewHolder {
+    public class EditorViewHolder extends BaseEditorViewHolder {
         public final View mView;
         public final LinearLayout mLayout;
         public final TextView mBaName;
@@ -219,12 +181,12 @@ public class SwitchBlockHandler extends IBlockUI {
         public EditorViewHolder(View view) {
             super(view);
             mView = view;
-            mContainer = view.findViewById(R.id.cv_dashboard_block);
-            mLayout = view.findViewById(R.id.block_area);
-            mBaName = view.findViewById(R.id.ba_name);
-            mBaImg = view.findViewById(R.id.ba_image);
-            mBaDevice = view.findViewById(R.id.ba_device);
-            mBaSize = view.findViewById(R.id.ba_size);
+            mContainer = view.findViewById(R.id.rt_cv_dashboard_block);
+            mLayout = view.findViewById(R.id.rt_block_area);
+            mBaName = view.findViewById(R.id.rt_ba_name);
+            mBaImg = view.findViewById(R.id.rt_ba_image);
+            mBaDevice = view.findViewById(R.id.rt_ba_device);
+            mBaSize = view.findViewById(R.id.rt_ba_size);
         }
 
         @Override

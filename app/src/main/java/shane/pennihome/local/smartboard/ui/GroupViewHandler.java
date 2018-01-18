@@ -55,7 +55,7 @@ public class GroupViewHandler {
             }
         });
 
-        mDashboardBlockAdapter.setValues(group.getBlocks());
+        mDashboardBlockAdapter.setIBlocks(group.getBlocks());
         mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(mDashboardBlockAdapter);      // wrap for dragging
 
         GeneralItemAnimator animator = new DraggableItemAnimator(); // DraggableItemAnimator is required to make item animations properly.

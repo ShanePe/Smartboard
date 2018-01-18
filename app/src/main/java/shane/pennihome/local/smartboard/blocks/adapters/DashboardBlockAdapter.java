@@ -10,15 +10,12 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstant
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
 import shane.pennihome.local.smartboard.blocks.Listeners.OnBlockClickListener;
 import shane.pennihome.local.smartboard.blocks.Listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.blocks.interfaces.IBlock;
+import shane.pennihome.local.smartboard.blocks.interfaces.IBlocks;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.fragments.DashboardFragment;
 import shane.pennihome.local.smartboard.ui.UIHelper;
@@ -31,13 +28,13 @@ public class DashboardBlockAdapter extends RecyclerView.Adapter<IBlockUI.BaseEdi
         implements DraggableItemAdapter<IBlockUI.BaseEditorViewHolder> {
 
     private final DashboardFragment.OnListFragmentInteractionListener mListener;
-    private List<IBlock> mValues;
+    private IBlocks mIBlocks;
     private int mItemMoveMode = RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT;
     private SmartboardActivity mSmartboardActivity;
     private Group mGroup;
 
     public DashboardBlockAdapter(SmartboardActivity smartboardActivity, Group group, DashboardFragment.OnListFragmentInteractionListener listener) {
-        mValues = new ArrayList<>();
+        mIBlocks = new IBlocks();
         mListener = listener;
         mSmartboardActivity = smartboardActivity;
         mGroup = group;
@@ -46,7 +43,7 @@ public class DashboardBlockAdapter extends RecyclerView.Adapter<IBlockUI.BaseEdi
 
     @Override
     public int getItemViewType(int position) {
-        IBlock block = mValues.get(position);
+        IBlock block = mIBlocks.get(position);
         return IBlock.GetTypeID(block);
     }
 
@@ -57,7 +54,7 @@ public class DashboardBlockAdapter extends RecyclerView.Adapter<IBlockUI.BaseEdi
             return null;
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(block.GetViewResourceID(), parent, false);
+                .inflate(block.getViewResourceID(), parent, false);
         return block.getUIHandler().GetEditorViewHolder(view);
     }
 
@@ -81,7 +78,7 @@ public class DashboardBlockAdapter extends RecyclerView.Adapter<IBlockUI.BaseEdi
             }
         }
 
-        IBlock block = mValues.get(position);
+        IBlock block = mIBlocks.get(position);
         IBlockUI handler = block.getUIHandler();
 
         handler.BindViewHolder(holder, bgResId, new OnBlockClickListener() {
@@ -99,25 +96,25 @@ public class DashboardBlockAdapter extends RecyclerView.Adapter<IBlockUI.BaseEdi
 
     @Override
     public long getItemId(int position) {
-        return mValues.get(position).getGroupId();
+        return mIBlocks.get(position).getGroupId();
     }
 
-    public void setValues(List<IBlock> mValues) {
-        this.mValues = mValues;
+    public void setIBlocks(IBlocks mValues) {
+        this.mIBlocks = mValues;
     }
 
-    public List<IBlock> setValues() {
-        return this.mValues;
+    public IBlocks getIBlocks() {
+        return this.mIBlocks;
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mIBlocks.size();
     }
 
     @Override
     public boolean onCheckCanStartDrag(IBlockUI.BaseEditorViewHolder holder, int position, int x, int y) {
-        return false;
+        return true;
     }
 
     @Override
@@ -127,14 +124,11 @@ public class DashboardBlockAdapter extends RecyclerView.Adapter<IBlockUI.BaseEdi
 
     @Override
     public void onMoveItem(int fromPosition, int toPosition) {
-        //if (mItemMoveMode == RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT) {
-        //   mProvider.moveItem(fromPosition, toPosition);
-
-        //} else {
-        //    mProvider.swapItem(fromPosition, toPosition);
-        //}
-
-        Collections.swap(mValues, fromPosition, toPosition);
+        if (mItemMoveMode == RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT) {
+           getIBlocks().moveItem(fromPosition, toPosition);
+        } else {
+            getIBlocks().swapItem(fromPosition, toPosition);
+        }
     }
 
     @Override
