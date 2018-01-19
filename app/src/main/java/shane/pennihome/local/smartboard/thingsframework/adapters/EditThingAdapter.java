@@ -168,4 +168,6 @@ public class EditThingAdapter extends RecyclerView.Adapter<IThingUIHandler.BaseE
 
     private interface Draggable extends DraggableItemConstants {
     }
+
+
 }

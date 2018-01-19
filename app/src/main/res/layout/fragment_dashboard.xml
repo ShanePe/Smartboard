@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/listItemStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"
-    android:focusable="true"
     >
 
-    <TextView
+    <FrameLayout
+        android:id="@+id/dashboard_list_block"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
-        android:gravity="start|fill"
-        android:id="@+id/dash_list_name"
-        android:drawablePadding="@dimen/activity_horizontal_margin"
-        android:drawableStart="@drawable/icon_dashboard"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/btn_round"
+        tools:ignore="UselessParent">
 
+        <TextView
+            android:id="@+id/dash_list_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:drawableStart="@drawable/icon_dashboard"
+            android:gravity="start|fill"
+            android:textAppearance="?attr/textAppearanceListItem" />
+    </FrameLayout>
 </LinearLayout>

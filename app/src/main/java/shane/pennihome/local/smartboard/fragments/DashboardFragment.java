@@ -2,8 +2,10 @@ package shane.pennihome.local.smartboard.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,11 +15,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.h6ah4i.android.widget.advrecyclerview.animator.DraggableItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
+
 import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
 import shane.pennihome.local.smartboard.adapters.DashboardViewAdapter;
 import shane.pennihome.local.smartboard.data.Dashboard;
+import shane.pennihome.local.smartboard.data.Dashboards;
+import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
 
 public class DashboardFragment extends IFragment {
@@ -39,6 +47,18 @@ public class DashboardFragment extends IFragment {
         return super.onOptionsItemSelected(item);
     }
 
+    public void saveDashboards(final Dashboards dashboards)
+    {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DBEngine db = new DBEngine(getActivity());
+                for(Dashboard d: dashboards)
+                    db.WriteToDatabase(d);
+            }
+        });
+    }
+
     private void LoadDashboard(Dashboard dashboard) {
         Intent dashAdd = new Intent(getActivity(), SmartboardActivity.class);
 
@@ -57,7 +77,7 @@ public class DashboardFragment extends IFragment {
         assert main != null;
         main.populateDashbboards();
         if (mDashboardAptr != null) {
-            mDashboardAptr.setValues(main.getDashboards());
+            mDashboardAptr.setDashboards(main.getDashboards());
             mDashboardAptr.notifyDataSetChanged();
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -91,14 +111,39 @@ public class DashboardFragment extends IFragment {
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             assert activity != null;
-            mDashboardAptr = new DashboardViewAdapter(activity.getDashboards(), new OnListFragmentInteractionListener() {
+
+            // drag & drop manager
+            RecyclerViewDragDropManager mRecyclerViewDragDropManager = new RecyclerViewDragDropManager();
+            mRecyclerViewDragDropManager.setDraggingItemShadowDrawable(
+                    (NinePatchDrawable) ContextCompat.getDrawable(getActivity(), R.drawable.material_shadow_z3));
+            // Start dragging after long press
+            mRecyclerViewDragDropManager.setInitiateOnLongPress(true);
+            mRecyclerViewDragDropManager.setInitiateOnMove(false);
+            mRecyclerViewDragDropManager.setLongPressTimeout(750);
+
+            // setup dragging item effects (NOTE: DraggableItemAnimator is required)
+            mRecyclerViewDragDropManager.setDragStartItemAnimationDuration(250);
+            mRecyclerViewDragDropManager.setDraggingItemAlpha(0.8f);
+            mRecyclerViewDragDropManager.setDraggingItemScale(1.3f);
+            //mRecyclerViewDragDropManager.setDraggingItemRotation(15.0f);
+            mRecyclerViewDragDropManager.setItemMoveMode(RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT);
+
+            //adapter
+            mDashboardAptr = new DashboardViewAdapter(this, activity.getDashboards(), new OnListFragmentInteractionListener() {
                 @Override
                 public void onListFragmentInteraction(Dashboard item) {
                     LoadDashboard(item);
                 }
             });
 
-            recyclerView.setAdapter(mDashboardAptr);
+            RecyclerView.Adapter mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(mDashboardAptr);
+
+            GeneralItemAnimator animator = new DraggableItemAnimator(); // DraggableItemAnimator is required to make item animations properly.
+
+            recyclerView.setAdapter(mWrappedAdapter);  // requires *wrapped* adapter
+            recyclerView.setItemAnimator(animator);
+
+            mRecyclerViewDragDropManager.attachRecyclerView(recyclerView);
         }
 
         return view;

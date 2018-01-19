@@ -139,6 +139,9 @@ public class MainActivity extends AppCompatActivity
 
         for (IDatabaseObject d : db.readFromDatabaseByType(IDatabaseObject.Types.Dashboard))
             mDashboards.add((Dashboard) d);
+
+        mDashboards.sort();
+
     }
 
     public Monitor getMonitor() {
@@ -223,7 +226,7 @@ public class MainActivity extends AppCompatActivity
         ft.commit();
     }
 
-    public List<Dashboard> getDashboards() {
+    public Dashboards getDashboards() {
         return mDashboards;
     }
 
