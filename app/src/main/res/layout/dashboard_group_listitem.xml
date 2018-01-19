@@ -4,7 +4,6 @@
     android:id="@+id/group_container"
     style="@style/listItemStyle"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:columnCount="3">
 
     <android.support.v7.widget.AppCompatImageButton

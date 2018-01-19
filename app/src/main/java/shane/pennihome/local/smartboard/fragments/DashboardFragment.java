@@ -6,6 +6,7 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -106,11 +107,29 @@ public class DashboardFragment extends IFragment {
         final Context context = view.getContext();
         MainActivity activity = (MainActivity) getActivity();
 
+
+
         // Set the adapter
         if (view instanceof RecyclerView) {
 
             RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+            RecyclerViewDragDropManager dragMgr = new RecyclerViewDragDropManager();
+
+            dragMgr.setInitiateOnMove(false);
+            dragMgr.setInitiateOnLongPress(true);
+
+            recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+            recyclerView.setAdapter(dragMgr.createWrappedAdapter( mDashboardAptr = new DashboardViewAdapter(this, activity.getDashboards(), new OnListFragmentInteractionListener() {
+                @Override
+                public void onListFragmentInteraction(Dashboard item) {
+                    LoadDashboard(item);
+                }
+            })));
+
+            dragMgr.attachRecyclerView(recyclerView);
+
+            /*recyclerView.setLayoutManager(new GridLayoutManager(context, 1));
             assert activity != null;
 
             // drag & drop manager
@@ -131,12 +150,6 @@ public class DashboardFragment extends IFragment {
             mRecyclerViewDragDropManager.setItemMoveMode(RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT);
 
             //adapter
-            mDashboardAptr = new DashboardViewAdapter(this, activity.getDashboards(), new OnListFragmentInteractionListener() {
-                @Override
-                public void onListFragmentInteraction(Dashboard item) {
-                    LoadDashboard(item);
-                }
-            });
 
             RecyclerView.Adapter mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(mDashboardAptr);
 
@@ -146,6 +159,7 @@ public class DashboardFragment extends IFragment {
             recyclerView.setItemAnimator(animator);
 
             mRecyclerViewDragDropManager.attachRecyclerView(recyclerView);
+            */
         }
 
         return view;

@@ -110,6 +110,7 @@ public class EditGroupAdapter extends BaseExpandableListAdapter {
         final Group group = mSmartboardActivity.getDashboard().getGroupAt(groupPosition);
         final ExpandableListView listView = (ExpandableListView) parent;
 
+        boolean mustExpand = false;
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) mSmartboardActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             assert layoutInflater != null;
@@ -135,6 +136,8 @@ public class EditGroupAdapter extends BaseExpandableListAdapter {
                     container.setBackground(mSmartboardActivity.getDrawable(R.drawable.btn_round));
                 }
             });
+
+            mustExpand = true;
         }
 
         ImageButton btnExpand = convertView.findViewById(R.id.btn_add_expanded);
@@ -218,7 +221,7 @@ public class EditGroupAdapter extends BaseExpandableListAdapter {
             }
         });
 
-        if (group.getThings().size() > 0)
+        if (group.getThings().size() > 0 && mustExpand)
             listView.expandGroup(groupPosition);
 
         return convertView;

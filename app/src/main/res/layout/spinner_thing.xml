@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/listItemStyle"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:columnCount="3">
 
     <ImageView
@@ -31,6 +30,8 @@
         android:layout_columnWeight="1"
         android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
         android:gravity="end|fill"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
         android:textAlignment="textEnd"
         android:textAppearance="?attr/textAppearanceListItem" />
 

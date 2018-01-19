@@ -113,10 +113,13 @@ public class RoutineThingHandler extends IThingUIHandler {
         spThings.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (TextUtils.isEmpty(txtBlkName.getText())) {
-                    IThing thing = (IThing) parent.getItemAtPosition(position);
+                IThing thing = (IThing) parent.getItemAtPosition(position);
+                if(TextUtils.isEmpty(getThing().getName()))
+                    getThing().setName(thing.getName());
+
+                if (TextUtils.isEmpty(txtBlkName.getText()) ||
+                        getThing().getName().equals(txtBlkName.getText().toString()))
                     txtBlkName.setText(thing.getName());
-                }
             }
 
             @Override

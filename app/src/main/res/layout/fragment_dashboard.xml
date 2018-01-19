@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/listItemStyle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/transparent">
-
-    <FrameLayout
         android:id="@+id/dashboard_list_block"
+        style="@style/listItemStyle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:background="@drawable/btn_round"
         android:clickable="true"
         android:focusable="true"
@@ -26,4 +20,3 @@
             android:gravity="start|fill"
             android:textAppearance="?attr/textAppearanceListItem" />
     </FrameLayout>
-</LinearLayout>
