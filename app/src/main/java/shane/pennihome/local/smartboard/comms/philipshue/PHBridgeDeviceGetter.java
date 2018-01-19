@@ -12,7 +12,7 @@ import shane.pennihome.local.smartboard.comms.RESTCommunicator;
 import shane.pennihome.local.smartboard.comms.RESTCommunicatorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.data.ITokenHueBridge;
+import shane.pennihome.local.smartboard.data.TokenHueBridge;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.things.switches.Switch;
@@ -52,7 +52,7 @@ public class PHBridgeDeviceGetter extends ICommunicator<PHBridgeDeviceGetter> {
 
     @Override
     public JSONObject Process() throws Exception {
-        ITokenHueBridge tokenHueBridge = ITokenHueBridge.Load();
+        TokenHueBridge tokenHueBridge = TokenHueBridge.Load();
 
         String url = "http://" + tokenHueBridge.getAddress() + "/api/" + tokenHueBridge.getToken() + "/lights";
         final JSONArray devices = new JSONArray();

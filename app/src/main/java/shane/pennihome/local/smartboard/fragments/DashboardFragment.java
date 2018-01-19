@@ -47,6 +47,7 @@ public class DashboardFragment extends IFragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("unused")
     public void saveDashboards(final Dashboards dashboards)
     {
         new Thread(new Runnable() {
@@ -114,6 +115,7 @@ public class DashboardFragment extends IFragment {
 
             // drag & drop manager
             RecyclerViewDragDropManager mRecyclerViewDragDropManager = new RecyclerViewDragDropManager();
+            //noinspection ConstantConditions
             mRecyclerViewDragDropManager.setDraggingItemShadowDrawable(
                     (NinePatchDrawable) ContextCompat.getDrawable(getActivity(), R.drawable.material_shadow_z3));
             // Start dragging after long press

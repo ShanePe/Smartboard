@@ -17,7 +17,7 @@ import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.NameValuePair;
-import shane.pennihome.local.smartboard.data.ITokenSmartThings;
+import shane.pennihome.local.smartboard.data.TokenSmartThings;
 
 
 @SuppressWarnings("unused")
@@ -40,7 +40,7 @@ public class STTokenGetter extends ICommunicator<STTokenGetter> {
 
     @Override
     public JSONObject Process() throws Exception {
-        ITokenSmartThings tokenSmartThingsInfo = ITokenSmartThings.Load();
+        TokenSmartThings tokenSmartThingsInfo = TokenSmartThings.Load();
 
         RESTCommunicator coms = new RESTCommunicator();
 
@@ -57,7 +57,7 @@ public class STTokenGetter extends ICommunicator<STTokenGetter> {
 
     @Override
     public void Complete(RESTCommunicatorResult result) throws Exception {
-        ITokenSmartThings tokenSmartThingsInfo = ITokenSmartThings.Load();
+        TokenSmartThings tokenSmartThingsInfo = TokenSmartThings.Load();
         tokenSmartThingsInfo.setToken(result.getResult().getString("access_token"));
         tokenSmartThingsInfo.setType(result.getResult().getString("token_type"));
 
@@ -73,7 +73,7 @@ public class STTokenGetter extends ICommunicator<STTokenGetter> {
     @Override
     protected RESTCommunicatorResult doInBackground(String... args) {
         Log.i(Globals.ACTIVITY, "doInBackground");
-        ITokenSmartThings tokenSmartThingsInfo = ITokenSmartThings.Load();
+        TokenSmartThings tokenSmartThingsInfo = TokenSmartThings.Load();
         RESTCommunicator coms = new RESTCommunicator();
         List<NameValuePair> params = new ArrayList<>();
         params.add(new NameValuePair("code", tokenSmartThingsInfo.getAuthCode()));

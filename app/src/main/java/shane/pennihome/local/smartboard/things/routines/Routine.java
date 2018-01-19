@@ -36,6 +36,7 @@ public class Routine extends IThing {
     public Things getFilteredView(Things source) {
         Things things = new Things();
         things.addAll(source.getOfType(Routine.class));
+        things.sort();
         return things;
     }
 

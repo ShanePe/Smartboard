@@ -10,7 +10,7 @@ public class HueBridge {
     private String mId;
     private String mToken;
 
-    public static HueBridge FromTokenInfo(ITokenHueBridge token) {
+    public static HueBridge FromTokenInfo(TokenHueBridge token) {
         HueBridge b = new HueBridge();
         b.setId(token.getId());
         b.setIp(token.getAddress());

@@ -6,8 +6,8 @@ import java.net.URLEncoder;
 
 import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.data.ITokenHueBridge;
-import shane.pennihome.local.smartboard.data.ITokenSmartThings;
+import shane.pennihome.local.smartboard.data.TokenHueBridge;
+import shane.pennihome.local.smartboard.data.TokenSmartThings;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.switches.Switch;
@@ -42,7 +42,7 @@ public class ThingToggler extends ICommunicator<ThingToggler> {
         String url = null;
         switch (mThing.getSource()) {
             case SmartThings:
-                ITokenSmartThings tokenSmartThingsInfo = ITokenSmartThings.Load();
+                TokenSmartThings tokenSmartThingsInfo = TokenSmartThings.Load();
 
                 if (mThing instanceof Switch)
                     url = tokenSmartThingsInfo.getRequestUrl() + "/switches/" +
@@ -58,7 +58,7 @@ public class ThingToggler extends ICommunicator<ThingToggler> {
                 break;
 
             case PhilipsHue:
-                ITokenHueBridge token = ITokenHueBridge.Load();
+                TokenHueBridge token = TokenHueBridge.Load();
                 JSONObject body = new JSONObject();
 
                 if (mThing instanceof Switch) {

@@ -11,7 +11,7 @@ import shane.pennihome.local.smartboard.comms.RESTCommunicator;
 import shane.pennihome.local.smartboard.comms.RESTCommunicatorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.data.ITokenHueBridge;
+import shane.pennihome.local.smartboard.data.TokenHueBridge;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.things.routines.Routine;
@@ -53,7 +53,7 @@ public class PHBridgeRoutineGetter extends ICommunicator<PHBridgeRoutineGetter> 
     public JSONObject Process() throws Exception {
         JSONObject jRet = new JSONObject();
 
-        ITokenHueBridge tokenHueBridge = ITokenHueBridge.Load();
+        TokenHueBridge tokenHueBridge = TokenHueBridge.Load();
         RESTCommunicator restCommunicator = new RESTCommunicator();
         String url = "http://" + tokenHueBridge.getAddress() + "/api/" + tokenHueBridge.getToken() + "/groups";
         final JSONArray groups = new JSONArray();

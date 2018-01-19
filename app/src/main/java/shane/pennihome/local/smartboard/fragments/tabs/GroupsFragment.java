@@ -13,6 +13,7 @@ import android.widget.ExpandableListView;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
+import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 
@@ -39,7 +40,8 @@ public class GroupsFragment extends Fragment {
                 @Override
                 public void complete(boolean success, Object source) {
                     Group group = new Group((String)source);
-                    group.setDashboardOrderId(smartboardActivity.getDashboard().getGroups().size() + 1);
+                    group.setDashboardOrderId(Globals.GetNextLongId());
+
                     smartboardActivity
                             .getDashboard()
                             .getGroups()

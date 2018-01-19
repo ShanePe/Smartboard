@@ -7,16 +7,16 @@ import shane.pennihome.local.smartboard.data.interfaces.ITokenInfo;
  */
 
 @SuppressWarnings("ALL")
-public class ITokenHueBridge extends ITokenInfo {
+public class TokenHueBridge extends ITokenInfo {
     private String mAddress;
     private String mId;
     private String mToken;
 
-    public static ITokenHueBridge Load() {
+    public static TokenHueBridge Load() {
         try {
-            return ITokenInfo.Load(ITokenHueBridge.class);
+            return ITokenInfo.Load(TokenHueBridge.class);
         } catch (Exception e) {
-            return new ITokenHueBridge();
+            return new TokenHueBridge();
         }
     }
 

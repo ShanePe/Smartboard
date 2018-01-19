@@ -9,7 +9,7 @@ import shane.pennihome.local.smartboard.comms.RESTCommunicatorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Globals;
-import shane.pennihome.local.smartboard.data.ITokenHueBridge;
+import shane.pennihome.local.smartboard.data.TokenHueBridge;
 
 /**
  * Created by shane on 31/12/17.
@@ -33,7 +33,7 @@ public class PHBridgeConnector extends ICommunicator<PHBridgeConnector> {
 
     @Override
     public JSONObject Process() throws Exception {
-        ITokenHueBridge tokenHueBridge = ITokenHueBridge.Load();
+        TokenHueBridge tokenHueBridge = TokenHueBridge.Load();
 
         String url = "http://" + tokenHueBridge.getAddress() + "/api";
 
@@ -82,7 +82,7 @@ public class PHBridgeConnector extends ICommunicator<PHBridgeConnector> {
         if (!result.isSuccess())
             throw result.getException();
 
-        ITokenHueBridge tokenHueBridge = ITokenHueBridge.Load();
+        TokenHueBridge tokenHueBridge = TokenHueBridge.Load();
         tokenHueBridge.setToken(result.getResult().getString("username"));
         tokenHueBridge.Save();
     }

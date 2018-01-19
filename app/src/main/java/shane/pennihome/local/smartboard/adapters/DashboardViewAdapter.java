@@ -10,12 +10,12 @@ import android.widget.TextView;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
-import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Dashboards;
+import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.fragments.DashboardFragment;
 
 /**
@@ -28,7 +28,7 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
 
     private final DashboardFragment.OnListFragmentInteractionListener mListener;
     private Dashboards dashboards;
-    private DashboardFragment mDashFrag;
+    private final DashboardFragment mDashFrag;
 
     public DashboardViewAdapter(DashboardFragment fragment, Dashboards items, DashboardFragment.OnListFragmentInteractionListener listener) {
         dashboards = items;
@@ -62,14 +62,14 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
         if (((dragState & DashboardViewAdapter.Draggable.STATE_FLAG_IS_UPDATED) != 0)) {
 
             if ((dragState & DashboardViewAdapter.Draggable.STATE_FLAG_IS_ACTIVE) != 0) {
-                bgResId = R.drawable.bg_item_dragging_active_state;
+                bgResId = R.drawable.btn_round_accent;
 
                 // need to clear drawable state here to get correct appearance of the dragging item.
                 //DrawableUtils.clearState(holder.mContainer.getForeground());
             } else if ((dragState & DashboardViewAdapter.Draggable.STATE_FLAG_DRAGGING) != 0) {
-                bgResId = R.drawable.bg_item_dragging_state;
+                bgResId = R.drawable.btn_round_dark;
             } else {
-                bgResId = R.drawable.bg_item_normal_state;
+                bgResId = R.drawable.btn_round;
             }
         }
 
@@ -109,13 +109,25 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
 
     @Override
     public void onMoveItem(int fromPosition, int toPosition) {
-        int mItemMoveMode = RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT;
-        if (mItemMoveMode == RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT) {
-            dashboards.moveItem(fromPosition, toPosition);
-        } else {
-            dashboards.swapItem(fromPosition, toPosition);
-        }
-        mDashFrag.saveDashboards(dashboards);
+        final Dashboard fromD = dashboards.get(fromPosition);
+        final Dashboard toD = dashboards.get(toPosition);
+
+        long fromOrderID =  fromD.getOrderId();
+        long toOrderId = toD.getOrderId();
+
+        fromD.setOrderId(toOrderId);
+        toD.setOrderId(fromOrderID);
+
+        dashboards.moveItem(fromPosition, toPosition);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DBEngine db = new DBEngine(mDashFrag.getContext());
+                db.WriteToDatabase(fromD);
+                db.WriteToDatabase(toD);
+            }
+        }).start();
     }
 
     @Override
@@ -137,7 +149,7 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
         final View mView;
         final TextView mNameView;
         Dashboard mItem;
-        FrameLayout mContainer;
+        final FrameLayout mContainer;
 
         ViewHolder(View view) {
             super(view);

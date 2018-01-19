@@ -11,18 +11,18 @@ import shane.pennihome.local.smartboard.data.interfaces.ITokenInfo;
  */
 
 @SuppressWarnings("DefaultFileTemplate")
-public class ITokenSmartThings extends ITokenInfo {
+public class TokenSmartThings extends ITokenInfo {
     private String mToken;
     private Date mExpires;
     private String mType;
     private String mAuthCode;
     private String mRequestUrl;
 
-    public static ITokenSmartThings Load() {
+    public static TokenSmartThings Load() {
         try {
-            return ITokenInfo.Load(ITokenSmartThings.class);
+            return ITokenInfo.Load(TokenSmartThings.class);
         } catch (Exception e) {
-            return new ITokenSmartThings();
+            return new TokenSmartThings();
         }
     }
 

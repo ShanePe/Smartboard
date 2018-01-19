@@ -1,7 +1,5 @@
 package shane.pennihome.local.smartboard.data;
 
-import android.support.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

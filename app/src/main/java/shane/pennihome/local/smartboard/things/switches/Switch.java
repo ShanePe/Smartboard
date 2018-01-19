@@ -85,6 +85,7 @@ public class Switch extends IThing {
     public Things getFilteredView(Things source) {
         Things things = new Things();
         things.addAll(source.getOfType(Switch.class));
+        things.sort();
         return things;
     }
 

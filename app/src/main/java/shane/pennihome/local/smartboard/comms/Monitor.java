@@ -7,8 +7,8 @@ import shane.pennihome.local.smartboard.comms.interfaces.IController;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.comms.philipshue.PHBridgeController;
 import shane.pennihome.local.smartboard.comms.smartthings.STController;
-import shane.pennihome.local.smartboard.data.ITokenHueBridge;
-import shane.pennihome.local.smartboard.data.ITokenSmartThings;
+import shane.pennihome.local.smartboard.data.TokenHueBridge;
+import shane.pennihome.local.smartboard.data.TokenSmartThings;
 import shane.pennihome.local.smartboard.data.interfaces.ITokenInfo;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.things.switches.Switch;
@@ -199,10 +199,10 @@ public class Monitor {
 
         private void getTokenAndController(IThing.Sources type) throws Exception {
             if (type == IThing.Sources.SmartThings) {
-                mToken = ITokenInfo.Load(ITokenSmartThings.class);
+                mToken = ITokenInfo.Load(TokenSmartThings.class);
                 mController = new STController(mActivity);
             } else if (type == IThing.Sources.PhilipsHue) {
-                mToken = ITokenInfo.Load(ITokenHueBridge.class);
+                mToken = ITokenInfo.Load(TokenHueBridge.class);
                 mController = new PHBridgeController(mActivity);
             } else
                 throw new Exception("Invalid Sources Type");

@@ -45,6 +45,16 @@ public class Globals {
         }
     }
 
+    public static long GetNextLongId()
+    {
+        long nextId = mPrefs.getLong("uniId", 0 ) + 1;
+        SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putLong("uniId", nextId);
+        editor.apply();
+
+        return nextId;
+    }
+
   /*  public static Activity getContext() {
         return _context;
     }

@@ -12,7 +12,7 @@ import shane.pennihome.local.smartboard.comms.RESTCommunicatorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnCommResponseListener;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.data.ITokenSmartThings;
+import shane.pennihome.local.smartboard.data.TokenSmartThings;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.things.switches.Switch;
@@ -47,7 +47,7 @@ public class STSwitchGetter extends ICommunicator<STSwitchGetter> {
 
     @Override
     public JSONObject Process() throws Exception {
-        ITokenSmartThings tokenSmartThingsInfo = ITokenSmartThings.Load();
+        TokenSmartThings tokenSmartThingsInfo = TokenSmartThings.Load();
         final JSONArray devices = new JSONArray();
 
         RESTCommunicator coms = new RESTCommunicator();

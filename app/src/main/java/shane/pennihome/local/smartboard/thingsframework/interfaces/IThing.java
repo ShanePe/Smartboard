@@ -10,6 +10,7 @@ import java.util.Arrays;
 
 import shane.pennihome.local.smartboard.comms.ThingToggler;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
+import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
@@ -33,6 +34,7 @@ public abstract class IThing extends IDatabaseObject {
     private transient onThingListener mOnThingListener;
     private String mId;
     private Sources mSources;
+    @SuppressWarnings("FieldCanBeLocal")
     private final String mInstance;
     @Annotations.IgnoreOnCopy
     private
@@ -114,7 +116,7 @@ public abstract class IThing extends IDatabaseObject {
                 group.getDefaultBlockForeColourOff() :
                 Color.parseColor("white"));
 
-        setGroupOrderId(group.getThings().size() + 1);
+        setGroupOrderId(Globals.GetNextLongId());
     }
 
     public <E extends IBlock> E getBlock(Class<E> cls)

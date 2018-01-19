@@ -4,15 +4,16 @@
     style="@style/listItemStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    >
+    android:background="@android:color/transparent">
 
     <FrameLayout
         android:id="@+id/dashboard_list_block"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/btn_round"
         android:clickable="true"
         android:focusable="true"
-        android:background="@drawable/btn_round"
+        android:foreground="?attr/selectableItemBackground"
         tools:ignore="UselessParent">
 
         <TextView
