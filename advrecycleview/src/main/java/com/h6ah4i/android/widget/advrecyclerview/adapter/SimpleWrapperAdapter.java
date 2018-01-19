@@ -31,6 +31,7 @@ import java.util.List;
  * Use this class as a default implementation of {@link WrapperAdapter}, so extend it
  * and override each methods to build your own specialized adapter!
  */
+@SuppressWarnings({"WeakerAccess", "SimplifiableIfStatement"})
 public class SimpleWrapperAdapter<VH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<VH> implements WrapperAdapter<VH>, BridgeAdapterDataObserver.Subscriber {
 

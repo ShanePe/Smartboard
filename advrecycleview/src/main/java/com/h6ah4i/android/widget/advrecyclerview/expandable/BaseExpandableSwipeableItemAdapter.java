@@ -21,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.annotation.SwipeableItemDrawableTypes;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.annotation.SwipeableItemReactions;
 
+@SuppressWarnings("WeakerAccess")
 public interface BaseExpandableSwipeableItemAdapter<GVH extends RecyclerView.ViewHolder, CVH extends RecyclerView.ViewHolder> {
     /**
      * Called when user is attempt to swipe the group item.

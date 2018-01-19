@@ -8,12 +8,14 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
 
+@SuppressWarnings("ALL")
 public class PaintBuilder {
 	public static PaintHolder newPaint() {
 		return new PaintHolder();
 	}
 
-	public static class PaintHolder {
+	@SuppressWarnings({"SameParameterValue", "CanBeFinal", "unused"})
+    public static class PaintHolder {
 		private Paint paint;
 
 		private PaintHolder() {

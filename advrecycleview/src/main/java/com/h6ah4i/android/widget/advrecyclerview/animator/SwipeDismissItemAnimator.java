@@ -46,6 +46,7 @@ public class SwipeDismissItemAnimator extends DraggableItemAnimator {
     /**
      * Item Animation manager for REMOVE operation  (Same behavior as DefaultItemAnimator class)
      */
+    @SuppressWarnings("WeakerAccess")
     protected static class SwipeDismissItemRemoveAnimationManager extends ItemRemoveAnimationManager {
         protected static final Interpolator DEFAULT_INTERPOLATOR = new AccelerateDecelerateInterpolator();
 
@@ -145,6 +146,7 @@ public class SwipeDismissItemAnimator extends DraggableItemAnimator {
         }
     }
 
+    @SuppressWarnings("WeakerAccess")
     protected static class SwipeDismissRemoveAnimationInfo extends RemoveAnimationInfo {
         public SwipeDismissRemoveAnimationInfo(RecyclerView.ViewHolder holder) {
             super(holder);

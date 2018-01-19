@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     style="@style/listItemStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -31,7 +30,7 @@
         android:layout_height="match_parent"
         android:layout_columnWeight="1"
         android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
-        android:gravity="start|fill"
+        android:gravity="end|fill"
         android:textAlignment="textEnd"
         android:textAppearance="?attr/textAppearanceListItem" />
 

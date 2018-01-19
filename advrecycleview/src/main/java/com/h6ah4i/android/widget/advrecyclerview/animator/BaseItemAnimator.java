@@ -19,6 +19,7 @@ package com.h6ah4i.android.widget.advrecyclerview.animator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public abstract class BaseItemAnimator extends SimpleItemAnimator {
     private ItemAnimatorListener mListener;
 

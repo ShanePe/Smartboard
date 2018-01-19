@@ -18,9 +18,10 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  * Created by shane on 14/01/18.
  */
 
+@SuppressWarnings("ALL")
 public class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
     private Things mThings = new Things();
-    private Context mContext;
+    private final Context mContext;
 
     public SpinnerThingAdapter(Context context) {
         this.mContext = context;
@@ -45,6 +46,7 @@ public class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            assert layoutInflater != null;
             convertView = layoutInflater.inflate(R.layout.spinner_thing, null);
         }
 

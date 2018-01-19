@@ -5,6 +5,7 @@ import com.flask.colorpicker.ColorCircle;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"WeakerAccess", "CanBeFinal"})
 public abstract class AbsColorWheelRenderer implements ColorWheelRenderer {
 	protected ColorWheelRenderOption colorWheelRenderOption;
 	protected List<ColorCircle> colorCircleList = new ArrayList<>();

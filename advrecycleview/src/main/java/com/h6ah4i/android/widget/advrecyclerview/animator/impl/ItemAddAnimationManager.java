@@ -21,6 +21,7 @@ import android.util.Log;
 
 import com.h6ah4i.android.widget.advrecyclerview.animator.BaseItemAnimator;
 
+@SuppressWarnings("SameReturnValue")
 public abstract class ItemAddAnimationManager extends BaseItemAnimationManager<AddAnimationInfo> {
     private static final String TAG = "ARVItemAddAnimMgr";
 

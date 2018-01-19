@@ -25,6 +25,7 @@ import com.h6ah4i.android.widget.advrecyclerview.adapter.ItemViewTypeComposer;
 
 import java.util.List;
 
+@SuppressWarnings({"SameReturnValue", "unused"})
 public interface ExpandableItemAdapter<GVH extends RecyclerView.ViewHolder, CVH extends RecyclerView.ViewHolder> {
 
     /**

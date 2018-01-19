@@ -21,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewParent;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class RecyclerViewAdapterUtils {
     private RecyclerViewAdapterUtils() {
     }

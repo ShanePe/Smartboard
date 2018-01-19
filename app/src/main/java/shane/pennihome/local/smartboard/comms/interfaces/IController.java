@@ -2,8 +2,11 @@ package shane.pennihome.local.smartboard.comms.interfaces;
 
 import android.app.Activity;
 
-import shane.pennihome.local.smartboard.things.routines.Routines;
-import shane.pennihome.local.smartboard.things.switches.Switches;
+import shane.pennihome.local.smartboard.things.routines.Routine;
+import shane.pennihome.local.smartboard.things.switches.Switch;
+import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 /**
  * Created by shane on 01/01/18.
@@ -12,30 +15,31 @@ import shane.pennihome.local.smartboard.things.switches.Switches;
 @SuppressWarnings({"ALL", "ConstantConditions"})
 public abstract class IController<T> {
     protected final Activity mActivity;
-    private Switches mSwitches;
-    private Routines mRoutines;
-
+    private Things mThings = new Things();
     protected IController(Activity activity) {
         this.mActivity = activity;
     }
 
     protected abstract void Connect(OnProcessCompleteListener<T> processCompleteListener);
 
-    public abstract void getDevices(OnProcessCompleteListener<Switches> processCompleteListener);
+    public abstract void getDevices(OnProcessCompleteListener<IThings<Switch>> processCompleteListener);
 
-    protected abstract void getRoutines(OnProcessCompleteListener<Routines> processCompleteListener);
+    protected abstract void getRoutines(OnProcessCompleteListener<IThings<Routine>> processCompleteListener);
 
-    public Switches Devices() {
-        return mSwitches;
+    public <T extends IThing> IThings<T> get(Class<T> cls)
+    {
+        IThings<T> items = mThings.getOfType(cls);
+        items.sort();
+        return items;
     }
 
-    public Routines Routine() {
-        return mRoutines;
+    public Things getThings()
+    {
+        return mThings;
     }
 
     public void getAll(final OnProcessCompleteListener<T> onProcessCompleteListener) {
-        mSwitches = new Switches();
-        mRoutines = new Routines();
+        mThings = new Things();
 
         final IController<T> me = this;
         Connect(new OnProcessCompleteListener<T>() {
@@ -58,15 +62,19 @@ public abstract class IController<T> {
 
     public void getThings(final OnProcessCompleteListener<T> onProcessCompleteListener) {
         final IController<T> me = this;
-        getDevices(new OnProcessCompleteListener<Switches>() {
+        getDevices(new OnProcessCompleteListener<IThings<Switch>>() {
             @Override
-            public void complete(boolean success, Switches source) {
-                mSwitches = success ? source : new Switches();
+            public void complete(boolean success, IThings<Switch> source) {
+                mThings.remove(Switch.class);
+                if(success)
+                    mThings.addAll(source);
 
-                getRoutines(new OnProcessCompleteListener<Routines>() {
+                getRoutines(new OnProcessCompleteListener<IThings<Routine>>() {
                     @Override
-                    public void complete(boolean success, Routines source) {
-                        mRoutines = success ? source : new Routines();
+                    public void complete(boolean success, IThings<Routine> source) {
+                        mThings.remove(Routine.class);
+                        if(success)
+                            mThings.addAll(source);
 
                         if (onProcessCompleteListener != null)
                             //noinspection ConstantConditions

@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
+@SuppressWarnings({"WeakerAccess", "RedundantCast"})
 public class ColorPickerPreference extends Preference {
 
 	protected boolean alphaSlider;
@@ -81,6 +82,7 @@ public class ColorPickerPreference extends Preference {
 	}
 
 
+	@SuppressWarnings("RedundantCast")
 	@Override
 	protected void onBindView(@NonNull View view) {
 		super.onBindView(view);

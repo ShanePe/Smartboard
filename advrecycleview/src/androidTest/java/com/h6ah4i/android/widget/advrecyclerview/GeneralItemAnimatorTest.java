@@ -35,6 +35,7 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings({"ALL", "WeakerAccess"})
 public abstract class GeneralItemAnimatorTest extends ActivityInstrumentationTestCase2<TestActivity> {
 
     GeneralItemAnimator mAnimator;
@@ -206,6 +207,7 @@ public abstract class GeneralItemAnimatorTest extends ActivityInstrumentationTes
     }
 
 
+    @SuppressWarnings("SameParameterValue")
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
         final List<String> mItems;
@@ -233,6 +235,7 @@ public abstract class GeneralItemAnimatorTest extends ActivityInstrumentationTes
         }
     }
 
+    @SuppressWarnings("unused")
     private class ViewHolder extends RecyclerView.ViewHolder {
         String mBoundText;
 

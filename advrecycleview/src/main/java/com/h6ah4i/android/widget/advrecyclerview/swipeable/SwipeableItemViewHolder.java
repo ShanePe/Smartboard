@@ -26,6 +26,7 @@ import com.h6ah4i.android.widget.advrecyclerview.swipeable.annotation.SwipeableI
  * <p>
  * Implement this interface on your sub-class of the {@link android.support.v7.widget.RecyclerView.ViewHolder}.
  */
+@SuppressWarnings({"ALL", "EmptyMethod", "unused"})
 public interface SwipeableItemViewHolder {
     /**
      * Sets the state flags value for swiping item

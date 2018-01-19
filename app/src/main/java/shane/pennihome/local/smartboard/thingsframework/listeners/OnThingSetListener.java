@@ -6,6 +6,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  * Created by shane on 16/01/18.
  */
 
+@SuppressWarnings("ALL")
 public interface OnThingSetListener {
     void OnSet(IThing iThing);
 }

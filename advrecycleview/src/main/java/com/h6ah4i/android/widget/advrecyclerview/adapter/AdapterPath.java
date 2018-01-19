@@ -25,6 +25,7 @@ import java.util.List;
 /**
  * Adapter path. This class represents how nested {@link WrapperAdapter}s route items.
  */
+@SuppressWarnings({"WeakerAccess", "CanBeFinal", "UnusedReturnValue", "unused"})
 public class AdapterPath {
     private List<AdapterPathSegment> mSegments = new ArrayList<>();
 

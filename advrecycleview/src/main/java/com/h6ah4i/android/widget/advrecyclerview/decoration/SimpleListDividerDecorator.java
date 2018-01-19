@@ -27,6 +27,7 @@ import android.view.View;
 /**
  * Item decoration which draws item divider between each items.
  */
+@SuppressWarnings({"ALL", "WeakerAccess", "unused"})
 public class SimpleListDividerDecorator extends RecyclerView.ItemDecoration {
     private final Drawable mHorizontalDrawable;
     private final Drawable mVerticalDrawable;

@@ -30,43 +30,45 @@ import android.support.annotation.IntRange;
  * </table>
  * </p>
  */
+@SuppressWarnings("NumericOverflow")
 public class ItemViewTypeComposer {
 
     /**
      * Bit offset of the expandable flag part.
      */
-    public static final int BIT_OFFSET_EXPANDABLE_FLAG = 31;
+    static final int BIT_OFFSET_EXPANDABLE_FLAG = 31;
 
     /**
      * Bit offset of the segment part.
      */
-    public static final int BIT_OFFSET_SEGMENT = 24;
+    static final int BIT_OFFSET_SEGMENT = 24;
 
     /**
      * Bit offset of the wrapped view type part.
      */
-    public static final int BIT_OFFSET_WRAPPED_VIEW_TYPE = 0;
+    static final int BIT_OFFSET_WRAPPED_VIEW_TYPE = 0;
 
     // ---
 
     /**
      * Bit width of the expandable flag part.
      */
-    public static final int BIT_WIDTH_EXPANDABLE_FLAG = 1;
+    static final int BIT_WIDTH_EXPANDABLE_FLAG = 1;
 
     /**
      * Bit width of the segment part.
      */
-    public static final int BIT_WIDTH_SEGMENT = 7;
+    static final int BIT_WIDTH_SEGMENT = 7;
 
     /**
      * Bit width of the wrapped view type part.
      */
-    public static final int BIT_WIDTH_WRAPPED_VIEW_TYPE = 24;
+    static final int BIT_WIDTH_WRAPPED_VIEW_TYPE = 24;
 
     /**
      * Bit mask of the expandable flag part.
      */
+    @SuppressWarnings("PointlessBitwiseExpression")
     public static final int BIT_MASK_EXPANDABLE_FLAG = (1 << (BIT_WIDTH_EXPANDABLE_FLAG - 1)) << BIT_OFFSET_EXPANDABLE_FLAG;
 
     // ---
@@ -74,19 +76,20 @@ public class ItemViewTypeComposer {
     /**
      * Bit mask of the segment part.
      */
-    public static final int BIT_MASK_SEGMENT = ((1 << BIT_WIDTH_SEGMENT) - 1) << BIT_OFFSET_SEGMENT;
+    static final int BIT_MASK_SEGMENT = ((1 << BIT_WIDTH_SEGMENT) - 1) << BIT_OFFSET_SEGMENT;
 
     /**
      * Bit mask of the wrapped view type part.
      */
-    public static final int BIT_MASK_WRAPPED_VIEW_TYPE = ((1 << BIT_WIDTH_WRAPPED_VIEW_TYPE) - 1) << BIT_OFFSET_WRAPPED_VIEW_TYPE;
+    @SuppressWarnings("PointlessBitwiseExpression")
+    static final int BIT_MASK_WRAPPED_VIEW_TYPE = ((1 << BIT_WIDTH_WRAPPED_VIEW_TYPE) - 1) << BIT_OFFSET_WRAPPED_VIEW_TYPE;
 
     // ---
 
     /**
      * Minimum value of segment.
      */
-    public static final int MIN_SEGMENT = 0;
+    static final int MIN_SEGMENT = 0;
 
     /**
      * Maximum value of segment.

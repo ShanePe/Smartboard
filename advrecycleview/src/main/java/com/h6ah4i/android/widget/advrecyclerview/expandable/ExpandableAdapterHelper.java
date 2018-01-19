@@ -18,25 +18,26 @@ package com.h6ah4i.android.widget.advrecyclerview.expandable;
 
 import android.support.v7.widget.RecyclerView;
 
+@SuppressWarnings("unused")
 class ExpandableAdapterHelper {
-    public static final long NO_EXPANDABLE_POSITION = 0xffffffffffffffffL;
+    static final long NO_EXPANDABLE_POSITION = 0xffffffffffffffffL;
 
     private static final long LOWER_32BIT_MASK = 0x00000000ffffffffL;
     private static final long LOWER_31BIT_MASK = 0x000000007fffffffL;
 
-    public static long getPackedPositionForChild(int groupPosition, int childPosition) {
+    static long getPackedPositionForChild(int groupPosition, int childPosition) {
         return ((long) childPosition << 32) | (groupPosition & LOWER_32BIT_MASK);
     }
 
-    public static long getPackedPositionForGroup(int groupPosition) {
+    static long getPackedPositionForGroup(int groupPosition) {
         return ((long) RecyclerView.NO_POSITION << 32) | (groupPosition & LOWER_32BIT_MASK);
     }
 
-    public static int getPackedPositionChild(long packedPosition) {
+    static int getPackedPositionChild(long packedPosition) {
         return (int) (packedPosition >>> 32);
     }
 
-    public static int getPackedPositionGroup(long packedPosition) {
+    static int getPackedPositionGroup(long packedPosition) {
         return (int) (packedPosition & LOWER_32BIT_MASK);
     }
 

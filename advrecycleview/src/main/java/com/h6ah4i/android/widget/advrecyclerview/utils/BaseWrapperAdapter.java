@@ -25,6 +25,7 @@ import com.h6ah4i.android.widget.advrecyclerview.adapter.SimpleWrapperAdapter;
  * @param <VH> ViewHolder type
  */
 // @Deprecated
+@SuppressWarnings("WeakerAccess")
 public class BaseWrapperAdapter<VH extends RecyclerView.ViewHolder> extends SimpleWrapperAdapter<VH> {
     public BaseWrapperAdapter(RecyclerView.Adapter<VH> adapter) {
         super(adapter);

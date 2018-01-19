@@ -37,6 +37,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"ALL", "WeakerAccess", "unused", "ConstantConditions"})
 public class ItemSlidingAnimator {
     private static final String TAG = "ItemSlidingAnimator";
 
@@ -366,6 +367,7 @@ public class ItemSlidingAnimator {
         return (int) (containerView.getTranslationY() + 0.5f);
     }
 
+    @SuppressWarnings("unused")
     private static abstract class ViewHolderDeferredProcess implements Runnable {
         final WeakReference<RecyclerView.ViewHolder> mRefHolder;
 
@@ -395,6 +397,7 @@ public class ItemSlidingAnimator {
         protected abstract void onProcess(RecyclerView.ViewHolder holder);
     }
 
+    @SuppressWarnings({"unused", "ConstantConditions"})
     private static final class DeferredSlideProcess extends ViewHolderDeferredProcess {
         final float mPosition;
         final boolean mHorizontal;
@@ -425,6 +428,7 @@ public class ItemSlidingAnimator {
         }
     }
 
+    @SuppressWarnings("unused")
     private static class SlidingAnimatorListenerObject
             implements ViewPropertyAnimatorListener,
             ViewPropertyAnimatorUpdateListener {
@@ -531,6 +535,7 @@ public class ItemSlidingAnimator {
         }
     }
 
+    @SuppressWarnings("unused")
     private static class SwipeFinishInfo {
         final int itemPosition;
         SwipeResultAction resultAction;

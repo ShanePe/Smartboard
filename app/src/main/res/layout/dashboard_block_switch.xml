@@ -15,7 +15,7 @@
     app:cardUseCompatPadding="true">
 
     <FrameLayout
-        android:id="@+id/cv_dashboard_block"
+        android:id="@+id/sw_dashboard_block"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
@@ -24,13 +24,13 @@
         tools:ignore="UselessParent">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/block_area"
+            android:id="@+id/sw_block_area"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/ba_name"
+                android:id="@+id/sw_ba_name"
                 style="@style/blockItemStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,21 +38,21 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/ba_image"
+                android:id="@+id/sw_ba_image"
                 style="@style/blockItemStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/content_desc_img" />
 
             <TextView
-                android:id="@+id/ba_device"
+                android:id="@+id/sw_ba_device"
                 style="@style/blockItemStyleSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceListItem" />
 
             <TextView
-                android:id="@+id/ba_size"
+                android:id="@+id/sw_ba_size"
                 style="@style/blockItemStyleSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

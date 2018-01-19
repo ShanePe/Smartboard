@@ -4,8 +4,9 @@ import android.app.Activity;
 
 import shane.pennihome.local.smartboard.comms.interfaces.IController;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.things.routines.Routines;
-import shane.pennihome.local.smartboard.things.switches.Switches;
+import shane.pennihome.local.smartboard.things.routines.Routine;
+import shane.pennihome.local.smartboard.things.switches.Switch;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 /**
  * Created by shane on 01/01/18.
@@ -31,20 +32,20 @@ public class PHBridgeController extends IController<PHBridgeController> {
     }
 
     @Override
-    public void getDevices(final OnProcessCompleteListener<Switches> processCompleteListener) {
+    public void getDevices(final OnProcessCompleteListener<IThings<Switch>> processCompleteListener) {
         @SuppressWarnings("unused") final PHBridgeController me = this;
         PHBridgeDeviceGetter dGet = new PHBridgeDeviceGetter(mActivity, new OnProcessCompleteListener<PHBridgeDeviceGetter>() {
             @Override
             public void complete(boolean success, PHBridgeDeviceGetter source) {
                 if (success)
-                    processCompleteListener.complete(success, source.getDevices());
+                    processCompleteListener.complete(success, source.getSwitches());
             }
         });
         dGet.execute();
     }
 
     @Override
-    public void getRoutines(final OnProcessCompleteListener<Routines> processCompleteListener) {
+    public void getRoutines(final OnProcessCompleteListener<IThings<Routine>> processCompleteListener) {
         @SuppressWarnings("unused") final PHBridgeController me = this;
         PHBridgeRoutineGetter rGet = new PHBridgeRoutineGetter(mActivity, new OnProcessCompleteListener<PHBridgeRoutineGetter>() {
             @Override

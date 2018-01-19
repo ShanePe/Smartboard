@@ -13,9 +13,10 @@ import shane.pennihome.local.smartboard.comms.RESTCommunicatorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.ITokenHueBridge;
+import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.things.switches.Switch;
-import shane.pennihome.local.smartboard.things.switches.Switches;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 /**
  * Created by shane on 31/12/17.
@@ -23,20 +24,20 @@ import shane.pennihome.local.smartboard.things.switches.Switches;
 
 @SuppressWarnings("ALL")
 public class PHBridgeDeviceGetter extends ICommunicator<PHBridgeDeviceGetter> {
-    private final Switches mSwitches = new Switches();
+    private final Things mThings = new Things();
 
     PHBridgeDeviceGetter(Context mContext, OnProcessCompleteListener<PHBridgeDeviceGetter> mProcessCompleteListener) {
         super(mContext, mProcessCompleteListener);
     }
 
-    public Switches getDevices() {
-        return mSwitches;
+    public IThings<Switch> getSwitches() {
+        return mThings.getOfType(Switch.class);
     }
 
     @Override
     public void PreProcess() {
         super.PreProcess();
-        mSwitches.clear();
+        mThings.clear();
     }
 
     @Override
@@ -82,7 +83,7 @@ public class PHBridgeDeviceGetter extends ICommunicator<PHBridgeDeviceGetter> {
             d.setState(getState(jDev));
             d.setType(jDev.getString("type"));
             d.setSource(IThing.Sources.PhilipsHue);
-            mSwitches.add(d);
+            mThings.add(d);
         }
     }
 

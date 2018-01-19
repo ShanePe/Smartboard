@@ -39,7 +39,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 /**
  * Provides item swipe operation for {@link android.support.v7.widget.RecyclerView}
  */
-@SuppressWarnings("PointlessBitwiseExpression")
+@SuppressWarnings({"PointlessBitwiseExpression", "WeakerAccess", "UnusedReturnValue", "unused"})
 public class RecyclerViewSwipeManager implements SwipeableItemConstants {
     private static final String TAG = "ARVSwipeManager";
 

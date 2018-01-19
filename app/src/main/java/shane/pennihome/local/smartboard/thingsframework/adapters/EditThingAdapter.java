@@ -1,15 +1,10 @@
 package shane.pennihome.local.smartboard.thingsframework.adapters;
 
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.ImageViewCompat;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.RecyclerView;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstants;
@@ -18,6 +13,7 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropM
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
+import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.data.Group;
@@ -29,19 +25,17 @@ import shane.pennihome.local.smartboard.ui.UIHelper;
 /**
  * Created by shane on 15/01/18.
  */
+@SuppressWarnings("ALL")
 public class EditThingAdapter extends RecyclerView.Adapter<IThingUIHandler.BaseEditorViewHolder>
         implements DraggableItemAdapter<IThingUIHandler.BaseEditorViewHolder> {
 
-    private final DashboardFragment.OnListFragmentInteractionListener mListener;
     private Things mThings;
-    private int mItemMoveMode = RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT;
-    private SmartboardActivity mSmartboardActivity;
-    private Group mGroup;
-    private AppCompatImageButton mDeleteBtn;
+    private final SmartboardActivity mSmartboardActivity;
+    private final Group mGroup;
 
     public EditThingAdapter(SmartboardActivity smartboardActivity, Group group, DashboardFragment.OnListFragmentInteractionListener listener) {
         mThings = new Things();
-        mListener = listener;
+        DashboardFragment.OnListFragmentInteractionListener mListener = listener;
         mSmartboardActivity = smartboardActivity;
         mGroup = group;
         setHasStableIds(true);
@@ -66,13 +60,13 @@ public class EditThingAdapter extends RecyclerView.Adapter<IThingUIHandler.BaseE
 
     @Override
     public IThingUIHandler.BaseEditorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        IThing thing = null;
+        IThing thing;
         try {
             thing = IThing.CreateByTypeID(viewType);
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(thing.getUIHandler().getViewResourceID(), parent, false);
 
-            mDeleteBtn = (AppCompatImageButton)reverseFindById((View)parent, R.id.btn_delete_item);
+            AppCompatImageButton mDeleteBtn = (AppCompatImageButton) reverseFindById(parent, R.id.btn_delete_item);
 
             return thing.getUIHandler().GetEditorViewHolder(view);
         }
@@ -107,7 +101,7 @@ public class EditThingAdapter extends RecyclerView.Adapter<IThingUIHandler.BaseE
         holder.getContainer().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.showThingPropertyWindow(mSmartboardActivity,thing.getFilteredView(mSmartboardActivity.getThings()) , thing, new OnThingSetListener() {
+                UIHelper.showThingPropertyWindow(mSmartboardActivity,thing.getFilteredView(Monitor.getThings()) , thing, new OnThingSetListener() {
                     @Override
                     public void OnSet(IThing thing) {
                         mGroup.getGroupViewHandler().NotifyChanged();
@@ -121,7 +115,7 @@ public class EditThingAdapter extends RecyclerView.Adapter<IThingUIHandler.BaseE
 
     @Override
     public long getItemId(int position) {
-        return mThings.get(position).getGroupId();
+        return mThings.get(position).getGroupOrderId();
     }
 
     public void setThings(Things mValues) {
@@ -149,6 +143,7 @@ public class EditThingAdapter extends RecyclerView.Adapter<IThingUIHandler.BaseE
 
     @Override
     public void onMoveItem(int fromPosition, int toPosition) {
+        int mItemMoveMode = RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT;
         if (mItemMoveMode == RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT) {
            getThings().moveItem(fromPosition, toPosition);
         } else {

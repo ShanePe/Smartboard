@@ -33,6 +33,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import java.util.List;
 
+@SuppressWarnings({"ALL", "unused", "SimplifiableIfStatement", "ConstantConditions"})
 class ExpandableRecyclerViewWrapperAdapter
         extends SimpleWrapperAdapter<RecyclerView.ViewHolder>
         implements DraggableItemAdapter<RecyclerView.ViewHolder>,

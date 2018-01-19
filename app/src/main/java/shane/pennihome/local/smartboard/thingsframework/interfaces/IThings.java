@@ -8,10 +8,18 @@ import java.util.Comparator;
  * Created by shane on 16/01/18.
  */
 
+@SuppressWarnings("ALL")
 public abstract class IThings<T extends IThing> extends ArrayList<T> {
     public void remove(IThing.Sources sources) {
         for (T t : this)
             if (t.getSource() == sources)
+                remove(t);
+    }
+
+    public <E extends IThing> void remove(Class<E> cls)
+    {
+        for(T t : this)
+            if(t.getClass().equals(cls))
                 remove(t);
     }
 
@@ -23,13 +31,11 @@ public abstract class IThings<T extends IThing> extends ArrayList<T> {
         return null;
     }
 
-    public abstract int SortCompare(T a, T b);
-
     public void sort() {
         Collections.sort(this, new Comparator<T>() {
             @Override
             public int compare(T o1, T o2) {
-                return SortCompare(o1, o2);
+               return o1.getName().compareTo(o2.getName());
             }
         });
     }

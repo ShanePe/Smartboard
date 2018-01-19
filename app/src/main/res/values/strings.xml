@@ -39,4 +39,7 @@
     <string name="lbl_add_group_msg">Please supply a group name.</string>
     <string name="block_name_switch">Switch</string>
     <string name="lbl_colours">Colours</string>
+    <string name="lbl_properties">Properties</string>
+    <string name="lbl_background">Background</string>
+    <string name="lbl_transparency">Transparency</string>
 </resources>

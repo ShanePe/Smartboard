@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import com.flask.colorpicker.ColorCircle;
 import com.flask.colorpicker.builder.PaintBuilder;
 
+@SuppressWarnings("CanBeFinal")
 public class SimpleColorWheelRenderer extends AbsColorWheelRenderer {
 	private Paint selectorFill = PaintBuilder.newPaint().build();
 	private float[] hsv = new float[3];

@@ -20,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
 
+@SuppressWarnings("WeakerAccess")
 public interface ExpandableSwipeableItemAdapter<GVH extends RecyclerView.ViewHolder, CVH extends RecyclerView.ViewHolder>
     extends BaseExpandableSwipeableItemAdapter<GVH, CVH> {
 

@@ -21,6 +21,7 @@ public class RoutineViewAdapter extends ThingViewAdapter {
         super(items);
     }
 
+
     @Override
     public int getFragmentLayout() {
         return R.layout.fragment_routine;
@@ -55,7 +56,6 @@ public class RoutineViewAdapter extends ThingViewAdapter {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        final View mView;
         final ImageView mImgView;
         final TextView mNameView;
         final AppCompatImageButton mButtonView;
@@ -64,7 +64,6 @@ public class RoutineViewAdapter extends ThingViewAdapter {
 
         ViewHolder(View view) {
             super(view);
-            mView = view;
             mImgView = view.findViewById(R.id.routine_img);
             mNameView = view.findViewById(R.id.routine_name);
             mButtonView = view.findViewById(R.id.routine_btn_execute);

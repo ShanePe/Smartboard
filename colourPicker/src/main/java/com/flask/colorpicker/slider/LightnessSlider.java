@@ -11,6 +11,7 @@ import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.Utils;
 import com.flask.colorpicker.builder.PaintBuilder;
 
+@SuppressWarnings("CanBeFinal")
 public class LightnessSlider extends AbsCustomSlider {
 	private int color;
 	private Paint barPaint = PaintBuilder.newPaint().build();

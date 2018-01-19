@@ -17,10 +17,11 @@ import shane.pennihome.local.smartboard.thingsframework.Things;
  * Created by shane on 17/01/18.
  */
 
+@SuppressWarnings("ALL")
 public class ThingSelectionAdapter extends RecyclerView.Adapter<ThingSelectionAdapter.ViewHolder> {
 
-    private Things mThings;
-    private OnThingSelectListener mOnThingSelectListener;
+    private final Things mThings;
+    private final OnThingSelectListener mOnThingSelectListener;
     public ThingSelectionAdapter(OnThingSelectListener onThingSelectListener) {
         this.mThings = Things.getAvailableTypes();
         this.mOnThingSelectListener = onThingSelectListener;
@@ -55,14 +56,13 @@ public class ThingSelectionAdapter extends RecyclerView.Adapter<ThingSelectionAd
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        private LinearLayoutCompat mContainer;
-        private TextView mText;
-        private ImageView mImg;
-        private View mView;
+        private final LinearLayoutCompat mContainer;
+        private final TextView mText;
+        private final ImageView mImg;
+
         public ViewHolder(View itemView) {
             super(itemView);
 
-            mView = itemView;
             mContainer = itemView.findViewById(R.id.things_select_container);
             mText = itemView.findViewById(R.id.things_select_name);
             mImg = itemView.findViewById(R.id.things_select_img);

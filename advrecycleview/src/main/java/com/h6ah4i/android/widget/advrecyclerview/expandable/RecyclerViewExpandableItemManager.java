@@ -37,6 +37,7 @@ import java.util.List;
 /**
  * Provides item expansion operation for {@link android.support.v7.widget.RecyclerView}
  */
+@SuppressWarnings({"ALL", "WeakerAccess", "SameReturnValue", "unused"})
 public class RecyclerViewExpandableItemManager implements ExpandableItemConstants {
     private static final String TAG = "ARVExpandableItemMgr";
 
@@ -1153,6 +1154,7 @@ public class RecyclerViewExpandableItemManager implements ExpandableItemConstant
         return mDefaultGroupsExpandedState;
     }
 
+    @SuppressWarnings("unused")
     public static class SavedState implements Parcelable {
         final long[] adapterSavedState;
 

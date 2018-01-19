@@ -18,6 +18,7 @@ package com.h6ah4i.android.widget.advrecyclerview.draggable;
 
 import android.support.v7.widget.RecyclerView;
 
+@SuppressWarnings("unused")
 public interface DraggableItemAdapter<T extends RecyclerView.ViewHolder> {
 
     /**

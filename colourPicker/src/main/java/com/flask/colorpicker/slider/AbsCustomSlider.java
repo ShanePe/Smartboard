@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.flask.colorpicker.R;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public abstract class AbsCustomSlider extends View {
 	protected Bitmap bitmap;
 	protected Canvas bitmapCanvas;

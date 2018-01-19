@@ -29,6 +29,7 @@ import com.h6ah4i.android.widget.advrecyclerview.animator.BaseItemAnimator;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public abstract class BaseItemAnimationManager<T extends ItemAnimationInfo> {
     private static TimeInterpolator sDefaultInterpolator;
 

@@ -2,25 +2,59 @@
   <dictionary name="shane">
     <words>
       <w>abcdefghijklmnopqrstuvwxyz</w>
+      <w>advancedrecyclerview</w>
+      <w>advrecyclerview</w>
+      <w>andersons</w>
+      <w>aptr</w>
       <w>authst</w>
       <w>avancement</w>
       <w>brid</w>
+      <w>ccvh</w>
+      <w>cevh</w>
+      <w>clrs</w>
+      <w>coeff</w>
+      <w>colorpicker</w>
       <w>coms</w>
+      <w>coords</w>
+      <w>csvh</w>
+      <w>dashbboards</w>
       <w>datastore</w>
       <w>datastores</w>
       <w>devicetype</w>
+      <w>disp</w>
+      <w>dispname</w>
+      <w>doclava</w>
+      <w>doctitle</w>
+      <w>foote</w>
+      <w>genymotion</w>
       <w>getby</w>
       <w>gettings</w>
+      <w>haruki</w>
+      <w>hasegawa</w>
+      <w>hgap</w>
       <w>huebridge</w>
       <w>internalipaddress</w>
       <w>jres</w>
       <w>lkey</w>
+      <w>logd</w>
+      <w>logi</w>
+      <w>logv</w>
+      <w>longpress</w>
+      <w>msec</w>
       <w>occured</w>
+      <w>oldh</w>
+      <w>oldw</w>
+      <w>pange</w>
+      <w>pennicott</w>
       <w>pennihome</w>
       <w>phlogo</w>
       <w>plhldr</w>
       <w>proc</w>
+      <w>proj</w>
+      <w>recyclerview</w>
       <w>retrier</w>
+      <w>routineblock</w>
+      <w>samsung</w>
       <w>serveur</w>
       <w>setm</w>
       <w>sharedpref</w>
@@ -28,10 +62,14 @@
       <w>smartboard</w>
       <w>smartthing</w>
       <w>stlogo</w>
+      <w>swipeable</w>
+      <w>switchblock</w>
       <w>toggler</w>
+      <w>vgap</w>
       <w>webside</w>
       <w>webv</w>
       <w>webview</w>
+      <w>wnat</w>
     </words>
   </dictionary>
 </component>

@@ -23,6 +23,7 @@ import shane.pennihome.local.smartboard.things.switches.Switch;
  * Created by shane on 17/01/18.
  */
 
+@SuppressWarnings({"ALL", "RedundantCast"})
 public class JsonBuilder {
     public static Gson Get() {
         GsonBuilder builder = new GsonBuilder();

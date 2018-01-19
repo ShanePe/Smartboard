@@ -23,6 +23,7 @@ import org.junit.rules.ExpectedException;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+@SuppressWarnings({"ALL", "CanBeFinal"})
 public class ItemViewTypeComposerTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -76,6 +77,7 @@ public class ItemViewTypeComposerTest {
         assertThat(ItemViewTypeComposer.MAX_WRAPPED_VIEW_TYPE, is(signedIntMax(ItemViewTypeComposer.BIT_WIDTH_WRAPPED_VIEW_TYPE)));
     }
 
+    @SuppressWarnings("PointlessBitwiseExpression")
     @Test
     public void extractSegmentPart() throws Exception {
         // zero
@@ -85,6 +87,7 @@ public class ItemViewTypeComposerTest {
         assertThat(ItemViewTypeComposer.extractSegmentPart(1 << ItemViewTypeComposer.BIT_OFFSET_SEGMENT), is(1));
 
         // min
+        //noinspection PointlessBitwiseExpression
         assertThat(ItemViewTypeComposer.extractSegmentPart(ItemViewTypeComposer.MIN_SEGMENT << ItemViewTypeComposer.BIT_OFFSET_SEGMENT), is(ItemViewTypeComposer.MIN_SEGMENT));
 
         // max
@@ -97,6 +100,7 @@ public class ItemViewTypeComposerTest {
         assertThat(ItemViewTypeComposer.extractSegmentPart(ItemViewTypeComposer.BIT_MASK_SEGMENT), is(ItemViewTypeComposer.MAX_SEGMENT));
     }
 
+    @SuppressWarnings({"PointlessBitwiseExpression", "ShiftOutOfRange"})
     @Test
     public void extractWrappedViewTypePart() throws Exception {
         // zero
@@ -109,9 +113,11 @@ public class ItemViewTypeComposerTest {
         assertThat(ItemViewTypeComposer.extractWrappedViewTypePart(ItemViewTypeComposer.BIT_MASK_WRAPPED_VIEW_TYPE), is(-1));
 
         // min
+        //noinspection PointlessBitwiseExpression
         assertThat(ItemViewTypeComposer.extractWrappedViewTypePart(ItemViewTypeComposer.MIN_WRAPPED_VIEW_TYPE << ItemViewTypeComposer.BIT_OFFSET_WRAPPED_VIEW_TYPE), is(ItemViewTypeComposer.MIN_WRAPPED_VIEW_TYPE));
 
         // max
+        //noinspection PointlessBitwiseExpression
         assertThat(ItemViewTypeComposer.extractWrappedViewTypePart(ItemViewTypeComposer.MAX_WRAPPED_VIEW_TYPE << ItemViewTypeComposer.BIT_OFFSET_WRAPPED_VIEW_TYPE), is(ItemViewTypeComposer.MAX_WRAPPED_VIEW_TYPE));
 
         // etc - 1
@@ -139,6 +145,7 @@ public class ItemViewTypeComposerTest {
         assertThat(ItemViewTypeComposer.isExpandableGroup(ItemViewTypeComposer.BIT_MASK_EXPANDABLE_FLAG | ItemViewTypeComposer.BIT_MASK_SEGMENT | ItemViewTypeComposer.BIT_MASK_WRAPPED_VIEW_TYPE), is(true));
     }
 
+    @SuppressWarnings("PointlessBitwiseExpression")
     @Test
     public void composeSegment() throws Exception {
         // zero
@@ -148,6 +155,7 @@ public class ItemViewTypeComposerTest {
         assertThat(ItemViewTypeComposer.composeSegment(1, 0), is(1 << ItemViewTypeComposer.BIT_OFFSET_SEGMENT));
 
         // min
+        //noinspection PointlessBitwiseExpression
         assertThat(ItemViewTypeComposer.composeSegment(ItemViewTypeComposer.MIN_SEGMENT, 0), is(ItemViewTypeComposer.MIN_SEGMENT << ItemViewTypeComposer.BIT_OFFSET_SEGMENT));
 
         // max
@@ -180,7 +188,9 @@ public class ItemViewTypeComposerTest {
         return (1 << (bitWidth - 1)) - 1;
     }
 
+    @SuppressWarnings("PointlessBitwiseExpression")
     private static int signedIntMin(int bitWidth) {
+        //noinspection PointlessBitwiseExpression
         return (-1 & ~signedIntMax(bitWidth));
     }
 }

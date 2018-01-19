@@ -25,6 +25,7 @@ import android.view.ViewConfiguration;
 /**
  * Hooks touch events to avoid unexpected scrolling.
  */
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class RecyclerViewTouchActionGuardManager {
     private static final String TAG = "ARVTouchActionGuardMgr";
 

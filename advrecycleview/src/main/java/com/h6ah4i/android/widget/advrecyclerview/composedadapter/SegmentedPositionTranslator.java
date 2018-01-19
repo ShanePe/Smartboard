@@ -21,6 +21,7 @@ import com.h6ah4i.android.widget.advrecyclerview.adapter.ItemViewTypeComposer;
 
 import java.util.Arrays;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 class SegmentedPositionTranslator {
     private static final int NO_CACHED_SEGMENT = 0;
     private static final int NO_CACHED_ITEM_COUNT = -1;

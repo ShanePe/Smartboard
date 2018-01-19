@@ -2,6 +2,7 @@ package com.flask.colorpicker;
 
 import android.graphics.Color;
 
+@SuppressWarnings("CanBeFinal")
 public class ColorCircle {
 	private float x, y;
 	private float[] hsv = new float[3];
@@ -12,7 +13,7 @@ public class ColorCircle {
 		set(x, y, hsv);
 	}
 
-	public double sqDist(float x, float y) {
+	double sqDist(float x, float y) {
 		double dx = this.x - x;
 		double dy = this.y - y;
 		return dx * dx + dy * dy;
@@ -22,15 +23,15 @@ public class ColorCircle {
 		return x;
 	}
 
-	public float getY() {
+	float getY() {
 		return y;
 	}
 
-	public float[] getHsv() {
+	float[] getHsv() {
 		return hsv;
 	}
 
-	public float[] getHsvWithLightness(float lightness) {
+	float[] getHsvWithLightness(float lightness) {
 		if (hsvClone == null)
 			hsvClone = hsv.clone();
 		hsvClone[0] = hsv[0];

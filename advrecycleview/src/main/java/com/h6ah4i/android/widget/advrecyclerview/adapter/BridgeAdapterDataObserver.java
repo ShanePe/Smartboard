@@ -25,11 +25,13 @@ import java.lang.ref.WeakReference;
  * This class behaves like a "proxy" which bridges
  * {@link RecyclerView.AdapterDataObserver} events to another subscriber object.
  */
+@SuppressWarnings("WeakerAccess")
 public class BridgeAdapterDataObserver extends RecyclerView.AdapterDataObserver {
 
     /**
      * The subscriber interface.
      */
+    @SuppressWarnings("JavaDoc")
     public interface Subscriber {
         /**
          * Routed {@link RecyclerView.AdapterDataObserver#onChanged()} event.

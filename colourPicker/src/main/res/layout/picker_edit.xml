@@ -2,6 +2,6 @@
 <EditText
 	style="@style/PickerEditText"
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:hint="Color Value"
+	android:hint="@string/color_value"
 	android:inputType="textNoSuggestions"
 	android:textColor="@android:color/white"/>

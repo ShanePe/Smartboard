@@ -25,6 +25,7 @@ import com.h6ah4i.android.widget.advrecyclerview.animator.impl.ItemChangeAnimati
 import com.h6ah4i.android.widget.advrecyclerview.animator.impl.ItemMoveAnimationManager;
 import com.h6ah4i.android.widget.advrecyclerview.animator.impl.ItemRemoveAnimationManager;
 
+@SuppressWarnings({"ALL", "WeakerAccess", "unused"})
 public abstract class GeneralItemAnimator extends BaseItemAnimator {
     private static final String TAG = "ARVGeneralItemAnimator";
 

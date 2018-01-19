@@ -25,6 +25,7 @@ import org.junit.rules.ExpectedException;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+@SuppressWarnings({"ALL", "CanBeFinal"})
 public class ItemIdComposerTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -96,6 +97,7 @@ public class ItemIdComposerTest {
         assertThat(ItemIdComposer.MAX_WRAPPED_ID, is(signedLongMax(ItemIdComposer.BIT_WIDTH_GROUP_ID + ItemIdComposer.BIT_WIDTH_CHILD_ID)));
     }
 
+    @SuppressWarnings("PointlessBitwiseExpression")
     @Test
     public void composeExpandableChildId() throws Exception {
         // zero
@@ -103,6 +105,7 @@ public class ItemIdComposerTest {
 
         // one
         assertThat(ItemIdComposer.composeExpandableChildId(1L, 0L), is(1L << ItemIdComposer.BIT_OFFSET_GROUP_ID));
+        //noinspection PointlessBitwiseExpression
         assertThat(ItemIdComposer.composeExpandableChildId(0L, 1L), is(1L << ItemIdComposer.BIT_OFFSET_CHILD_ID));
 
         // minus one
@@ -142,9 +145,11 @@ public class ItemIdComposerTest {
         ItemIdComposer.composeExpandableChildId(0, ItemIdComposer.MIN_CHILD_ID - 1);
     }
 
+    @SuppressWarnings("PointlessBitwiseExpression")
     @Test
     public void composeExpandableGroupId() throws Exception {
         // zero
+        //noinspection PointlessBitwiseExpression,PointlessBitwiseExpression
         assertThat(ItemIdComposer.composeExpandableGroupId(0L), is((0L << ItemIdComposer.BIT_OFFSET_GROUP_ID) | ItemIdComposer.BIT_MASK_CHILD_ID));
 
         // one
@@ -185,6 +190,7 @@ public class ItemIdComposerTest {
         assertThat(ItemIdComposer.isExpandableGroup(ItemIdComposer.BIT_MASK_GROUP_ID | ItemIdComposer.BIT_MASK_CHILD_ID), is(true));
     }
 
+    @SuppressWarnings("PointlessBitwiseExpression")
     @Test
     public void extractSegmentPart() throws Exception {
         // zero
@@ -194,6 +200,7 @@ public class ItemIdComposerTest {
         assertThat(ItemIdComposer.extractSegmentPart(1L << ItemIdComposer.BIT_OFFSET_SEGMENT), is(1));
 
         // min
+        //noinspection PointlessBitwiseExpression
         assertThat(ItemIdComposer.extractSegmentPart(((long) ItemIdComposer.MIN_SEGMENT) << ItemIdComposer.BIT_OFFSET_SEGMENT), is(ItemIdComposer.MIN_SEGMENT));
 
         // max
@@ -287,6 +294,7 @@ public class ItemIdComposerTest {
         assertThat(ItemIdComposer.extractWrappedIdPart(ItemIdComposer.BIT_MASK_SEGMENT), is(0L));
     }
 
+    @SuppressWarnings("PointlessBitwiseExpression")
     @Test
     public void composeSegment() throws Exception {
         // zero
@@ -296,6 +304,7 @@ public class ItemIdComposerTest {
         assertThat(ItemIdComposer.composeSegment(1, 0L), is(1L << ItemIdComposer.BIT_OFFSET_SEGMENT));
 
         // min
+        //noinspection PointlessBitwiseExpression
         assertThat(ItemIdComposer.composeSegment(ItemIdComposer.MIN_SEGMENT, 0L), is(((long) ItemIdComposer.MIN_SEGMENT) << ItemIdComposer.BIT_OFFSET_SEGMENT));
 
         // max
@@ -328,7 +337,9 @@ public class ItemIdComposerTest {
         return (1L << (bitWidth - 1)) - 1;
     }
 
+    @SuppressWarnings("PointlessBitwiseExpression")
     private static long signedLongMin(int bitWidth) {
+        //noinspection PointlessBitwiseExpression
         return (-1L & ~signedLongMax(bitWidth));
     }
 }

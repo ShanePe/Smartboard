@@ -49,7 +49,7 @@ import java.lang.ref.WeakReference;
 /**
  * Provides item drag &amp; drop operation for {@link android.support.v7.widget.RecyclerView}
  */
-@SuppressWarnings("PointlessBitwiseExpression")
+@SuppressWarnings({"ALL", "WeakerAccess", "CanBeFinal", "UnusedReturnValue", "unused", "SimplifiableIfStatement"})
 public class RecyclerViewDragDropManager implements DraggableItemConstants {
     private static final String TAG = "ARVDragDropManager";
 
@@ -84,6 +84,7 @@ public class RecyclerViewDragDropManager implements DraggableItemConstants {
     /**
      * Used for listening item drag events
      */
+    @SuppressWarnings("unused")
     public interface OnItemDragEventListener {
         /**
          * Callback method to be invoked when dragging is started.
@@ -134,6 +135,7 @@ public class RecyclerViewDragDropManager implements DraggableItemConstants {
     private static final float SCROLL_AMOUNT_COEFF = 25;
     private static final float SCROLL_TOUCH_SLOP_MULTIPLY = 1.5f;
 
+    @SuppressWarnings("unused")
     static class SwapTarget {
         public RecyclerView.ViewHolder holder;
         public int position;
@@ -146,6 +148,7 @@ public class RecyclerViewDragDropManager implements DraggableItemConstants {
         }
     }
 
+    @SuppressWarnings("unused")
     static class FindSwapTargetContext {
         public RecyclerView rv;
         public DraggingItemInfo draggingItemInfo;
@@ -198,6 +201,7 @@ public class RecyclerViewDragDropManager implements DraggableItemConstants {
         }
     }
 
+    @SuppressWarnings({"EmptyMethod", "unused"})
     public interface OnCustomOnMoveListener {
         void OnMove(RecyclerView rv, MotionEvent e);
         void OnUpOrCancel(RecyclerView rv, MotionEvent e);
@@ -265,7 +269,6 @@ public class RecyclerViewDragDropManager implements DraggableItemConstants {
     private boolean mCanDragH;
     private boolean mCanDragV;
     private float mDragEdgeScrollSpeed = 1.0f;
-    private int mCurrentItemMoveMode = ITEM_MOVE_MODE_DEFAULT;
     private Object mComposedAdapterTag;
 
     private SwapTarget mTempSwapTarget = new SwapTarget();
@@ -776,7 +779,7 @@ public class RecyclerViewDragDropManager implements DraggableItemConstants {
         mDragStartTouchY = mDragMinTouchY = mDragMaxTouchY = mLastTouchY;
         mDragStartTouchX = mDragMinTouchX = mDragMaxTouchX = mLastTouchX;
         mScrollDirMask = SCROLL_DIR_NONE;
-        mCurrentItemMoveMode = mItemMoveMode;
+        int mCurrentItemMoveMode = mItemMoveMode;
         mComposedAdapterTag = composedAdapterTag;
 
         mRecyclerView.getParent().requestDisallowInterceptTouchEvent(true);

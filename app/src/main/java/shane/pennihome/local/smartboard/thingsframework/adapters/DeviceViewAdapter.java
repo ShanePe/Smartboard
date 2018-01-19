@@ -1,7 +1,6 @@
 package shane.pennihome.local.smartboard.thingsframework.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -69,7 +68,6 @@ public class DeviceViewAdapter extends ThingViewAdapter {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        final View mView;
         final ImageView mImgView;
         final android.widget.Switch mSwitchView;
         final TextView mNameView;
@@ -79,7 +77,6 @@ public class DeviceViewAdapter extends ThingViewAdapter {
 
         ViewHolder(View view) {
             super(view);
-            mView = view;
 
             mImgView = view.findViewById(R.id.device_img);
             mNameView = view.findViewById(R.id.device_name);

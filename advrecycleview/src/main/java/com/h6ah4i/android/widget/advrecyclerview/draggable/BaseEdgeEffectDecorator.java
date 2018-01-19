@@ -22,6 +22,7 @@ import android.support.v4.widget.EdgeEffectCompat;
 import android.support.v7.widget.RecyclerView;
 import android.widget.EdgeEffect;
 
+@SuppressWarnings("WeakerAccess")
 abstract class BaseEdgeEffectDecorator extends RecyclerView.ItemDecoration {
     private RecyclerView mRecyclerView;
     private EdgeEffect mGlow1;

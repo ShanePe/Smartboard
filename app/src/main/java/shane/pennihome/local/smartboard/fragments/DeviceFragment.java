@@ -1,10 +1,9 @@
 package shane.pennihome.local.smartboard.fragments;
 
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.thingsframework.Callbacks.EditThingTouchHelperCallback;
+import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.adapters.DeviceViewAdapter;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
@@ -27,6 +26,6 @@ public class DeviceFragment extends ThingFragment {
 
     @Override
     IThings getDataSource() {
-        return getMainActivity().getMonitor().getDevices();
+        return getMainActivity().getMonitor().getThings(Switch.class);
     }
 }

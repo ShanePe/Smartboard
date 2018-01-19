@@ -27,6 +27,7 @@ import android.view.animation.Interpolator;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.CustomRecyclerViewUtils;
 
+@SuppressWarnings("ALL")
 class SwapTargetItemOperator extends BaseDraggableItemDecorator {
     @SuppressWarnings("unused")
     private static final String TAG = "SwapTargetItemOperator";

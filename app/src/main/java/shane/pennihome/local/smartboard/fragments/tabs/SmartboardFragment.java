@@ -12,6 +12,7 @@ import android.widget.EditText;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
 
+@SuppressWarnings("ALL")
 public class SmartboardFragment extends Fragment {
     /**
      * The fragment argument representing the section number for this
@@ -42,7 +43,7 @@ public class SmartboardFragment extends Fragment {
         mSmartboardActivity = (SmartboardActivity) getContext();
 
         View rootView = inflater.inflate(R.layout.smartboard_tab_dash, container, false);
-        final EditText editText = (EditText) rootView.findViewById(R.id.txt_db_name);
+        final EditText editText = rootView.findViewById(R.id.txt_db_name);
         editText.setText(mSmartboardActivity.getDashboard().getName());
 
         editText.addTextChangedListener(new TextWatcher() {

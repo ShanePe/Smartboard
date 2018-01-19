@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +24,7 @@ import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.ITokenSmartThings;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "EmptyMethod"})
 public class SmartThingsFragment extends IFragment {
     private OnProcessCompleteListener<AppCompatActivity> mProcessComplete;
 
@@ -37,7 +38,7 @@ public class SmartThingsFragment extends IFragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final MainActivity activity = (MainActivity) getActivity();
 
@@ -86,6 +87,7 @@ public class SmartThingsFragment extends IFragment {
                     authComplete = true;
                     resultIntent.putExtra("code", tokenSmartThingsInfo.getAuthCode());
 
+                    assert activity != null;
                     activity.setResult(Activity.RESULT_OK, resultIntent);
                     activity.setResult(Activity.RESULT_CANCELED, resultIntent);
 
@@ -104,6 +106,7 @@ public class SmartThingsFragment extends IFragment {
 
                 } else if (url.contains("error=access_denied")) {
                     authComplete = true;
+                    assert activity != null;
                     activity.setResult(Activity.RESULT_CANCELED, resultIntent);
                     Toast.makeText(activity, "Error Occured", Toast.LENGTH_SHORT).show();
 

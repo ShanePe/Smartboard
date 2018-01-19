@@ -18,11 +18,13 @@ package com.h6ah4i.android.widget.advrecyclerview.swipeable;
 
 import android.support.v7.widget.RecyclerView;
 
+@SuppressWarnings({"DeprecatedIsStillUsed", "NumericOverflow"})
 public interface SwipeableItemConstants {
     /**
      * State flag for the {@link SwipeableItemViewHolder#setSwipeStateFlags(int)} and {@link SwipeableItemViewHolder#getSwipeStateFlags()} methods.
      * Indicates that currently performing swiping.
      */
+    @SuppressWarnings("PointlessBitwiseExpression")
     int STATE_FLAG_SWIPING = (1 << 0);
 
     /**
@@ -93,6 +95,7 @@ public interface SwipeableItemConstants {
      * {@link SwipeableItemAdapter#onGetSwipeReactionType(android.support.v7.widget.RecyclerView.ViewHolder, int, int, int)} method.</p>
      * <p>Indicates "can not swipe left" (completely no reactions)</p>
      */
+    @SuppressWarnings("PointlessBitwiseExpression")
     int REACTION_CAN_NOT_SWIPE_LEFT = (InternalConstants.REACTION_CAN_NOT_SWIPE << InternalConstants.BIT_SHIFT_AMOUNT_LEFT);
 
     /**
@@ -100,6 +103,7 @@ public interface SwipeableItemConstants {
      * {@link SwipeableItemAdapter#onGetSwipeReactionType(android.support.v7.widget.RecyclerView.ViewHolder, int, int, int)} method.</p>
      * <p>Indicates "can not swipe left"  (not swipeable, but rubber-band effect applied)</p>
      */
+    @SuppressWarnings("PointlessBitwiseExpression")
     int REACTION_CAN_NOT_SWIPE_LEFT_WITH_RUBBER_BAND_EFFECT = (InternalConstants.REACTION_CAN_NOT_SWIPE_WITH_RUBBER_BAND_EFFECT << InternalConstants.BIT_SHIFT_AMOUNT_LEFT);
 
     /**
@@ -107,6 +111,7 @@ public interface SwipeableItemConstants {
      * {@link SwipeableItemAdapter#onGetSwipeReactionType(android.support.v7.widget.RecyclerView.ViewHolder, int, int, int)} method.</p>
      * <p>Indicates "can swipe left"</p>
      */
+    @SuppressWarnings("PointlessBitwiseExpression")
     int REACTION_CAN_SWIPE_LEFT = (InternalConstants.REACTION_CAN_SWIPE << InternalConstants.BIT_SHIFT_AMOUNT_LEFT);
 
     /**
@@ -114,6 +119,7 @@ public interface SwipeableItemConstants {
      * {@link SwipeableItemAdapter#onGetSwipeReactionType(android.support.v7.widget.RecyclerView.ViewHolder, int, int, int)} method.</p>
      * <p>If this flag is specified, swipe operation will not start even if user swipe an item to the LEFT direction.</p>
      */
+    @SuppressWarnings("PointlessBitwiseExpression")
     int REACTION_MASK_START_SWIPE_LEFT = (InternalConstants.REACTION_MASK_START_SWIPE << InternalConstants.BIT_SHIFT_AMOUNT_LEFT);
 
     /**
@@ -121,6 +127,7 @@ public interface SwipeableItemConstants {
      * {@link SwipeableItemAdapter#onGetSwipeReactionType(android.support.v7.widget.RecyclerView.ViewHolder, int, int, int)} method.</p>
      * <p>Indicates "can not swipe up" (completely no reactions)</p>
      */
+    @SuppressWarnings("PointlessBitwiseExpression")
     int REACTION_CAN_NOT_SWIPE_UP = (InternalConstants.REACTION_CAN_NOT_SWIPE << InternalConstants.BIT_SHIFT_AMOUNT_UP);
 
     /**
@@ -149,6 +156,7 @@ public interface SwipeableItemConstants {
      * {@link SwipeableItemAdapter#onGetSwipeReactionType(android.support.v7.widget.RecyclerView.ViewHolder, int, int, int)} method.</p>
      * <p>Indicates "can not swipe right" (completely no reactions)</p>
      */
+    @SuppressWarnings("PointlessBitwiseExpression")
     int REACTION_CAN_NOT_SWIPE_RIGHT = (InternalConstants.REACTION_CAN_NOT_SWIPE << InternalConstants.BIT_SHIFT_AMOUNT_RIGHT);
 
     /**
@@ -177,6 +185,7 @@ public interface SwipeableItemConstants {
      * {@link SwipeableItemAdapter#onGetSwipeReactionType(android.support.v7.widget.RecyclerView.ViewHolder, int, int, int)} method.</p>
      * <p>Indicates "can not swipe down" (completely no reactions)</p>
      */
+    @SuppressWarnings("PointlessBitwiseExpression")
     int REACTION_CAN_NOT_SWIPE_DOWN = (InternalConstants.REACTION_CAN_NOT_SWIPE << InternalConstants.BIT_SHIFT_AMOUNT_DOWN);
 
     /**
@@ -212,6 +221,7 @@ public interface SwipeableItemConstants {
     /**
      * Convenient constant value: Equals to {@link #REACTION_CAN_NOT_SWIPE_LEFT} | {@link #REACTION_CAN_NOT_SWIPE_RIGHT}
      */
+    @SuppressWarnings("PointlessBitwiseExpression")
     int REACTION_CAN_NOT_SWIPE_BOTH_H =
             REACTION_CAN_NOT_SWIPE_LEFT | REACTION_CAN_NOT_SWIPE_RIGHT;
 
@@ -231,6 +241,7 @@ public interface SwipeableItemConstants {
     /**
      * Convenient constant value: Equals to {@link #REACTION_CAN_NOT_SWIPE_UP} | {@link #REACTION_CAN_NOT_SWIPE_DOWN}
      */
+    @SuppressWarnings("PointlessBitwiseExpression")
     int REACTION_CAN_NOT_SWIPE_BOTH_V =
             REACTION_CAN_NOT_SWIPE_UP | REACTION_CAN_NOT_SWIPE_DOWN;
 

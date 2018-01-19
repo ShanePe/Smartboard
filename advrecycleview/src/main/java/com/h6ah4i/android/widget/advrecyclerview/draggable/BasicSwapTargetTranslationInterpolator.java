@@ -19,6 +19,7 @@ package com.h6ah4i.android.widget.advrecyclerview.draggable;
 
 import android.view.animation.Interpolator;
 
+@SuppressWarnings({"ALL", "WeakerAccess"})
 public class BasicSwapTargetTranslationInterpolator implements Interpolator {
     private final float mThreshold;
     private final float mHalfValidRange;

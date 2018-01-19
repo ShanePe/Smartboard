@@ -2,16 +2,20 @@ package shane.pennihome.local.smartboard.things.switches.block;
 
 import android.app.Activity;
 import android.support.annotation.ColorInt;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
@@ -27,22 +31,64 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandl
  * Created by SPennicott on 17/01/2018.
  */
 
+@SuppressWarnings("ALL")
 public class SwitchThingHandler extends IThingUIHandler {
     public SwitchThingHandler(IThing iThing) {
         super(iThing);
     }
 
+    private void DoTabs(View view)
+    {
+        final ToggleButton btnTabProp = view.findViewById(R.id.sw_tab1_btn);
+        final ToggleButton btnTabBg = view.findViewById(R.id.sw_tab2_btn);
+
+        final View tabProp = view.findViewById(R.id.sw_tab_prop);
+        final View tabBg = view.findViewById(R.id.sw_tab_background);
+
+        btnTabProp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    btnTabBg.setChecked(false);
+                    tabProp.setVisibility(View.VISIBLE);
+                    tabBg.setVisibility(View.GONE);
+                }
+
+            }
+        });
+
+        btnTabBg.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    btnTabProp.setChecked(false);
+                    tabProp.setVisibility(View.GONE);
+                    tabBg.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        btnTabProp.setChecked(true);
+        tabBg.setVisibility(View.GONE);
+    }
+
     @Override
     public void buildBlockPropertyView(final Activity activity, View view, Things things, final Group group) {
-        Spinner spThings = view.findViewById(R.id.sp_thing);
-        final EditText txtBlkName = view.findViewById(R.id.txt_blk_name);
-        NumberPicker txtWidth = view.findViewById(R.id.txt_blk_width);
-        NumberPicker txtHeight = view.findViewById(R.id.txt_blk_height);
+        DoTabs(view);
 
-        final Button btnBGOff = view.findViewById(R.id.btn_clr_bg_Off);
-        final Button btnBGOn = view.findViewById(R.id.btn_clr_bg_On);
-        final Button btnFGOff = view.findViewById(R.id.btn_clr_fg_Off);
-        final Button btnFGOn = view.findViewById(R.id.btn_clr_fg_On);
+        Spinner spThings = view.findViewById(R.id.sw_sp_thing);
+        final EditText txtBlkName = view.findViewById(R.id.sw_txt_blk_name);
+        NumberPicker txtWidth = view.findViewById(R.id.sw_txt_blk_width);
+        NumberPicker txtHeight = view.findViewById(R.id.sw_txt_blk_height);
+
+        final Button btnBGOff = view.findViewById(R.id.sw_btn_clr_bg_Off);
+        final Button btnBGOn = view.findViewById(R.id.sw_btn_clr_bg_On);
+        final Button btnFGOff = view.findViewById(R.id.sw_btn_clr_fg_Off);
+        final Button btnFGOn = view.findViewById(R.id.sw_btn_clr_fg_On);
+
+        SeekBar sbTransOff = view.findViewById(R.id.sw_transOff);
+        SeekBar sbTransOn = view.findViewById(R.id.sw_transOn);
 
         SpinnerThingAdapter aptr = new SpinnerThingAdapter(activity);
         aptr.setThings(things);
@@ -58,16 +104,45 @@ public class SwitchThingHandler extends IThingUIHandler {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
              //   if (getThing() == null) {
+                if(TextUtils.isEmpty(txtBlkName.getText()))
+                {
                     IThing thing = (IThing) parent.getItemAtPosition(position);
                     txtBlkName.setText(thing.getName());
-               // }
+                }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
+
+        sbTransOff.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                getThing().getBlock().setBackgroundTransparency(progress);
+                btnBGOff.setBackgroundColor(getThing().getBlock().getBackgroundColourWithAlpha());
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        sbTransOn.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                getThing().getBlock(SwitchBlock.class).setBackgroundTransparencyOn(progress);
+                btnBGOn.setBackgroundColor(getThing().getBlock(SwitchBlock.class).getBackgroundColourWithAlphaOn());
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        sbTransOff.setProgress((int)getThing().getBlock().getBackgroundTransparency());
+        sbTransOn.setProgress((int)getThing().getBlock(SwitchBlock.class).getBackgroundTransparencyOn());
 
         txtWidth.setMaxValue(4);
         txtWidth.setMinValue(1);
@@ -79,23 +154,23 @@ public class SwitchThingHandler extends IThingUIHandler {
         txtWidth.setValue(getThing().getBlock().getWidth());
         txtHeight.setValue(getThing().getBlock().getHeight());
 
-        btnBGOff.setBackgroundColor(getThing().getBlock().getBackgroundColourOff());
-        btnBGOn.setBackgroundColor(getThing().getBlock().getBackgroundColourOn());
-        btnFGOff.setBackgroundColor(getThing().getBlock().getForeColourOff());
-        btnFGOn.setBackgroundColor(getThing().getBlock().getForeColourOn());
+        btnBGOff.setBackgroundColor(getThing().getBlock().getBackgroundColour());
+        btnBGOn.setBackgroundColor(getThing().getBlock(SwitchBlock.class).getBackgroundColourOn());
+        btnFGOff.setBackgroundColor(getThing().getBlock().getForeColour());
+        btnFGOn.setBackgroundColor(getThing().getBlock(SwitchBlock.class).getForeColourOn());
 
         btnBGOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.showColourPicker(activity, getThing().getBlock().getBackgroundColourOff(), new OnProcessCompleteListener() {
+                UIHelper.showColourPicker(activity, getThing().getBlock().getBackgroundColour(), new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
                         @ColorInt int clr = (int) source;
-                        getThing().getBlock().setBackgroundColourOff(clr);
+                        getThing().getBlock().setBackgroundColour(clr);
                         if (group != null) {
                             group.setDefaultBlockBackgroundColourOff(clr);
                         }
-                        btnBGOff.setBackgroundColor(getThing().getBlock().getBackgroundColourOff());
+                        btnBGOff.setBackgroundColor(getThing().getBlock().getBackgroundColour());
                     }
                 });
             }
@@ -104,14 +179,14 @@ public class SwitchThingHandler extends IThingUIHandler {
         btnFGOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.showColourPicker(activity, getThing().getBlock().getForeColourOn(), new OnProcessCompleteListener() {
+                UIHelper.showColourPicker(activity, getThing().getBlock(SwitchBlock.class).getForeColourOn(), new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
                         @ColorInt int clr = (int) source;
-                        getThing().getBlock().setForeColourOff(clr);
+                        getThing().getBlock().setForeColour(clr);
                         if (group != null)
                             group.setDefaultBlockForeColourOff(clr);
-                        btnFGOff.setBackgroundColor(getThing().getBlock().getForeColourOff());
+                        btnFGOff.setBackgroundColor(getThing().getBlock().getForeColour());
 
                     }
                 });
@@ -121,14 +196,14 @@ public class SwitchThingHandler extends IThingUIHandler {
         btnBGOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.showColourPicker(activity, getThing().getBlock().getBackgroundColourOn(), new OnProcessCompleteListener() {
+                UIHelper.showColourPicker(activity, getThing().getBlock(SwitchBlock.class).getBackgroundColourOn(), new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
                         @ColorInt int clr = (int) source;
-                        getThing().getBlock().setBackgroundColourOn(clr);
+                        getThing().getBlock(SwitchBlock.class).setBackgroundColourOn(clr);
                         if (group != null)
                             group.setDefaultBlockBackgroundColourOn(clr);
-                        btnBGOn.setBackgroundColor(getThing().getBlock().getBackgroundColourOn());
+                        btnBGOn.setBackgroundColor(getThing().getBlock(SwitchBlock.class).getBackgroundColourOn());
                     }
                 });
             }
@@ -137,14 +212,14 @@ public class SwitchThingHandler extends IThingUIHandler {
         btnFGOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.showColourPicker(activity, getThing().getBlock().getForeColourOn(), new OnProcessCompleteListener() {
+                UIHelper.showColourPicker(activity, getThing().getBlock(SwitchBlock.class).getForeColourOn(), new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
                         @ColorInt int clr = (int) source;
-                        getThing().getBlock().setForeColourOn(clr);
+                        getThing().getBlock(SwitchBlock.class).setForeColourOn(clr);
                         if (group != null)
                             group.setDefaultBlockForeColourOn(clr);
-                        btnFGOn.setBackgroundColor(getThing().getBlock().getForeColourOn());
+                        btnFGOn.setBackgroundColor(getThing().getBlock(SwitchBlock.class).getForeColourOn());
                     }
                 });
             }
@@ -153,10 +228,10 @@ public class SwitchThingHandler extends IThingUIHandler {
 
     @Override
     public void populateBlockFromView(View view, OnThingSetListener onThingSetListener) {
-        Spinner spThings = view.findViewById(R.id.sp_thing);
-        final EditText txtBlkName = view.findViewById(R.id.txt_blk_name);
-        NumberPicker txtWidth = view.findViewById(R.id.txt_blk_width);
-        NumberPicker txtHeight = view.findViewById(R.id.txt_blk_height);
+        Spinner spThings = view.findViewById(R.id.sw_sp_thing);
+        final EditText txtBlkName = view.findViewById(R.id.sw_txt_blk_name);
+        NumberPicker txtWidth = view.findViewById(R.id.sw_txt_blk_width);
+        NumberPicker txtHeight = view.findViewById(R.id.sw_txt_blk_height);
 
         getThing().copyValuesFrom((IThing)spThings.getSelectedItem());
         getThing().getBlock().setName(txtBlkName.getText().toString());
@@ -183,8 +258,8 @@ public class SwitchThingHandler extends IThingUIHandler {
         holder.mBaDevice.setText(getThing().getName());
         holder.mBaSize.setText(String.format("%s x %s", getThing().getBlock().getWidth(), getThing().getBlock().getHeight()));
 
-        @ColorInt final int bgClr = UIHelper.getThingColour(getThing(), getThing().getBlock().getBackgroundColourOff(), getThing().getBlock().getBackgroundColourOn());
-        @ColorInt int fgClr = UIHelper.getThingColour(getThing(), getThing().getBlock().getForeColourOff(), getThing().getBlock().getForeColourOn());
+        @ColorInt final int bgClr = UIHelper.getThingColour(getThing(), getThing().getBlock().getBackgroundColourWithAlpha(), getThing().getBlock(SwitchBlock.class).getBackgroundColourWithAlphaOn());
+        @ColorInt int fgClr = UIHelper.getThingColour(getThing(), getThing().getBlock().getForeColour(), getThing().getBlock(SwitchBlock.class).getForeColourOn());
 
         holder.mLayout.setBackgroundColor(bgClr);
         holder.mBaName.setTextColor(fgClr);
@@ -206,23 +281,21 @@ public class SwitchThingHandler extends IThingUIHandler {
     }
 
     public class EditorViewHolder extends IThingUIHandler.BaseEditorViewHolder {
-        public final View mView;
         public final LinearLayout mLayout;
         public final TextView mBaName;
         public final ImageView mBaImg;
         public final TextView mBaDevice;
         public final TextView mBaSize;
-        public FrameLayout mContainer;
+        public final FrameLayout mContainer;
 
         public EditorViewHolder(View view) {
             super(view);
-            mView = view;
-            mContainer = view.findViewById(R.id.cv_dashboard_block);
-            mLayout = view.findViewById(R.id.block_area);
-            mBaName = view.findViewById(R.id.ba_name);
-            mBaImg = view.findViewById(R.id.ba_image);
-            mBaDevice = view.findViewById(R.id.ba_device);
-            mBaSize = view.findViewById(R.id.ba_size);
+            mContainer = view.findViewById(R.id.sw_dashboard_block);
+            mLayout = view.findViewById(R.id.sw_block_area);
+            mBaName = view.findViewById(R.id.sw_ba_name);
+            mBaImg = view.findViewById(R.id.sw_ba_image);
+            mBaDevice = view.findViewById(R.id.sw_ba_device);
+            mBaSize = view.findViewById(R.id.sw_ba_size);
         }
 
         @Override

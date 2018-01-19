@@ -18,6 +18,7 @@ package com.h6ah4i.android.widget.advrecyclerview.swipeable.action;
 
 import android.support.v7.widget.RecyclerView;
 
+@SuppressWarnings({"WeakerAccess", "EmptyMethod", "unused"})
 public abstract class SwipeResultAction {
     private final int mResultAction;
 

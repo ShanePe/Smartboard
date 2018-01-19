@@ -26,7 +26,7 @@ public abstract class ThingViewAdapter extends RecyclerView.Adapter<RecyclerView
         return getViewHolder(view);
     }
 
-    public IThings getThings() {
+    protected IThings getThings() {
         return mValues;
     }
 

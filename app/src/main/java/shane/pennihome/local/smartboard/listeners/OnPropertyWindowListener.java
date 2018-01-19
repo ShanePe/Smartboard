@@ -6,6 +6,7 @@ import android.view.View;
  * Created by shane on 14/01/18.
  */
 
+@SuppressWarnings("ALL")
 public interface OnPropertyWindowListener {
     void onWindowShown(View view);
 

@@ -23,6 +23,7 @@ import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstant
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+@SuppressWarnings("DefaultAnnotationParam")
 @IntDef(flag = false, value = {
         SwipeableItemConstants.DRAWABLE_SWIPE_NEUTRAL_BACKGROUND,
         SwipeableItemConstants.DRAWABLE_SWIPE_LEFT_BACKGROUND,

@@ -12,8 +12,9 @@ import android.view.WindowManager;
  * Created by shane on 15/01/18.
  */
 
+@SuppressWarnings({"ALL", "ConstantConditions"})
 public class TileLayout extends ViewGroup {
-    int deviceWidth;
+    private int deviceWidth;
 
     public TileLayout(Context context) {
         this(context, null, 0);

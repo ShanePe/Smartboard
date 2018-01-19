@@ -28,6 +28,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.CustomRecyclerViewUtils;
 
 import java.lang.ref.WeakReference;
 
+@SuppressWarnings({"ALL", "WeakerAccess"})
 class RemovingItemDecorator extends RecyclerView.ItemDecoration {
     @SuppressWarnings("unused")
     private static final String TAG = "RemovingItemDecorator";
@@ -212,10 +213,12 @@ class RemovingItemDecorator extends RecyclerView.ItemDecoration {
         return (curTime >= initialTime) ? (curTime - initialTime) : Long.MAX_VALUE;
     }
 
+    @SuppressWarnings("unused")
     private static class DelayedNotificationRunner implements Runnable {
         private WeakReference<RemovingItemDecorator> mRefDecorator;
         private final int mCode;
 
+        @SuppressWarnings("unused")
         public DelayedNotificationRunner(RemovingItemDecorator decorator, int code) {
             mRefDecorator = new WeakReference<>(decorator);
             mCode = code;

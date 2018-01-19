@@ -21,6 +21,7 @@ import android.view.View;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemViewHolder;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.annotation.DraggableItemStateFlags;
 
+@SuppressWarnings("unused")
 public abstract class AbstractDraggableSwipeableItemViewHolder extends AbstractSwipeableItemViewHolder implements DraggableItemViewHolder {
     @DraggableItemStateFlags
     private int mDragStateFlags;

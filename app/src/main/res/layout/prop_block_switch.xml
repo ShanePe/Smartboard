@@ -1,114 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorButtonNormal"
-        android:fadeScrollbars="true">
+        android:orientation="horizontal">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <ToggleButton
+            android:id="@+id/sw_tab1_btn"
+            style="@android:style/Widget.DeviceDefault.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_tab"
+            android:checked="true"
+            android:text="@string/lbl_properties"
+            android:textOff="@string/lbl_properties"
+            android:textOn="@string/lbl_properties" />
+
+        <ToggleButton
+            android:id="@+id/sw_tab2_btn"
+            style="@android:style/Widget.DeviceDefault.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_tab"
+            android:text="@string/lbl_background"
+            android:textOff="@string/lbl_background"
+            android:textOn="@string/lbl_background" />
+
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorAccent" />
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/sw_tab_prop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/sw_sp_thing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_round_dark"
+            android:focusable="auto"
+            android:foreground="?attr/selectableItemBackground" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/sw_txt_blk_name"
+            style="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/lbl_name"
+            android:inputType="textPersonName" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:labelFor="@+id/sw_txt_blk_width"
+                android:padding="4dp"
+                android:text="@string/lbl_width" />
+
+            <NumberPicker
+                android:id="@+id/sw_txt_blk_width"
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:background="@drawable/number_picker" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:labelFor="@+id/sw_txt_blk_height"
+                android:padding="4dp"
+                android:text="@string/lbl_height" />
+
+            <NumberPicker
+                android:id="@+id/sw_txt_blk_height"
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:background="@drawable/number_picker" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/sw_tab_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/line_accent"
+            android:text="@string/lbl_on_clrs" />
+
+        <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="16dp"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textView8"
+                <android.support.v7.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lbl_thing"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
-
-                <Spinner
-                    android:id="@+id/sp_thing"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/round_btn_dark"
-                    android:focusable="auto"
-                    android:foreground="?attr/selectableItemBackground" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/txt_blk_name"
-                    style="@style/Base.TextAppearance.AppCompat.Small"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/lbl_name"
-                    android:inputType="textPersonName">
-
-                </android.support.design.widget.TextInputEditText>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:labelFor="@+id/txt_blk_width"
-                    android:padding="4dp"
-                    android:text="@string/lbl_width" />
-
-                <NumberPicker
-                    android:id="@+id/txt_blk_width"
-                    android:layout_width="40dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/number_picker" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:labelFor="@+id/txt_blk_height"
-                    android:padding="4dp"
-                    android:text="@string/lbl_height" />
-
-                <NumberPicker
-                    android:id="@+id/txt_blk_height"
-                    android:layout_width="40dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/number_picker" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/textview_border"
-                    android:text="@string/lbl_on_clrs" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:text="@string/lbl_back_clr" />
+
+                    <Button
+                        android:id="@+id/sw_btn_clr_bg_On"
+                        style="@style/Widget.AppCompat.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </android.support.v7.widget.LinearLayoutCompat>
+
+                <SeekBar
+                    android:id="@+id/sw_transOn"
+                    style="@style/Widget.AppCompat.SeekBar.Discrete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:progress="1" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="4dp"
+                android:text="@string/lbl_fore_clr" />
+
+            <Button
+                android:id="@+id/sw_btn_clr_fg_On"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/line_accent"
+            android:text="@string/lbl_off_clrs" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -116,80 +203,36 @@
                         android:text="@string/lbl_back_clr" />
 
                     <Button
-                        android:id="@+id/btn_clr_bg_On"
+                        android:id="@+id/sw_btn_clr_bg_Off"
                         style="@style/Widget.AppCompat.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
+                </android.support.v7.widget.LinearLayoutCompat>
 
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="4dp"
-                        android:text="@string/lbl_fore_clr" />
 
-                    <Button
-                        android:id="@+id/btn_clr_fg_On"
-                        style="@style/Widget.AppCompat.Button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-                </LinearLayout>
-            </LinearLayout>
+                <SeekBar
+                    android:id="@+id/sw_transOff"
+                    style="@style/Widget.AppCompat.SeekBar.Discrete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:progress="1" />
+            </android.support.v7.widget.LinearLayoutCompat>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_weight="1"
+                android:padding="4dp"
+                android:text="@string/lbl_fore_clr" />
 
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/textview_border"
-                    android:text="@string/lbl_off_clrs" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="4dp"
-                        android:text="@string/lbl_back_clr" />
-
-                    <Button
-                        android:id="@+id/btn_clr_bg_Off"
-                        style="@style/Widget.AppCompat.Button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:id="@+id/textView7"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="4dp"
-                        android:text="@string/lbl_fore_clr" />
-
-                    <Button
-                        android:id="@+id/btn_clr_fg_Off"
-                        style="@style/Widget.AppCompat.Button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-                </LinearLayout>
-            </LinearLayout>
-
-        </LinearLayout>
-    </android.support.constraint.ConstraintLayout>
-</ScrollView>
+            <Button
+                android:id="@+id/sw_btn_clr_fg_Off"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v7.widget.LinearLayoutCompat>
+</android.support.v7.widget.LinearLayoutCompat>

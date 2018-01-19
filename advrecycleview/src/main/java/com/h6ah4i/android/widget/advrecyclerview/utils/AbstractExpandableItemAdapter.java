@@ -23,6 +23,7 @@ import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemAdapte
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public abstract class AbstractExpandableItemAdapter<GVH extends RecyclerView.ViewHolder, CVH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements ExpandableItemAdapter<GVH, CVH> {

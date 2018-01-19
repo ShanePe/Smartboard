@@ -31,6 +31,7 @@ import java.util.List;
 /**
  * A simplified version of ComposedAdapter for creating headers and footers.
  */
+@SuppressWarnings({"WeakerAccess", "SameReturnValue", "unused", "JavaDoc"})
 public abstract class AbstractHeaderFooterWrapperAdapter<HeaderVH extends RecyclerView.ViewHolder, FooterVH extends RecyclerView.ViewHolder> extends ComposedAdapter {
     /**
      * Segment type: header items
@@ -340,6 +341,7 @@ public abstract class AbstractHeaderFooterWrapperAdapter<HeaderVH extends Recycl
         return 0;
     }
 
+    @SuppressWarnings({"WeakerAccess", "CanBeFinal", "unused"})
     public static class BaseHeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         protected AbstractHeaderFooterWrapperAdapter mHolder;
 
@@ -379,6 +381,7 @@ public abstract class AbstractHeaderFooterWrapperAdapter<HeaderVH extends Recycl
         }
     }
 
+    @SuppressWarnings({"WeakerAccess", "CanBeFinal", "unused"})
     public static class BaseFooterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         protected AbstractHeaderFooterWrapperAdapter mHolder;
 

@@ -20,10 +20,11 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.Arrays;
 
+@SuppressWarnings({"unused", "SimplifiableIfStatement", "LongLiteralEndingWithLowercaseL"})
 class ExpandablePositionTranslator {
-    public static final int BUILD_OPTION_DEFAULT = 0;
-    public static final int BUILD_OPTION_EXPANDED_ALL = 1;
-    public static final int BUILD_OPTION_COLLAPSED_ALL = 2;
+    static final int BUILD_OPTION_DEFAULT = 0;
+    static final int BUILD_OPTION_EXPANDED_ALL = 1;
+    static final int BUILD_OPTION_COLLAPSED_ALL = 2;
 
     private final static int ALLOCATE_UNIT = 256;
 
@@ -50,7 +51,7 @@ class ExpandablePositionTranslator {
     private int mEndOfCalculatedOffsetGroupPosition = RecyclerView.NO_POSITION;
     private ExpandableItemAdapter mAdapter;
 
-    public ExpandablePositionTranslator() {
+    ExpandablePositionTranslator() {
     }
 
     public void build(ExpandableItemAdapter adapter, int option, boolean defaultExpandedState) {
@@ -93,7 +94,7 @@ class ExpandablePositionTranslator {
         mEndOfCalculatedOffsetGroupPosition = Math.max(0, groupCount - 1);
     }
 
-    public void restoreExpandedGroupItems(
+    void restoreExpandedGroupItems(
             long[] restoreGroupIds,
             ExpandableItemAdapter adapter,
             RecyclerViewExpandableItemManager.OnGroupExpandListener expandListener,
@@ -159,7 +160,7 @@ class ExpandablePositionTranslator {
         }
     }
 
-    public long[] getSavedStateArray() {
+    long[] getSavedStateArray() {
         // bit 64-32: group id
         // bit 31:    expanded or not
         // bit 30-0:  reserved
@@ -179,7 +180,7 @@ class ExpandablePositionTranslator {
         return mGroupCount + mExpandedChildCount;
     }
 
-    public boolean isGroupExpanded(int groupPosition) {
+    boolean isGroupExpanded(int groupPosition) {
         return ((mCachedGroupPosInfo[groupPosition] & FLAG_EXPANDED) != 0);
     }
 
@@ -187,7 +188,7 @@ class ExpandablePositionTranslator {
         return (int) (mCachedGroupPosInfo[groupPosition] & LOWER_31BIT_MASK);
     }
 
-    public int getVisibleChildCount(int groupPosition) {
+    int getVisibleChildCount(int groupPosition) {
         if (isGroupExpanded(groupPosition)) {
             return getChildCount(groupPosition);
         } else {
@@ -195,7 +196,7 @@ class ExpandablePositionTranslator {
         }
     }
 
-    public boolean collapseGroup(int groupPosition) {
+    boolean collapseGroup(int groupPosition) {
         if ((mCachedGroupPosInfo[groupPosition] & FLAG_EXPANDED) == 0) {
             return false;
         }
@@ -212,7 +213,7 @@ class ExpandablePositionTranslator {
         return true;
     }
 
-    public boolean expandGroup(int groupPosition) {
+    boolean expandGroup(int groupPosition) {
         if ((mCachedGroupPosInfo[groupPosition] & FLAG_EXPANDED) != 0) {
             return false;
         }
@@ -229,7 +230,7 @@ class ExpandablePositionTranslator {
         return true;
     }
 
-    public void moveGroupItem(int fromGroupPosition, int toGroupPosition) {
+    void moveGroupItem(int fromGroupPosition, int toGroupPosition) {
         if (fromGroupPosition == toGroupPosition) {
             return;
         }
@@ -263,7 +264,7 @@ class ExpandablePositionTranslator {
         }
     }
 
-    public void moveChildItem(int fromGroupPosition, int fromChildPosition, int toGroupPosition, int toChildPosition) {
+    void moveChildItem(int fromGroupPosition, int fromChildPosition, int toGroupPosition, int toChildPosition) {
         if (fromGroupPosition == toGroupPosition) {
             return;
         }
@@ -298,7 +299,7 @@ class ExpandablePositionTranslator {
         }
     }
 
-    public long getExpandablePosition(int flatPosition) {
+    long getExpandablePosition(int flatPosition) {
         if (flatPosition == RecyclerView.NO_POSITION) {
             return ExpandableAdapterHelper.NO_EXPANDABLE_POSITION;
         }
@@ -344,7 +345,7 @@ class ExpandablePositionTranslator {
         return expandablePosition;
     }
 
-    public int getFlatPosition(long packedPosition) {
+    int getFlatPosition(long packedPosition) {
         if (packedPosition == ExpandableAdapterHelper.NO_EXPANDABLE_POSITION) {
             return RecyclerView.NO_POSITION;
         }
@@ -433,11 +434,11 @@ class ExpandablePositionTranslator {
         return lastS;
     }
 
-    public void removeChildItem(int groupPosition, int childPosition) {
+    void removeChildItem(int groupPosition, int childPosition) {
         removeChildItems(groupPosition, childPosition, 1);
     }
 
-    public void removeChildItems(int groupPosition, int childPositionStart, int count) {
+    void removeChildItems(int groupPosition, int childPositionStart, int count) {
         final long t = mCachedGroupPosInfo[groupPosition];
         final int curCount = (int) (t & LOWER_31BIT_MASK);
 
@@ -455,11 +456,11 @@ class ExpandablePositionTranslator {
         mEndOfCalculatedOffsetGroupPosition = Math.min(mEndOfCalculatedOffsetGroupPosition, groupPosition - 1);
     }
 
-    public void insertChildItem(int groupPosition, int childPosition) {
+    void insertChildItem(int groupPosition, int childPosition) {
         insertChildItems(groupPosition, childPosition, 1);
     }
 
-    public void insertChildItems(int groupPosition, int childPositionStart, int count) {
+    void insertChildItems(int groupPosition, int childPositionStart, int count) {
         final long t = mCachedGroupPosInfo[groupPosition];
         final int curCount = (int) (t & LOWER_31BIT_MASK);
 
@@ -477,7 +478,7 @@ class ExpandablePositionTranslator {
         mEndOfCalculatedOffsetGroupPosition = Math.min(mEndOfCalculatedOffsetGroupPosition, groupPosition);
     }
 
-    public int insertGroupItems(int groupPosition, int count, boolean expanded) {
+    int insertGroupItems(int groupPosition, int count, boolean expanded) {
         if (count <= 0) {
             return 0;
         }
@@ -525,11 +526,11 @@ class ExpandablePositionTranslator {
         return (expanded) ? (n + insertedChildCount) : n;
     }
 
-    public int insertGroupItem(int groupPosition, boolean expanded) {
+    int insertGroupItem(int groupPosition, boolean expanded) {
         return insertGroupItems(groupPosition, 1, expanded);
     }
 
-    public int removeGroupItems(int groupPosition, int count) {
+    int removeGroupItems(int groupPosition, int count) {
         if (count <= 0) {
             return 0;
         }
@@ -563,7 +564,7 @@ class ExpandablePositionTranslator {
         return removedVisibleItemCount;
     }
 
-    public int removeGroupItem(int groupPosition) {
+    int removeGroupItem(int groupPosition) {
         return removeGroupItems(groupPosition, 1);
     }
 
@@ -596,19 +597,19 @@ class ExpandablePositionTranslator {
         mCachedGroupId = newId;
     }
 
-    public int getExpandedGroupsCount() {
+    int getExpandedGroupsCount() {
         return mExpandedGroupCount;
     }
 
-    public int getCollapsedGroupsCount() {
+    int getCollapsedGroupsCount() {
         return mGroupCount - mExpandedGroupCount;
     }
 
-    public boolean isAllExpanded() {
+    boolean isAllExpanded() {
         return !isEmpty() && (mExpandedGroupCount == mGroupCount);
     }
 
-    public boolean isAllCollapsed() {
+    boolean isAllCollapsed() {
         return isEmpty() || (mExpandedGroupCount == 0);
     }
 

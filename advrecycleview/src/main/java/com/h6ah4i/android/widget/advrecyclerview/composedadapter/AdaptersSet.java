@@ -23,8 +23,9 @@ import com.h6ah4i.android.widget.advrecyclerview.adapter.BridgeAdapterDataObserv
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"CanBeFinal", "UnusedReturnValue"})
 class AdaptersSet {
-    public static long NO_SEGMENTED_POSITION = -1L;
+    static long NO_SEGMENTED_POSITION = -1L;
 
     private BridgeAdapterDataObserver.Subscriber mSubscriber;
     private List<ComposedChildAdapterTag> mAdapterTags;
@@ -33,7 +34,7 @@ class AdaptersSet {
     private List<RecyclerView.Adapter> mUniqueAdapters;
     private List<ComposedChildAdapterDataObserver> mObservers;
 
-    public AdaptersSet(BridgeAdapterDataObserver.Subscriber bridgeSubscriber) {
+    AdaptersSet(BridgeAdapterDataObserver.Subscriber bridgeSubscriber) {
         mSubscriber = bridgeSubscriber;
         mAdapterTags = new ArrayList<>();
         mAdapters = new ArrayList<>();
@@ -41,7 +42,7 @@ class AdaptersSet {
         mObservers = new ArrayList<>();
     }
 
-    public ComposedChildAdapterTag addAdapter(@NonNull RecyclerView.Adapter adapter, int position) {
+    ComposedChildAdapterTag addAdapter(@NonNull RecyclerView.Adapter adapter, int position) {
         final ComposedChildAdapterTag tag = new ComposedChildAdapterTag();
 
         mAdapterTags.add(position, tag);
@@ -66,7 +67,7 @@ class AdaptersSet {
         return tag;
     }
 
-    public RecyclerView.Adapter removeAdapter(@NonNull ComposedChildAdapterTag tag) {
+    RecyclerView.Adapter removeAdapter(@NonNull ComposedChildAdapterTag tag) {
         final int segment = getAdapterSegment(tag);
 
         if (segment < 0) {
@@ -94,31 +95,31 @@ class AdaptersSet {
         return adapter;
     }
 
-    public int getAdapterSegment(ComposedChildAdapterTag tag) {
+    int getAdapterSegment(ComposedChildAdapterTag tag) {
         return mAdapterTags.indexOf(tag);
     }
 
-    public int getSegmentCount() {
+    int getSegmentCount() {
         return mAdapters.size();
     }
 
-    public RecyclerView.Adapter getAdapter(int segment) {
+    RecyclerView.Adapter getAdapter(int segment) {
         return mAdapters.get(segment);
     }
 
-    public ComposedChildAdapterTag getTag(int segment) {
+    ComposedChildAdapterTag getTag(int segment) {
         return mAdapterTags.get(segment);
     }
 
-    public static int extractSegment(long segmentedPosition) {
+    static int extractSegment(long segmentedPosition) {
         return (int) (segmentedPosition >>> 32);
     }
 
-    public static int extractSegmentOffset(long segmentedPosition) {
+    static int extractSegmentOffset(long segmentedPosition) {
         return (int) (segmentedPosition & 0xFFFFFFFFL);
     }
 
-    public static long composeSegmentedPosition(int segment, int offset) {
+    static long composeSegmentedPosition(int segment, int offset) {
         return (((long) segment) << 32) | (offset & 0xFFFFFFFFL);
     }
 
@@ -137,7 +138,7 @@ class AdaptersSet {
         mObservers.clear();
     }
 
-    public List<RecyclerView.Adapter> getUniqueAdaptersList() {
+    List<RecyclerView.Adapter> getUniqueAdaptersList() {
         return mUniqueAdapters;
     }
 }

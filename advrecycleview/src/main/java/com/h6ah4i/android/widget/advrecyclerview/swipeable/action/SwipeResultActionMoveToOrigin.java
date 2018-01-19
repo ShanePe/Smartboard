@@ -18,6 +18,7 @@ package com.h6ah4i.android.widget.advrecyclerview.swipeable.action;
 
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
 
+@SuppressWarnings("unused")
 public class SwipeResultActionMoveToOrigin extends SwipeResultAction {
     public SwipeResultActionMoveToOrigin() {
         super(RecyclerViewSwipeManager.AFTER_SWIPE_REACTION_MOVE_TO_ORIGIN);

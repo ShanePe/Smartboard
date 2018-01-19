@@ -23,6 +23,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.Interpolator;
 
+@SuppressWarnings({"FieldCanBeLocal", "WeakerAccess", "unused"})
 abstract class BaseDraggableItemDecorator extends RecyclerView.ItemDecoration {
 
     private static final int RETURN_TO_DEFAULT_POS_ANIMATE_THRESHOLD_DP = 2;

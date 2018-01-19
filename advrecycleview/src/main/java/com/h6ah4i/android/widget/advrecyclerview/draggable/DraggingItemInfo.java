@@ -21,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.CustomRecyclerViewUtils;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class DraggingItemInfo {
     public final int width;
     public final int height;

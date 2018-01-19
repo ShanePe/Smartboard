@@ -31,83 +31,85 @@ import android.support.v7.widget.RecyclerView;
  * </table>
  * </p>
  */
+@SuppressWarnings({"NumericOverflow", "PointlessBitwiseExpression"})
 public class ItemIdComposer {
 
     /**
      * Bit offset of the reserved sign flag part.
      */
-    public static final int BIT_OFFSET_RESERVED_SIGN_FLAG = 63;
+    static final int BIT_OFFSET_RESERVED_SIGN_FLAG = 63;
 
     /**
      * Bit offset of the segment part.
      */
-    public static final int BIT_OFFSET_SEGMENT = 56;
+    static final int BIT_OFFSET_SEGMENT = 56;
 
     /**
      * Bit offset of the group ID part.
      */
-    public static final int BIT_OFFSET_GROUP_ID = 28;
+    static final int BIT_OFFSET_GROUP_ID = 28;
 
     /**
      * Bit offset of the child ID part.
      */
-    public static final int BIT_OFFSET_CHILD_ID = 0;
+    static final int BIT_OFFSET_CHILD_ID = 0;
 
     // ---
 
     /**
      * Bit width of the reserved sign flag part.
      */
-    public static final int BIT_WIDTH_RESERVED_SIGN_FLAG = 1;
+    static final int BIT_WIDTH_RESERVED_SIGN_FLAG = 1;
 
     /**
      * Bit width of the segment part.
      */
-    public static final int BIT_WIDTH_SEGMENT = 7;
+    static final int BIT_WIDTH_SEGMENT = 7;
 
     /**
      * Bit width of the expandable group ID part.
      */
-    public static final int BIT_WIDTH_GROUP_ID = 28;
+    static final int BIT_WIDTH_GROUP_ID = 28;
 
     /**
      * Bit width of the expandable child ID part.
      */
-    public static final int BIT_WIDTH_CHILD_ID = 28;
+    static final int BIT_WIDTH_CHILD_ID = 28;
 
     // ---
 
     /**
      * Bit mask of the reserved sign flag part.
      */
-    public static final long BIT_MASK_RESERVED_SIGN_FLAG = ((1L << BIT_WIDTH_RESERVED_SIGN_FLAG) - 1) << BIT_OFFSET_RESERVED_SIGN_FLAG;
+    static final long BIT_MASK_RESERVED_SIGN_FLAG = ((1L << BIT_WIDTH_RESERVED_SIGN_FLAG) - 1) << BIT_OFFSET_RESERVED_SIGN_FLAG;
 
     /**
      * Bit mask of the segment part.
      */
-    public static final long BIT_MASK_SEGMENT = ((1L << BIT_WIDTH_SEGMENT) - 1) << BIT_OFFSET_SEGMENT;
+    static final long BIT_MASK_SEGMENT = ((1L << BIT_WIDTH_SEGMENT) - 1) << BIT_OFFSET_SEGMENT;
 
     /**
      * Bit mask of the expandable group ID part.
      */
-    public static final long BIT_MASK_GROUP_ID = ((1L << BIT_WIDTH_GROUP_ID) - 1) << BIT_OFFSET_GROUP_ID;
+    static final long BIT_MASK_GROUP_ID = ((1L << BIT_WIDTH_GROUP_ID) - 1) << BIT_OFFSET_GROUP_ID;
 
     /**
      * Bit mask of the expandable child ID part.
      */
-    public static final long BIT_MASK_CHILD_ID = ((1L << BIT_WIDTH_CHILD_ID) - 1) << BIT_OFFSET_CHILD_ID;
+    @SuppressWarnings("PointlessBitwiseExpression")
+    static final long BIT_MASK_CHILD_ID = ((1L << BIT_WIDTH_CHILD_ID) - 1) << BIT_OFFSET_CHILD_ID;
 
     // ---
 
     /**
      * Minimum value of segment.
      */
-    public static final int MIN_SEGMENT = 0;
+    static final int MIN_SEGMENT = 0;
 
     /**
      * Maximum value of segment.
      */
-    public static final int MAX_SEGMENT = (1 << BIT_WIDTH_SEGMENT) - 1;
+    static final int MAX_SEGMENT = (1 << BIT_WIDTH_SEGMENT) - 1;
 
     /**
      * Minimum value of group ID.
@@ -194,7 +196,7 @@ public class ItemIdComposer {
      * @return Segment part
      */
     @IntRange(from = MIN_SEGMENT, to = MAX_SEGMENT)
-    public static int extractSegmentPart(long composedId) {
+    static int extractSegmentPart(long composedId) {
         return (int) ((composedId & BIT_MASK_SEGMENT) >>> BIT_OFFSET_SEGMENT);
     }
 

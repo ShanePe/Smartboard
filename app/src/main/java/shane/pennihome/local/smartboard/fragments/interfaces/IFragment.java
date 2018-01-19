@@ -9,6 +9,7 @@ import shane.pennihome.local.smartboard.MainActivity;
  * Created by shane on 16/01/18.
  */
 
+@SuppressWarnings("ALL")
 public abstract class IFragment extends Fragment {
     @Override
     public void onResume() {
@@ -22,6 +23,7 @@ public abstract class IFragment extends Fragment {
         super.onResume();
     }
 
+    @SuppressWarnings("SameReturnValue")
     public boolean onBackPressed(MainActivity activity) {
         activity.backToMainActivity();
         return true;

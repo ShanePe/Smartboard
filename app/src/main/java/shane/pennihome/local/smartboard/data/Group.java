@@ -11,9 +11,9 @@ import shane.pennihome.local.smartboard.ui.GroupViewHandler;
  * Created by shane on 13/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
+@SuppressWarnings({"DefaultFileTemplate", "unused"})
 public class Group extends IDatabaseObject {
-    final Things mThings = new Things();
+    private final Things mThings = new Things();
     private boolean mDisplayName = false;
     private boolean mExpanded = false;
     private @ColorInt
@@ -25,6 +25,7 @@ public class Group extends IDatabaseObject {
     private @ColorInt
     int mDefaultBlockBackColourOn;
     private transient GroupViewHandler mGroupViewHandler;
+    private long mDashboardOrderId;
 
     public Group() {
     }
@@ -112,5 +113,13 @@ public class Group extends IDatabaseObject {
 
     public void setGroupViewHandler(GroupViewHandler groupViewHandler) {
         this.mGroupViewHandler = groupViewHandler;
+    }
+
+    public long getDashboardOrderId() {
+        return mDashboardOrderId;
+    }
+
+    public void setDashboardOrderId(long dashboardOrderId) {
+        this.mDashboardOrderId = dashboardOrderId;
     }
 }

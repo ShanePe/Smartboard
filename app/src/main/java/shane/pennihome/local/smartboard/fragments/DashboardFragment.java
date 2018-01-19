@@ -3,7 +3,7 @@ package shane.pennihome.local.smartboard.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,19 +13,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
 import shane.pennihome.local.smartboard.adapters.DashboardViewAdapter;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
-import shane.pennihome.local.smartboard.things.routines.Routine;
-import shane.pennihome.local.smartboard.things.switches.Switch;
 
 public class DashboardFragment extends IFragment {
-    DashboardViewAdapter mDashboardAptr;
+    private DashboardViewAdapter mDashboardAptr;
 
     public DashboardFragment() {
     }
@@ -43,26 +39,14 @@ public class DashboardFragment extends IFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void LoadDashboard(Dashboard dashboard) {
-        final MainActivity activity = (MainActivity) getActivity();
+    private void LoadDashboard(Dashboard dashboard) {
         Intent dashAdd = new Intent(getActivity(), SmartboardActivity.class);
-
-        ArrayList<String> switches = new ArrayList<>();
-        ArrayList<String> routines = new ArrayList<>();
-
-        for (Switch s : activity.getMonitor().getDevices())
-            switches.add(s.toJson());
-
-        for (Routine r : activity.getMonitor().getRoutines())
-            routines.add(r.toJson());
 
         if (dashboard == null)
             dashboard = new Dashboard();
 
         Bundle options = new Bundle();
 
-        dashAdd.putStringArrayListExtra("devices", switches);
-        dashAdd.putStringArrayListExtra("routines", routines);
         dashAdd.putExtra("dashboard", dashboard.toJson());
         startActivityForResult(dashAdd, 0, options);
     }
@@ -70,6 +54,7 @@ public class DashboardFragment extends IFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         MainActivity main = (MainActivity) getActivity();
+        assert main != null;
         main.populateDashbboards();
         if (mDashboardAptr != null) {
             mDashboardAptr.setValues(main.getDashboards());
@@ -94,7 +79,7 @@ public class DashboardFragment extends IFragment {
     }*/
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard_list, container, false);
         final Context context = view.getContext();
@@ -104,12 +89,8 @@ public class DashboardFragment extends IFragment {
         if (view instanceof RecyclerView) {
 
             RecyclerView recyclerView = (RecyclerView) view;
-            int mColumnCount = 1;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            assert activity != null;
             mDashboardAptr = new DashboardViewAdapter(activity.getDashboards(), new OnListFragmentInteractionListener() {
                 @Override
                 public void onListFragmentInteraction(Dashboard item) {

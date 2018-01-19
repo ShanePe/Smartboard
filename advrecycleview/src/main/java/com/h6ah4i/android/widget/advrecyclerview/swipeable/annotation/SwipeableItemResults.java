@@ -23,6 +23,7 @@ import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstant
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+@SuppressWarnings("DefaultAnnotationParam")
 @IntDef(flag = false, value = {
         SwipeableItemConstants.RESULT_NONE,
         SwipeableItemConstants.RESULT_CANCELED,

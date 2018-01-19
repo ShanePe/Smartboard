@@ -2,12 +2,11 @@ package com.flask.colorpicker;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.Xfermode;
 import android.graphics.drawable.ColorDrawable;
 
 import com.flask.colorpicker.builder.PaintBuilder;
 
+@SuppressWarnings({"CanBeFinal", "unused"})
 public class CircleColorDrawable extends ColorDrawable {
 	private float strokeWidth;
 	private Paint strokePaint = PaintBuilder.newPaint().style(Paint.Style.STROKE).stroke(strokeWidth).color(0xffffffff).build();
@@ -18,7 +17,7 @@ public class CircleColorDrawable extends ColorDrawable {
 		super();
 	}
 
-	public CircleColorDrawable(int color) {
+	CircleColorDrawable(int color) {
 		super(color);
 	}
 

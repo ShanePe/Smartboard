@@ -22,6 +22,7 @@ import android.view.View;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemViewHolder;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.annotation.ExpandableItemStateFlags;
 
+@SuppressWarnings("unused")
 public abstract class AbstractExpandableItemViewHolder extends RecyclerView.ViewHolder implements ExpandableItemViewHolder {
     @ExpandableItemStateFlags
     private int mExpandStateFlags;

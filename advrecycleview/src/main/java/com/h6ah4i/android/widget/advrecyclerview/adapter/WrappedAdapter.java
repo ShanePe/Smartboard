@@ -20,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 /**
  * An interface provides better methods for wrapped adapters.
  */
+@SuppressWarnings("JavaDoc")
 public interface WrappedAdapter<VH extends RecyclerView.ViewHolder> {
     /**
      * onViewAttachedToWindow() with unwrapped item view type parameter.

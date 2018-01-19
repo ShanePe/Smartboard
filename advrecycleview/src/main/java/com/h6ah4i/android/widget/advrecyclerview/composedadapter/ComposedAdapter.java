@@ -33,6 +33,7 @@ import java.util.List;
 /**
  * A wrapper adapter which can compose and manage several children adapters.
  */
+@SuppressWarnings({"WeakerAccess", "unused", "JavaDoc"})
 public class ComposedAdapter
         extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements WrapperAdapter<RecyclerView.ViewHolder>, BridgeAdapterDataObserver.Subscriber {

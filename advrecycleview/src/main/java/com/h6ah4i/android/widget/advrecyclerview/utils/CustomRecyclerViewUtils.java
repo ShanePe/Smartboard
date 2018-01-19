@@ -28,6 +28,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
+@SuppressWarnings({"ALL", "WeakerAccess", "UnusedReturnValue", "unused"})
 public class CustomRecyclerViewUtils {
     public static final int ORIENTATION_UNKNOWN = -1;
     public static final int ORIENTATION_HORIZONTAL = OrientationHelper.HORIZONTAL; // = 0
@@ -315,7 +316,7 @@ public class CustomRecyclerViewUtils {
             final boolean isFullSpan = ((StaggeredGridLayoutManager.LayoutParams) lp).isFullSpan();
             if (isFullSpan) {
                 final RecyclerView rv = (RecyclerView) itemView.getParent();
-                final int spanCount = getSpanCount(rv);
+                @SuppressWarnings("UnnecessaryLocalVariable") final int spanCount = getSpanCount(rv);
                 return spanCount;
             } else {
                 return 1;

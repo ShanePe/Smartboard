@@ -38,6 +38,7 @@ import org.robolectric.annotation.Config;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+@SuppressWarnings("CanBeFinal")
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class DebugWrapperAdapterTest {
@@ -159,13 +160,13 @@ public class DebugWrapperAdapterTest {
     }
 
     private static class GoodWrapperAdapter extends SimpleWrapperAdapter<TestViewHolder> {
-        public GoodWrapperAdapter(@NonNull RecyclerView.Adapter<TestViewHolder> adapter) {
+        GoodWrapperAdapter(@NonNull RecyclerView.Adapter<TestViewHolder> adapter) {
             super(adapter);
         }
     }
 
     private static class BadWrapPositionAdapter extends SimpleWrapperAdapter<TestViewHolder> {
-        public BadWrapPositionAdapter(@NonNull RecyclerView.Adapter<TestViewHolder> adapter) {
+        BadWrapPositionAdapter(@NonNull RecyclerView.Adapter<TestViewHolder> adapter) {
             super(adapter);
         }
 
@@ -176,7 +177,7 @@ public class DebugWrapperAdapterTest {
     }
 
     private static class BadUnwrapPositionAdapter extends SimpleWrapperAdapter<TestViewHolder> {
-        public BadUnwrapPositionAdapter(@NonNull RecyclerView.Adapter<TestViewHolder> adapter) {
+        BadUnwrapPositionAdapter(@NonNull RecyclerView.Adapter<TestViewHolder> adapter) {
             super(adapter);
         }
 

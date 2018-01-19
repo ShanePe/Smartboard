@@ -4,8 +4,9 @@ import android.app.Activity;
 
 import shane.pennihome.local.smartboard.comms.interfaces.IController;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.things.routines.Routines;
-import shane.pennihome.local.smartboard.things.switches.Switches;
+import shane.pennihome.local.smartboard.things.routines.Routine;
+import shane.pennihome.local.smartboard.things.switches.Switch;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 /**
  * Created by shane on 01/01/18.
@@ -31,12 +32,12 @@ public class STController extends IController<STController> {
     }
 
     @Override
-    public void getDevices(final OnProcessCompleteListener<Switches> processCompleteListener) {
+    public void getDevices(final OnProcessCompleteListener<IThings<Switch>> processCompleteListener) {
         STSwitchGetter dGet = new STSwitchGetter(mActivity, new OnProcessCompleteListener<STSwitchGetter>() {
             @Override
             public void complete(boolean success, STSwitchGetter source) {
                 if (success)
-                    processCompleteListener.complete(success, source.getDevices());
+                    processCompleteListener.complete(success, source.getSwitches());
                 else
                     processCompleteListener.complete(success, null);
             }
@@ -45,7 +46,7 @@ public class STController extends IController<STController> {
     }
 
     @Override
-    public void getRoutines(final OnProcessCompleteListener<Routines> processCompleteListener) {
+    public void getRoutines(final OnProcessCompleteListener<IThings<Routine>> processCompleteListener) {
         STRoutineGetter rGet = new STRoutineGetter(mActivity, new OnProcessCompleteListener<STRoutineGetter>() {
             @Override
             public void complete(boolean success, STRoutineGetter source) {

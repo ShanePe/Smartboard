@@ -1,9 +1,9 @@
 package shane.pennihome.local.smartboard.ui;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
@@ -39,6 +39,7 @@ import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetList
  * Created by shane on 16/01/18.
  */
 
+@SuppressWarnings("ALL")
 public class UIHelper {
     public static void showThingPropertyWindow(Activity activity, Things things, IThing thing, OnThingSetListener onThingSetListener) {
         showThingPropertyWindow(activity, things, thing, null, onThingSetListener);
@@ -138,15 +139,16 @@ public class UIHelper {
         showPropertyWindow(context, title, resource, true, null, 0, onPropertyWindowListener, null);
     }
 
-    public static Dialog showPropertyWindow(Context context, String title, int resource, boolean showButtons, RecyclerView.Adapter adapter,
-                                            int columnCount, final OnPropertyWindowListener onPropertyWindowListener,
-                                            final DialogInterface.OnShowListener onShowListener) {
+    private static void showPropertyWindow(Context context, String title, int resource, boolean showButtons, RecyclerView.Adapter adapter,
+                                           int columnCount, final OnPropertyWindowListener onPropertyWindowListener,
+                                           final DialogInterface.OnShowListener onShowListener) {
 
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
         builder.setTitle(title);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View view = (View) inflater.inflate(resource, null);
+        assert inflater != null;
+        final View view = inflater.inflate(resource, null);
 
         if (adapter != null)
             if (view instanceof RecyclerView) {
@@ -184,7 +186,8 @@ public class UIHelper {
         }
 
         android.app.AlertDialog dialog = builder.create();
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        //noinspection ConstantConditions
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         if (onShowListener != null)
             dialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -196,7 +199,16 @@ public class UIHelper {
 
         dialog.show();
 
-        return dialog;
+    }
+
+    public static int getColorWithAlpha(int clr, float ratio) {
+        int alpha = Math.round(Color.alpha(clr) * ratio);
+
+        int r = Color.red(clr);
+        int g = Color.green(clr);
+        int b = Color.blue(clr);
+
+        return Color.argb(alpha, r, g, b);
     }
 
     public static void ShowInput(final Context context, String title, final OnProcessCompleteListener onProcessCompleteListener) {

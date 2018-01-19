@@ -17,11 +17,11 @@ import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
  * Created by shane on 13/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
+@SuppressWarnings({"DefaultFileTemplate", "unused"})
 public class DBEngine extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "smartboard";
-    private Context mContext;
+    private final Context mContext;
 
     public DBEngine(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -73,7 +73,7 @@ public class DBEngine extends SQLiteOpenHelper {
         }
     }
 
-    List<IDatabaseObject> getDataObjects(String query) {
+    private List<IDatabaseObject> getDataObjects(String query) {
         SQLiteDatabase db = null;
         try {
             List<IDatabaseObject> items = new ArrayList<>();
@@ -99,30 +99,31 @@ public class DBEngine extends SQLiteOpenHelper {
         }
     }
 
+    @SuppressWarnings("SameReturnValue")
     static class Queries {
         @SuppressWarnings("SameReturnValue")
-        public static String getCreateDatastore() {
+        static String getCreateDatastore() {
             return "CREATE TABLE IF NOT EXISTS datastore (id text PRIMARY KEY unique,type text not null, object text not null)";
         }
 
-        public static String getCleanDatastore() {
+        static String getCleanDatastore() {
             return "delete from datastore ";
         }
 
-        public static String getUpdateDatastore(IDatabaseObject object) {
+        static String getUpdateDatastore(IDatabaseObject object) {
             return String.format("replace into datastore (id, type, object) values('%s','%s','%s')", object.getDataID(), object.getDatabaseType(), object.toJson());
         }
 
         @SuppressWarnings("SameReturnValue")
-        public static String getAllDatastores() {
+        static String getAllDatastores() {
             return "select id, type, object from datastore";
         }
 
-        public static String getDatastore(String Id) {
+        static String getDatastore(String Id) {
             return String.format("select id, type, object from datastore where id = '%s'", Id);
         }
 
-        public static String getDatastoreByType(IDatabaseObject.Types type) {
+        static String getDatastoreByType(IDatabaseObject.Types type) {
             return String.format("select id, type, object from datastore where type = '%s'", type);
         }
     }

@@ -1,5 +1,6 @@
 package com.flask.colorpicker;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -26,6 +27,7 @@ import com.flask.colorpicker.slider.LightnessSlider;
 
 import java.util.ArrayList;
 
+@SuppressWarnings({"FieldCanBeLocal", "WeakerAccess", "CanBeFinal", "unused", "EmptyCatchBlock", "SuspiciousNameCombination", "RedundantCast"})
 public class ColorPickerView extends View {
 	private static final float STROKE_RATIO = 2f;
 
@@ -102,7 +104,7 @@ public class ColorPickerView extends View {
 	}
 
 	private void initWith(Context context, AttributeSet attrs) {
-		final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ColorPickerPreference);
+		@SuppressLint("CustomViewStyleable") final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ColorPickerPreference);
 
 		density = typedArray.getInt(R.styleable.ColorPickerPreference_density, 10);
 		initialColor = typedArray.getInt(R.styleable.ColorPickerPreference_initialColor, 0xffffffff);
@@ -214,6 +216,7 @@ public class ColorPickerView extends View {
 		setMeasuredDimension(squareDimen, squareDimen);
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		switch (event.getAction()) {
@@ -442,6 +445,7 @@ public class ColorPickerView extends View {
 		invalidate();
 	}
 
+	@SuppressWarnings("RedundantCast")
 	public void setColorPreview(LinearLayout colorPreview, Integer selectedColor) {
 		if (colorPreview == null)
 			return;
@@ -506,6 +510,7 @@ public class ColorPickerView extends View {
 		}
 	}
 
+	@SuppressWarnings("RedundantCast")
 	private void setColorPreviewColor(int newColor) {
 		if (colorPreview == null || initialColors == null || colorSelection > initialColors.length || initialColors[colorSelection] == null)
 			return;

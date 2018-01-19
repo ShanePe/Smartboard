@@ -11,11 +11,9 @@ import shane.pennihome.local.smartboard.data.ITokenHueBridge;
 import shane.pennihome.local.smartboard.data.ITokenSmartThings;
 import shane.pennihome.local.smartboard.data.interfaces.ITokenInfo;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
-import shane.pennihome.local.smartboard.things.routines.Routine;
-import shane.pennihome.local.smartboard.things.routines.Routines;
 import shane.pennihome.local.smartboard.things.switches.Switch;
-import shane.pennihome.local.smartboard.things.switches.Switches;
 import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 /**
  * Created by shane on 01/01/18.
@@ -26,9 +24,15 @@ public class Monitor {
     private static final int SECOND_CHECK = 120;
     private final Activity mActivity;
     private Thread mMonitorThread = null;
-    //private Switches mDevices = new Switches();
-    //private Routines mRoutines = new Routines();
-    private Things mThings = new Things();
+    private static Things mThings;
+
+    public static Things getThings() {
+        return Monitor.mThings;
+    }
+
+    public static void setThings(Things mThings) {
+        Monitor.mThings = mThings;
+    }
 
     public Monitor(Activity activity) {
         mActivity = activity;
@@ -45,18 +49,11 @@ public class Monitor {
         });
     }
 
-    public Switches getDevices() {
-        Switches ret = new Switches();
-        ret.addAll(mThings.getOfType(Switch.class));
-        ret.sort();
-        return ret;
-    }
-
-    public Routines getRoutines() {
-        Routines ret = new Routines();
-        ret.addAll(mThings.getOfType(Routine.class));
-        ret.sort();
-        return ret;
+    public <T extends IThing> IThings<T> getThings(Class<T> cls)
+    {
+        IThings<T> items = mThings.getOfType(cls);
+        items.sort();
+        return items;
     }
 
     public void getSmartThingsThings(final OnProcessCompleteListener<STController> processComplete) {
@@ -81,9 +78,11 @@ public class Monitor {
 
     private void getThings(IThing.Sources type, final OnProcessCompleteListener<IController> processComplete) {
         try {
-            //mDevices.remove(type);
-            //mRoutines.remove(type);
-            mThings.remove(type);
+            if(mThings == null)
+                mThings = new Things();
+            else
+                mThings.remove(type);
+
             SourceInfo s = new SourceInfo(type, mActivity);
 
             if (s.getToken().isAwaitingAuthorisation())
@@ -91,8 +90,7 @@ public class Monitor {
                     @Override
                     public void complete(boolean success, IController source) {
                         if (success) {
-                            mThings.addAll(source.Devices());
-                            mThings.addAll(source.Routine());
+                            mThings.addAll(source.getThings());
                         }
                         if (processComplete != null)
                             processComplete.complete(success, source);
@@ -103,8 +101,7 @@ public class Monitor {
                     @Override
                     public void complete(boolean success, IController source) {
                         if (success) {
-                            mThings.addAll(source.Devices());
-                            mThings.addAll(source.Routine());
+                            mThings.addAll(source.getThings());
                         }
 
                         if (processComplete != null)
@@ -127,9 +124,9 @@ public class Monitor {
         try {
             SourceInfo s = new SourceInfo(type);
             if (s.getToken().isAuthorised()) {
-                s.getController().getDevices(new OnProcessCompleteListener<Switches>() {
+                s.getController().getDevices(new OnProcessCompleteListener<IThings<Switch>>() {
                     @Override
-                    public void complete(boolean success, Switches source) {
+                    public void complete(boolean success, IThings<Switch> source) {
                         if (success)
                             checkStateChange(source, type);
                     }
@@ -139,8 +136,8 @@ public class Monitor {
         }//Don't crash on monitor thread.
     }
 
-    private void checkStateChange(Switches src, IThing.Sources type) {
-        for (Switch d : getDevices()) {
+    private void checkStateChange(IThings<Switch> src, IThing.Sources type) {
+        for (Switch d : getThings(Switch.class)) {
             if (d.getSource() == type) {
                 Switch s = src.getbyId(d.getId());
                 if (s == null)

@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
@@ -16,8 +15,6 @@ import android.widget.ImageButton;
 import com.h6ah4i.android.widget.advrecyclerview.animator.DraggableItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
-
-import java.util.ArrayList;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
@@ -30,20 +27,18 @@ import shane.pennihome.local.smartboard.fragments.DashboardFragment;
 /**
  * Created by shane on 15/01/18.
  */
+@SuppressWarnings("ALL")
 public class GroupViewHandler {
-    private RecyclerView mRecyclerView;
-    private RecyclerViewDragDropManager mRecyclerViewDragDropManager;
-    private RecyclerView.Adapter mWrappedAdapter;
-    private EditThingAdapter mEditThingAdapter;
-    private SmartboardActivity mSmartboardActivity;
+    private final EditThingAdapter mEditThingAdapter;
+    private final SmartboardActivity mSmartboardActivity;
 
     public GroupViewHandler(SmartboardActivity smartboardActivity, final ViewGroup parent, final View view, final Group group) {
         mSmartboardActivity = smartboardActivity;
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.dash_block_list_rv);
+        RecyclerView mRecyclerView = view.findViewById(R.id.dash_block_list_rv);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(smartboardActivity, 8);
 
         // drag & drop manager
-        mRecyclerViewDragDropManager = new RecyclerViewDragDropManager();
+        RecyclerViewDragDropManager mRecyclerViewDragDropManager = new RecyclerViewDragDropManager();
         mRecyclerViewDragDropManager.setDraggingItemShadowDrawable(
                 (NinePatchDrawable) ContextCompat.getDrawable(smartboardActivity, R.drawable.material_shadow_z3));
         // Start dragging after long press
@@ -58,7 +53,6 @@ public class GroupViewHandler {
         //mRecyclerViewDragDropManager.setDraggingItemRotation(15.0f);
         mRecyclerViewDragDropManager.setItemMoveMode(RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT);
 
-
         //adapter
         mEditThingAdapter = new EditThingAdapter(smartboardActivity, group, new DashboardFragment.OnListFragmentInteractionListener() {
             @Override
@@ -70,9 +64,10 @@ public class GroupViewHandler {
         mRecyclerViewDragDropManager.setOnCustomOnMoveListener(new RecyclerViewDragDropManager.OnCustomOnMoveListener() {
             @Override
             public void OnStartDrag(RecyclerView rv) {
-                ImageButton delBtn = ((View)parent).findViewById(R.id.btn_delete_item);
-                final Animation animShake = AnimationUtils.loadAnimation(mSmartboardActivity, R.anim.shake_animate);
-                delBtn.startAnimation(animShake);
+                ImageButton delBtn = parent.findViewById(R.id.btn_delete_item);
+                delBtn.setBackgroundResource(R.drawable.btn_round_accent);
+                Animation anim = AnimationUtils.loadAnimation(mSmartboardActivity, R.anim.shake_animate);
+                delBtn.startAnimation(anim);
             }
 
             @Override
@@ -86,9 +81,11 @@ public class GroupViewHandler {
             @Override
             public void OnUpOrCancel(final RecyclerView rv, MotionEvent e) {
                 ImageButton delBtn = ((View)parent).findViewById(R.id.btn_delete_item);
+                delBtn.setBackgroundResource(R.drawable.btn_round_dark);
+
                 final View item = rv.findChildViewUnder(e.getX(),e.getY());
 
-                if(delBtn == null || item == null)
+                if(item == null)
                     return;
 
                 Rect delRect = getViewRect(delBtn);
@@ -103,7 +100,7 @@ public class GroupViewHandler {
                             if(success) {
                                 int at = rv.getChildAdapterPosition(item);
                                 mEditThingAdapter.getThings().remove(at);
-                                rv.getAdapter().notifyDataSetChanged();
+                                mSmartboardActivity.DataChanged();
                             }
                         }
                     });
@@ -113,7 +110,7 @@ public class GroupViewHandler {
 
 
         mEditThingAdapter.setThings(group.getThings());
-        mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(mEditThingAdapter);      // wrap for dragging
+        RecyclerView.Adapter mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(mEditThingAdapter);
 
         GeneralItemAnimator animator = new DraggableItemAnimator(); // DraggableItemAnimator is required to make item animations properly.
 

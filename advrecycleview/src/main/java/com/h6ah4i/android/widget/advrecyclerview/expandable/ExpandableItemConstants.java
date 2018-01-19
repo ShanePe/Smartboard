@@ -16,6 +16,7 @@
 
 package com.h6ah4i.android.widget.advrecyclerview.expandable;
 
+@SuppressWarnings("NumericOverflow")
 public interface ExpandableItemConstants {
     /**
      * State flag for the {@link ExpandableItemViewHolder#setExpandStateFlags(int)} and {@link ExpandableItemViewHolder#getExpandStateFlags()} methods.

@@ -3,24 +3,23 @@ package shane.pennihome.local.smartboard.thingsframework.interfaces;
 import android.support.annotation.ColorInt;
 
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
+import shane.pennihome.local.smartboard.ui.UIHelper;
 
 /**
  * Created by SPennicott on 17/01/2018.
  */
 
+@SuppressWarnings("ALL")
 public abstract class IBlock extends IDatabaseObject {
     //private IThing mThing;
     private int mHeight;
     private int mWidth;
     private @ColorInt
-    int mForeColourOff;
+    int mForeColour;
     private @ColorInt
-    int mBackColourOff;
-    private @ColorInt
-    int mForeColourOn;
-    private @ColorInt
-    int mBackColourOn;
+    int mBackColour;
     private String mInstance;
+    private float mBackTrans;
 
     public IBlock() {
         mInstance = this.getClass().getSimpleName();
@@ -48,38 +47,34 @@ public abstract class IBlock extends IDatabaseObject {
     }
 
     public @ColorInt
-    int getForeColourOff() {
-        return mForeColourOff;
+    int getForeColour() {
+        return mForeColour;
     }
 
-    public void setForeColourOff(@ColorInt int foreColour) {
-        mForeColourOff = foreColour;
-    }
-
-    public @ColorInt
-    int getBackgroundColourOff() {
-        return mBackColourOff;
-    }
-
-    public void setBackgroundColourOff(@ColorInt int backgroundColour) {
-        this.mBackColourOff = backgroundColour;
+    public void setForeColour(@ColorInt int foreColour) {
+        mForeColour = foreColour;
     }
 
     public @ColorInt
-    int getForeColourOn() {
-        return mForeColourOn;
+    int getBackgroundColour() {
+        return mBackColour;
     }
 
-    public void setForeColourOn(@ColorInt int foreColour) {
-        mForeColourOn = foreColour;
+    public void setBackgroundColour(@ColorInt int backgroundColour) {
+        this.mBackColour = backgroundColour;
     }
 
-    public @ColorInt
-    int getBackgroundColourOn() {
-        return mBackColourOn;
+    public float getBackgroundTransparency() {
+        return mBackTrans;
     }
 
-    public void setBackgroundColourOn(@ColorInt int backgroundColour) {
-        this.mBackColourOn = backgroundColour;
+    public void setBackgroundTransparency(float backgroundTransparency) {
+        this.mBackTrans = backgroundTransparency;
+    }
+
+    @ColorInt
+    public int getBackgroundColourWithAlpha()
+    {
+        return UIHelper.getColorWithAlpha(getBackgroundColour(), getBackgroundTransparency() / 100);
     }
 }

@@ -12,9 +12,10 @@ import shane.pennihome.local.smartboard.comms.RESTCommunicatorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.ITokenHueBridge;
+import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.things.routines.Routine;
-import shane.pennihome.local.smartboard.things.routines.Routines;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 /**
  * Created by shane on 31/12/17.
@@ -22,20 +23,20 @@ import shane.pennihome.local.smartboard.things.routines.Routines;
 
 @SuppressWarnings("ALL")
 public class PHBridgeRoutineGetter extends ICommunicator<PHBridgeRoutineGetter> {
-    private final Routines mRoutines = new Routines();
+    private final Things mThings = new Things();
 
     PHBridgeRoutineGetter(Context mContext, OnProcessCompleteListener<PHBridgeRoutineGetter> mProcessCompleteListener) {
         super(mContext, mProcessCompleteListener);
     }
 
-    public Routines getRoutines() {
-        return mRoutines;
+    public IThings<Routine> getRoutines() {
+        return mThings.getOfType(Routine.class);
     }
 
     @Override
     public void PreProcess() {
         super.PreProcess();
-        mRoutines.clear();
+        mThings.clear();
     }
 
     @Override
@@ -114,7 +115,7 @@ public class PHBridgeRoutineGetter extends ICommunicator<PHBridgeRoutineGetter> 
                 r.setId(jRout.getString("id"));
                 r.setName(jRout.getString("name") + " in all");
                 r.setSource(IThing.Sources.PhilipsHue);
-                mRoutines.add(r);
+                mThings.add(r);
             } else {
                 for (int x = 0; x < jGroups.length(); x++) {
                     JSONObject jGroup = jGroups.getJSONObject(x);
@@ -122,7 +123,7 @@ public class PHBridgeRoutineGetter extends ICommunicator<PHBridgeRoutineGetter> 
                     r.setId(jRout.getString("id"));
                     r.setName(jRout.getString("name") + " in " + jGroup.getString("name"));
                     r.setSource(IThing.Sources.PhilipsHue);
-                    mRoutines.add(r);
+                    mThings.add(r);
                 }
             }
         }

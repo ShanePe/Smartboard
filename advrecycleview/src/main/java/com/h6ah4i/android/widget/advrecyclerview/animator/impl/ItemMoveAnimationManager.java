@@ -21,6 +21,7 @@ import android.util.Log;
 
 import com.h6ah4i.android.widget.advrecyclerview.animator.BaseItemAnimator;
 
+@SuppressWarnings("WeakerAccess")
 public abstract class ItemMoveAnimationManager extends BaseItemAnimationManager<MoveAnimationInfo> {
     public static final String TAG = "ARVItemMoveAnimMgr";
 

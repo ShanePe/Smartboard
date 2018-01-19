@@ -22,6 +22,7 @@ import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"WeakerAccess", "SameReturnValue", "unused", "SimplifiableIfStatement"})
 public abstract class BaseRecyclerViewEventDistributor<T> {
     protected boolean mReleased;
     protected RecyclerView mRecyclerView;

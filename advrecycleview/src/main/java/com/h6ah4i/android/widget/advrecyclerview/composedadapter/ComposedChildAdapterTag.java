@@ -24,6 +24,7 @@ import android.support.v7.widget.RecyclerView;
  * @see {@link ComposedAdapter#addAdapter(RecyclerView.Adapter, int)}
  * @see {@link ComposedAdapter#removeAdapter(ComposedChildAdapterTag)}
  */
+@SuppressWarnings({"unused", "JavaDoc"})
 public class ComposedChildAdapterTag {
     ComposedChildAdapterTag() {
     }

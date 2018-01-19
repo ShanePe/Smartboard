@@ -3,6 +3,7 @@ package shane.pennihome.local.smartboard.fragments;
 import android.support.v7.widget.RecyclerView;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 import shane.pennihome.local.smartboard.things.routines.RoutineViewAdapter;
 
@@ -24,6 +25,6 @@ public class RoutineFragment extends ThingFragment {
 
     @Override
     IThings getDataSource() {
-        return getMainActivity().getMonitor().getRoutines();
+        return getMainActivity().getMonitor().getThings(Routine.class);
     }
 }

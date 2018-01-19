@@ -1,6 +1,9 @@
 package shane.pennihome.local.smartboard.things.switches;
 
+import android.graphics.Color;
+
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandler;
 import shane.pennihome.local.smartboard.things.switches.block.SwitchBlock;
@@ -47,6 +50,22 @@ public class Switch extends IThing {
 
     public boolean isOn() {
         return getState() == States.On;
+    }
+
+    @Override
+    public void setBlockDefaults(Group group) {
+        super.setBlockDefaults(group);
+
+        SwitchBlock block = (SwitchBlock)getBlock();
+
+        block.setBackgroundTransparencyOn(100);
+        block.setBackgroundColourOn(group.getDefaultBlockBackgroundColourOn() != 0 ?
+                group.getDefaultBlockBackgroundColourOn() :
+                Color.parseColor("#FF4081"));
+
+        block.setForeColourOn(group.getDefaultBlockForeColourOn() != 0 ?
+                group.getDefaultBlockForeColourOn() :
+                Color.parseColor("black"));
     }
 
     @Override

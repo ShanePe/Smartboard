@@ -18,6 +18,7 @@ package com.h6ah4i.android.widget.advrecyclerview.swipeable;
 
 import android.view.animation.Interpolator;
 
+@SuppressWarnings({"ALL", "unused"})
 class RubberBandInterpolator implements Interpolator {
     private final float mLimit;
 

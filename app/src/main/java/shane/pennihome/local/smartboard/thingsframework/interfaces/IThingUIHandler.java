@@ -1,13 +1,11 @@
 package shane.pennihome.local.smartboard.thingsframework.interfaces;
 
 import android.app.Activity;
-import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
 
-import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.thingsframework.Things;
@@ -16,10 +14,11 @@ import shane.pennihome.local.smartboard.thingsframework.Things;
  * Created by SPennicott on 17/01/2018.
  */
 
+@SuppressWarnings("ALL")
 public abstract class IThingUIHandler {
     private IThing mIThing;
 
-    public IThingUIHandler(IThing iThing) {
+    protected IThingUIHandler(IThing iThing) {
         mIThing = iThing;
     }
 
@@ -35,7 +34,7 @@ public abstract class IThingUIHandler {
 
     public abstract int getEditorViewResourceID();
 
-    public IThing getThing() {
+    protected IThing getThing() {
         return mIThing;
     }
 

@@ -3,6 +3,7 @@ package shane.pennihome.local.smartboard.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -68,7 +69,7 @@ public class HueBridgeFragment extends IFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_huebridge_list, container, false);
         final Activity act = getActivity();
@@ -85,13 +86,15 @@ public class HueBridgeFragment extends IFragment {
             PHBridgeDiscoverer discoverer = new PHBridgeDiscoverer(getActivity(), new OnProcessCompleteListener<PHBridgeDiscoverer>() {
                 @Override
                 public void complete(boolean success, final PHBridgeDiscoverer source) {
-                    if (success)
+                    if (success) {
+                        assert act != null;
                         act.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 recyclerView.setAdapter(new HueBridgeViewAdapter(source.getBridgeDiscoveryResults(), (OnListFragmentInteractionListener) act));
                             }
                         });
+                    }
                 }
             });
             discoverer.execute();

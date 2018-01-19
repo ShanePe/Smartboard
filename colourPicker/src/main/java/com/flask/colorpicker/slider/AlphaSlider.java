@@ -10,6 +10,7 @@ import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.Utils;
 import com.flask.colorpicker.builder.PaintBuilder;
 
+@SuppressWarnings({"WeakerAccess", "CanBeFinal"})
 public class AlphaSlider extends AbsCustomSlider {
 	public int color;
 	private Paint alphaPatternPaint = PaintBuilder.newPaint().build();

@@ -2,6 +2,7 @@ package shane.pennihome.local.smartboard.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -57,7 +58,7 @@ public abstract class ThingFragment extends IFragment {
     protected abstract RecyclerView.Adapter getAdapter(IThings things);
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(getFragmentLayout(), container, false);
 

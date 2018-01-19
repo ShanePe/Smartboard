@@ -29,6 +29,7 @@ import com.h6ah4i.android.widget.advrecyclerview.adapter.WrapperAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class WrapperAdapterUtils {
 
     private WrapperAdapterUtils() {

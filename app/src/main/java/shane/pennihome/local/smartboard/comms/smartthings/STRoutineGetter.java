@@ -12,27 +12,28 @@ import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnCommResponseListener;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.ITokenSmartThings;
+import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.things.routines.Routine;
-import shane.pennihome.local.smartboard.things.routines.Routines;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 @SuppressWarnings("unused")
 @SuppressLint("StaticFieldLeak")
 public class STRoutineGetter extends ICommunicator<STRoutineGetter> {
-    private final Routines mRoutines = new Routines();
+    private final Things mThings = new Things();
 
     STRoutineGetter(Context mContext, OnProcessCompleteListener<STRoutineGetter> mProcessCompleteListener) {
         super(mContext, mProcessCompleteListener);
     }
 
-    Routines getRoutines() {
-        return mRoutines;
+    IThings<Routine> getRoutines() {
+        return mThings.getOfType(Routine.class);
     }
 
     @Override
     public void PreProcess() {
         super.PreProcess();
-        mRoutines.clear();
+        mThings.clear();
     }
 
     @Override
@@ -74,7 +75,7 @@ public class STRoutineGetter extends ICommunicator<STRoutineGetter> {
             r.setId(jRout.getString("id"));
             r.setName(jRout.getString("name"));
             r.setSource(IThing.Sources.SmartThings);
-            mRoutines.add(r);
+            mThings.add(r);
         }
     }
 }

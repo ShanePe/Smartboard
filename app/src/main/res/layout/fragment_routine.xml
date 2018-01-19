@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     style="@style/listItemStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:columnCount="4"
-   >
+    android:columnCount="4">
 
     <ImageView
         android:id="@+id/routine_img"
@@ -40,7 +38,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
-        android:background="@drawable/round_btn_dark"
+        android:background="@drawable/btn_round_dark"
         android:foreground="?attr/selectableItemBackground"
         app:srcCompat="@drawable/icon_execute" />
 

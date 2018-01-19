@@ -18,6 +18,7 @@ package com.h6ah4i.android.widget.advrecyclerview.expandable;
 
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
 
+@SuppressWarnings("unused")
 public class GroupPositionItemDraggableRange extends ItemDraggableRange {
     public GroupPositionItemDraggableRange(int start, int end) {
         super(start, end);

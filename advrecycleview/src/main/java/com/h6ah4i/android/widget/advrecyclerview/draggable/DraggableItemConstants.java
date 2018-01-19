@@ -16,7 +16,7 @@
 
 package com.h6ah4i.android.widget.advrecyclerview.draggable;
 
-@SuppressWarnings("PointlessBitwiseExpression")
+@SuppressWarnings({"PointlessBitwiseExpression", "NumericOverflow"})
 public interface DraggableItemConstants {
     /**
      * State flag for the {@link DraggableItemViewHolder#setDragStateFlags(int)} and {@link DraggableItemViewHolder#getDragStateFlags()} methods.

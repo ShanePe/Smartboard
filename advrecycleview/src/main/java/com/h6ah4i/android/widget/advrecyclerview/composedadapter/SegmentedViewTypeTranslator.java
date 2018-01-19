@@ -19,14 +19,15 @@ import android.util.SparseIntArray;
 
 import com.h6ah4i.android.widget.advrecyclerview.adapter.ItemViewTypeComposer;
 
+@SuppressWarnings({"CanBeFinal", "unused"})
 class SegmentedViewTypeTranslator {
     private SparseIntArray mWrapSegmentMap = new SparseIntArray();
     private SparseIntArray mUnwrapSegmentMap = new SparseIntArray();
 
-    public SegmentedViewTypeTranslator() {
+    SegmentedViewTypeTranslator() {
     }
 
-    public int wrapItemViewType(int segment, int viewType) {
+    int wrapItemViewType(int segment, int viewType) {
         final int packedSegments = (segment << 16) | ItemViewTypeComposer.extractSegmentPart(viewType);
         final int flattenSegments;
 
@@ -48,7 +49,7 @@ class SegmentedViewTypeTranslator {
         return ItemViewTypeComposer.composeSegment(flattenSegments, viewType);
     }
 
-    public long unwrapViewType(int viewType) {
+    long unwrapViewType(int viewType) {
         final int flattenSegment = ItemViewTypeComposer.extractSegmentPart(viewType);
         final int index = mUnwrapSegmentMap.indexOfKey(flattenSegment);
 
@@ -57,18 +58,18 @@ class SegmentedViewTypeTranslator {
         }
 
         final int packedSegments = mUnwrapSegmentMap.valueAt(index);
-        final long packedViewType = (((long) packedSegments) << 32) | (((long) viewType) & 0xFFFFFFFFL);
+        @SuppressWarnings("UnnecessaryLocalVariable") final long packedViewType = (((long) packedSegments) << 32) | (((long) viewType) & 0xFFFFFFFFL);
 
         return packedViewType;
     }
 
-    public static int extractWrappedViewType(long packedViewType) {
+    static int extractWrappedViewType(long packedViewType) {
         final int segment = (int)(packedViewType >>> 32) & 0xFFFF;
         final int viewType = (int) (packedViewType & 0xFFFFFFFFL);
         return ItemViewTypeComposer.composeSegment(segment, viewType);
     }
 
-    public static int extractWrapperSegment(long packedViewType) {
+    static int extractWrapperSegment(long packedViewType) {
         return (int) ((packedViewType >>> 48) & 0xFFFF);
     }
 }

@@ -18,6 +18,7 @@ package com.h6ah4i.android.widget.advrecyclerview.swipeable.action;
 
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
 
+@SuppressWarnings("unused")
 public class SwipeResultActionDoNothing extends SwipeResultAction {
     public SwipeResultActionDoNothing() {
         super(RecyclerViewSwipeManager.AFTER_SWIPE_REACTION_DO_NOTHING);

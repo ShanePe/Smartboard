@@ -22,6 +22,7 @@ import com.flask.colorpicker.renderer.ColorWheelRenderer;
 import com.flask.colorpicker.slider.AlphaSlider;
 import com.flask.colorpicker.slider.LightnessSlider;
 
+@SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "UnusedReturnValue", "unused", "RedundantCast"})
 public class ColorPickerDialogBuilder {
 	private AlertDialog.Builder builder;
 	private LinearLayout pickerContainer;
@@ -198,6 +199,7 @@ public class ColorPickerDialogBuilder {
 		return this;
 	}
 
+	@SuppressWarnings("RedundantCast")
 	public AlertDialog build() {
 		Context context = builder.getContext();
 		colorPickerView.setInitialColors(initialColor, getStartOffset(initialColor));

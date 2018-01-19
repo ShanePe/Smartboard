@@ -1,16 +1,16 @@
 package shane.pennihome.local.smartboard.thingsframework.interfaces;
 
+import android.graphics.Color;
 import android.util.Log;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import shane.pennihome.local.smartboard.comms.ThingToggler;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
+import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.thingsframework.listeners.onThingListener;
@@ -30,14 +30,16 @@ public abstract class IThing extends IDatabaseObject {
     public enum Sources {SmartThings, PhilipsHue}
     public enum Types {Switch, Routine}
 
-    transient onThingListener mOnThingListener;
-    String mId;
-    Sources mSources;
-    String mInstance;
+    private transient onThingListener mOnThingListener;
+    private String mId;
+    private Sources mSources;
+    private final String mInstance;
     @Annotations.IgnoreOnCopy
+    private
     IBlock mBlock;
     @Annotations.IgnoreOnCopy
-    long mGroupId;
+    private
+    long mGroupOrderId;
 
     public IThing() {
         mInstance = this.getClass().getSimpleName();
@@ -98,6 +100,29 @@ public abstract class IThing extends IDatabaseObject {
         mBlock = (IBlock)getBlockType().newInstance();
     }
 
+    public void setBlockDefaults(Group group)
+    {
+        getBlock().setWidth(1);
+        getBlock().setHeight(1);
+        getBlock().setBackgroundTransparency(100);
+
+        getBlock().setBackgroundColour(group.getDefaultBlockBackgroundColourOff() != 0 ?
+                group.getDefaultBlockBackgroundColourOff() :
+                Color.parseColor("#ff5a595b"));
+
+        getBlock().setForeColour(group.getDefaultBlockForeColourOff() != 0 ?
+                group.getDefaultBlockForeColourOff() :
+                Color.parseColor("white"));
+
+        setGroupOrderId(group.getThings().size() + 1);
+    }
+
+    public <E extends IBlock> E getBlock(Class<E> cls)
+    {
+        //noinspection unchecked
+        return (E)getBlock();
+    }
+
     public IBlock getBlock(){
         if(mBlock == null)
             try {
@@ -118,7 +143,7 @@ public abstract class IThing extends IDatabaseObject {
         return thing.getThingType().ordinal();
     }
 
-    public String getKey()
+    String getKey()
     {
         return String.format("%s%s%s%s", getId(), getName(), getSource(), getThingType());
     }
@@ -133,15 +158,15 @@ public abstract class IThing extends IDatabaseObject {
         }
     }
 
-    public long getGroupId() {
-        return mGroupId;
+    public long getGroupOrderId() {
+        return mGroupOrderId;
     }
 
-    public void setGroupId(long groupId) {
-        this.mGroupId = groupId;
+    private void setGroupOrderId(long groupId) {
+        this.mGroupOrderId = groupId;
     }
 
-    public onThingListener getOnThingListener()
+    protected onThingListener getOnThingListener()
     {
         return mOnThingListener;
     }
@@ -162,7 +187,7 @@ public abstract class IThing extends IDatabaseObject {
             try {
                 Field fieldTo = fieldsTo.get(i);
                 Field fieldFrom = fieldsFrom.get(i);
-                Annotations.IgnoreOnCopy ignore = fieldFrom.getAnnotation(Annotations.IgnoreOnCopy.class);
+                @SuppressWarnings("ReflectionForUnavailableAnnotation") Annotations.IgnoreOnCopy ignore = fieldFrom.getAnnotation(Annotations.IgnoreOnCopy.class);
 
                 if(ignore == null && !Modifier.isTransient(fieldTo.getModifiers()) ) {
                     if(!fieldTo.isAccessible())
@@ -190,5 +215,4 @@ public abstract class IThing extends IDatabaseObject {
 
         return fields;
     }
-
 }

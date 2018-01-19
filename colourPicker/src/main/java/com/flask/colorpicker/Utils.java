@@ -5,6 +5,7 @@ import android.graphics.Color;
 /**
  * Created by Charles Andersons on 4/17/15.
  */
+@SuppressWarnings("ALL")
 public class Utils {
 	public static float getAlphaPercent(int argb) {
 		return Color.alpha(argb) / 255f;

@@ -20,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 
 import java.lang.ref.WeakReference;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class RecyclerViewRecyclerEventDistributor extends BaseRecyclerViewEventDistributor<RecyclerView.RecyclerListener> {
 
     private InternalRecyclerListener mInternalRecyclerListener;
@@ -57,6 +58,7 @@ public class RecyclerViewRecyclerEventDistributor extends BaseRecyclerViewEventD
         }
     }
 
+    @SuppressWarnings("unused")
     private static class InternalRecyclerListener implements RecyclerView.RecyclerListener {
         private final WeakReference<RecyclerViewRecyclerEventDistributor> mRefDistributor;
 
