@@ -14,7 +14,6 @@ import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 @SuppressWarnings("DefaultFileTemplate")
 public class Dashboard extends IDatabaseObject {
     private final List<Group> mGroups = new ArrayList<>();
-    private long mOrderId;
 
     public static Dashboard Load(String json) {
         Dashboard ret = new Dashboard();
@@ -38,13 +37,5 @@ public class Dashboard extends IDatabaseObject {
 
     public Group getGroupAt(int index) {
         return mGroups.get(index);
-    }
-
-    public long getOrderId() {
-        return mOrderId;
-    }
-
-    public void setOrderId(long orderId) {
-        this.mOrderId = orderId;
     }
 }

@@ -115,7 +115,7 @@ public class EditThingAdapter extends RecyclerView.Adapter<IThingUIHandler.BaseE
 
     @Override
     public long getItemId(int position) {
-        return mThings.get(position).getGroupOrderId();
+        return mThings.get(position).getPosition();
     }
 
     public void setThings(Things mValues) {

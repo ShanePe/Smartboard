@@ -15,7 +15,6 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemView
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Dashboards;
-import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.fragments.DashboardFragment;
 
 /**
@@ -27,20 +26,18 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
         implements DraggableItemAdapter<DashboardViewAdapter.ViewHolder> {
 
     private final DashboardFragment.OnListFragmentInteractionListener mListener;
-    private Dashboards dashboards;
-    private final DashboardFragment mDashFrag;
+    private Dashboards mDashboards;
 
-    public DashboardViewAdapter(DashboardFragment fragment, Dashboards items, DashboardFragment.OnListFragmentInteractionListener listener) {
-        dashboards = items;
+    public DashboardViewAdapter(Dashboards items, DashboardFragment.OnListFragmentInteractionListener listener) {
+        mDashboards = items;
         mListener = listener;
-        mDashFrag = fragment;
         setHasStableIds(true);
     }
 
-    public void setDashboards(Dashboards values) {
-        dashboards = values;
+    public void setmDashboards(Dashboards values) {
+        mDashboards = values;
     }
-
+    public Dashboards getDashboards(){ return mDashboards; }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -48,24 +45,20 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
         return new ViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = dashboards.get(position);
-        //holder.mIdView.setText(dashboards.get(position).id);
-        holder.mNameView.setText(dashboards.get(position).getName());
+        holder.mItem = mDashboards.get(position);
+        //holder.mIdView.setText(mDashboards.get(position).id);
+        holder.mNameView.setText(mDashboards.get(position).getName());
 
         final int dragState = holder.getDragStateFlags();
 
-        int bgResId = 0;
+        int bgResId = R.drawable.btn_round;
 
         if (((dragState & DashboardViewAdapter.Draggable.STATE_FLAG_IS_UPDATED) != 0)) {
 
             if ((dragState & DashboardViewAdapter.Draggable.STATE_FLAG_IS_ACTIVE) != 0) {
                 bgResId = R.drawable.btn_round_accent;
-
-                // need to clear drawable state here to get correct appearance of the dragging item.
-                //DrawableUtils.clearState(holder.mContainer.getForeground());
             } else if ((dragState & DashboardViewAdapter.Draggable.STATE_FLAG_DRAGGING) != 0) {
                 bgResId = R.drawable.btn_round_dark;
             } else {
@@ -89,12 +82,12 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
 
     @Override
     public long getItemId(int position) {
-        return dashboards.get(position).getOrderId();
+        return mDashboards.get(position).getPosition();
     }
 
     @Override
     public int getItemCount() {
-        return dashboards.size();
+        return mDashboards.size();
     }
 
     @Override
@@ -109,25 +102,7 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
 
     @Override
     public void onMoveItem(int fromPosition, int toPosition) {
-        final Dashboard fromD = dashboards.get(fromPosition);
-        final Dashboard toD = dashboards.get(toPosition);
-
-        long fromOrderID =  fromD.getOrderId();
-        long toOrderId = toD.getOrderId();
-
-        fromD.setOrderId(toOrderId);
-        toD.setOrderId(fromOrderID);
-
-        dashboards.moveItem(fromPosition, toPosition);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                DBEngine db = new DBEngine(mDashFrag.getContext());
-                db.WriteToDatabase(fromD);
-                db.WriteToDatabase(toD);
-            }
-        }).start();
+        mDashboards.moveItem(fromPosition, toPosition);
     }
 
     @Override

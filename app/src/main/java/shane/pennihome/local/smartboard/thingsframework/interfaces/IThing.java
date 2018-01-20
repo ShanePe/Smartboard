@@ -10,7 +10,6 @@ import java.util.Arrays;
 
 import shane.pennihome.local.smartboard.comms.ThingToggler;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
@@ -40,8 +39,6 @@ public abstract class IThing extends IDatabaseObject {
     private
     IBlock mBlock;
     @Annotations.IgnoreOnCopy
-    private
-    long mGroupOrderId;
 
     public IThing() {
         mInstance = this.getClass().getSimpleName();
@@ -116,7 +113,6 @@ public abstract class IThing extends IDatabaseObject {
                 group.getDefaultBlockForeColourOff() :
                 Color.parseColor("white"));
 
-        setGroupOrderId(Globals.GetNextLongId());
     }
 
     public <E extends IBlock> E getBlock(Class<E> cls)
@@ -158,14 +154,6 @@ public abstract class IThing extends IDatabaseObject {
             case Routine:return new Routine();
             default:throw new Exception("Invalid Type to create");
         }
-    }
-
-    public long getGroupOrderId() {
-        return mGroupOrderId;
-    }
-
-    private void setGroupOrderId(long groupId) {
-        this.mGroupOrderId = groupId;
     }
 
     protected onThingListener getOnThingListener()

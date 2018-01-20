@@ -32,7 +32,7 @@ public class Dashboards extends ArrayList<Dashboard> {
         Collections.sort(this, new Comparator<Dashboard>() {
             @Override
             public int compare(Dashboard o1, Dashboard o2) {
-                return Long.compare(o1.getOrderId(), o2.getOrderId());
+                return Long.compare(o1.getPosition(), o2.getPosition());
             }
         });
     }

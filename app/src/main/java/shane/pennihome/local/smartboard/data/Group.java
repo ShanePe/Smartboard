@@ -25,7 +25,6 @@ public class Group extends IDatabaseObject {
     private @ColorInt
     int mDefaultBlockBackColourOn;
     private transient GroupViewHandler mGroupViewHandler;
-    private long mDashboardOrderId;
 
     public Group() {
     }
@@ -115,11 +114,4 @@ public class Group extends IDatabaseObject {
         this.mGroupViewHandler = groupViewHandler;
     }
 
-    public long getDashboardOrderId() {
-        return mDashboardOrderId;
-    }
-
-    public void setDashboardOrderId(long dashboardOrderId) {
-        this.mDashboardOrderId = dashboardOrderId;
-    }
 }

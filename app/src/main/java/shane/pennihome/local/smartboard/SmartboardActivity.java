@@ -15,7 +15,6 @@ import android.view.inputmethod.InputMethodManager;
 
 import shane.pennihome.local.smartboard.adapters.EditGroupAdapter;
 import shane.pennihome.local.smartboard.comms.Monitor;
-import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Group;
@@ -93,9 +92,6 @@ public class SmartboardActivity extends AppCompatActivity {
     private void WriteDashboardToDatabaseInstant() {
         if (TextUtils.isEmpty(mDashboard.getName()))
             mDashboard.setName("My Dashboard");
-
-        if(mDashboard.getOrderId() == 0)
-            mDashboard.setOrderId(Globals.GetNextLongId());
 
         DBEngine db = new DBEngine(this);
         db.WriteToDatabase(mDashboard);

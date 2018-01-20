@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
         HueBridgeFragment.OnListFragmentInteractionListener {
 
     private Monitor mMonitor = null;
-    private Dashboards mDashboards = null;
+    private Dashboards mDashboards;
 
     @Override
     protected void onPostResume() {
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity
 
     public void populateDashbboards() {
         DBEngine db = new DBEngine(this);
-        //db.CleanDataStore();
+//        db.CleanDataStore();
         if (mDashboards == null)
             mDashboards = new Dashboards();
         else
@@ -141,7 +141,6 @@ public class MainActivity extends AppCompatActivity
             mDashboards.add((Dashboard) d);
 
         mDashboards.sort();
-
     }
 
     public Monitor getMonitor() {
@@ -227,6 +226,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     public Dashboards getDashboards() {
+        if(mDashboards == null)
+            return new Dashboards();
+
         return mDashboards;
     }
 

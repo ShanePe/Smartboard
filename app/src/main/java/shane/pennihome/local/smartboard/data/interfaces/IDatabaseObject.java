@@ -1,7 +1,10 @@
 package shane.pennihome.local.smartboard.data.interfaces;
 
+import android.text.TextUtils;
+
 import java.util.UUID;
 
+import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.Annotations;
 
@@ -12,8 +15,10 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.Annotations;
 @SuppressWarnings("DefaultFileTemplate")
 public abstract class IDatabaseObject {
     @Annotations.IgnoreOnCopy
-    private final String mDataId = UUID.randomUUID().toString();
+    private String mDataId;
     private String mName = "";
+    @Annotations.IgnoreOnCopy
+    private long mPosition = 0;
 
     private static <V extends IDatabaseObject> V fromJson(Class<V> cls, String json) {
         return JsonBuilder.Get().fromJson(json, cls);
@@ -28,7 +33,21 @@ public abstract class IDatabaseObject {
     }
 
     public String getDataID() {
+        if(TextUtils.isEmpty(mDataId))
+            mDataId = UUID.randomUUID().toString();
         return mDataId;
+    }
+
+    public long getPosition()
+    {
+        if(mPosition==0)
+            mPosition = Globals.GetNextLongId();
+        return mPosition;
+    }
+
+    public void setPosition(long position)
+    {
+        mPosition = position;
     }
 
     public String getName() {

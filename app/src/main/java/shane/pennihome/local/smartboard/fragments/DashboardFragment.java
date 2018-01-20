@@ -1,12 +1,8 @@
 package shane.pennihome.local.smartboard.fragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,8 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.h6ah4i.android.widget.advrecyclerview.animator.DraggableItemAnimator;
-import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
 
 import shane.pennihome.local.smartboard.MainActivity;
@@ -49,16 +43,43 @@ public class DashboardFragment extends IFragment {
     }
 
     @SuppressWarnings("unused")
-    public void saveDashboards(final Dashboards dashboards)
+    public void saveDashboardsPosition(final Dashboards dashboards)
     {
-        new Thread(new Runnable() {
+       /* if(mSaveThread != null)
+        {
+            mSaveThread.interrupt();
+            mSaveThread = null;
+        }
+
+        mSaveThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                DBEngine db = new DBEngine(getActivity());
-                for(Dashboard d: dashboards)
-                    db.WriteToDatabase(d);
+                try {
+                 //   Thread.sleep(5000);
+                    DBEngine db = new DBEngine(getActivity());
+                    for(int i = 0;i<dashboards.size();i++)
+                    {
+                        Dashboard d = dashboards.get(i);
+                        d.setPosition(i + 1);
+                        db.updatePosition(d);
+                    };
+
+                    mSaveThread = null;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
+
+        mSaveThread.start();*/
+
+        DBEngine db = new DBEngine(getActivity());
+        for(int i = 0;i<dashboards.size();i++)
+        {
+            Dashboard d = dashboards.get(i);
+            d.setPosition(i + 1);
+            db.updatePosition(d);
+        }
     }
 
     private void LoadDashboard(Dashboard dashboard) {
@@ -69,6 +90,7 @@ public class DashboardFragment extends IFragment {
 
         Bundle options = new Bundle();
 
+        saveDashboardsPosition(mDashboardAptr.getDashboards());
         dashAdd.putExtra("dashboard", dashboard.toJson());
         startActivityForResult(dashAdd, 0, options);
     }
@@ -79,7 +101,7 @@ public class DashboardFragment extends IFragment {
         assert main != null;
         main.populateDashbboards();
         if (mDashboardAptr != null) {
-            mDashboardAptr.setDashboards(main.getDashboards());
+            mDashboardAptr.setmDashboards(main.getDashboards());
             mDashboardAptr.notifyDataSetChanged();
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -92,24 +114,13 @@ public class DashboardFragment extends IFragment {
         setHasOptionsMenu(true);
     }
 
-    /*public List<Dashboard> getDashboards() {
-        return mDashboards;
-    }
-
-    public void setDashboard(List<Dashboard> dashboards) {
-        this.mDashboards = dashboards;
-    }*/
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard_list, container, false);
-        final Context context = view.getContext();
         MainActivity activity = (MainActivity) getActivity();
 
-
-
-        // Set the adapter
+       // Set the adapter
         if (view instanceof RecyclerView) {
 
             RecyclerView recyclerView = (RecyclerView) view;
@@ -120,7 +131,9 @@ public class DashboardFragment extends IFragment {
             dragMgr.setInitiateOnLongPress(true);
 
             recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-            recyclerView.setAdapter(dragMgr.createWrappedAdapter( mDashboardAptr = new DashboardViewAdapter(this, activity.getDashboards(), new OnListFragmentInteractionListener() {
+
+            assert activity != null;
+            recyclerView.setAdapter(dragMgr.createWrappedAdapter( mDashboardAptr = new DashboardViewAdapter(activity.getDashboards(), new OnListFragmentInteractionListener() {
                 @Override
                 public void onListFragmentInteraction(Dashboard item) {
                     LoadDashboard(item);
@@ -128,38 +141,6 @@ public class DashboardFragment extends IFragment {
             })));
 
             dragMgr.attachRecyclerView(recyclerView);
-
-            /*recyclerView.setLayoutManager(new GridLayoutManager(context, 1));
-            assert activity != null;
-
-            // drag & drop manager
-            RecyclerViewDragDropManager mRecyclerViewDragDropManager = new RecyclerViewDragDropManager();
-            //noinspection ConstantConditions
-            mRecyclerViewDragDropManager.setDraggingItemShadowDrawable(
-                    (NinePatchDrawable) ContextCompat.getDrawable(getActivity(), R.drawable.material_shadow_z3));
-            // Start dragging after long press
-            mRecyclerViewDragDropManager.setInitiateOnLongPress(true);
-            mRecyclerViewDragDropManager.setInitiateOnMove(false);
-            mRecyclerViewDragDropManager.setLongPressTimeout(750);
-
-            // setup dragging item effects (NOTE: DraggableItemAnimator is required)
-            mRecyclerViewDragDropManager.setDragStartItemAnimationDuration(250);
-            mRecyclerViewDragDropManager.setDraggingItemAlpha(0.8f);
-            mRecyclerViewDragDropManager.setDraggingItemScale(1.3f);
-            //mRecyclerViewDragDropManager.setDraggingItemRotation(15.0f);
-            mRecyclerViewDragDropManager.setItemMoveMode(RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT);
-
-            //adapter
-
-            RecyclerView.Adapter mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(mDashboardAptr);
-
-            GeneralItemAnimator animator = new DraggableItemAnimator(); // DraggableItemAnimator is required to make item animations properly.
-
-            recyclerView.setAdapter(mWrappedAdapter);  // requires *wrapped* adapter
-            recyclerView.setItemAnimator(animator);
-
-            mRecyclerViewDragDropManager.attachRecyclerView(recyclerView);
-            */
         }
 
         return view;
@@ -168,4 +149,16 @@ public class DashboardFragment extends IFragment {
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(Dashboard item);
     }
+
+    @Override
+    public void onDestroyView() {
+        saveDashboardsPosition(mDashboardAptr.getDashboards());
+        super.onDestroyView();
+    }
+
+    /*    @Override
+    public boolean onBackPressed(MainActivity activity) {
+        saveDashboardsPosition(mDashboardAptr.getDashboards());
+        return super.onBackPressed(activity);
+    }*/
 }

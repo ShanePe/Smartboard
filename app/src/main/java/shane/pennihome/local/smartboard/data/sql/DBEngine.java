@@ -9,7 +9,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import shane.pennihome.local.smartboard.things.switches.block.SwitchBlock;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 
@@ -56,7 +55,14 @@ public class DBEngine extends SQLiteOpenHelper {
     }
 
     public void CleanDataStore() {
-        ExecuteSQL(Queries.getCleanDatastore());
+        ExecuteSQL(Queries.getDeleteDatastore());
+        ExecuteSQL(Queries.getDropDatastore());
+        ExecuteSQL(Queries.getCreateDatastore());
+    }
+
+    public void updatePosition(IDatabaseObject object)
+    {
+        ExecuteSQL(Queries.getUpdatePosition(object));
     }
 
     private void ExecuteSQL(String query) {
@@ -81,13 +87,15 @@ public class DBEngine extends SQLiteOpenHelper {
             db = this.getReadableDatabase();
             Cursor c = db.rawQuery(query, null);
             while (c.moveToNext()) {
+                IDatabaseObject dbO = null;
                 switch (IDatabaseObject.Types.valueOf(c.getString(1))) {
                     case Dashboard:
-                        items.add(Dashboard.Load(c.getString(2)));
+                        dbO = Dashboard.Load(c.getString(3));
                         break;
-                    case Block:
-                        items.add(SwitchBlock.Load(c.getString(2)));
-                        break;
+                }
+                if(dbO != null) {
+                    dbO.setPosition(c.getInt(2));
+                    items.add(dbO);
                 }
             }
             c.close();
@@ -103,29 +111,38 @@ public class DBEngine extends SQLiteOpenHelper {
     static class Queries {
         @SuppressWarnings("SameReturnValue")
         static String getCreateDatastore() {
-            return "CREATE TABLE IF NOT EXISTS datastore (id text PRIMARY KEY unique,type text not null, object text not null)";
+            return "CREATE TABLE IF NOT EXISTS datastore (id text PRIMARY KEY unique,type text not null, position integer, object text not null)";
         }
 
-        static String getCleanDatastore() {
+        static String getDropDatastore(){return "drop table datastore"; }
+        static String getDeleteDatastore() {
             return "delete from datastore ";
         }
 
         static String getUpdateDatastore(IDatabaseObject object) {
-            return String.format("replace into datastore (id, type, object) values('%s','%s','%s')", object.getDataID(), object.getDatabaseType(), object.toJson());
+            return String.format("replace into datastore (id, type, position, object) values('%s','%s', %s, '%s')",
+                    object.getDataID(),
+                    object.getDatabaseType(),
+                    object.getPosition(),
+                    object.toJson());
         }
 
         @SuppressWarnings("SameReturnValue")
         static String getAllDatastores() {
-            return "select id, type, object from datastore";
+            return "select id, type, position, object from datastore order by position";
         }
 
         static String getDatastore(String Id) {
-            return String.format("select id, type, object from datastore where id = '%s'", Id);
+            return String.format("select id, type, position, object from datastore where id = '%s'", Id);
         }
 
         static String getDatastoreByType(IDatabaseObject.Types type) {
-            return String.format("select id, type, object from datastore where type = '%s'", type);
+            return String.format("select id, type, position, object from datastore where type = '%s' order by position", type);
+        }
+
+        static String getUpdatePosition(IDatabaseObject object)
+        {
+            return String.format("update datastore set position = %s where id = '%s'", object.getPosition(), object.getDataID());
         }
     }
-
 }
