@@ -14,7 +14,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import shane.pennihome.local.smartboard.adapters.EditGroupAdapter;
+import shane.pennihome.local.smartboard.adapters.EditGroupNewAdapter;
 import shane.pennihome.local.smartboard.comms.Monitor;
+import shane.pennihome.local.smartboard.fragments.tabs.GroupFragmentNew;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Group;
@@ -24,9 +26,9 @@ import shane.pennihome.local.smartboard.fragments.tabs.SmartboardFragment;
 
 public class SmartboardActivity extends AppCompatActivity {
 
-    private EditGroupAdapter mEditGroupAdapter;
+    //private EditGroupAdapter mEditGroupAdapter;
     private Dashboard mDashboard;
-
+    private EditGroupNewAdapter mEditGroupAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +46,8 @@ public class SmartboardActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        mEditGroupAdapter = new EditGroupAdapter(this);
+        //mEditGroupAdapter = new EditGroupAdapter(this);
+        mEditGroupAdapter = new EditGroupNewAdapter(this);
 
         Bundle extras = getIntent().getExtras();
         assert extras != null;
@@ -125,7 +128,12 @@ public class SmartboardActivity extends AppCompatActivity {
         return mDashboard;
     }
 
-    public EditGroupAdapter getGroupAdapter() {
+/*    public EditGroupAdapter getGroupAdapter() {
+        return mEditGroupAdapter;
+    }*/
+
+    public EditGroupNewAdapter getGroupAdapter()
+    {
         return mEditGroupAdapter;
     }
 
@@ -143,7 +151,7 @@ public class SmartboardActivity extends AppCompatActivity {
                     return SmartboardFragment.newInstance(1);
                 case 1:
 
-                    return GroupsFragment.newInstance(2);
+                    return GroupFragmentNew.newInstance(2);
                 default:
                     return null;
             }

@@ -101,7 +101,7 @@ public class DashboardFragment extends IFragment {
         assert main != null;
         main.populateDashbboards();
         if (mDashboardAptr != null) {
-            mDashboardAptr.setmDashboards(main.getDashboards());
+            mDashboardAptr.setDashboards(main.getDashboards());
             mDashboardAptr.notifyDataSetChanged();
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -155,10 +155,4 @@ public class DashboardFragment extends IFragment {
         saveDashboardsPosition(mDashboardAptr.getDashboards());
         super.onDestroyView();
     }
-
-    /*    @Override
-    public boolean onBackPressed(MainActivity activity) {
-        saveDashboardsPosition(mDashboardAptr.getDashboards());
-        return super.onBackPressed(activity);
-    }*/
 }

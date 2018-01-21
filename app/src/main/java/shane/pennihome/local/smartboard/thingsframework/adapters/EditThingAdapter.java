@@ -66,7 +66,7 @@ public class EditThingAdapter extends RecyclerView.Adapter<IThingUIHandler.BaseE
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(thing.getUIHandler().getViewResourceID(), parent, false);
 
-            AppCompatImageButton mDeleteBtn = (AppCompatImageButton) reverseFindById(parent, R.id.btn_delete_item);
+            //AppCompatImageButton mDeleteBtn = (AppCompatImageButton) reverseFindById(parent, R.id.btn_delete_item);
 
             return thing.getUIHandler().GetEditorViewHolder(view);
         }

@@ -34,7 +34,7 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
         setHasStableIds(true);
     }
 
-    public void setmDashboards(Dashboards values) {
+    public void setDashboards(Dashboards values) {
         mDashboards = values;
     }
     public Dashboards getDashboards(){ return mDashboards; }
@@ -72,8 +72,6 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
                 }
             }

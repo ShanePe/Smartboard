@@ -29,12 +29,22 @@ import shane.pennihome.local.smartboard.fragments.DashboardFragment;
  */
 @SuppressWarnings("ALL")
 public class GroupViewHandler {
-    private final EditThingAdapter mEditThingAdapter;
-    private final SmartboardActivity mSmartboardActivity;
+    private EditThingAdapter mEditThingAdapter;
+    private SmartboardActivity mSmartboardActivity;
 
-    public GroupViewHandler(SmartboardActivity smartboardActivity, final ViewGroup parent, final View view, final Group group) {
+    public GroupViewHandler(SmartboardActivity smartboardActivity, ViewGroup parent, View view, Group group) {
+        RecyclerView recyclerView = view.findViewById(R.id.dash_block_list_rv);
+        handle(smartboardActivity, parent, view, group, recyclerView);
+    }
+
+
+    public GroupViewHandler(SmartboardActivity smartboardActivity, ViewGroup parent, View view, Group group, RecyclerView recyclerView) {
+        handle(smartboardActivity, parent, view, group, recyclerView);
+    }
+
+    private void handle(SmartboardActivity smartboardActivity, final ViewGroup parent, final View view, final Group group, RecyclerView recyclerView)
+    {
         mSmartboardActivity = smartboardActivity;
-        RecyclerView mRecyclerView = view.findViewById(R.id.dash_block_list_rv);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(smartboardActivity, 8);
 
         // drag & drop manager
@@ -64,15 +74,15 @@ public class GroupViewHandler {
         mRecyclerViewDragDropManager.setOnCustomOnMoveListener(new RecyclerViewDragDropManager.OnCustomOnMoveListener() {
             @Override
             public void OnStartDrag(RecyclerView rv) {
-                ImageButton delBtn = parent.findViewById(R.id.btn_delete_item);
+                /*ImageButton delBtn = parent.findViewById(R.id.btn_delete_item);
                 delBtn.setBackgroundResource(R.drawable.btn_round_accent);
                 Animation anim = AnimationUtils.loadAnimation(mSmartboardActivity, R.anim.shake_animate);
                 delBtn.startAnimation(anim);
-            }
+            */}
 
             @Override
             public void OnClick(RecyclerView rv, MotionEvent e) {
-}
+            }
 
             @Override
             public void OnMove(RecyclerView rv, MotionEvent e) {
@@ -80,7 +90,7 @@ public class GroupViewHandler {
 
             @Override
             public void OnUpOrCancel(final RecyclerView rv, MotionEvent e) {
-                ImageButton delBtn = ((View)parent).findViewById(R.id.btn_delete_item);
+                /*ImageButton delBtn = ((View)parent).findViewById(R.id.btn_delete_item);
                 delBtn.setBackgroundResource(R.drawable.btn_round_dark);
 
                 final View item = rv.findChildViewUnder(e.getX(),e.getY());
@@ -104,24 +114,23 @@ public class GroupViewHandler {
                             }
                         }
                     });
-                }
+                }*/
             }
         });
-
 
         mEditThingAdapter.setThings(group.getThings());
         RecyclerView.Adapter mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(mEditThingAdapter);
 
         GeneralItemAnimator animator = new DraggableItemAnimator(); // DraggableItemAnimator is required to make item animations properly.
 
-        mRecyclerView.setLayoutManager(gridLayoutManager);
-        mRecyclerView.setAdapter(mWrappedAdapter);  // requires *wrapped* adapter
-        mRecyclerView.setItemAnimator(animator);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(mWrappedAdapter);  // requires *wrapped* adapter
+        recyclerView.setItemAnimator(animator);
 
         // additional decorations
         //noinspection StatementWithEmptyBody
 
-        mRecyclerViewDragDropManager.attachRecyclerView(mRecyclerView);
+        mRecyclerViewDragDropManager.attachRecyclerView(recyclerView);
     }
 
     private Rect getViewRect(View view)
