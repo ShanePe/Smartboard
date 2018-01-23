@@ -1,67 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/group_container"
-    style="@style/listItemStyle"
     android:layout_width="match_parent"
-    android:columnCount="3">
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:clipChildren="false"
+    android:orientation="vertical">
 
-    <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/btn_add_expanded"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/lbl_state"
-        app:srcCompat="@android:drawable/arrow_down_float" />
-
-    <TextView
-        android:id="@+id/txt_row_name"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_columnWeight="1"
-        android:layout_gravity="fill_vertical|fill_horizontal|center"
-        android:layout_marginStart="8dp"
-        android:gravity="center_vertical"
-        android:textAlignment="gravity"
-        android:textAppearance="?attr/textAppearanceListItem" />
-
-    <LinearLayout android:gravity="end">
+    <GridLayout
+        android:id="@+id/group_container_new"
+        style="@style/listItemStyle"
+        android:layout_width="match_parent"
+        android:layout_margin="0dp"
+        android:layout_marginBottom="0dp"
+        android:columnCount="3">
 
         <android.support.v7.widget.AppCompatImageButton
-            android:id="@+id/btn_delete_item"
+            android:id="@+id/btn_add_expanded_new"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_gravity="center_vertical|end"
-            android:layout_margin="5dp"
-            android:background="@drawable/btn_round_dark"
-            android:clickable="true"
-            android:focusable="true"
-            android:requiresFadingEdge="horizontal|vertical"
-            app:srcCompat="@drawable/icon_delete" />
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/lbl_state"
+            app:srcCompat="@android:drawable/arrow_down_float" />
 
-        <android.support.v7.widget.AppCompatImageButton
-            android:id="@+id/btn_add_prop"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical|end"
-            android:background="@drawable/btn_round_dark"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_margin="5dp"
-            android:requiresFadingEdge="horizontal|vertical"
-            app:srcCompat="@drawable/icon_cog" />
+        <TextView
+            android:id="@+id/txt_row_name_new"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_vertical|fill_horizontal|center"
+            android:layout_marginStart="8dp"
+            android:gravity="center_vertical"
+            android:textAlignment="gravity"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:foreground="?attr/selectableItemBackground"/>
 
-        <android.support.v7.widget.AppCompatImageButton
-            android:id="@+id/btn_add_block"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical|end"
-            android:layout_margin="5dp"
-            android:background="@drawable/btn_round_dark"
-            android:clickable="true"
-            android:focusable="true"
-            android:requiresFadingEdge="horizontal|vertical"
-            app:srcCompat="@drawable/icon_add" />
-    </LinearLayout>
-</GridLayout>
+        <LinearLayout android:gravity="end">
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_delete_item_new"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_margin="5dp"
+                android:background="@drawable/btn_round_dark"
+                android:clickable="true"
+                android:focusable="true"
+                android:requiresFadingEdge="horizontal|vertical"
+                app:srcCompat="@drawable/icon_delete" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_add_prop_new"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_margin="5dp"
+                android:background="@drawable/btn_round_dark"
+                android:clickable="true"
+                android:focusable="true"
+                android:requiresFadingEdge="horizontal|vertical"
+                app:srcCompat="@drawable/icon_cog" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_add_block_new"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_margin="5dp"
+                android:background="@drawable/btn_round_dark"
+                android:clickable="true"
+                android:focusable="true"
+                android:requiresFadingEdge="horizontal|vertical"
+                app:srcCompat="@drawable/icon_add" />
+        </LinearLayout>
+    </GridLayout>
+
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/list_blocks_new"
+        style="@style/listStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:background="@drawable/expanded_block_area"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:groupIndicator="@android:color/transparent" />
+
+</android.support.v7.widget.LinearLayoutCompat>

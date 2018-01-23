@@ -74,11 +74,11 @@ public class GroupViewHandler {
         mRecyclerViewDragDropManager.setOnCustomOnMoveListener(new RecyclerViewDragDropManager.OnCustomOnMoveListener() {
             @Override
             public void OnStartDrag(RecyclerView rv) {
-                /*ImageButton delBtn = parent.findViewById(R.id.btn_delete_item);
+                ImageButton delBtn = ((View)parent).findViewById(R.id.btn_delete_item_new);
                 delBtn.setBackgroundResource(R.drawable.btn_round_accent);
                 Animation anim = AnimationUtils.loadAnimation(mSmartboardActivity, R.anim.shake_animate);
                 delBtn.startAnimation(anim);
-            */}
+            }
 
             @Override
             public void OnClick(RecyclerView rv, MotionEvent e) {
@@ -90,7 +90,7 @@ public class GroupViewHandler {
 
             @Override
             public void OnUpOrCancel(final RecyclerView rv, MotionEvent e) {
-                /*ImageButton delBtn = ((View)parent).findViewById(R.id.btn_delete_item);
+                ImageButton delBtn = ((View)parent).findViewById(R.id.btn_delete_item_new);
                 delBtn.setBackgroundResource(R.drawable.btn_round_dark);
 
                 final View item = rv.findChildViewUnder(e.getX(),e.getY());
@@ -114,7 +114,7 @@ public class GroupViewHandler {
                             }
                         }
                     });
-                }*/
+                }
             }
         });
 

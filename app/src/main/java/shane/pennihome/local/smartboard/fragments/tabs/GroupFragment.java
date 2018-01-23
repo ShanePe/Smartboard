@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.fragments.tabs;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,28 +11,26 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
 
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
-import shane.pennihome.local.smartboard.adapters.DashboardViewAdapter;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Group;
-import shane.pennihome.local.smartboard.fragments.DashboardFragment;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 
 /**
  * Created by shane on 20/01/18.
  */
 
-public class GroupFragmentNew extends Fragment {
+@SuppressWarnings("DefaultFileTemplate")
+public class GroupFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    public static GroupFragmentNew newInstance(int sectionNumber) {
-        GroupFragmentNew fragment = new GroupFragmentNew();
+    @SuppressWarnings("SameParameterValue")
+    public static GroupFragment newInstance(@SuppressWarnings("SameParameterValue") int sectionNumber) {
+        GroupFragment fragment = new GroupFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -44,6 +43,7 @@ public class GroupFragmentNew extends Fragment {
             UIHelper.ShowInput(smartboardActivity, getString(R.string.lbl_add_group_msg), new OnProcessCompleteListener() {
                 @Override
                 public void complete(boolean success, Object source) {
+                    assert smartboardActivity != null;
                     smartboardActivity
                             .getDashboard()
                             .getGroups()
@@ -63,9 +63,9 @@ public class GroupFragmentNew extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.smartboard_tab_groups_new, container, false);
+        View rootView = inflater.inflate(R.layout.smartboard_tab_groups, container, false);
         //ExpandableListView list = rootView.findViewById(R.id.list_rows);
 
         final SmartboardActivity smartboardActivity = (SmartboardActivity) getContext();
@@ -81,6 +81,7 @@ public class GroupFragmentNew extends Fragment {
             dragMgr.setInitiateOnLongPress(true);
 
             recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+            assert smartboardActivity != null;
             recyclerView.setAdapter(dragMgr.createWrappedAdapter(smartboardActivity.getGroupAdapter()));
 
             dragMgr.attachRecyclerView(recyclerView);

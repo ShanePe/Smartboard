@@ -65,10 +65,5 @@ public abstract class IDatabaseObject {
         return JsonBuilder.Get().toJson(this);
     }
 
-    public long getIdAsLong() {
-        UUID uid = UUID.fromString(getDataID());
-        return uid.getMostSignificantBits();
-    }
-
     public enum Types {Dashboard, Group, Thing, Block}
 }
