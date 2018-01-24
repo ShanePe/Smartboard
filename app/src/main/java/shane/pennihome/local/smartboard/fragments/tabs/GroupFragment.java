@@ -1,8 +1,10 @@
 package shane.pennihome.local.smartboard.fragments.tabs;
 
+import android.graphics.drawable.NinePatchDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -79,6 +81,7 @@ public class GroupFragment extends Fragment {
 
             dragMgr.setInitiateOnMove(false);
             dragMgr.setInitiateOnLongPress(true);
+            dragMgr.setLongPressTimeout(750);
 
             recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
             assert smartboardActivity != null;

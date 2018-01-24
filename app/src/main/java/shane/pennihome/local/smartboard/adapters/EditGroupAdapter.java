@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
+import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
 
@@ -39,9 +40,10 @@ import shane.pennihome.local.smartboard.ui.UIHelper;
 
 @SuppressWarnings("DefaultFileTemplate")
 public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.ViewHolder>
-    implements DraggableItemAdapter<EditGroupAdapter.ViewHolder>{
+        implements DraggableItemAdapter<EditGroupAdapter.ViewHolder> {
 
     private final SmartboardActivity mSmartboardActivity;
+    private RecyclerView mRecycleView;
 
     public EditGroupAdapter(SmartboardActivity mSmartboardActivity) {
         this.mSmartboardActivity = mSmartboardActivity;
@@ -50,7 +52,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
 
     @Override
     public long getItemId(int position) {
-        return mSmartboardActivity.getDashboard().getGroups().get(position).getPosition();
+        return mSmartboardActivity.getDashboard().getGroupAt(position).getPosition();
     }
 
     @Override
@@ -63,25 +65,8 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Group group = mSmartboardActivity.getDashboard().getGroupAt(position);
-        ViewGroup parent = (ViewGroup)holder.mView;
+        ViewGroup parent = (ViewGroup) holder.mView;
 
-        /*final int dragState = holder.getDragStateFlags();
-
-        int bgResId = R.drawable.btn_round;
-
-        if (((dragState & EditGroupAdapter.Draggable.STATE_FLAG_IS_UPDATED) != 0)) {
-
-            if ((dragState & EditGroupAdapter.Draggable.STATE_FLAG_IS_ACTIVE) != 0) {
-                bgResId = R.drawable.btn_round_accent;
-            } else if ((dragState & EditGroupAdapter.Draggable.STATE_FLAG_DRAGGING) != 0) {
-                bgResId = R.drawable.btn_round_dark;
-            } else {
-                bgResId = R.drawable.btn_round;
-            }
-        }
-
-        holder.mContainer.setBackgroundResource(bgResId);
-        */
         holder.mTxtName.setText(group.getName());
         holder.mGroupHandler = new GroupViewHandler(mSmartboardActivity, parent, holder.mView, group, holder.mRVBlocks);
 
@@ -91,8 +76,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
                 UIHelper.ShowConfirm(mSmartboardActivity, "Confirm", "Are you sure you want to remove this group?", new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
-                        if(success)
-                        {
+                        if (success) {
                             mSmartboardActivity.getDashboard().getGroups().remove(group);
                             mSmartboardActivity.DataChanged();
                         }
@@ -139,7 +123,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
                                     @Override
                                     public void OnSet(IThing thing) {
                                         group.getThings().add(thing);
-                                        if(!holder.mExpanded)
+                                        if (!holder.mExpanded)
                                             holder.showBlocks(true);
                                         //listView.expandGroup(groupPosition);
                                         mSmartboardActivity.DataChanged();
@@ -153,38 +137,55 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
         holder.mBtnExpand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            holder.showBlocks(!holder.mExpanded);
+                holder.showBlocks(!holder.mExpanded);
             }
         });
 
-        if(!holder.mInitialised)
-        {
-            holder.showBlocks(true);
+        if (!holder.mInitialised) {
+            holder.showBlocks(group.getThings().size() != 0);
             holder.mInitialised = true;
         }
+
+        final int dragState = holder.getDragStateFlags();
+
+        int bgResId = R.drawable.btn_round;
+
+        if (((dragState & EditGroupAdapter.Draggable.STATE_FLAG_IS_UPDATED) != 0)) {
+
+            if ((dragState & EditGroupAdapter.Draggable.STATE_FLAG_IS_ACTIVE) != 0) {
+                bgResId = R.drawable.btn_round_accent;
+            } else if ((dragState & EditGroupAdapter.Draggable.STATE_FLAG_DRAGGING) != 0) {
+                bgResId = R.drawable.btn_round_dark;
+            } else {
+                bgResId = R.drawable.btn_round;
+            }
+        }
+
+        holder.mContainer.setBackgroundResource(bgResId);
     }
 
-    private void createBlockInstance(IThing thing,Group group) {
+    private void createBlockInstance(IThing thing, Group group) {
         try {
             thing.CreateBlock();
             thing.setBlockDefaults(group);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Toast.makeText(mSmartboardActivity, "Error creating block instance", Toast.LENGTH_LONG).show();
         }
     }
 
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        mRecycleView = recyclerView;
+    }
 
     @Override
     public int getItemCount() {
-
         return mSmartboardActivity.getDashboard().getGroups().size();
     }
 
     @Override
     public boolean onCheckCanStartDrag(ViewHolder holder, int position, int x, int y) {
-       // View view = ((RecyclerView)holder.mView).findChildViewUnder(x,y);
         Rect drawRect = new Rect();
         holder.mTxtName.getDrawingRect(drawRect);
 
@@ -200,7 +201,9 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
     public void onMoveItem(int fromPosition, int toPosition) {
         Group item = mSmartboardActivity.getDashboard().getGroups().remove(fromPosition);
         mSmartboardActivity.getDashboard().getGroups().add(toPosition, item);
+        this.notifyDataSetChanged();
     }
+
 
     @Override
     public boolean onCheckCanDrop(int draggingPosition, int dropPosition) {
@@ -212,14 +215,29 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
 
     }
 
+    private ViewHolder getViewHolderAtPosition(int position) {
+        if (mRecycleView == null)
+            return null;
+
+        View view = mRecycleView.getLayoutManager().findViewByPosition(position);
+        if (view == null)
+            return null;
+
+        RecyclerView.ViewHolder holder = mRecycleView.getChildViewHolder(view);
+        if (holder == null)
+            return null;
+
+        return (ViewHolder) holder;
+
+    }
+
     @Override
     public void onItemDragFinished(int fromPosition, int toPosition, boolean result) {
 
     }
 
-    private void scaleView(final View view, boolean expanded)
-    {
-        if(expanded){
+    private void scaleView(final View view, boolean expanded) {
+        if (expanded) {
             view.setVisibility(View.VISIBLE);
             view.setAlpha(0.0f);
             //view.setTranslationY(0.0f);
@@ -227,8 +245,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
             view.animate()
                     .alpha(1.0f)
                     .setListener(null);
-        }else
-        {
+        } else {
             view.animate()
                     .alpha(0.0f)
                     .setListener(new AnimatorListenerAdapter() {
@@ -267,8 +284,10 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
         view.startAnimation(rotate);
     }
 
-    public class ViewHolder extends AbstractDraggableItemViewHolder
-    {
+    private interface Draggable extends DraggableItemConstants {
+    }
+
+    public class ViewHolder extends AbstractDraggableItemViewHolder {
         final ImageButton mBtnExpand;
         final TextView mTxtName;
         final ImageButton mBtnProps;
@@ -277,30 +296,34 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
         final RecyclerView mRVBlocks;
         @SuppressWarnings("unused")
         final GridLayout mContainer;
+        final View mView;
         boolean mInitialised;
         boolean mExpanded;
-        final View mView;
+        boolean mExpandAfterDrop;
         @SuppressWarnings("unused")
         GroupViewHandler mGroupHandler;
 
         ViewHolder(View itemView) {
             super(itemView);
 
-            mBtnExpand = itemView.findViewById(R.id.btn_add_expanded_new);
-            mTxtName = itemView.findViewById(R.id.txt_row_name_new);
-            mBtnProps = itemView.findViewById(R.id.btn_add_prop_new);
-            mBtnAdd = itemView.findViewById(R.id.btn_add_block_new);
-            mBtnDelete = itemView.findViewById(R.id.btn_delete_item_new);
-            mRVBlocks = itemView.findViewById(R.id.list_blocks_new);
+            mBtnExpand = itemView.findViewById(R.id.btn_add_expanded);
+            mTxtName = itemView.findViewById(R.id.txt_row_name);
+            mBtnProps = itemView.findViewById(R.id.btn_add_prop);
+            mBtnAdd = itemView.findViewById(R.id.btn_add_block);
+            mBtnDelete = itemView.findViewById(R.id.btn_delete_item);
+            mRVBlocks = itemView.findViewById(R.id.list_blocks);
             mView = itemView;
-            mContainer = itemView.findViewById(R.id.group_container_new);
+            mContainer = itemView.findViewById(R.id.group_container);
 
-//            mRVBlocks.setVisibility(View.GONE);
+            showBlocks(false);
         }
 
-        void showBlocks(final boolean show)
-        {
-            if(mRVBlocks.getChildCount() == 0)
+        void Toggle() {
+            showBlocks(!mExpanded);
+        }
+
+        void showBlocks(final boolean show) {
+            if (mRVBlocks.getChildCount() == 0 && show && mInitialised)
                 return;
 
             mExpanded = show;
@@ -309,7 +332,4 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
             rotateView(mBtnExpand, mExpanded);
         }
     }
-
-//    private interface Draggable extends DraggableItemConstants {
-  //  }
 }

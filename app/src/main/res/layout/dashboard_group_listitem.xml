@@ -5,27 +5,31 @@
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:clipChildren="false"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <GridLayout
-        android:id="@+id/group_container_new"
+        android:id="@+id/group_container"
         style="@style/listItemStyle"
         android:layout_width="match_parent"
         android:layout_margin="0dp"
         android:layout_marginBottom="0dp"
-        android:columnCount="3">
+        android:columnCount="3"
+        android:foreground="?attr/selectableItemBackground"
+        >
 
         <android.support.v7.widget.AppCompatImageButton
-            android:id="@+id/btn_add_expanded_new"
+            android:id="@+id/btn_add_expanded"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
             android:contentDescription="@string/lbl_state"
-            app:srcCompat="@android:drawable/arrow_down_float" />
+            app:srcCompat="@android:drawable/arrow_down_float"
+            />
 
         <TextView
-            android:id="@+id/txt_row_name_new"
+            android:id="@+id/txt_row_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_columnWeight="1"
@@ -39,7 +43,7 @@
         <LinearLayout android:gravity="end">
 
             <android.support.v7.widget.AppCompatImageButton
-                android:id="@+id/btn_delete_item_new"
+                android:id="@+id/btn_delete_item"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical|end"
@@ -51,7 +55,7 @@
                 app:srcCompat="@drawable/icon_delete" />
 
             <android.support.v7.widget.AppCompatImageButton
-                android:id="@+id/btn_add_prop_new"
+                android:id="@+id/btn_add_prop"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical|end"
@@ -63,7 +67,7 @@
                 app:srcCompat="@drawable/icon_cog" />
 
             <android.support.v7.widget.AppCompatImageButton
-                android:id="@+id/btn_add_block_new"
+                android:id="@+id/btn_add_block"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical|end"
@@ -77,7 +81,7 @@
     </GridLayout>
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/list_blocks_new"
+        android:id="@+id/list_blocks"
         style="@style/listStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

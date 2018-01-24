@@ -129,6 +129,7 @@ public class DashboardFragment extends IFragment {
 
             dragMgr.setInitiateOnMove(false);
             dragMgr.setInitiateOnLongPress(true);
+            dragMgr.setLongPressTimeout(750);
 
             recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 

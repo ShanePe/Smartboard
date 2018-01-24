@@ -48,20 +48,20 @@ public class GroupViewHandler {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(smartboardActivity, 8);
 
         // drag & drop manager
-        RecyclerViewDragDropManager mRecyclerViewDragDropManager = new RecyclerViewDragDropManager();
-        mRecyclerViewDragDropManager.setDraggingItemShadowDrawable(
+        RecyclerViewDragDropManager dragDropManager = new RecyclerViewDragDropManager();
+        dragDropManager.setDraggingItemShadowDrawable(
                 (NinePatchDrawable) ContextCompat.getDrawable(smartboardActivity, R.drawable.material_shadow_z3));
         // Start dragging after long press
-        mRecyclerViewDragDropManager.setInitiateOnLongPress(true);
-        mRecyclerViewDragDropManager.setInitiateOnMove(false);
-        mRecyclerViewDragDropManager.setLongPressTimeout(750);
+        dragDropManager.setInitiateOnLongPress(true);
+        dragDropManager.setInitiateOnMove(false);
+        dragDropManager.setLongPressTimeout(750);
 
         // setup dragging item effects (NOTE: DraggableItemAnimator is required)
-        mRecyclerViewDragDropManager.setDragStartItemAnimationDuration(250);
-        mRecyclerViewDragDropManager.setDraggingItemAlpha(0.8f);
-        mRecyclerViewDragDropManager.setDraggingItemScale(1.3f);
-        //mRecyclerViewDragDropManager.setDraggingItemRotation(15.0f);
-        mRecyclerViewDragDropManager.setItemMoveMode(RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT);
+        dragDropManager.setDragStartItemAnimationDuration(250);
+        dragDropManager.setDraggingItemAlpha(0.8f);
+        dragDropManager.setDraggingItemScale(1.3f);
+        //dragDropManager.setDraggingItemRotation(15.0f);
+        dragDropManager.setItemMoveMode(RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT);
 
         //adapter
         mEditThingAdapter = new EditThingAdapter(smartboardActivity, group, new DashboardFragment.OnListFragmentInteractionListener() {
@@ -71,10 +71,10 @@ public class GroupViewHandler {
             }
         });
 
-        mRecyclerViewDragDropManager.setOnCustomOnMoveListener(new RecyclerViewDragDropManager.OnCustomOnMoveListener() {
+        dragDropManager.setOnCustomOnMoveListener(new RecyclerViewDragDropManager.OnCustomOnMoveListener() {
             @Override
             public void OnStartDrag(RecyclerView rv) {
-                ImageButton delBtn = ((View)parent).findViewById(R.id.btn_delete_item_new);
+                ImageButton delBtn = ((View)parent).findViewById(R.id.btn_delete_item);
                 delBtn.setBackgroundResource(R.drawable.btn_round_accent);
                 Animation anim = AnimationUtils.loadAnimation(mSmartboardActivity, R.anim.shake_animate);
                 delBtn.startAnimation(anim);
@@ -90,7 +90,7 @@ public class GroupViewHandler {
 
             @Override
             public void OnUpOrCancel(final RecyclerView rv, MotionEvent e) {
-                ImageButton delBtn = ((View)parent).findViewById(R.id.btn_delete_item_new);
+                ImageButton delBtn = ((View)parent).findViewById(R.id.btn_delete_item);
                 delBtn.setBackgroundResource(R.drawable.btn_round_dark);
 
                 final View item = rv.findChildViewUnder(e.getX(),e.getY());
@@ -119,18 +119,16 @@ public class GroupViewHandler {
         });
 
         mEditThingAdapter.setThings(group.getThings());
-        RecyclerView.Adapter mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(mEditThingAdapter);
-
         GeneralItemAnimator animator = new DraggableItemAnimator(); // DraggableItemAnimator is required to make item animations properly.
 
         recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setAdapter(mWrappedAdapter);  // requires *wrapped* adapter
+        recyclerView.setAdapter(dragDropManager.createWrappedAdapter(mEditThingAdapter));  // requires *wrapped* adapter
         recyclerView.setItemAnimator(animator);
 
         // additional decorations
         //noinspection StatementWithEmptyBody
 
-        mRecyclerViewDragDropManager.attachRecyclerView(recyclerView);
+        dragDropManager.attachRecyclerView(recyclerView);
     }
 
     private Rect getViewRect(View view)

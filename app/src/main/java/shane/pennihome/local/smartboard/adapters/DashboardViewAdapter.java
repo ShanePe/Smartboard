@@ -48,8 +48,16 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mDashboards.get(position);
-        //holder.mIdView.setText(mDashboards.get(position).id);
         holder.mNameView.setText(mDashboards.get(position).getName());
+
+        holder.mContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != mListener) {
+                    mListener.onListFragmentInteraction(holder.mItem);
+                }
+            }
+        });
 
         final int dragState = holder.getDragStateFlags();
 
@@ -67,15 +75,6 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
         }
 
         holder.mView.setBackgroundResource(bgResId);
-
-        holder.mContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
-            }
-        });
     }
 
     @Override
