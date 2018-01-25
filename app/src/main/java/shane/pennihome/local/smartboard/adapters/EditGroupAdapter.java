@@ -11,8 +11,6 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -45,7 +43,6 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
         implements DraggableItemAdapter<EditGroupAdapter.ViewHolder> {
 
     private final SmartboardActivity mSmartboardActivity;
-    private RecyclerView mRecycleView;
 
     public EditGroupAdapter(SmartboardActivity mSmartboardActivity) {
         this.mSmartboardActivity = mSmartboardActivity;
@@ -175,12 +172,6 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        mRecycleView = recyclerView;
-    }
-
-    @Override
     public int getItemCount() {
         return mSmartboardActivity.getDashboard().getGroups().size();
     }
@@ -216,21 +207,23 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
 
     }
 
-    private ViewHolder getViewHolderAtPosition(int position) {
-        if (mRecycleView == null)
-            return null;
-
-        View view = mRecycleView.getLayoutManager().findViewByPosition(position);
-        if (view == null)
-            return null;
-
-        RecyclerView.ViewHolder holder = mRecycleView.getChildViewHolder(view);
-        if (holder == null)
-            return null;
-
-        return (ViewHolder) holder;
-
-    }
+// --Commented out by Inspection START (25/01/2018 17:32):
+//    private ViewHolder getViewHolderAtPosition(int position) {
+//        if (mRecycleView == null)
+//            return null;
+//
+//        View view = mRecycleView.getLayoutManager().findViewByPosition(position);
+//        if (view == null)
+//            return null;
+//
+//        RecyclerView.ViewHolder holder = mRecycleView.getChildViewHolder(view);
+//        if (holder == null)
+//            return null;
+//
+//        return (ViewHolder) holder;
+//
+//    }
+// --Commented out by Inspection STOP (25/01/2018 17:32)
 
     @Override
     public void onItemDragFinished(int fromPosition, int toPosition, boolean result) {
@@ -321,9 +314,11 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
             showBlocksAction(false);
         }
 
-        void Toggle() {
-            showBlocks(!mExpanded);
-        }
+// --Commented out by Inspection START (25/01/2018 17:32):
+//        void Toggle() {
+//            showBlocks(!mExpanded);
+//        }
+// --Commented out by Inspection STOP (25/01/2018 17:32)
 
         void showBlocks(boolean show) {
             int itemCount = (mGroup == null ? mRVBlocks.getChildCount():mGroup.getThings().size());

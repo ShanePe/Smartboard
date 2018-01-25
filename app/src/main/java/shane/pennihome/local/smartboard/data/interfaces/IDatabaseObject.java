@@ -20,7 +20,7 @@ import shane.pennihome.local.smartboard.data.JsonBuilder;
 @SuppressWarnings("DefaultFileTemplate")
 public abstract class IDatabaseObject {
     @Retention(RetentionPolicy.RUNTIME)
-    public @interface IgnoreOnCopy{}
+    protected @interface IgnoreOnCopy{}
 
     @IgnoreOnCopy
     private String mDataId;

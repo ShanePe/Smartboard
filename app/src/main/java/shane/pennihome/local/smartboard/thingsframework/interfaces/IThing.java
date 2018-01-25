@@ -3,11 +3,6 @@ package shane.pennihome.local.smartboard.thingsframework.interfaces;
 import android.graphics.Color;
 import android.util.Log;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import shane.pennihome.local.smartboard.comms.ThingToggler;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Group;

@@ -50,9 +50,9 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mDashboards.get(position);
-        holder.mNameView.setText(mDashboards.get(position).getName());
+        holder.mNameView.setText(mDashboards.get(holder.getAdapterPosition()).getName());
 
         holder.mContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +68,7 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
         holder.mDelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                UIHelper.ShowConfirm(view.getContext(), "Confirm", "Are you sure you eant to delete this dashboard", new OnProcessCompleteListener() {
+                UIHelper.ShowConfirm(view.getContext(), "Confirm", "Are you sure you want to delete this dashboard", new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
                         if(success)
@@ -76,7 +76,7 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
                             DBEngine db = new DBEngine(view.getContext());
                             db.deleteFromDatabase(holder.mItem);
                             mDashboards.remove(holder.mItem);
-                            aptr.notifyItemRemoved(position);
+                            aptr.notifyItemRemoved(holder.getAdapterPosition());
                         }
                     }
                 });
