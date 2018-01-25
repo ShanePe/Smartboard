@@ -26,19 +26,18 @@ import static shane.pennihome.local.smartboard.thingsframework.interfaces.IThing
 
 @SuppressWarnings({"DefaultFileTemplate", "unused"})
 public abstract class IThing extends IDatabaseObject {
-
     public enum Sources {SmartThings, PhilipsHue}
     public enum Types {Switch, Routine}
+
 
     private transient onThingListener mOnThingListener;
     private String mId;
     private Sources mSources;
     @SuppressWarnings("FieldCanBeLocal")
     private final String mInstance;
-    @Annotations.IgnoreOnCopy
-    private
-    IBlock mBlock;
-    @Annotations.IgnoreOnCopy
+
+    @IgnoreOnCopy
+    private IBlock mBlock;
 
     public IThing() {
         mInstance = this.getClass().getSimpleName();
@@ -165,44 +164,5 @@ public abstract class IThing extends IDatabaseObject {
     {
         thing.setBlock(getBlock());
         return thing;
-    }
-
-    public void copyValuesFrom(IThing from) {
-        ArrayList<Field> fieldsTo = new ArrayList<>();
-        ArrayList<Field> fieldsFrom = new ArrayList<>();
-        fieldsTo = getAllFields(fieldsTo, this.getClass());
-        fieldsFrom = getAllFields(fieldsFrom, from.getClass());
-
-        for(int i =0;i<fieldsTo.size();i++){
-            try {
-                Field fieldTo = fieldsTo.get(i);
-                Field fieldFrom = fieldsFrom.get(i);
-                @SuppressWarnings("ReflectionForUnavailableAnnotation") Annotations.IgnoreOnCopy ignore = fieldFrom.getAnnotation(Annotations.IgnoreOnCopy.class);
-
-                if(ignore == null && !Modifier.isTransient(fieldTo.getModifiers()) ) {
-                    if(!fieldTo.isAccessible())
-                        fieldTo.setAccessible(true);
-                    if(!fieldFrom.isAccessible())
-                        fieldFrom.setAccessible(true);
-
-                    fieldTo.set(this, fieldFrom.get(from));
-                }
-
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private ArrayList<Field> getAllFields(ArrayList<Field> fields, Class<?> type) {
-        if(fields==null)
-            fields = new ArrayList<>();
-        fields.addAll(Arrays.asList(type.getDeclaredFields()));
-
-        if (type.getSuperclass() != null) {
-            getAllFields(fields, type.getSuperclass());
-        }
-
-        return fields;
     }
 }

@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity
 
     public void populateDashbboards() {
         DBEngine db = new DBEngine(this);
-//        db.CleanDataStore();
+        //db.cleanDataStore();
         if (mDashboards == null)
             mDashboards = new Dashboards();
         else
@@ -148,8 +148,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void smartThingsConnect() {
-        @SuppressWarnings("unused") final MainActivity me = this;
-
         final SmartThingsFragment fragment = new SmartThingsFragment();
         //noinspection unchecked
         fragment.setmProcessComplete(new OnProcessCompleteListener<AppCompatActivity>() {
@@ -181,8 +179,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void hueBridgeConnect() {
-        @SuppressWarnings("unused") final MainActivity me = this;
-
         final HueBridgeFragment fragment = new HueBridgeFragment();
         //noinspection unchecked
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("huebridgeConnect");

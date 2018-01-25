@@ -8,13 +8,12 @@
     android:orientation="vertical"
     >
 
-    <GridLayout
+    <LinearLayout
         android:id="@+id/group_container"
         style="@style/listItemStyle"
         android:layout_width="match_parent"
         android:layout_margin="0dp"
         android:layout_marginBottom="0dp"
-        android:columnCount="3"
         android:foreground="?attr/selectableItemBackground"
         >
 
@@ -22,7 +21,7 @@
             android:id="@+id/btn_add_expanded"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_gravity="center"
+            android:layout_gravity="center|start"
             android:background="@android:color/transparent"
             android:contentDescription="@string/lbl_state"
             app:srcCompat="@android:drawable/arrow_down_float"
@@ -31,16 +30,26 @@
         <TextView
             android:id="@+id/txt_row_name"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_columnWeight="1"
-            android:layout_gravity="fill_vertical|fill_horizontal|center"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center|start"
             android:layout_marginStart="8dp"
-            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:foreground="?attr/selectableItemBackground"
             android:textAlignment="gravity"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:foreground="?attr/selectableItemBackground"/>
+            android:textAppearance="?attr/textAppearanceListItem" />
 
-        <LinearLayout android:gravity="end">
+        <LinearLayout android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:gravity="end">
+
+            <TextView
+                android:id="@+id/txt_row_childcount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center|start"
+                android:textAppearance="?attr/textAppearanceListItem"
+                 />
 
             <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/btn_delete_item"
@@ -78,7 +87,7 @@
                 android:requiresFadingEdge="horizontal|vertical"
                 app:srcCompat="@drawable/icon_add" />
         </LinearLayout>
-    </GridLayout>
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/list_blocks"

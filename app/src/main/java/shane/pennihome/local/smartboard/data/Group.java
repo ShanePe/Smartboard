@@ -15,7 +15,6 @@ import shane.pennihome.local.smartboard.ui.GroupViewHandler;
 public class Group extends IDatabaseObject {
     private final Things mThings = new Things();
     private boolean mDisplayName = false;
-    private boolean mExpanded = false;
     private @ColorInt
     int mDefaultBlockForeColourOff;
     private @ColorInt
@@ -25,6 +24,15 @@ public class Group extends IDatabaseObject {
     private @ColorInt
     int mDefaultBlockBackColourOn;
     private transient GroupViewHandler mGroupViewHandler;
+    boolean mIsUIExpanded;
+
+    public boolean isUIExpanded() {
+        return mIsUIExpanded;
+    }
+
+    public void setUIExpanded(boolean UIExpanded) {
+        mIsUIExpanded = UIExpanded;
+    }
 
     public Group() {
     }
@@ -60,14 +68,6 @@ public class Group extends IDatabaseObject {
 
     public IThing getThingsAt(int index) {
         return mThings.get(index);
-    }
-
-    public boolean isExpanded() {
-        return mExpanded;
-    }
-
-    public void setExpanded(boolean expanded) {
-        this.mExpanded = expanded;
     }
 
     public @ColorInt

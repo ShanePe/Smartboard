@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/dashboard_list_block"
         style="@style/listItemStyle"
         android:layout_width="match_parent"
@@ -19,4 +20,16 @@
             android:drawableStart="@drawable/icon_dashboard"
             android:gravity="start|fill"
             android:textAppearance="?attr/textAppearanceListItem" />
+
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/btn_delete_dash"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical|end"
+        android:layout_margin="5dp"
+        android:background="@drawable/btn_round_dark"
+        android:clickable="true"
+        android:focusable="true"
+        android:requiresFadingEdge="horizontal|vertical"
+        app:srcCompat="@drawable/icon_delete" />
     </FrameLayout>

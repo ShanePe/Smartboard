@@ -10,6 +10,7 @@ import shane.pennihome.local.smartboard.ui.UIHelper;
  */
 
 @SuppressWarnings("ALL")
+@IDatabaseObject.IgnoreOnCopy
 public abstract class IBlock extends IDatabaseObject {
     //private IThing mThing;
     private int mHeight;

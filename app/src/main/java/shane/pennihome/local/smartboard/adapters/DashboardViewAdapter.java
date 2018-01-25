@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
@@ -13,9 +14,12 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Dashboards;
+import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.fragments.DashboardFragment;
+import shane.pennihome.local.smartboard.ui.UIHelper;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Dashboard} and makes a call to the
@@ -46,7 +50,7 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mDashboards.get(position);
         holder.mNameView.setText(mDashboards.get(position).getName());
 
@@ -58,6 +62,28 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
                 }
             }
         });
+
+        final DashboardViewAdapter aptr = this;
+
+        holder.mDelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                UIHelper.ShowConfirm(view.getContext(), "Confirm", "Are you sure you eant to delete this dashboard", new OnProcessCompleteListener() {
+                    @Override
+                    public void complete(boolean success, Object source) {
+                        if(success)
+                        {
+                            DBEngine db = new DBEngine(view.getContext());
+                            db.deleteFromDatabase(holder.mItem);
+                            mDashboards.remove(holder.mItem);
+                            aptr.notifyItemRemoved(position);
+                        }
+                    }
+                });
+            }
+        });
+
+
 
         final int dragState = holder.getDragStateFlags();
 
@@ -122,12 +148,14 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
         final TextView mNameView;
         Dashboard mItem;
         final FrameLayout mContainer;
+        final ImageButton mDelBtn;
 
         ViewHolder(View view) {
             super(view);
             mView = view;
             mNameView = view.findViewById(R.id.dash_list_name);
             mContainer = view.findViewById(R.id.dashboard_list_block);
+            mDelBtn = view.findViewById(R.id.btn_delete_dash);
         }
         @Override
         public String toString() {

@@ -11,8 +11,10 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,6 +68,9 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Group group = mSmartboardActivity.getDashboard().getGroupAt(position);
         ViewGroup parent = (ViewGroup) holder.mView;
+
+        if(holder.mGroup == null)
+            holder.mGroup = group;
 
         holder.mTxtName.setText(group.getName());
         holder.mGroupHandler = new GroupViewHandler(mSmartboardActivity, parent, holder.mView, group, holder.mRVBlocks);
@@ -123,10 +128,9 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
                                     @Override
                                     public void OnSet(IThing thing) {
                                         group.getThings().add(thing);
+                                        mSmartboardActivity.DataChanged();
                                         if (!holder.mExpanded)
                                             holder.showBlocks(true);
-                                        //listView.expandGroup(groupPosition);
-                                        mSmartboardActivity.DataChanged();
                                     }
                                 });
                     }
@@ -141,10 +145,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
             }
         });
 
-        if (!holder.mInitialised) {
-            holder.showBlocks(group.getThings().size() != 0);
-            holder.mInitialised = true;
-        }
+        holder.showBlocks(group.isUIExpanded());
 
         final int dragState = holder.getDragStateFlags();
 
@@ -187,7 +188,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
     @Override
     public boolean onCheckCanStartDrag(ViewHolder holder, int position, int x, int y) {
         Rect drawRect = new Rect();
-        holder.mTxtName.getDrawingRect(drawRect);
+        holder.mContainer.getDrawingRect(drawRect);
 
         return drawRect.contains(x, y);
     }
@@ -233,7 +234,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
 
     @Override
     public void onItemDragFinished(int fromPosition, int toPosition, boolean result) {
-
+        this.notifyDataSetChanged();
     }
 
     private void scaleView(final View view, boolean expanded) {
@@ -295,11 +296,12 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
         final ImageButton mBtnDelete;
         final RecyclerView mRVBlocks;
         @SuppressWarnings("unused")
-        final GridLayout mContainer;
+        final LinearLayout mContainer;
+        final TextView mChildCount;
+
         final View mView;
-        boolean mInitialised;
         boolean mExpanded;
-        boolean mExpandAfterDrop;
+        Group mGroup;
         @SuppressWarnings("unused")
         GroupViewHandler mGroupHandler;
 
@@ -312,24 +314,44 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
             mBtnAdd = itemView.findViewById(R.id.btn_add_block);
             mBtnDelete = itemView.findViewById(R.id.btn_delete_item);
             mRVBlocks = itemView.findViewById(R.id.list_blocks);
-            mView = itemView;
             mContainer = itemView.findViewById(R.id.group_container);
+            mChildCount = itemView.findViewById(R.id.txt_row_childcount);
+            mView = itemView;
 
-            showBlocks(false);
+            showBlocksAction(false);
         }
 
         void Toggle() {
             showBlocks(!mExpanded);
         }
 
-        void showBlocks(final boolean show) {
-            if (mRVBlocks.getChildCount() == 0 && show && mInitialised)
-                return;
+        void showBlocks(boolean show) {
+            int itemCount = (mGroup == null ? mRVBlocks.getChildCount():mGroup.getThings().size());
+            if (itemCount == 0 && show)
+                show = false;
 
+            showBlocksAction(show);
+        }
+
+        private void showBlocksAction(boolean show)
+        {
             mExpanded = show;
+            if(mGroup != null)
+                mGroup.setUIExpanded(show);
 
             scaleView(mRVBlocks, mExpanded);
             rotateView(mBtnExpand, mExpanded);
+
+            if(!show)
+            {
+                int itemCount = (mGroup == null ? mRVBlocks.getChildCount():mGroup.getThings().size());
+                mChildCount.setText(String.format("|%s|",itemCount));
+                mChildCount.setVisibility(itemCount != 0 ?View.VISIBLE:View.GONE);
+            }
+            else
+            {
+                mChildCount.setVisibility(View.GONE);
+            }
         }
     }
 }

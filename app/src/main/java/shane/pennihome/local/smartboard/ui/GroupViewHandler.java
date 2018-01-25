@@ -81,12 +81,13 @@ public class GroupViewHandler {
             }
 
             @Override
-            public void OnClick(RecyclerView rv, MotionEvent e) {
-            }
+            public void OnEndDrag(RecyclerView rv) {}
 
             @Override
-            public void OnMove(RecyclerView rv, MotionEvent e) {
-            }
+            public void OnClick(RecyclerView rv, MotionEvent e) {}
+
+            @Override
+            public void OnMove(RecyclerView rv, MotionEvent e) {}
 
             @Override
             public void OnUpOrCancel(final RecyclerView rv, MotionEvent e) {

@@ -37,11 +37,11 @@ public class DBEngine extends SQLiteOpenHelper {
 
     }
 
-    public void WriteToDatabase(IDatabaseObject data) {
+    public void writeToDatabase(IDatabaseObject data) {
         ExecuteSQL(Queries.getUpdateDatastore(data));
     }
 
-    public List<IDatabaseObject> ReadAllFromDatabase() {
+    public List<IDatabaseObject> readAllFromDatabase() {
         return getDataObjects(Queries.getAllDatastores());
     }
 
@@ -54,10 +54,15 @@ public class DBEngine extends SQLiteOpenHelper {
         return getDataObjects(Queries.getDatastoreByType(type));
     }
 
-    public void CleanDataStore() {
+    public void cleanDataStore() {
         ExecuteSQL(Queries.getDeleteDatastore());
         ExecuteSQL(Queries.getDropDatastore());
         ExecuteSQL(Queries.getCreateDatastore());
+    }
+
+    public void deleteFromDatabase(IDatabaseObject data)
+    {
+        ExecuteSQL(Queries.getDeleteFromDatastore(data));
     }
 
     public void updatePosition(IDatabaseObject object)
@@ -118,7 +123,10 @@ public class DBEngine extends SQLiteOpenHelper {
         static String getDeleteDatastore() {
             return "delete from datastore ";
         }
-
+        static String getDeleteFromDatastore(IDatabaseObject object)
+        {
+            return String.format("Delete from datastore where id='%s'", object.getDataID());
+        }
         static String getUpdateDatastore(IDatabaseObject object) {
             return String.format("replace into datastore (id, type, position, object) values('%s','%s', %s, '%s')",
                     object.getDataID(),

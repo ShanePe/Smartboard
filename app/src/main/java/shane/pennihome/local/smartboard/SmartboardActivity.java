@@ -95,7 +95,7 @@ public class SmartboardActivity extends AppCompatActivity {
             mDashboard.setName("My Dashboard");
 
         DBEngine db = new DBEngine(this);
-        db.WriteToDatabase(mDashboard);
+        db.writeToDatabase(mDashboard);
     }
 
     @Override

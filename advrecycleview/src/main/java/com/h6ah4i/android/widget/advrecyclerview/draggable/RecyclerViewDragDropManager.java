@@ -207,6 +207,7 @@ public class RecyclerViewDragDropManager implements DraggableItemConstants {
         void OnUpOrCancel(RecyclerView rv, MotionEvent e);
         void OnClick(RecyclerView rv, MotionEvent e);
         void OnStartDrag(RecyclerView rv);
+        void OnEndDrag(RecyclerView rv);
     }
 
     private RecyclerView mRecyclerView;
@@ -596,6 +597,8 @@ public class RecyclerViewDragDropManager implements DraggableItemConstants {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 handled = handleActionUpOrCancel(action, true);
+                if(mOnCustomOnMoveListener != null)
+                    mOnCustomOnMoveListener.OnUpOrCancel(rv, e);
                 break;
 
             case MotionEvent.ACTION_DOWN:
@@ -950,6 +953,10 @@ public class RecyclerViewDragDropManager implements DraggableItemConstants {
                     draggingItemCurrentPosition,
                     result);
         }
+
+        if(mOnCustomOnMoveListener != null)
+            mOnCustomOnMoveListener.OnEndDrag(mRecyclerView);
+
     }
 
     private boolean handleActionUpOrCancel(int action, boolean invokeFinish) {
