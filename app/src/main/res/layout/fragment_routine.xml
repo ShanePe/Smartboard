@@ -21,7 +21,7 @@
         android:layout_columnWeight="1"
         android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
         android:gravity="start|fill"
-        android:textAppearance="?attr/textAppearanceListItem"  />
+        android:textAppearance="?attr/textAppearanceListItem" />
 
     <TextView
         android:id="@+id/routine_source"
@@ -30,7 +30,7 @@
         android:layout_columnWeight="1"
         android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
         android:gravity="start|fill"
-        android:textAppearance="?attr/textAppearanceListItem"  />
+        android:textAppearance="?attr/textAppearanceListItem" />
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/routine_btn_execute"

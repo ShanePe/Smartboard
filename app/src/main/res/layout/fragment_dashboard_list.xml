@@ -12,6 +12,7 @@
     style="@style/listStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/default_background"
     app:layoutManager="LinearLayoutManager"
     tools:context="shane.pennihome.local.smartboard.fragments.tabs.SmartboardFragment"
     tools:listitem="@layout/fragment_dashboard">

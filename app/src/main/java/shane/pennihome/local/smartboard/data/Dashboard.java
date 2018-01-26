@@ -14,6 +14,15 @@ import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 @SuppressWarnings("DefaultFileTemplate")
 public class Dashboard extends IDatabaseObject {
     private final List<Group> mGroups = new ArrayList<>();
+    private String mBackgroundImage;
+
+    public String getBackgroundImage() {
+        return mBackgroundImage;
+    }
+
+    public void setBackgroundImage(String backgroundImage) {
+        mBackgroundImage = backgroundImage;
+    }
 
     public static Dashboard Load(String json) {
         Dashboard ret = new Dashboard();

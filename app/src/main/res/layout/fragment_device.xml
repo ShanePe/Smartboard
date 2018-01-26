@@ -43,8 +43,8 @@
 
     <Switch
         android:id="@+id/device_switch"
-        android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start" />
 
 </GridLayout>

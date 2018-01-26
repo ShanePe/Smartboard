@@ -13,6 +13,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -196,7 +197,6 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
         this.notifyDataSetChanged();
     }
 
-
     @Override
     public boolean onCheckCanDrop(int draggingPosition, int dropPosition) {
         return true;
@@ -291,6 +291,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
         @SuppressWarnings("unused")
         final LinearLayout mContainer;
         final TextView mChildCount;
+        ScrollView mScrollView;
 
         final View mView;
         boolean mExpanded;
@@ -308,7 +309,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
             mBtnDelete = itemView.findViewById(R.id.btn_delete_item);
             mRVBlocks = itemView.findViewById(R.id.list_blocks);
             mContainer = itemView.findViewById(R.id.group_container);
-            mChildCount = itemView.findViewById(R.id.txt_row_childcount);
+            mChildCount = itemView.findViewById(R.id.txt_row_child_count);
             mView = itemView;
 
             showBlocksAction(false);
@@ -330,22 +331,24 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
 
         private void showBlocksAction(boolean show)
         {
+            if(mExpanded = show)
+                return;
+
             mExpanded = show;
             if(mGroup != null)
                 mGroup.setUIExpanded(show);
 
-            scaleView(mRVBlocks, mExpanded);
+            //scaleView(mRVBlocks, mExpanded);
+            mRVBlocks.setVisibility(show?View.VISIBLE:View.GONE);
             rotateView(mBtnExpand, mExpanded);
 
-            if(!show)
-            {
-                int itemCount = (mGroup == null ? mRVBlocks.getChildCount():mGroup.getThings().size());
-                mChildCount.setText(String.format("|%s|",itemCount));
-                mChildCount.setVisibility(itemCount != 0 ?View.VISIBLE:View.GONE);
-            }
+            if(show)
+                mChildCount.setVisibility(View.GONE);
             else
             {
-                mChildCount.setVisibility(View.GONE);
+                int itemCount = (mGroup == null ? mRVBlocks.getChildCount():mGroup.getThings().size());
+                mChildCount.setText(String.format("| %s |",itemCount));
+                mChildCount.setVisibility(itemCount != 0 ?View.VISIBLE:View.GONE);
             }
         }
     }

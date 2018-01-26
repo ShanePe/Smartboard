@@ -42,4 +42,8 @@
     <string name="lbl_properties">Properties</string>
     <string name="lbl_background">Background</string>
     <string name="lbl_transparency">Transparency</string>
+    <string name="lbl_camera">Camera</string>
+    <string name="lbl_gallery">Gallery</string>
+    <string name="lbl_import">Import</string>
+    <string name="lbl_background_image">Background Image</string>
 </resources>

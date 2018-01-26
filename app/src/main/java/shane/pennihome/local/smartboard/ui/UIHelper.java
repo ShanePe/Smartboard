@@ -1,12 +1,21 @@
 package shane.pennihome.local.smartboard.ui;
 
 import android.app.Activity;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.OpenableColumns;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.provider.MediaStore;
 import android.support.annotation.ColorInt;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -15,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,9 +33,20 @@ import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Group;
+import shane.pennihome.local.smartboard.listeners.OnImageImport;
 import shane.pennihome.local.smartboard.listeners.OnPropertyWindowListener;
 import shane.pennihome.local.smartboard.listeners.OnThingSelectListener;
 import shane.pennihome.local.smartboard.things.routines.Routine;
@@ -41,6 +62,52 @@ import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetList
 
 @SuppressWarnings("ALL")
 public class UIHelper {
+    public static int IMAGE_RESULT = 8841;
+
+    public static void showImageImport(final Fragment fragment)
+    {
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(fragment.getContext());
+        builder.setTitle("Import image from");
+
+        LayoutInflater inflater = (LayoutInflater) fragment.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
+        final View view = inflater.inflate(R.layout.dialog_image_import, null);
+
+        LinearLayoutCompat btnGal = view.findViewById(R.id.btn_import_gallery);
+        LinearLayoutCompat btnCam = view.findViewById(R.id.btn_import_camera);
+
+        builder.setView(view);
+        final android.app.AlertDialog dialog = builder.create();
+
+        btnGal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                fragment.startActivityForResult(intPhoto, IMAGE_RESULT);
+                dialog.cancel();
+            }
+        });
+
+        btnCam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                File outFile = new File(fragment.getActivity().getFilesDir(), System.currentTimeMillis() + "_smartboard.png");
+                Intent intPic = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                //intPic.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(outFile));
+                //intPic.putExtra("camera_file", outFile.getAbsolutePath());
+                intPic.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                fragment.startActivityForResult(intPic, IMAGE_RESULT);
+                dialog.cancel();
+            }
+        });
+
+        //noinspection ConstantConditions
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        dialog.show();
+
+    }
+
     public static void showThingPropertyWindow(Activity activity, Things things, IThing thing, OnThingSetListener onThingSetListener) {
         showThingPropertyWindow(activity, things, thing, null, onThingSetListener);
     }
@@ -55,7 +122,7 @@ public class UIHelper {
             }
         });
 
-        showPropertyWindow(activity, "Select Things", R.layout.thing_selection_list,
+        showPropertyWindow(activity, "Select Things", R.layout.dialog_thing_selection_list,
                 false, adapter, 2, null, new DialogInterface.OnShowListener() {
                     @Override
                     public void onShow(DialogInterface dialog) {
@@ -80,6 +147,75 @@ public class UIHelper {
                 thing.getUIHandler().populateBlockFromView(view, onThingSetListener);
             }
         });
+    }
+
+    public static String saveImage(Context context, Uri filePath)
+    {
+        String fileName = getFileNameFromUri(context, filePath);
+        File fileToWrite = new File(context.getFilesDir(), fileName);
+        if(fileToWrite.exists())
+            fileToWrite.delete();
+
+        InputStream inputStream = null;
+        BufferedInputStream bufferedInputStream = null;
+        FileOutputStream fileOutputStream = null;
+        try {
+            inputStream = context.getContentResolver().openInputStream(filePath);
+            bufferedInputStream = new BufferedInputStream(inputStream);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+            if(fileToWrite.createNewFile())
+            {
+                fileOutputStream = new FileOutputStream(fileToWrite);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+                fileOutputStream.flush();
+            }
+
+            return fileToWrite.getPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            try {
+                fileOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                bufferedInputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                inputStream.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static String getFileNameFromUri(Context context, Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
     }
 
     @ColorInt

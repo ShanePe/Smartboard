@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.thingsframework;
 
+import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 import shane.pennihome.local.smartboard.things.routines.Routine;
@@ -22,9 +23,12 @@ public class Things extends IThings<IThing> {
     }
 
     public static Things getAvailableTypes() {
+
         Things things = new Things();
-        things.add(new Switch());
-        things.add(new Routine());
+        if(Monitor.getThings().containsType(Switch.class))
+            things.add(new Switch());
+        if(Monitor.getThings().containsType(Routine.class))
+            things.add(new Routine());
         return things;
     }
 }

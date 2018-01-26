@@ -65,7 +65,7 @@ public class GroupFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.smartboard_tab_groups, container, false);
+        View rootView = inflater.inflate(R.layout.tab_smartboard_groups, container, false);
         //ExpandableListView list = rootView.findViewById(R.id.list_rows);
 
         final SmartboardActivity smartboardActivity = (SmartboardActivity) getContext();
@@ -87,6 +87,7 @@ public class GroupFragment extends Fragment {
 
             dragMgr.attachRecyclerView(recyclerView);
         }
+
 
         setHasOptionsMenu(true);
         return rootView;

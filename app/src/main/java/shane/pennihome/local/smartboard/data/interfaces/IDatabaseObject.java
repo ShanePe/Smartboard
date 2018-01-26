@@ -19,8 +19,9 @@ import shane.pennihome.local.smartboard.data.JsonBuilder;
 
 @SuppressWarnings("DefaultFileTemplate")
 public abstract class IDatabaseObject {
+    @SuppressWarnings("WeakerAccess")
     @Retention(RetentionPolicy.RUNTIME)
-    protected @interface IgnoreOnCopy{}
+    public @interface IgnoreOnCopy{}
 
     @IgnoreOnCopy
     private String mDataId;

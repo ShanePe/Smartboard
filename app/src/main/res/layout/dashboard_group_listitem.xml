@@ -5,8 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:clipChildren="false"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/group_container"
@@ -14,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_margin="0dp"
         android:layout_marginBottom="0dp"
-        android:foreground="?attr/selectableItemBackground"
-        >
+        android:foreground="?attr/selectableItemBackground">
 
         <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/btn_add_expanded"
@@ -24,8 +22,7 @@
             android:layout_gravity="center|start"
             android:background="@android:color/transparent"
             android:contentDescription="@string/lbl_state"
-            app:srcCompat="@android:drawable/arrow_down_float"
-            />
+            app:srcCompat="@android:drawable/arrow_down_float" />
 
         <TextView
             android:id="@+id/txt_row_name"
@@ -38,18 +35,18 @@
             android:textAlignment="gravity"
             android:textAppearance="?attr/textAppearanceListItem" />
 
-        <LinearLayout android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:gravity="end">
 
             <TextView
-                android:id="@+id/txt_row_childcount"
+                android:id="@+id/txt_row_child_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center|start"
-                android:textAppearance="?attr/textAppearanceListItem"
-                 />
+                android:textAppearance="?attr/textAppearanceListItem" />
 
             <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/btn_delete_item"

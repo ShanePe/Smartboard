@@ -78,6 +78,8 @@ public class SmartboardActivity extends AppCompatActivity {
                 }
     }
 
+
+
     private void WriteDashboardToDatabase() {
         if (mDashboard == null)
             return;

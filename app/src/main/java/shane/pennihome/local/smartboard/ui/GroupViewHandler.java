@@ -37,7 +37,6 @@ public class GroupViewHandler {
         handle(smartboardActivity, parent, view, group, recyclerView);
     }
 
-
     public GroupViewHandler(SmartboardActivity smartboardActivity, ViewGroup parent, View view, Group group, RecyclerView recyclerView) {
         handle(smartboardActivity, parent, view, group, recyclerView);
     }

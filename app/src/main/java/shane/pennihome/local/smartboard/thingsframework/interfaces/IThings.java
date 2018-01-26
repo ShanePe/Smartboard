@@ -16,6 +16,14 @@ public abstract class IThings<T extends IThing> extends ArrayList<T> {
                 remove(t);
     }
 
+    public <T extends IThing> boolean containsType(Class<T> cls)
+    {
+        for(IThing t:this)
+            if(t.getClass() == cls)
+                return true;
+        return false;
+    }
+
     public <E extends IThing> void remove(Class<E> cls)
     {
         for(T t : this)

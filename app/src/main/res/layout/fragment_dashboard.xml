@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/dashboard_list_block"
-        style="@style/listItemStyle"
-        android:layout_width="match_parent"
-        android:background="@drawable/btn_round"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        tools:ignore="UselessParent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dashboard_list_block"
+    style="@style/listItemStyle"
+    android:layout_width="match_parent"
+    android:background="@drawable/btn_round"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    tools:ignore="UselessParent">
 
-        <TextView
-            android:id="@+id/dash_list_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
-            android:drawablePadding="@dimen/activity_horizontal_margin"
-            android:drawableStart="@drawable/icon_dashboard"
-            android:gravity="start|fill"
-            android:textAppearance="?attr/textAppearanceListItem" />
+    <TextView
+        android:id="@+id/dash_list_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
+        android:drawablePadding="@dimen/activity_horizontal_margin"
+        android:drawableStart="@drawable/icon_dashboard"
+        android:gravity="start|fill"
+        android:textAppearance="?attr/textAppearanceListItem" />
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/btn_delete_dash"
@@ -32,4 +32,4 @@
         android:focusable="true"
         android:requiresFadingEdge="horizontal|vertical"
         app:srcCompat="@drawable/icon_delete" />
-    </FrameLayout>
+</FrameLayout>
