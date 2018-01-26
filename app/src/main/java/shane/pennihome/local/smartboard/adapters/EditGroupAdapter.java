@@ -294,7 +294,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
         ScrollView mScrollView;
 
         final View mView;
-        boolean mExpanded;
+        boolean mExpanded = true;
         Group mGroup;
         @SuppressWarnings("unused")
         GroupViewHandler mGroupHandler;
@@ -331,7 +331,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
 
         private void showBlocksAction(boolean show)
         {
-            if(mExpanded = show)
+            if(mExpanded == show)
                 return;
 
             mExpanded = show;
@@ -339,7 +339,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
                 mGroup.setUIExpanded(show);
 
             //scaleView(mRVBlocks, mExpanded);
-            mRVBlocks.setVisibility(show?View.VISIBLE:View.GONE);
+            mRVBlocks.setVisibility(show? View.VISIBLE : View.GONE);
             rotateView(mBtnExpand, mExpanded);
 
             if(show)
@@ -348,7 +348,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
             {
                 int itemCount = (mGroup == null ? mRVBlocks.getChildCount():mGroup.getThings().size());
                 mChildCount.setText(String.format("| %s |",itemCount));
-                mChildCount.setVisibility(itemCount != 0 ?View.VISIBLE:View.GONE);
+                mChildCount.setVisibility(itemCount != 0 ? View.VISIBLE : View.GONE);
             }
         }
     }

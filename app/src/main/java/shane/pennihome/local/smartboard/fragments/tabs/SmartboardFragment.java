@@ -40,25 +40,10 @@ public class SmartboardFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == UIHelper.IMAGE_RESULT)
-        {
-            if(resultCode == RESULT_OK){
-                Uri fileData;
-                if(data.getData()!=null)
-                    fileData = data.getData();
-                else
-                {
-                    String sFile = data.getStringExtra("camera_file");
-                    File cameraFile = new File(sFile);
-                    fileData = Uri.fromFile(cameraFile);
-                }
-                mSmartboardActivity.getDashboard().setBackgroundImage(
-                        UIHelper.saveImage(this.getContext(), fileData));
-
-                Bitmap bitmap = BitmapFactory.decodeFile(mSmartboardActivity.getDashboard().getBackgroundImage());
-                mBGImage.setImageBitmap(bitmap);
-                //imageview.setImageURI(selectedImage);
-            }
+        if(resultCode == RESULT_OK) {
+            String sFile = UIHelper.handleImageResult(this.getContext(), requestCode, data, mBGImage);
+            if(!TextUtils.isEmpty(sFile))
+                mSmartboardActivity.getDashboard().setBackgroundImage(sFile);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

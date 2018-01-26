@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.support.v4.app.Fragment;
 import android.content.Context;
@@ -24,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +44,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.UUID;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
@@ -63,6 +66,7 @@ import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetList
 @SuppressWarnings("ALL")
 public class UIHelper {
     public static int IMAGE_RESULT = 8841;
+    public static int CAMERA_RESULT = 8842;
 
     public static void showImageImport(final Fragment fragment)
     {
@@ -91,12 +95,11 @@ public class UIHelper {
         btnCam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                File outFile = new File(fragment.getActivity().getFilesDir(), System.currentTimeMillis() + "_smartboard.png");
-                Intent intPic = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //intPic.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(outFile));
-                //intPic.putExtra("camera_file", outFile.getAbsolutePath());
-                intPic.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                fragment.startActivityForResult(intPic, IMAGE_RESULT);
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(fragment.getActivity().getPackageManager()) != null) {
+                    fragment.startActivityForResult(takePictureIntent, CAMERA_RESULT);
+                }
+
                 dialog.cancel();
             }
         });
@@ -149,9 +152,41 @@ public class UIHelper {
         });
     }
 
+    public static String saveBitmap(Context context, Bitmap imageSave)
+    {
+        String fileName = "Smartboard_" + UUID.randomUUID().toString() + ".png";
+        File fileToWrite = new File(context.getFilesDir(), fileName);
+
+        if(fileToWrite.exists())
+            fileToWrite.delete();
+
+        FileOutputStream fileOutputStream = null;
+
+        try {
+            if(fileToWrite.createNewFile())
+            {
+                fileOutputStream = new FileOutputStream(fileToWrite);
+                imageSave.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+                fileOutputStream.flush();
+            }
+
+            return fileToWrite.getPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            try {
+                fileOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static String saveImage(Context context, Uri filePath)
     {
-        String fileName = getFileNameFromUri(context, filePath);
+        String fileName = "Smartboard_" + UUID.randomUUID().toString() + ".png";
         File fileToWrite = new File(context.getFilesDir(), fileName);
         if(fileToWrite.exists())
             fileToWrite.delete();
@@ -194,6 +229,26 @@ public class UIHelper {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static String handleImageResult(Context context, int code, Intent data, ImageView preview)
+    {
+        String result = "";
+        if(code == IMAGE_RESULT)
+        {
+            result = saveImage(context, data.getData());
+            Bitmap bitmap = BitmapFactory.decodeFile(result);
+            preview.setImageBitmap(bitmap);
+        }
+        else if(code == CAMERA_RESULT)
+        {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            result = saveBitmap(context, imageBitmap);
+            preview.setImageBitmap(imageBitmap);
+        }
+
+        return result;
     }
 
     private static String getFileNameFromUri(Context context, Uri uri) {
