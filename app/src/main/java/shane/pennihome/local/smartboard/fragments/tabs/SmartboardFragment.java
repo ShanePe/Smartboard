@@ -3,7 +3,6 @@ package shane.pennihome.local.smartboard.fragments.tabs;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -12,12 +11,9 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.textservice.TextInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
-import java.io.File;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
@@ -38,16 +34,6 @@ public class SmartboardFragment extends Fragment {
     public SmartboardFragment() {
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == RESULT_OK) {
-            String sFile = UIHelper.handleImageResult(this.getContext(), requestCode, data, mBGImage);
-            if(!TextUtils.isEmpty(sFile))
-                mSmartboardActivity.getDashboard().setBackgroundImage(sFile);
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
     /**
      * Returns a new instance of this fragment for the given section
      * number.
@@ -58,6 +44,16 @@ public class SmartboardFragment extends Fragment {
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            String sFile = UIHelper.handleImageResult(this.getContext(), requestCode, data, mBGImage);
+            if (!TextUtils.isEmpty(sFile))
+                mSmartboardActivity.getDashboard().setBackgroundImage(sFile);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

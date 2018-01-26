@@ -6,4 +6,4 @@
     android:layout_height="wrap_content"
     android:background="@drawable/default_background"
     android:clipChildren="true"
-    android:groupIndicator="@android:color/transparent"></android.support.v7.widget.RecyclerView>
+    android:groupIndicator="@android:color/transparent" />

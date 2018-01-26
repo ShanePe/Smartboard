@@ -1,7 +1,5 @@
 package shane.pennihome.local.smartboard.adapters;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +11,6 @@ import android.view.animation.RotateAnimation;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -230,28 +227,30 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
         this.notifyDataSetChanged();
     }
 
-    private void scaleView(final View view, boolean expanded) {
-        if (expanded) {
-            view.setVisibility(View.VISIBLE);
-            view.setAlpha(0.0f);
-            //view.setTranslationY(0.0f);
-
-            view.animate()
-                    .alpha(1.0f)
-                    .setListener(null);
-        } else {
-            view.animate()
-                    .alpha(0.0f)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            view.setVisibility(View.GONE);
-                        }
-                    });
-        }
-
-    }
+// --Commented out by Inspection START (26/01/18 14:33):
+//    private void scaleView(final View view, boolean expanded) {
+//        if (expanded) {
+//            view.setVisibility(View.VISIBLE);
+//            view.setAlpha(0.0f);
+//            //view.setTranslationY(0.0f);
+//
+//            view.animate()
+//                    .alpha(1.0f)
+//                    .setListener(null);
+//        } else {
+//            view.animate()
+//                    .alpha(0.0f)
+//                    .setListener(new AnimatorListenerAdapter() {
+//                        @Override
+//                        public void onAnimationEnd(Animator animation) {
+//                            super.onAnimationEnd(animation);
+//                            view.setVisibility(View.GONE);
+//                        }
+//                    });
+//        }
+//
+//    }
+// --Commented out by Inspection STOP (26/01/18 14:33)
 
     private void rotateView(final View view, final boolean expanded) {
         RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -291,7 +290,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
         @SuppressWarnings("unused")
         final LinearLayout mContainer;
         final TextView mChildCount;
-        ScrollView mScrollView;
+        // --Commented out by Inspection (26/01/18 14:33):ScrollView mScrollView;
 
         final View mView;
         boolean mExpanded = true;
