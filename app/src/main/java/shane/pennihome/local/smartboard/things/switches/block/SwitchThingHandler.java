@@ -18,14 +18,14 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Group;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.SpinnerThingAdapter;
 import shane.pennihome.local.smartboard.thingsframework.Things;
-import shane.pennihome.local.smartboard.ui.UIHelper;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandler;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
+import shane.pennihome.local.smartboard.ui.UIHelper;
 
 /**
  * Created by SPennicott on 17/01/2018.
@@ -53,7 +53,6 @@ public class SwitchThingHandler extends IThingUIHandler {
                     tabProp.setVisibility(View.VISIBLE);
                     tabBg.setVisibility(View.GONE);
                 }
-
             }
         });
 
@@ -87,8 +86,8 @@ public class SwitchThingHandler extends IThingUIHandler {
         final Button btnFGOff = view.findViewById(R.id.sw_btn_clr_fg_Off);
         final Button btnFGOn = view.findViewById(R.id.sw_btn_clr_fg_On);
 
-        SeekBar sbTransOff = view.findViewById(R.id.sw_transOff);
-        SeekBar sbTransOn = view.findViewById(R.id.sw_transOn);
+        final SeekBar sbTransOff = view.findViewById(R.id.sw_transOff);
+        final SeekBar sbTransOn = view.findViewById(R.id.sw_transOn);
 
         SpinnerThingAdapter aptr = new SpinnerThingAdapter(activity);
         aptr.setThings(things);
@@ -168,10 +167,12 @@ public class SwitchThingHandler extends IThingUIHandler {
                     public void complete(boolean success, Object source) {
                         @ColorInt int clr = (int) source;
                         getThing().getBlock().setBackgroundColour(clr);
+                        getThing().getBlock().setBackgroundTransparency(100);
                         if (group != null) {
                             group.setDefaultBlockBackgroundColourOff(clr);
                         }
-                        btnBGOff.setBackgroundColor(getThing().getBlock().getBackgroundColour());
+                        btnBGOff.setBackgroundColor(getThing().getBlock().getBackgroundColourWithAlpha());
+                        sbTransOff.setProgress(100);
                     }
                 });
             }
@@ -188,7 +189,6 @@ public class SwitchThingHandler extends IThingUIHandler {
                         if (group != null)
                             group.setDefaultBlockForeColourOff(clr);
                         btnFGOff.setBackgroundColor(getThing().getBlock().getForeColour());
-
                     }
                 });
             }
@@ -202,9 +202,11 @@ public class SwitchThingHandler extends IThingUIHandler {
                     public void complete(boolean success, Object source) {
                         @ColorInt int clr = (int) source;
                         getThing().getBlock(SwitchBlock.class).setBackgroundColourOn(clr);
+                        getThing().getBlock(SwitchBlock.class).setBackgroundTransparencyOn(100);
                         if (group != null)
                             group.setDefaultBlockBackgroundColourOn(clr);
-                        btnBGOn.setBackgroundColor(getThing().getBlock(SwitchBlock.class).getBackgroundColourOn());
+                        sbTransOn.setProgress(100);
+                        btnBGOn.setBackgroundColor(getThing().getBlock(SwitchBlock.class).getBackgroundColourWithAlphaOn());
                     }
                 });
             }

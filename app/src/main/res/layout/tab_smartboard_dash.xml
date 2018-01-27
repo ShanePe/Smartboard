@@ -1,59 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/default_background"
     android:orientation="vertical">
 
-    <TextView
+    <shane.pennihome.local.smartboard.ui.GroupTitle
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:labelFor="@+id/txt_db_name"
-        android:text="@string/lbl_name" />
+        app:title="Properties" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorAccent" />
-
-    <EditText
+    <shane.pennihome.local.smartboard.ui.LabelTextbox
         android:id="@+id/txt_db_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textAutoComplete" />
+        app:label="@string/lbl_name" />
 
-    <TextView
+
+    <shane.pennihome.local.smartboard.ui.GroupTitle
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:labelFor="@+id/txt_db_name"
-        android:text="@string/lbl_background_image" />
+        app:title="@string/lbl_background" />
 
-    <View
+    <shane.pennihome.local.smartboard.ui.BackgroundSelector
+        android:id="@+id/dash_bgselector"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorAccent" />
+        android:layout_height="wrap_content" />
 
-    <android.support.v7.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="4dp"
-        android:orientation="horizontal"
-        android:padding="4dp">
+    <!--<GridLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="fill"-->
+    <!--android:layout_margin="4dp"-->
+    <!--android:clipChildren="true"-->
+    <!--android:clipToPadding="true"-->
+    <!--android:columnCount="2"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:padding="4dp"-->
+    <!--android:rowCount="2">-->
 
-        <ImageView
-            android:id="@+id/img_db_bg"
-            style="@style/blockItemStyle"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:contentDescription="@string/content_desc_img" />
+    <!--<Button-->
+    <!--android:id="@+id/dash_btn_bg"-->
+    <!--style="@style/blockItemStyle"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="100dp"-->
+    <!--android:layout_column="0"-->
+    <!--android:layout_columnWeight="1"-->
+    <!--android:layout_gravity="fill"-->
+    <!--android:layout_row="0"-->
+    <!--android:layout_rowWeight="1"-->
+    <!--android:background="@drawable/btn_round"-->
+    <!--android:singleLine="false"-->
+    <!--android:text="@string/lbl_tab_to_select_colour" />-->
 
-        <Button
-            android:id="@+id/btn_import_dash_img"
-            style="@style/blockItemStyle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/btn_round"
-            android:text="@string/lbl_import" />
-    </android.support.v7.widget.LinearLayoutCompat>
+
+    <!--<SeekBar-->
+    <!--android:id="@+id/dash_sb_bg"-->
+    <!--style="@style/Widget.AppCompat.SeekBar.Discrete"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_column="0"-->
+    <!--android:layout_columnWeight="1"-->
+    <!--android:layout_gravity="fill"-->
+    <!--android:layout_row="1"-->
+    <!--android:max="100"-->
+    <!--android:progress="1" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/dash_btn_img"-->
+    <!--style="@style/blockItemStyle"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="100dp"-->
+    <!--android:layout_column="1"-->
+    <!--android:layout_columnWeight="1"-->
+    <!--android:layout_gravity="fill"-->
+    <!--android:layout_row="0"-->
+    <!--android:layout_rowWeight="1"-->
+    <!--android:background="@drawable/btn_round"-->
+    <!--android:singleLine="false"-->
+    <!--android:text="@string/lbl_tab_to_select_image" />-->
+
+    <!--<SeekBar-->
+    <!--android:id="@+id/dash_sb_img"-->
+    <!--style="@style/Widget.AppCompat.SeekBar.Discrete"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_column="1"-->
+    <!--android:layout_columnWeight="1"-->
+    <!--android:layout_gravity="fill"-->
+    <!--android:layout_row="1"-->
+    <!--android:max="100"-->
+    <!--android:progress="1" />-->
+
+    <!--</GridLayout>-->
 </LinearLayout>

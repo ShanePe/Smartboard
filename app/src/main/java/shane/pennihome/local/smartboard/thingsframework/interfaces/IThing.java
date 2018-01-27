@@ -8,12 +8,12 @@ import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListen
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
-import shane.pennihome.local.smartboard.thingsframework.listeners.onThingListener;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.listeners.onThingListener;
 
-import static shane.pennihome.local.smartboard.thingsframework.interfaces.IThing.Types.*;
+import static shane.pennihome.local.smartboard.thingsframework.interfaces.IThing.Types.values;
 
 /**
  * Created by shane on 29/12/17.
@@ -21,34 +21,50 @@ import static shane.pennihome.local.smartboard.thingsframework.interfaces.IThing
 
 @SuppressWarnings({"DefaultFileTemplate", "unused"})
 public abstract class IThing extends IDatabaseObject {
-    public enum Sources {SmartThings, PhilipsHue}
-    public enum Types {Switch, Routine}
-
-
+    @SuppressWarnings("FieldCanBeLocal")
+    private final String mInstance;
     private transient onThingListener mOnThingListener;
     private String mId;
     private Sources mSources;
-    @SuppressWarnings("FieldCanBeLocal")
-    private final String mInstance;
-
     @IgnoreOnCopy
     private IBlock mBlock;
-
     public IThing() {
         mInstance = this.getClass().getSimpleName();
     }
 
-    public abstract String getFriendlyName();
-    public abstract Things getFilteredView(Things source);
-    public abstract Class getBlockType();
-    public abstract Types getThingType();
-    public abstract IThingUIHandler getUIHandler();
-    protected abstract void successfulToggle(@SuppressWarnings("unused") IThing thing);
-    public abstract int getDefaultIconResource();
-
     private static <V extends IThing> V fromJson(Class<V> cls, String json) {
         return JsonBuilder.Get().fromJson(json, cls);
     }
+
+    public static int GetTypeID(IThing thing) {
+        return thing.getThingType().ordinal();
+    }
+
+    public static IThing CreateByTypeID(int i) throws Exception {
+        IThing.Types enumVal = values()[i];
+        switch (enumVal) {
+            case Switch:
+                return new Switch();
+            case Routine:
+                return new Routine();
+            default:
+                throw new Exception("Invalid Type to create");
+        }
+    }
+
+    public abstract String getFriendlyName();
+
+    public abstract Things getFilteredView(Things source);
+
+    public abstract Class getBlockType();
+
+    public abstract Types getThingType();
+
+    public abstract IThingUIHandler getUIHandler();
+
+    protected abstract void successfulToggle(@SuppressWarnings("unused") IThing thing);
+
+    public abstract int getDefaultIconResource();
 
     public Sources getSource() {
         return mSources;
@@ -64,10 +80,6 @@ public abstract class IThing extends IDatabaseObject {
 
     public void setId(String id) {
         this.mId = id;
-    }
-
-    public void setOnThingListener(onThingListener onThingListener) {
-        mOnThingListener = onThingListener;
     }
 
     public void Toggle() {
@@ -131,23 +143,9 @@ public abstract class IThing extends IDatabaseObject {
         mBlock = block;
     }
 
-    public static int GetTypeID(IThing thing) {
-        return thing.getThingType().ordinal();
-    }
-
     String getKey()
     {
         return String.format("%s%s%s%s", getId(), getName(), getSource(), getThingType());
-    }
-
-    public static IThing CreateByTypeID(int i) throws Exception {
-        IThing.Types enumVal = values()[i];
-        switch (enumVal)
-        {
-            case Switch:return new Switch();
-            case Routine:return new Routine();
-            default:throw new Exception("Invalid Type to create");
-        }
     }
 
     protected onThingListener getOnThingListener()
@@ -155,9 +153,17 @@ public abstract class IThing extends IDatabaseObject {
         return mOnThingListener;
     }
 
+    public void setOnThingListener(onThingListener onThingListener) {
+        mOnThingListener = onThingListener;
+    }
+
     public IThing newInstanceFrom(IThing thing)
     {
         thing.setBlock(getBlock());
         return thing;
     }
+
+    public enum Sources {SmartThings, PhilipsHue}
+
+    public enum Types {Switch, Routine}
 }

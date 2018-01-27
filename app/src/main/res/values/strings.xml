@@ -46,4 +46,6 @@
     <string name="lbl_gallery">Gallery</string>
     <string name="lbl_import">Import</string>
     <string name="lbl_background_image">Background Image</string>
+    <string name="lbl_tab_to_select_colour">Tab to select colour</string>
+    <string name="lbl_tab_to_select_image">Tab to select image</string>
 </resources>

@@ -18,14 +18,14 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Group;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.SpinnerThingAdapter;
 import shane.pennihome.local.smartboard.thingsframework.Things;
-import shane.pennihome.local.smartboard.ui.UIHelper;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandler;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
+import shane.pennihome.local.smartboard.ui.UIHelper;
 
 /**
  * Created by SPennicott on 17/01/2018.
@@ -85,7 +85,7 @@ public class RoutineThingHandler extends IThingUIHandler {
         final Button btnBGColour = view.findViewById(R.id.rt_btn_clr_bg_Off);
         final Button btnFGColour = view.findViewById(R.id.rt_btn_clr_fg_Off);
 
-        SeekBar sbTransOff = view.findViewById(R.id.rt_transOff);
+        final SeekBar sbTransOff = view.findViewById(R.id.rt_transOff);
 
         SpinnerThingAdapter aptr = new SpinnerThingAdapter(activity);
         aptr.setThings(things);
@@ -151,10 +151,12 @@ public class RoutineThingHandler extends IThingUIHandler {
                     public void complete(boolean success, Object source) {
                         @ColorInt int clr = (int) source;
                         getThing().getBlock().setBackgroundColour(clr);
+                        getThing().getBlock().setBackgroundTransparency(100);
                         if (group != null) {
                             group.setDefaultBlockBackgroundColourOff(clr);
                         }
-                        btnBGColour.setBackgroundColor(getThing().getBlock().getBackgroundColour());
+                        btnBGColour.setBackgroundColor(getThing().getBlock().getBackgroundColourWithAlpha());
+                        sbTransOff.setProgress(100);
                     }
                 });
             }

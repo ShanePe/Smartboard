@@ -7,7 +7,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -25,7 +29,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -225,23 +228,27 @@ public class UIHelper {
         }
     }
 
-    public static String handleImageResult(Context context, int code, Intent data, ImageView preview)
+    public static String handleImageResult(Context context, int code, Intent data, View preview, int alpha)
     {
         String result = "";
-        if(code == IMAGE_RESULT)
-        {
+        if (code == IMAGE_RESULT) {
             result = saveImage(context, data.getData());
-            Bitmap bitmap = BitmapFactory.decodeFile(result);
-            preview.setImageBitmap(bitmap);
-        }
-        else if(code == CAMERA_RESULT)
-        {
+            if (preview != null) {
+                Bitmap bitmap = BitmapFactory.decodeFile(result);
+                Drawable drawable = new BitmapDrawable(context.getResources(), bitmap);
+                drawable.setAlpha((255 / 100 * alpha));
+                preview.setBackground(drawable);
+            }
+        } else if (code == CAMERA_RESULT) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             result = saveBitmap(context, imageBitmap);
-            preview.setImageBitmap(imageBitmap);
+            if (preview != null) {
+                Drawable drawable = new BitmapDrawable(context.getResources(), imageBitmap);
+                drawable.setAlpha((255 / 100 * alpha));
+                preview.setBackground(drawable);
+            }
         }
-
         return result;
     }
 
@@ -396,6 +403,26 @@ public class UIHelper {
         return Color.argb(alpha, r, g, b);
     }
 
+    public static Drawable generateImage(Context context, @ColorInt int backClr, int backClrAlphaPerc, Bitmap image, int imageAlphaPerc, int width, int height) {
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        if (backClr != 0) {
+            Paint bgPainter = new Paint();
+            bgPainter.setColor(getColorWithAlpha(backClr, backClrAlphaPerc / 100f));
+            bgPainter.setStyle(Paint.Style.FILL);
+            canvas.drawPaint(bgPainter);
+        }
+        if (image != null) {
+            Paint imgPainter = new Paint();
+            if (imageAlphaPerc > 0)
+                imgPainter.setAlpha(255 / 100 * imageAlphaPerc);
+            Bitmap scaled = Bitmap.createScaledBitmap(image, width, height, true);
+            canvas.drawBitmap(scaled, 0, 0, imgPainter);
+        }
+
+        return new BitmapDrawable(context.getResources(), bitmap);
+    }
+
     public static void ShowInput(final Context context, String title, final OnProcessCompleteListener onProcessCompleteListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title);
@@ -466,5 +493,17 @@ public class UIHelper {
         });
 
         builder.show();
+    }
+
+    public static Drawable getImageFromFile(Context context, String sFile, int alpha) {
+        Drawable drawable = getImageFromFile(context, sFile);
+        drawable.setAlpha((255 / 100 * alpha));
+        return drawable;
+    }
+
+    public static Drawable getImageFromFile(Context context, String sFile) {
+        Bitmap bitmap = BitmapFactory.decodeFile(sFile);
+        Drawable drawable = new BitmapDrawable(context.getResources(), bitmap);
+        return drawable;
     }
 }

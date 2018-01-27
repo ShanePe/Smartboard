@@ -2,8 +2,8 @@ package shane.pennihome.local.smartboard.things.switches.block;
 
 import android.support.annotation.ColorInt;
 
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 
 /**
@@ -16,7 +16,15 @@ public class SwitchBlock extends IBlock {
     int mForeColourOn;
     private @ColorInt
     int mBackColourOn;
-    private float mBackTransOn;
+    private int mBackTransOn;
+
+    public static SwitchBlock Load(String json) {
+        try {
+            return IDatabaseObject.Load(SwitchBlock.class, json);
+        } catch (Exception e) {
+            return new SwitchBlock();
+        }
+    }
 
     @ColorInt
     int getForeColourOn() {
@@ -36,26 +44,18 @@ public class SwitchBlock extends IBlock {
         this.mBackColourOn = backgroundColour;
     }
 
-    float getBackgroundTransparencyOn() {
+    int getBackgroundTransparencyOn() {
         return mBackTransOn;
     }
 
-    public void setBackgroundTransparencyOn(float backgroundTransparency) {
+    public void setBackgroundTransparencyOn(int backgroundTransparency) {
         this.mBackTransOn = backgroundTransparency;
     }
 
     @ColorInt
     int getBackgroundColourWithAlphaOn()
     {
-        return UIHelper.getColorWithAlpha(getBackgroundColourOn(), getBackgroundTransparencyOn() / 100);
-    }
-
-    public static SwitchBlock Load(String json) {
-        try {
-            return IDatabaseObject.Load(SwitchBlock.class, json);
-        } catch (Exception e) {
-            return new SwitchBlock();
-        }
+        return UIHelper.getColorWithAlpha(getBackgroundColourOn(), getBackgroundTransparencyOn() / 100f);
     }
 
 

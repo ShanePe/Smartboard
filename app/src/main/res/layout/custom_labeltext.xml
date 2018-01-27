@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/def_tb_lbl"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:labelFor="@+id/def_tb_txt" />
+
+        <EditText
+            android:id="@+id/def_tb_txt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/textbox_default"
+            android:inputType="text"
+            android:paddingBottom="3dp"
+            android:paddingEnd="2dp"
+            android:paddingStart="5dp"
+            android:textColor="?android:attr/textColorPrimaryInverseNoDisable" />
+    </android.support.v7.widget.LinearLayoutCompat>
+</merge>

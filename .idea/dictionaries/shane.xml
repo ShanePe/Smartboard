@@ -8,7 +8,10 @@
       <w>aptr</w>
       <w>authst</w>
       <w>avancement</w>
+      <w>backgroundimagetrans</w>
+      <w>bgselector</w>
       <w>brid</w>
+      <w>cardview</w>
       <w>ccvh</w>
       <w>cevh</w>
       <w>clrs</w>
@@ -65,6 +68,7 @@
       <w>stlogo</w>
       <w>swipeable</w>
       <w>switchblock</w>
+      <w>textbox</w>
       <w>toggler</w>
       <w>vgap</w>
       <w>webside</w>

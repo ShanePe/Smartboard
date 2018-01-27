@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill"
+        android:layout_margin="4dp"
+        android:clipChildren="true"
+        android:clipToPadding="true"
+        android:columnCount="2"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        android:rowCount="2">
+
+        <Button
+            android:id="@+id/cbv_btn_bg"
+            style="@style/blockItemStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:background="@drawable/btn_round"
+            android:singleLine="false"
+            android:text="@string/lbl_tab_to_select_colour" />
+
+
+        <SeekBar
+            android:id="@+id/cbv_sb_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:layout_row="1"
+            android:max="100"
+            android:progress="1" />
+
+        <Button
+            android:id="@+id/cbv_btn_img"
+            style="@style/blockItemStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:background="@drawable/btn_round"
+            android:singleLine="false"
+            android:text="@string/lbl_tab_to_select_image" />
+
+        <SeekBar
+            android:id="@+id/cbv_sb_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:layout_row="1"
+            android:max="100"
+            android:progress="1" />
+
+    </GridLayout>
+</merge>

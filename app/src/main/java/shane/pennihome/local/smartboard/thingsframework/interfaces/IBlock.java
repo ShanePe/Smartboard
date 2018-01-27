@@ -20,7 +20,7 @@ public abstract class IBlock extends IDatabaseObject {
     private @ColorInt
     int mBackColour;
     private String mInstance;
-    private float mBackTrans;
+    private int mBackTrans;
 
     public IBlock() {
         mInstance = this.getClass().getSimpleName();
@@ -65,17 +65,17 @@ public abstract class IBlock extends IDatabaseObject {
         this.mBackColour = backgroundColour;
     }
 
-    public float getBackgroundTransparency() {
+    public int getBackgroundTransparency() {
         return mBackTrans;
     }
 
-    public void setBackgroundTransparency(float backgroundTransparency) {
+    public void setBackgroundTransparency(int backgroundTransparency) {
         this.mBackTrans = backgroundTransparency;
     }
 
     @ColorInt
     public int getBackgroundColourWithAlpha()
     {
-        return UIHelper.getColorWithAlpha(getBackgroundColour(), getBackgroundTransparency() / 100);
+        return UIHelper.getColorWithAlpha(getBackgroundColour(), getBackgroundTransparency() / 100f);
     }
 }
