@@ -1,7 +1,8 @@
-package shane.pennihome.local.smartboard.things.routines.block;
+package shane.pennihome.local.smartboard.things.routines;
 
 import android.app.Activity;
 import android.support.annotation.ColorInt;
+import android.support.design.widget.TabLayout;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandl
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
 import shane.pennihome.local.smartboard.ui.ThingBackground;
 import shane.pennihome.local.smartboard.ui.ThingProperties;
+import shane.pennihome.local.smartboard.ui.ViewSwiper;
 
 /**
  * Created by SPennicott on 17/01/2018.
@@ -29,7 +31,11 @@ public class RoutineThingHandler extends IThingUIHandler {
 
     @Override
     public void buildBlockPropertyView(final Activity activity, View view, Things things, final Group group) {
-        DoTabs(view, R.id.rt_tab1_btn, R.id.rt_tab2_btn, R.id.rt_tab_prop, R.id.rt_tab_background);
+        ViewSwiper viewSwiper = view.findViewById(R.id.rt_swiper);
+        TabLayout tabLayout = view.findViewById(R.id.rt_tabs);
+        viewSwiper.setTabLayout(tabLayout);
+        viewSwiper.getViewAdapter().addView("Properties", R.id.rt_tab_properties);
+        viewSwiper.getViewAdapter().addView("Colours", R.id.rt_tab_background);
 
         ThingProperties tpProps = view.findViewById(R.id.rt_properties);
         ThingBackground tpBackground = view.findViewById(R.id.rt_background);

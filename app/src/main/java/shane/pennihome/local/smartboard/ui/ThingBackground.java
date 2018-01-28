@@ -2,6 +2,7 @@ package shane.pennihome.local.smartboard.ui;
 
 import android.content.Context;
 import android.support.annotation.ColorInt;
+import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -95,6 +96,13 @@ public class ThingBackground extends LinearLayoutCompat {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        ViewSwiper mSwiper = this.findViewById(R.id.prop_bg_swiper);
+        TabLayout mTablayout = this.findViewById(R.id.prop_bg_tabs);
+
+        mSwiper.setTabLayout(mTablayout);
+        mSwiper.getViewAdapter().addView("Background", R.id.prop_bg_tab_bgclr);
+        mSwiper.getViewAdapter().addView("Foreground", R.id.prop_bg_tab_fgclr);
+
         mBackgroundSelector = this.findViewById(R.id.prop_bg_clr);
         mForgroundSelector = this.findViewById(R.id.prop_fg_clr);
 

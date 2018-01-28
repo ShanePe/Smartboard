@@ -348,6 +348,9 @@ public class UIHelper {
     }
 
     public static Drawable generateImage(Context context, @ColorInt int backClr, int backClrAlphaPerc, Bitmap image, int imageAlphaPerc, int width, int height, boolean roundCrns) {
+        if (width == 0) width = 100;
+        if (height == 0) height = 50;
+
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 

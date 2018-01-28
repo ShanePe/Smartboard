@@ -54,7 +54,7 @@ public class ViewSwiper extends ViewPager {
             this.mTabs = new ArrayList<>();
         }
 
-        void addView(String name, int ResId) {
+        public void addView(String name, int ResId) {
             mTabs.add(new Pair<>(name, ResId));
             notifyDataSetChanged();
         }

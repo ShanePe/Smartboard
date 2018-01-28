@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.things.switches.block;
+package shane.pennihome.local.smartboard.things.switches;
 
 import android.app.Activity;
 import android.support.annotation.ColorInt;

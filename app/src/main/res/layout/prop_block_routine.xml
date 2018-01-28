@@ -4,67 +4,41 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <android.support.design.widget.TabLayout
+        android:id="@+id/rt_tabs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
-        <ToggleButton
-            android:id="@+id/rt_tab1_btn"
-            style="@android:style/Widget.DeviceDefault.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/btn_tab"
-            android:checked="true"
-            android:text="@string/lbl_properties"
-            android:textOff="@string/lbl_properties"
-            android:textOn="@string/lbl_properties" />
+    </android.support.design.widget.TabLayout>
 
-        <ToggleButton
-            android:id="@+id/rt_tab2_btn"
-            style="@android:style/Widget.DeviceDefault.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/btn_tab"
-            android:text="@string/lbl_background"
-            android:textOff="@string/lbl_background"
-            android:textOn="@string/lbl_background" />
-
-
-    </android.support.v7.widget.LinearLayoutCompat>
-
-
-    <View
+    <shane.pennihome.local.smartboard.ui.ViewSwiper
+        android:id="@+id/rt_swiper"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorAccent" />
+        android:layout_height="match_parent">
 
-    <android.support.v7.widget.LinearLayoutCompat
-        android:id="@+id/rt_tab_prop"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:orientation="vertical">
-
-        <shane.pennihome.local.smartboard.ui.ThingProperties
-            android:id="@+id/rt_properties"
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/rt_tab_properties"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </android.support.v7.widget.LinearLayoutCompat>
+            android:layout_height="wrap_content">
 
-    <android.support.v7.widget.LinearLayoutCompat
-        android:id="@+id/rt_tab_background"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:orientation="vertical">
+            <shane.pennihome.local.smartboard.ui.ThingProperties
+                android:id="@+id/rt_properties"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.v7.widget.LinearLayoutCompat>
 
-        <shane.pennihome.local.smartboard.ui.ThingBackground
-            android:id="@+id/rt_background"
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/rt_tab_background"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
 
-    </android.support.v7.widget.LinearLayoutCompat>
+            <shane.pennihome.local.smartboard.ui.ThingBackground
+                android:id="@+id/rt_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+    </shane.pennihome.local.smartboard.ui.ViewSwiper>
 </android.support.v7.widget.LinearLayoutCompat>

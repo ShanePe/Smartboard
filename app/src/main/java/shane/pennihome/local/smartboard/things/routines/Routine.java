@@ -2,11 +2,9 @@ package shane.pennihome.local.smartboard.things.routines;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandler;
-import shane.pennihome.local.smartboard.things.routines.block.RoutineBlock;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
-import shane.pennihome.local.smartboard.things.routines.block.RoutineThingHandler;
 import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandler;
 
 /**
  * Created by shane on 28/12/17.

@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.things.switches.block;
+package shane.pennihome.local.smartboard.things.switches;
 
 import android.support.annotation.ColorInt;
 
@@ -31,7 +31,7 @@ public class SwitchBlock extends IBlock {
         return mForeColourOn;
     }
 
-    public void setForeColourOn(@ColorInt int foreColour) {
+    void setForeColourOn(@ColorInt int foreColour) {
         mForeColourOn = foreColour;
     }
 
@@ -40,7 +40,7 @@ public class SwitchBlock extends IBlock {
         return mBackColourOn;
     }
 
-    public void setBackgroundColourOn(@ColorInt int backgroundColour) {
+    void setBackgroundColourOn(@ColorInt int backgroundColour) {
         this.mBackColourOn = backgroundColour;
     }
 
@@ -48,7 +48,7 @@ public class SwitchBlock extends IBlock {
         return mBackTransOn;
     }
 
-    public void setBackgroundTransparencyOn(int backgroundTransparency) {
+    void setBackgroundTransparencyOn(int backgroundTransparency) {
         this.mBackTransOn = backgroundTransparency;
     }
 

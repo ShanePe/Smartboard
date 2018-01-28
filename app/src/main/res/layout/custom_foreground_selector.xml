@@ -13,7 +13,8 @@
             android:layout_gravity="fill"
             android:background="@android:color/transparent"
             android:singleLine="false"
-            android:text="@string/lbl_tab_to_select_colour" />
+            android:text="@string/lbl_tab_to_select_colour"
+            android:textColor="@color/colorAccent" />
     </android.support.v7.widget.LinearLayoutCompat>
 
 </merge>

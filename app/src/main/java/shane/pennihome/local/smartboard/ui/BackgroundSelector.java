@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -28,11 +29,9 @@ import shane.pennihome.local.smartboard.ui.listeners.OnBackgroundActionListener;
 
 @SuppressWarnings({"DefaultFileTemplate", "unused"})
 public class BackgroundSelector extends LinearLayoutCompat {
-    private ImageButton mBtnBGImg = null;
     private SeekBar msbBGImg = null;
-    private ImageButton mBtnBGClr = null;
     private SeekBar msbBGClr = null;
-//    private ViewSwiper mViewSwiper = null;
+    //    private ViewSwiper mViewSwiper = null;
 
     private ImageView mPreview;
 
@@ -160,10 +159,11 @@ public class BackgroundSelector extends LinearLayoutCompat {
 
 
         mPreview = this.findViewById(R.id.cbv_preview);
-        mBtnBGClr = this.findViewById(R.id.cbv_colour);
-        mBtnBGImg = this.findViewById(R.id.cbv_image);
+        ImageButton mBtnBGClr = this.findViewById(R.id.cbv_colour);
+        ImageButton mBtnBGImg = this.findViewById(R.id.cbv_image);
         msbBGClr = this.findViewById(R.id.cbv_colour_trans);
         msbBGImg = this.findViewById(R.id.cbv_image_trans);
+        ImageButton mBtnReset = this.findViewById(R.id.cbv_reset);
 
         final Context context = this.getContext();
         mBtnBGClr.setOnClickListener(new View.OnClickListener() {
@@ -233,11 +233,17 @@ public class BackgroundSelector extends LinearLayoutCompat {
             }
         });
 
+        mBtnReset.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setInitialValues(Color.TRANSPARENT, 100, null, 100);
+            }
+        });
+
         doPropertyChange(false);
     }
 
     private void doPropertyChange(final boolean delayPreview) {
-        if (mImage != null) {
             if (mRenderThread != null) {
                 mRenderThread.interrupt();
                 mRenderThread = null;
@@ -256,9 +262,9 @@ public class BackgroundSelector extends LinearLayoutCompat {
             });
 
             mRenderThread.start();
-        }
 
-        mBtnBGClr.setBackground(UIHelper.getButtonShape(UIHelper.getColorWithAlpha(mColour, mTransparency / 100f)));
+
+        //mBtnBGClr.setBackground(UIHelper.getButtonShape(UIHelper.getColorWithAlpha(mColour, mTransparency / 100f)));
 
         msbBGImg.setProgress(mImageTransparency);
         msbBGClr.setProgress(mTransparency);
@@ -268,10 +274,6 @@ public class BackgroundSelector extends LinearLayoutCompat {
     }
 
     private void renderPreview() {
-        if (mBtnBGImg == null)
-            return;
-
-
         Bitmap bitmap = null;
         if (!TextUtils.isEmpty(mImage))
             bitmap = BitmapFactory.decodeFile(mImage);

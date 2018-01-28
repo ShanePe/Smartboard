@@ -5,11 +5,9 @@ import android.graphics.Color;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandler;
-import shane.pennihome.local.smartboard.things.switches.block.SwitchBlock;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
-import shane.pennihome.local.smartboard.things.switches.block.SwitchThingHandler;
 import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandler;
 
 /**
  * Created by shane on 28/12/17.

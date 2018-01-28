@@ -9,6 +9,7 @@
       <w>authst</w>
       <w>avancement</w>
       <w>backgroundimagetrans</w>
+      <w>bgclr</w>
       <w>bgselector</w>
       <w>blockheight</w>
       <w>brid</w>
@@ -30,6 +31,7 @@
       <w>dispname</w>
       <w>doclava</w>
       <w>doctitle</w>
+      <w>fgclr</w>
       <w>foote</w>
       <w>forground</w>
       <w>genymotion</w>
@@ -62,6 +64,7 @@
       <w>retrier</w>
       <w>routineblock</w>
       <w>samsung</w>
+      <w>seekbar</w>
       <w>serveur</w>
       <w>setm</w>
       <w>sharedpref</w>
@@ -72,6 +75,7 @@
       <w>swipeable</w>
       <w>swiper</w>
       <w>switchblock</w>
+      <w>tablayout</w>
       <w>textbox</w>
       <w>toggler</w>
       <w>vgap</w>
