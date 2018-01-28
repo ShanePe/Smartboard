@@ -8,6 +8,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Pair;
+import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -49,9 +50,11 @@ public class ViewSwiper extends ViewPager {
 
     public class ViewAdapter extends PagerAdapter {
         final ArrayList<Pair<String, Integer>> mTabs;
+        final SparseArray<View> mViewCache;
 
         ViewAdapter() {
             this.mTabs = new ArrayList<>();
+            mViewCache = new SparseArray<>();
         }
 
         public void addView(String name, int ResId) {
@@ -72,7 +75,26 @@ public class ViewSwiper extends ViewPager {
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            return findViewById(mTabs.get(position).second);
+            if (mViewCache.get(position) == null)
+                mViewCache.put(position, findViewById(mTabs.get(position).second));
+
+            View view = mViewCache.get(position);
+            boolean hasView = false;
+            for (int i = 0; i < container.getChildCount(); i++)
+                if (container.getChildAt(i).equals(view)) {
+                    hasView = true;
+                    break;
+                }
+
+            if (!hasView)
+                container.addView(view);
+
+            return view;
+        }
+
+        @Override
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+            container.removeView((View) object);
         }
 
         @Nullable

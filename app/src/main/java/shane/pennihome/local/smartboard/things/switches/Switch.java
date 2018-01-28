@@ -56,12 +56,12 @@ public class Switch extends IThing {
 
         SwitchBlock block = (SwitchBlock)getBlock();
 
-        block.setBackgroundTransparencyOn(100);
+        block.setBackgroundColourTransparencyOn(100);
         block.setBackgroundColourOn(group.getDefaultBlockBackgroundColourOn() != 0 ?
                 group.getDefaultBlockBackgroundColourOn() :
                 Color.parseColor("#FF4081"));
 
-        block.setForeColourOn(group.getDefaultBlockForeColourOn() != 0 ?
+        block.setForegroundColourOn(group.getDefaultBlockForeColourOn() != 0 ?
                 group.getDefaultBlockForeColourOn() :
                 Color.parseColor("black"));
     }

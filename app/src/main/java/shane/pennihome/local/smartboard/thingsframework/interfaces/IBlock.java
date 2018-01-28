@@ -55,11 +55,11 @@ public abstract class IBlock extends IDatabaseObject {
     }
 
     public @ColorInt
-    int getForeColour() {
+    int getForegroundColour() {
         return mForeColour;
     }
 
-    public void setForeColour(@ColorInt int foreColour) {
+    public void setForegroundColour(@ColorInt int foreColour) {
         mForeColour = foreColour;
     }
 

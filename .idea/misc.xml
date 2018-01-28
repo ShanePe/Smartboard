@@ -2327,6 +2327,38 @@
     <pattern value="com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils" method="releaseAll" />
     <pattern value="com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils" method="findWrappedAdapter" />
     <pattern value="com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="setForegroundColourOff" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="getForegroundColourOff" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="setBackgroundColourTransparencyOff" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="getBackgroundColourTransparencyOff" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="setBackgroundColourOff" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="getBackgroundColourOff" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="setForegroundColourOn" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="getForegroundColourOn" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="setBackgroundColourTransparencyOn" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="getBackgroundColourTransparencyOn" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="setBackgroundColourOn" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="getBackgroundColourOn" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="setBackgroundImageTransparencyOn" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="getBackgroundImageTransparencyOn" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="setBackgroundImageOn" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="getBackgroundImageOn" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="setBackgroundImageTransparencyOff" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="getBackgroundImageTransparencyOff" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="setBackgroundImageOff" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="getBackgroundImageOff" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="setBackgroundColourTransparency" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="getBackgroundColourTransparency" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="setForegroundColour" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="getForegroundColour" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="setBackgroundColour" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="getBackgroundColour" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="setBackgroundImageTransparency" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="getBackgroundImageTransparency" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="setBackgroundImage" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="getBackgroundImage" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

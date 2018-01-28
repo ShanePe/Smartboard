@@ -114,7 +114,7 @@ public abstract class IThing extends IDatabaseObject {
                 group.getDefaultBlockBackgroundColourOff() :
                 Color.parseColor("#ff5a595b"));
 
-        getBlock().setForeColour(group.getDefaultBlockForeColourOff() != 0 ?
+        getBlock().setForegroundColour(group.getDefaultBlockForeColourOff() != 0 ?
                 group.getDefaultBlockForeColourOff() :
                 Color.WHITE);
 

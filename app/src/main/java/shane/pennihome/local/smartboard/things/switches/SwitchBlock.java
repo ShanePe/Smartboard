@@ -17,6 +17,9 @@ public class SwitchBlock extends IBlock {
     private @ColorInt
     int mBackColourOn;
     private int mBackTransOn;
+    private String mBackgroundImageOn;
+    private int mBackgroundImageTransparencyOn;
+
 
     public static SwitchBlock Load(String json) {
         try {
@@ -27,11 +30,11 @@ public class SwitchBlock extends IBlock {
     }
 
     @ColorInt
-    int getForeColourOn() {
+    int getForegroundColourOn() {
         return mForeColourOn;
     }
 
-    void setForeColourOn(@ColorInt int foreColour) {
+    void setForegroundColourOn(@ColorInt int foreColour) {
         mForeColourOn = foreColour;
     }
 
@@ -44,18 +47,34 @@ public class SwitchBlock extends IBlock {
         this.mBackColourOn = backgroundColour;
     }
 
-    int getBackgroundTransparencyOn() {
+    int getBackgroundColourTransparencyOn() {
         return mBackTransOn;
     }
 
-    void setBackgroundTransparencyOn(int backgroundTransparency) {
+    void setBackgroundColourTransparencyOn(int backgroundTransparency) {
         this.mBackTransOn = backgroundTransparency;
+    }
+
+    String getBackgroundImageOn() {
+        return mBackgroundImageOn;
+    }
+
+    void setBackgroundImageOn(String backgroundImageOn) {
+        mBackgroundImageOn = backgroundImageOn;
+    }
+
+    int getBackgroundImageTransparencyOn() {
+        return mBackgroundImageTransparencyOn;
+    }
+
+    void setBackgroundImageTransparencyOn(int backgroundImageTransparencyOn) {
+        mBackgroundImageTransparencyOn = backgroundImageTransparencyOn;
     }
 
     @ColorInt
     int getBackgroundColourWithAlphaOn()
     {
-        return UIHelper.getColorWithAlpha(getBackgroundColourOn(), getBackgroundTransparencyOn() / 100f);
+        return UIHelper.getColorWithAlpha(getBackgroundColourOn(), getBackgroundColourTransparencyOn() / 100f);
     }
 
 

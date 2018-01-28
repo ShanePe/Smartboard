@@ -17,7 +17,7 @@ import shane.pennihome.local.smartboard.ui.listeners.OnForegroundActionListener;
  */
 
 @SuppressWarnings("DefaultFileTemplate")
-public class ThingBackground extends LinearLayoutCompat {
+public class ThingPropertiesClrSelector extends LinearLayoutCompat {
     private String mBackgroundImage;
     private int mBackgroundImageTransparency;
     @ColorInt
@@ -29,17 +29,17 @@ public class ThingBackground extends LinearLayoutCompat {
     private BackgroundSelector mBackgroundSelector;
     private ForegroundSelector mForgroundSelector;
 
-    public ThingBackground(Context context) {
+    public ThingPropertiesClrSelector(Context context) {
         super(context);
         initializeViews(context);
     }
 
-    public ThingBackground(Context context, AttributeSet attrs) {
+    public ThingPropertiesClrSelector(Context context, AttributeSet attrs) {
         super(context, attrs);
         initializeViews(context);
     }
 
-    public ThingBackground(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ThingPropertiesClrSelector(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initializeViews(context);
     }
@@ -90,16 +90,16 @@ public class ThingBackground extends LinearLayoutCompat {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
-        inflater.inflate(R.layout.custom_thing_background, this);
+        inflater.inflate(R.layout.custom_thing_bg_selector, this);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         ViewSwiper mSwiper = this.findViewById(R.id.prop_bg_swiper);
-        TabLayout mTablayout = this.findViewById(R.id.prop_bg_tabs);
+        TabLayout mTabLayout = this.findViewById(R.id.prop_bg_tabs);
 
-        mSwiper.setTabLayout(mTablayout);
+        mSwiper.setTabLayout(mTabLayout);
         mSwiper.getViewAdapter().addView("Background", R.id.prop_bg_tab_bgclr);
         mSwiper.getViewAdapter().addView("Foreground", R.id.prop_bg_tab_fgclr);
 
@@ -152,7 +152,7 @@ public class ThingBackground extends LinearLayoutCompat {
         mBackgroundImage = thing.getBlock().getBackgroundImage();
         mBackgroundImageTransparency = thing.getBlock().getBackgroundImageTransparency();
 
-        mForegroundColour = thing.getBlock().getForeColour();
+        mForegroundColour = thing.getBlock().getForegroundColour();
 
         doPropertyChange();
     }
@@ -163,6 +163,6 @@ public class ThingBackground extends LinearLayoutCompat {
         thing.getBlock().setBackgroundImage(mBackgroundImage);
         thing.getBlock().setBackgroundImageTransparency(mBackgroundImageTransparency);
 
-        thing.getBlock().setForeColour(mForegroundColour);
+        thing.getBlock().setForegroundColour(mForegroundColour);
     }
 }

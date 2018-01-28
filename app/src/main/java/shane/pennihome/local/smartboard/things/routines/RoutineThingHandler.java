@@ -15,8 +15,8 @@ import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandler;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
-import shane.pennihome.local.smartboard.ui.ThingBackground;
 import shane.pennihome.local.smartboard.ui.ThingProperties;
+import shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector;
 import shane.pennihome.local.smartboard.ui.ViewSwiper;
 
 /**
@@ -38,7 +38,7 @@ public class RoutineThingHandler extends IThingUIHandler {
         viewSwiper.getViewAdapter().addView("Colours", R.id.rt_tab_background);
 
         ThingProperties tpProps = view.findViewById(R.id.rt_properties);
-        ThingBackground tpBackground = view.findViewById(R.id.rt_background);
+        ThingPropertiesClrSelector tpBackground = view.findViewById(R.id.rt_background);
 
         tpProps.initialise(things, getThing());
         tpBackground.initialise(getThing());
@@ -47,7 +47,7 @@ public class RoutineThingHandler extends IThingUIHandler {
     @Override
     public void populateBlockFromView(View view, OnThingSetListener onThingSetListener) {
         ThingProperties tbProps = view.findViewById(R.id.rt_properties);
-        ThingBackground tbBackground = view.findViewById(R.id.rt_background);
+        ThingPropertiesClrSelector tbBackground = view.findViewById(R.id.rt_background);
 
         tbProps.populate(getThing(), null);
         tbBackground.populate(getThing());
@@ -72,7 +72,7 @@ public class RoutineThingHandler extends IThingUIHandler {
         holder.mBaSize.setText(String.format("%s x %s", getThing().getBlock().getWidth(), getThing().getBlock().getHeight()));
 
         @ColorInt final int bgClr = getThing().getBlock().getBackgroundColourWithAlpha();
-        @ColorInt int fgClr = getThing().getBlock().getForeColour();
+        @ColorInt int fgClr = getThing().getBlock().getForegroundColour();
 
         // getThing().getBlock().renderBackground(holder.mLayout);
         holder.mLayout.setBackgroundColor(bgClr);

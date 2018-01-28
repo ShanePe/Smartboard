@@ -45,6 +45,11 @@ public abstract class IThingUIHandler {
         mIThing = thing;
     }
 
+    public <E extends IThing> E getThing(Class<E> cls) {
+        //noinspection unchecked
+        return (E) getThing();
+    }
+
     protected void DoTabs(View view, int propToggleBtn, int propBGBtn, int tabPropView, int tabBGView) {
         final ToggleButton btnTabProp = view.findViewById(propToggleBtn);
         final ToggleButton btnTabBg = view.findViewById(propBGBtn);
