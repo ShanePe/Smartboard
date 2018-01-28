@@ -1,7 +1,6 @@
 package shane.pennihome.local.smartboard.ui;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -31,13 +30,11 @@ import shane.pennihome.local.smartboard.ui.listeners.OnBackgroundActionListener;
 public class BackgroundSelector extends LinearLayoutCompat {
     private SeekBar msbBGImg = null;
     private SeekBar msbBGClr = null;
-    //    private ViewSwiper mViewSwiper = null;
-
+    private ImageButton mBtnBGClr;
     private ImageView mPreview;
 
     private OnBackgroundActionListener mBackgroundActionListener;
     private Thread mRenderThread;
-//    private int mBtnHeight;
 
     @ColorInt
     private
@@ -111,9 +108,6 @@ public class BackgroundSelector extends LinearLayoutCompat {
     }
 
     private void handleAttrs(Context context, AttributeSet attrs) {
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BackgroundSelector, 0, 0);
-        //      mBtnHeight = a.getInt(R.styleable.BackgroundSelector_blockheight,100);
-        a.recycle();
     }
 
     public void setInitialValues(@ColorInt int colour, int transparency, String image, int imageTransparency) {
@@ -142,27 +136,12 @@ public class BackgroundSelector extends LinearLayoutCompat {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-//        ViewSwiper swiper = this.findViewById(R.id.cbv_switcher);
-//        TabLayout tabs = this.findViewById(R.id.cbv_tab);
-//        swiper.setTabLayout(tabs);
-//        swiper.getViewAdapter().addView("Colour", R.id.cbv_tab_clr);
-//        swiper.getViewAdapter().addView("Image", R.id.cbv_tab_img);
-//
-//        mBtnBGClr = this.findViewById(R.id.cbv_btn_bg);
-//        msbBGClr = this.findViewById(R.id.cbv_sb_bg);
-//
-//        mBtnBGImg = this.findViewById(R.id.cbv_btn_img);
-//        msbBGImg = this.findViewById(R.id.cbv_sb_img);
-
-        //    mBtnBGClr.getLayoutParams().height = mBtnHeight;
-//        mBtnBGImg.getLayoutParams().height = mBtnHeight;
-
-
         mPreview = this.findViewById(R.id.cbv_preview);
-        ImageButton mBtnBGClr = this.findViewById(R.id.cbv_colour);
         ImageButton mBtnBGImg = this.findViewById(R.id.cbv_image);
         msbBGClr = this.findViewById(R.id.cbv_colour_trans);
         msbBGImg = this.findViewById(R.id.cbv_image_trans);
+        mBtnBGClr = this.findViewById(R.id.cbv_colour);
+
         ImageButton mBtnReset = this.findViewById(R.id.cbv_reset);
 
         final Context context = this.getContext();
@@ -244,27 +223,29 @@ public class BackgroundSelector extends LinearLayoutCompat {
     }
 
     private void doPropertyChange(final boolean delayPreview) {
-            if (mRenderThread != null) {
-                mRenderThread.interrupt();
-                mRenderThread = null;
-            }
+        if (mRenderThread != null) {
+            mRenderThread.interrupt();
+            mRenderThread = null;
+        }
 
-            mRenderThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        if (delayPreview)
-                            Thread.sleep(1000);
-                        renderPreview();
-                    } catch (InterruptedException ignored) {
-                    }
+        mRenderThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (delayPreview)
+                        Thread.sleep(1000);
+                    renderPreview();
+                } catch (InterruptedException ignored) {
                 }
-            });
+            }
+        });
 
-            mRenderThread.start();
+        mRenderThread.start();
 
-
-        //mBtnBGClr.setBackground(UIHelper.getButtonShape(UIHelper.getColorWithAlpha(mColour, mTransparency / 100f)));
+        if (mColour == 0)
+            mBtnBGClr.setBackgroundResource(R.drawable.btn_round_dark);
+        else
+            mBtnBGClr.setBackground(UIHelper.getButtonShape(UIHelper.getColorWithAlpha(mColour, mTransparency / 100f)));
 
         msbBGImg.setProgress(mImageTransparency);
         msbBGClr.setProgress(mTransparency);
