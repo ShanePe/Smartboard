@@ -13,10 +13,10 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropM
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
 import shane.pennihome.local.smartboard.comms.Monitor;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
-import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.fragments.DashboardFragment;
+import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandler;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
 import shane.pennihome.local.smartboard.ui.UIHelper;
@@ -28,9 +28,9 @@ import shane.pennihome.local.smartboard.ui.UIHelper;
 public class EditThingAdapter extends RecyclerView.Adapter<IThingUIHandler.BaseEditorViewHolder>
         implements DraggableItemAdapter<IThingUIHandler.BaseEditorViewHolder> {
 
-    private Things mThings;
     private final SmartboardActivity mSmartboardActivity;
     private final Group mGroup;
+    private Things mThings;
 
     public EditThingAdapter(SmartboardActivity smartboardActivity, Group group, DashboardFragment.OnListFragmentInteractionListener listener) {
         mThings = new Things();
@@ -64,8 +64,6 @@ public class EditThingAdapter extends RecyclerView.Adapter<IThingUIHandler.BaseE
             thing = IThing.CreateByTypeID(viewType);
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(thing.getUIHandler().getViewResourceID(), parent, false);
-
-            //AppCompatImageButton mDeleteBtn = (AppCompatImageButton) reverseFindById(parent, R.id.btn_delete_item);
 
             return thing.getUIHandler().GetEditorViewHolder(view);
         }
@@ -117,12 +115,12 @@ public class EditThingAdapter extends RecyclerView.Adapter<IThingUIHandler.BaseE
         return mThings.get(position).getPosition();
     }
 
-    public void setThings(Things mValues) {
-        this.mThings = mValues;
-    }
-
     public Things getThings() {
         return this.mThings;
+    }
+
+    public void setThings(Things mValues) {
+        this.mThings = mValues;
     }
 
     @Override

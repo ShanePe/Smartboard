@@ -1,8 +1,8 @@
 package shane.pennihome.local.smartboard.fragments.tabs;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -40,7 +40,7 @@ public class GroupFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.mnu_dash_add) {
             final SmartboardActivity smartboardActivity = (SmartboardActivity) getContext();
-            UIHelper.ShowInput(smartboardActivity, getString(R.string.lbl_add_group_msg), new OnProcessCompleteListener() {
+            UIHelper.showInput(smartboardActivity, getString(R.string.lbl_add_group_msg), new OnProcessCompleteListener() {
                 @Override
                 public void complete(boolean success, Object source) {
                     assert smartboardActivity != null;

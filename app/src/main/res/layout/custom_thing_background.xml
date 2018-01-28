@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <shane.pennihome.local.smartboard.ui.GroupTitle
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/lbl_back_clr" />
+
+            <shane.pennihome.local.smartboard.ui.BackgroundSelector
+                android:id="@+id/prop_bg_clr"
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+
+            <shane.pennihome.local.smartboard.ui.GroupTitle
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/lbl_fore_clr" />
+
+            <shane.pennihome.local.smartboard.ui.ForegroundSelector
+                android:id="@+id/prop_fg_clr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:blockheight="30" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+    </android.support.constraint.ConstraintLayout>
+</merge>

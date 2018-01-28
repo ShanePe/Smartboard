@@ -1,26 +1,27 @@
 package shane.pennihome.local.smartboard.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.annotation.ColorInt;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -47,6 +48,7 @@ import java.util.UUID;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Group;
+import shane.pennihome.local.smartboard.dialogs.ImportImageDialog;
 import shane.pennihome.local.smartboard.listeners.OnPropertyWindowListener;
 import shane.pennihome.local.smartboard.listeners.OnThingSelectListener;
 import shane.pennihome.local.smartboard.things.routines.Routine;
@@ -62,57 +64,18 @@ import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetList
 
 @SuppressWarnings("ALL")
 public class UIHelper {
-    public static int IMAGE_RESULT = 8841;
-    public static int CAMERA_RESULT = 8842;
-
-    public static void showImageImport(final Fragment fragment)
+    public static void showImageImport(FragmentManager fragmentManager, final OnProcessCompleteListener<String> onProcessCompleteListener)
     {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(fragment.getContext());
-        builder.setTitle("Import image from");
 
-        LayoutInflater inflater = (LayoutInflater) fragment.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        assert inflater != null;
-        final View view = inflater.inflate(R.layout.dialog_image_import, null);
-
-        LinearLayoutCompat btnGal = view.findViewById(R.id.btn_import_gallery);
-        LinearLayoutCompat btnCam = view.findViewById(R.id.btn_import_camera);
-
-        builder.setView(view);
-        final android.app.AlertDialog dialog = builder.create();
-
-        btnGal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                fragment.startActivityForResult(intPhoto, IMAGE_RESULT);
-                dialog.cancel();
-            }
-        });
-
-        btnCam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(fragment.getActivity().getPackageManager()) != null) {
-                    fragment.startActivityForResult(takePictureIntent, CAMERA_RESULT);
-                }
-
-                dialog.cancel();
-            }
-        });
-
-        //noinspection ConstantConditions
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        dialog.show();
-
+        final ImportImageDialog importImageDialog = ImportImageDialog.newInstance(onProcessCompleteListener);
+        importImageDialog.show(fragmentManager, "image_import");
     }
 
-    public static void showThingPropertyWindow(Activity activity, Things things, IThing thing, OnThingSetListener onThingSetListener) {
+    public static void showThingPropertyWindow(AppCompatActivity activity, Things things, IThing thing, OnThingSetListener onThingSetListener) {
         showThingPropertyWindow(activity, things, thing, null, onThingSetListener);
     }
 
-    public static void ShowThingsSelectionWindow(Activity activity, final OnThingSelectListener onThingSelectListener) {
+    public static void showThingsSelectionWindow(AppCompatActivity activity, final OnThingSelectListener onThingSelectListener) {
         final DialogInterface[] dial = new DialogInterface[1];
         ThingSelectionAdapter adapter = new ThingSelectionAdapter(new OnThingSelectListener() {
             @Override
@@ -131,7 +94,7 @@ public class UIHelper {
                 });
     }
 
-    public static void showThingPropertyWindow(final Activity activity, final Things things, final IThing thing,
+    public static void showThingPropertyWindow(final AppCompatActivity activity, final Things things, final IThing thing,
                                                final Group group, final OnThingSetListener onThingSetListener) {
         if (thing == null)
             return;
@@ -226,30 +189,6 @@ public class UIHelper {
                 e.printStackTrace();
             }
         }
-    }
-
-    public static String handleImageResult(Context context, int code, Intent data, View preview, int alpha)
-    {
-        String result = "";
-        if (code == IMAGE_RESULT) {
-            result = saveImage(context, data.getData());
-            if (preview != null) {
-                Bitmap bitmap = BitmapFactory.decodeFile(result);
-                Drawable drawable = new BitmapDrawable(context.getResources(), bitmap);
-                drawable.setAlpha((255 / 100 * alpha));
-                preview.setBackground(drawable);
-            }
-        } else if (code == CAMERA_RESULT) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            result = saveBitmap(context, imageBitmap);
-            if (preview != null) {
-                Drawable drawable = new BitmapDrawable(context.getResources(), imageBitmap);
-                drawable.setAlpha((255 / 100 * alpha));
-                preview.setBackground(drawable);
-            }
-        }
-        return result;
     }
 
     private static String getFileNameFromUri(Context context, Uri uri) {
@@ -352,7 +291,6 @@ public class UIHelper {
                 }
 
                 recyclerView.setAdapter(adapter);
-
             }
 
         if (onPropertyWindowListener != null)
@@ -390,7 +328,6 @@ public class UIHelper {
             });
 
         dialog.show();
-
     }
 
     public static int getColorWithAlpha(int clr, float ratio) {
@@ -403,9 +340,10 @@ public class UIHelper {
         return Color.argb(alpha, r, g, b);
     }
 
-    public static Drawable generateImage(Context context, @ColorInt int backClr, int backClrAlphaPerc, Bitmap image, int imageAlphaPerc, int width, int height) {
+    public static Drawable generateImage(Context context, @ColorInt int backClr, int backClrAlphaPerc, Bitmap image, int imageAlphaPerc, int width, int height, boolean roundCrns) {
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
+
         if (backClr != 0) {
             Paint bgPainter = new Paint();
             bgPainter.setColor(getColorWithAlpha(backClr, backClrAlphaPerc / 100f));
@@ -416,14 +354,46 @@ public class UIHelper {
             Paint imgPainter = new Paint();
             if (imageAlphaPerc > 0)
                 imgPainter.setAlpha(255 / 100 * imageAlphaPerc);
-            Bitmap scaled = Bitmap.createScaledBitmap(image, width, height, true);
-            canvas.drawBitmap(scaled, 0, 0, imgPainter);
+            //Bitmap scaled = Bitmap.createScaledBitmap(image, width, height, true);
+            Rect src = new Rect(0, 0, image.getWidth(), image.getHeight());
+            Rect dest = new Rect(0, 0, width, height);
+            canvas.drawBitmap(image, src, dest, imgPainter);
         }
 
-        return new BitmapDrawable(context.getResources(), bitmap);
+        if (roundCrns)
+            return new BitmapDrawable(context.getResources(), getRoundedCornerBitmap(bitmap, 4));
+        else
+            return new BitmapDrawable(context.getResources(), bitmap);
     }
 
-    public static void ShowInput(final Context context, String title, final OnProcessCompleteListener onProcessCompleteListener) {
+    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
+                .getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        //final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+        final float roundPx = pixels;
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
+    }
+
+    public static GradientDrawable getButtonShape(@ColorInt int colour) {
+        GradientDrawable shape = new GradientDrawable();
+        shape.setCornerRadius(4);
+        shape.setColor(colour);
+        return shape;
+    }
+
+    public static void showInput(final Context context, String title, final OnProcessCompleteListener onProcessCompleteListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title);
 
@@ -456,7 +426,7 @@ public class UIHelper {
         builder.show();
     }
 
-    public static void ShowConfirm(final Context context, String title, String text, final OnProcessCompleteListener onProcessCompleteListener) {
+    public static void showConfirm(final Context context, String title, String text, final OnProcessCompleteListener onProcessCompleteListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title);
 

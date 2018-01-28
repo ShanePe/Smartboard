@@ -1,21 +1,16 @@
 package shane.pennihome.local.smartboard.fragments.tabs;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
-import shane.pennihome.local.smartboard.thingsframework.listeners.OnBackgroundActionListener;
 import shane.pennihome.local.smartboard.ui.BackgroundSelector;
 import shane.pennihome.local.smartboard.ui.LabelTextbox;
-import shane.pennihome.local.smartboard.ui.UIHelper;
-
-import static android.app.Activity.RESULT_OK;
+import shane.pennihome.local.smartboard.ui.listeners.OnBackgroundActionListener;
 
 @SuppressWarnings("ALL")
 public class SmartboardFragment extends Fragment {
@@ -45,21 +40,6 @@ public class SmartboardFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            String sFile = UIHelper.handleImageResult(this.getContext(), requestCode, data,
-                    null, mSbAct.getDashboard().getBackgroundImageTransparency());
-
-            if (!TextUtils.isEmpty(sFile)) {
-                mSbAct.getDashboard().setBackgroundImage(sFile);
-                mSbAct.getDashboard().setBackgroundImageTransparency(100);
-                mBGSelector.setImageValues(sFile, 100);
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -68,7 +48,7 @@ public class SmartboardFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.tab_smartboard_dash, container, false);
         LabelTextbox editText = rootView.findViewById(R.id.txt_db_name);
         mBGSelector = rootView.findViewById(R.id.dash_bgselector);
-        mBGSelector.setImageCallbackFragment(this);
+        //mBGSelector.setImageCallbackFragment(this);
         mBGSelector.setInitialValues(mSbAct.getDashboard().getBackgroundColour(),
                 mSbAct.getDashboard().getBackgroundColourTransparency(),
                 mSbAct.getDashboard().getBackgroundImage(),
@@ -88,6 +68,11 @@ public class SmartboardFragment extends Fragment {
             @Override
             public void OnImageTransparencyChanged(int transparent) {
                 mSbAct.getDashboard().setBackgroundImageTransparency(transparent);
+            }
+
+            @Override
+            public void OnImageSelected(String imageFile) {
+                mSbAct.getDashboard().setBackgroundImage(imageFile);
             }
         });
 //        final Button btnBGClr = rootView.findViewById(R.id.dash_btn_bg);

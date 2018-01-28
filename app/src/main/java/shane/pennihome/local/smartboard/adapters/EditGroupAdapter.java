@@ -68,12 +68,13 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
             holder.mGroup = group;
 
         holder.mTxtName.setText(group.getName());
-        holder.mGroupHandler = new GroupViewHandler(mSmartboardActivity, parent, holder.mView, group, holder.mRVBlocks);
+        if (group.getGroupViewHandler() == null)
+            group.setGroupViewHandler(new GroupViewHandler(mSmartboardActivity, parent, holder.mView, group, holder.mRVBlocks));
 
         holder.mBtnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.ShowConfirm(mSmartboardActivity, "Confirm", "Are you sure you want to remove this group?", new OnProcessCompleteListener() {
+                UIHelper.showConfirm(mSmartboardActivity, "Confirm", "Are you sure you want to remove this group?", new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
                         if (success) {
@@ -114,7 +115,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
         holder.mBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.ShowThingsSelectionWindow(mSmartboardActivity, new OnThingSelectListener() {
+                UIHelper.showThingsSelectionWindow(mSmartboardActivity, new OnThingSelectListener() {
                     @Override
                     public void ThingSelected(IThing thing) {
                         createBlockInstance(thing, group);
@@ -123,7 +124,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
                                     @Override
                                     public void OnSet(IThing thing) {
                                         group.getThings().add(thing);
-                                        mSmartboardActivity.DataChanged();
+                                        group.getGroupViewHandler().NotifyChanged();
                                         if (!holder.mExpanded)
                                             holder.showBlocks(true);
                                     }
@@ -295,8 +296,6 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
         final View mView;
         boolean mExpanded = true;
         Group mGroup;
-        @SuppressWarnings("unused")
-        GroupViewHandler mGroupHandler;
 
         ViewHolder(View itemView) {
             super(itemView);

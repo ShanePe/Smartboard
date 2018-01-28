@@ -109,7 +109,6 @@ public abstract class IThing extends IDatabaseObject {
     {
         getBlock().setWidth(1);
         getBlock().setHeight(1);
-        getBlock().setBackgroundTransparency(100);
 
         getBlock().setBackgroundColour(group.getDefaultBlockBackgroundColourOff() != 0 ?
                 group.getDefaultBlockBackgroundColourOff() :
@@ -117,7 +116,11 @@ public abstract class IThing extends IDatabaseObject {
 
         getBlock().setForeColour(group.getDefaultBlockForeColourOff() != 0 ?
                 group.getDefaultBlockForeColourOff() :
-                Color.parseColor("white"));
+                Color.WHITE);
+
+        getBlock().setBackgroundColourTransparency(100);
+        getBlock().setBackgroundImage(null);
+        getBlock().setBackgroundImageTransparency(100);
 
     }
 

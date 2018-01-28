@@ -26,7 +26,7 @@
     <shane.pennihome.local.smartboard.ui.BackgroundSelector
         android:id="@+id/dash_bgselector"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="200dp" />
 
     <!--<GridLayout-->
     <!--android:layout_width="match_parent"-->

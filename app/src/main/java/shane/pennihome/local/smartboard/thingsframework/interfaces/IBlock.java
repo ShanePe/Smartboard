@@ -1,6 +1,12 @@
 package shane.pennihome.local.smartboard.thingsframework.interfaces;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.annotation.ColorInt;
+import android.text.TextUtils;
+import android.view.View;
 
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.ui.UIHelper;
@@ -12,7 +18,6 @@ import shane.pennihome.local.smartboard.ui.UIHelper;
 @SuppressWarnings("ALL")
 @IDatabaseObject.IgnoreOnCopy
 public abstract class IBlock extends IDatabaseObject {
-    //private IThing mThing;
     private int mHeight;
     private int mWidth;
     private @ColorInt
@@ -21,6 +26,8 @@ public abstract class IBlock extends IDatabaseObject {
     int mBackColour;
     private String mInstance;
     private int mBackTrans;
+    private String mBackImage;
+    private int mBGImgTrans;
 
     public IBlock() {
         mInstance = this.getClass().getSimpleName();
@@ -65,17 +72,61 @@ public abstract class IBlock extends IDatabaseObject {
         this.mBackColour = backgroundColour;
     }
 
-    public int getBackgroundTransparency() {
+    public int getBackgroundColourTransparency() {
         return mBackTrans;
     }
 
-    public void setBackgroundTransparency(int backgroundTransparency) {
+    public void setBackgroundColourTransparency(int backgroundTransparency) {
         this.mBackTrans = backgroundTransparency;
+    }
+
+    public String getBackgroundImage() {
+        return mBackImage;
+    }
+
+    public void setBackgroundImage(String backImage) {
+        this.mBackImage = backImage;
+    }
+
+    public int getBackgroundImageTransparency() {
+        return mBGImgTrans;
+    }
+
+    public void setBackgroundImageTransparency(int bgImgTrans) {
+        this.mBGImgTrans = bgImgTrans;
     }
 
     @ColorInt
     public int getBackgroundColourWithAlpha()
     {
-        return UIHelper.getColorWithAlpha(getBackgroundColour(), getBackgroundTransparency() / 100f);
+        return UIHelper.getColorWithAlpha(getBackgroundColour(), getBackgroundColourTransparency() / 100f);
+    }
+
+    public void renderBackground(final View view) {
+        Handler safeRender = new Handler();
+        safeRender.post(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap bitmap = null;
+                if (!TextUtils.isEmpty(mBackImage))
+                    bitmap = BitmapFactory.decodeFile(mBackImage);
+
+                final Drawable drawable = UIHelper.generateImage(
+                        view.getContext(),
+                        mBackColour, mBackTrans,
+                        bitmap,
+                        mBGImgTrans,
+                        view.getMeasuredWidth(),
+                        view.getMeasuredHeight(),
+                        false);
+
+                view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.setBackground(drawable);
+                    }
+                });
+            }
+        });
     }
 }

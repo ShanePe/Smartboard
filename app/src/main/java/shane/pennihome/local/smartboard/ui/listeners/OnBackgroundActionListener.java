@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.thingsframework.listeners;
+package shane.pennihome.local.smartboard.ui.listeners;
 
 import android.support.annotation.ColorInt;
 
@@ -13,4 +13,6 @@ public interface OnBackgroundActionListener {
     void OnColourTransparencyChanged(int transparent);
 
     void OnImageTransparencyChanged(int transparent);
+
+    void OnImageSelected(String imageFile);
 }

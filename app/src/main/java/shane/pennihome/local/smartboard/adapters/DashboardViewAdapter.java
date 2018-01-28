@@ -38,10 +38,14 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
         setHasStableIds(true);
     }
 
+    public Dashboards getDashboards() {
+        return mDashboards;
+    }
+
     public void setDashboards(Dashboards values) {
         mDashboards = values;
     }
-    public Dashboards getDashboards(){ return mDashboards; }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -68,7 +72,7 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
         holder.mDelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                UIHelper.ShowConfirm(view.getContext(), "Confirm", "Are you sure you want to delete this dashboard", new OnProcessCompleteListener() {
+                UIHelper.showConfirm(view.getContext(), "Confirm", "Are you sure you want to delete this dashboard", new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
                         if(success)
@@ -143,12 +147,15 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
         notifyDataSetChanged();
     }
 
+    private interface Draggable extends DraggableItemConstants {
+    }
+
     public class ViewHolder extends AbstractDraggableItemViewHolder {
         final View mView;
         final TextView mNameView;
-        Dashboard mItem;
         final FrameLayout mContainer;
         final ImageButton mDelBtn;
+        Dashboard mItem;
 
         ViewHolder(View view) {
             super(view);
@@ -161,8 +168,5 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
         public String toString() {
             return super.toString() + " '" + mNameView.getText() + "'";
         }
-    }
-
-    private interface Draggable extends DraggableItemConstants {
     }
 }

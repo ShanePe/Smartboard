@@ -77,10 +77,7 @@ public class LabelTextbox extends LinearLayoutCompat {
         mLabelTextView = this.findViewById(R.id.def_tb_lbl);
         mTextBoxEditView = this.findViewById(R.id.def_tb_txt);
 
-        if (mLabel != null)
-            mLabelTextView.setText(mLabel);
-        if (mText != null)
-            mTextBoxEditView.setText(mText);
+        doPropertyChange();
     }
 
     private void doPropertyChange() {

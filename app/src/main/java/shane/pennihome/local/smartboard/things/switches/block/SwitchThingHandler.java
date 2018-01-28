@@ -118,7 +118,7 @@ public class SwitchThingHandler extends IThingUIHandler {
         sbTransOff.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                getThing().getBlock().setBackgroundTransparency(progress);
+                getThing().getBlock().setBackgroundColourTransparency(progress);
                 btnBGOff.setBackgroundColor(getThing().getBlock().getBackgroundColourWithAlpha());
             }
 
@@ -141,7 +141,7 @@ public class SwitchThingHandler extends IThingUIHandler {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        sbTransOff.setProgress((int)getThing().getBlock().getBackgroundTransparency());
+        sbTransOff.setProgress((int) getThing().getBlock().getBackgroundColourTransparency());
         sbTransOn.setProgress((int)getThing().getBlock(SwitchBlock.class).getBackgroundTransparencyOn());
 
         txtWidth.setMaxValue(4);
@@ -167,7 +167,7 @@ public class SwitchThingHandler extends IThingUIHandler {
                     public void complete(boolean success, Object source) {
                         @ColorInt int clr = (int) source;
                         getThing().getBlock().setBackgroundColour(clr);
-                        getThing().getBlock().setBackgroundTransparency(100);
+                        getThing().getBlock().setBackgroundColourTransparency(100);
                         if (group != null) {
                             group.setDefaultBlockBackgroundColourOff(clr);
                         }

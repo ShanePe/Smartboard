@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="blockheight" format="integer" />
+
     <declare-styleable name="GroupTitle">
         <attr name="title" format="string" />
     </declare-styleable>
@@ -8,5 +10,11 @@
         <attr name="text" format="string" />
     </declare-styleable>
 
-    <declare-styleable name="BackgroundSelector" />
+    <declare-styleable name="BackgroundSelector">
+        <attr name="blockheight" />
+    </declare-styleable>
+
+    <declare-styleable name="ForegroundSelector">
+        <attr name="blockheight" />
+    </declare-styleable>
 </resources>

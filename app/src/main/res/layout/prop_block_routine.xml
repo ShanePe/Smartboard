@@ -48,57 +48,10 @@
         android:layout_margin="16dp"
         android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/rt_sp_thing"
+        <shane.pennihome.local.smartboard.ui.ThingProperties
+            android:id="@+id/rt_properties"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_round_dark"
-            android:focusable="auto"
-            android:foreground="?attr/selectableItemBackground" />
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/rt_txt_blk_name"
-            style="@style/Base.TextAppearance.AppCompat.Small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/lbl_name"
-            android:inputType="textPersonName" />
-
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:labelFor="@+id/rt_txt_blk_width"
-                android:padding="4dp"
-                android:text="@string/lbl_width" />
-
-            <NumberPicker
-                android:id="@+id/rt_txt_blk_width"
-                android:layout_width="40dp"
-                android:layout_height="50dp"
-                android:background="@drawable/number_picker" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:labelFor="@+id/rt_txt_blk_height"
-                android:padding="4dp"
-                android:text="@string/lbl_height" />
-
-            <NumberPicker
-                android:id="@+id/rt_txt_blk_height"
-                android:layout_width="40dp"
-                android:layout_height="50dp"
-                android:background="@drawable/number_picker" />
-
-        </android.support.v7.widget.LinearLayoutCompat>
-
+            android:layout_height="wrap_content" />
     </android.support.v7.widget.LinearLayoutCompat>
 
     <android.support.v7.widget.LinearLayoutCompat
@@ -108,69 +61,10 @@
         android:layout_margin="16dp"
         android:orientation="vertical">
 
-
-        <TextView
+        <shane.pennihome.local.smartboard.ui.ThingBackground
+            android:id="@+id/rt_background"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/line_accent"
-            android:text="@string/lbl_colours" />
+            android:layout_height="wrap_content" />
 
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <android.support.v7.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="4dp"
-                        android:text="@string/lbl_back_clr" />
-
-                    <Button
-                        android:id="@+id/rt_btn_clr_bg_Off"
-                        style="@style/Widget.AppCompat.Button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/btn_round" />
-                </android.support.v7.widget.LinearLayoutCompat>
-
-
-                <SeekBar
-                    android:id="@+id/rt_transOff"
-                    style="@style/Widget.AppCompat.SeekBar.Discrete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:max="100"
-                    android:progress="1" />
-            </android.support.v7.widget.LinearLayoutCompat>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="4dp"
-                android:text="@string/lbl_fore_clr" />
-
-            <Button
-                android:id="@+id/rt_btn_clr_fg_Off"
-                style="@style/Widget.AppCompat.Button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/btn_round" />
-        </android.support.v7.widget.LinearLayoutCompat>
     </android.support.v7.widget.LinearLayoutCompat>
 </android.support.v7.widget.LinearLayoutCompat>

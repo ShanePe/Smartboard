@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <shane.pennihome.local.smartboard.ui.GroupTitle
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/lbl_device" />
+
+        <Spinner
+            android:id="@+id/prop_sp_thing"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/btn_round_dark"
+            android:focusable="auto"
+            android:foreground="?attr/selectableItemBackground" />
+
+        <shane.pennihome.local.smartboard.ui.LabelTextbox
+            android:id="@+id/prop_txt_blk_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:label="@string/lbl_name" />
+
+        <shane.pennihome.local.smartboard.ui.GroupTitle
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/lbl_layout" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:labelFor="@+id/prop_txt_blk_width"
+                android:padding="4dp"
+                android:text="@string/lbl_width" />
+
+            <NumberPicker
+                android:id="@+id/prop_txt_blk_width"
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:background="@drawable/number_picker" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:labelFor="@+id/prop_txt_blk_height"
+                android:padding="4dp"
+                android:text="@string/lbl_height" />
+
+            <NumberPicker
+                android:id="@+id/prop_txt_blk_height"
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:background="@drawable/number_picker" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v7.widget.LinearLayoutCompat>
+</merge>

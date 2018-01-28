@@ -10,6 +10,7 @@
       <w>avancement</w>
       <w>backgroundimagetrans</w>
       <w>bgselector</w>
+      <w>blockheight</w>
       <w>brid</w>
       <w>cardview</w>
       <w>ccvh</w>
@@ -24,11 +25,13 @@
       <w>datastore</w>
       <w>datastores</w>
       <w>devicetype</w>
+      <w>dismisser</w>
       <w>disp</w>
       <w>dispname</w>
       <w>doclava</w>
       <w>doctitle</w>
       <w>foote</w>
+      <w>forground</w>
       <w>genymotion</w>
       <w>getby</w>
       <w>getm</w>
@@ -67,6 +70,7 @@
       <w>smartthing</w>
       <w>stlogo</w>
       <w>swipeable</w>
+      <w>swiper</w>
       <w>switchblock</w>
       <w>textbox</w>
       <w>toggler</w>

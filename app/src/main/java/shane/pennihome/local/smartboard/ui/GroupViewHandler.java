@@ -19,10 +19,10 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropM
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.thingsframework.adapters.EditThingAdapter;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.fragments.DashboardFragment;
+import shane.pennihome.local.smartboard.thingsframework.adapters.EditThingAdapter;
 
 /**
  * Created by shane on 15/01/18.
@@ -46,20 +46,18 @@ public class GroupViewHandler {
         mSmartboardActivity = smartboardActivity;
         GridLayoutManager gridLayoutManager = new GridLayoutManager(smartboardActivity, 8);
 
-        // drag & drop manager
         RecyclerViewDragDropManager dragDropManager = new RecyclerViewDragDropManager();
         dragDropManager.setDraggingItemShadowDrawable(
                 (NinePatchDrawable) ContextCompat.getDrawable(smartboardActivity, R.drawable.material_shadow_z3));
-        // Start dragging after long press
+
         dragDropManager.setInitiateOnLongPress(true);
         dragDropManager.setInitiateOnMove(false);
         dragDropManager.setLongPressTimeout(750);
 
-        // setup dragging item effects (NOTE: DraggableItemAnimator is required)
         dragDropManager.setDragStartItemAnimationDuration(250);
         dragDropManager.setDraggingItemAlpha(0.8f);
         dragDropManager.setDraggingItemScale(1.3f);
-        //dragDropManager.setDraggingItemRotation(15.0f);
+
         dragDropManager.setItemMoveMode(RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT);
 
         //adapter
@@ -103,7 +101,7 @@ public class GroupViewHandler {
 
                 if(itemRect.contains(delRect.centerX(), delRect.centerY())) {
                     item.setVisibility(View.GONE);
-                    UIHelper.ShowConfirm(mSmartboardActivity, "Confirm", "Are you sure you wnat to remove this block?", new OnProcessCompleteListener() {
+                    UIHelper.showConfirm(mSmartboardActivity, "Confirm", "Are you sure you wnat to remove this block?", new OnProcessCompleteListener() {
                         @Override
                         public void complete(boolean success, Object source) {
                             item.setVisibility(View.VISIBLE);
@@ -124,9 +122,6 @@ public class GroupViewHandler {
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(dragDropManager.createWrappedAdapter(mEditThingAdapter));  // requires *wrapped* adapter
         recyclerView.setItemAnimator(animator);
-
-        // additional decorations
-        //noinspection StatementWithEmptyBody
 
         dragDropManager.attachRecyclerView(recyclerView);
     }

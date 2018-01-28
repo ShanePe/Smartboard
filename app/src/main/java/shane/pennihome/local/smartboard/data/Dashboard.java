@@ -110,6 +110,7 @@ public class Dashboard extends IDatabaseObject {
                 bitmap,
                 getBackgroundImageTransparency(),
                 destination.getMeasuredWidth(),
-                destination.getMeasuredHeight()));
+                destination.getMeasuredHeight(),
+                false));
     }
 }
