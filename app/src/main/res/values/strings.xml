@@ -50,5 +50,7 @@
     <string name="lbl_tab_to_select_image">Tap to select image</string>
     <string name="lbl_layout">Layout</string>
     <string name="title_activity_call_back">CallBackActivity</string>
+    <string name="lbl_background_opacity">Background Opacity</string>
+    <string name="lbl_image_opacity">Image Opacity</string>
 
 </resources>

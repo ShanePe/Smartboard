@@ -64,8 +64,7 @@ import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetList
 
 @SuppressWarnings("ALL")
 public class UIHelper {
-    public static void showImageImport(FragmentManager fragmentManager, final OnProcessCompleteListener<String> onProcessCompleteListener)
-    {
+    public static void showImageImport(FragmentManager fragmentManager, final OnProcessCompleteListener<String> onProcessCompleteListener) {
 
         final ImportImageDialog importImageDialog = ImportImageDialog.newInstance(onProcessCompleteListener);
         importImageDialog.show(fragmentManager, "image_import");
@@ -112,19 +111,17 @@ public class UIHelper {
         });
     }
 
-    public static String saveBitmap(Context context, Bitmap imageSave)
-    {
+    public static String saveBitmap(Context context, Bitmap imageSave) {
         String fileName = "Smartboard_" + UUID.randomUUID().toString() + ".png";
         File fileToWrite = new File(context.getFilesDir(), fileName);
 
-        if(fileToWrite.exists())
+        if (fileToWrite.exists())
             fileToWrite.delete();
 
         FileOutputStream fileOutputStream = null;
 
         try {
-            if(fileToWrite.createNewFile())
-            {
+            if (fileToWrite.createNewFile()) {
                 fileOutputStream = new FileOutputStream(fileToWrite);
                 imageSave.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
                 fileOutputStream.flush();
@@ -134,8 +131,7 @@ public class UIHelper {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
-        }
-        finally {
+        } finally {
             try {
                 fileOutputStream.close();
             } catch (IOException e) {
@@ -144,11 +140,10 @@ public class UIHelper {
         }
     }
 
-    public static String saveImage(Context context, Uri filePath)
-    {
+    public static String saveImage(Context context, Uri filePath) {
         String fileName = "Smartboard_" + UUID.randomUUID().toString() + ".png";
         File fileToWrite = new File(context.getFilesDir(), fileName);
-        if(fileToWrite.exists())
+        if (fileToWrite.exists())
             fileToWrite.delete();
 
         InputStream inputStream = null;
@@ -159,8 +154,7 @@ public class UIHelper {
             bufferedInputStream = new BufferedInputStream(inputStream);
             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
-            if(fileToWrite.createNewFile())
-            {
+            if (fileToWrite.createNewFile()) {
                 fileOutputStream = new FileOutputStream(fileToWrite);
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
                 fileOutputStream.flush();
@@ -170,8 +164,7 @@ public class UIHelper {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
-        }
-        finally {
+        } finally {
             try {
                 fileOutputStream.close();
             } catch (IOException e) {
@@ -340,27 +333,56 @@ public class UIHelper {
         return Color.argb(alpha, r, g, b);
     }
 
+    public static Bitmap scaleDownBitmap(Bitmap realImage, float maxImageSize,
+                                         boolean filter) {
+        float ratio = Math.max(
+                (float) maxImageSize / realImage.getWidth(),
+                (float) maxImageSize / realImage.getHeight());
+        //float ratio = (float) maxImageSize / realImage.getHeight();
+        int width = Math.round((float) ratio * realImage.getWidth());
+        int height = Math.round((float) ratio * realImage.getHeight());
+
+        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
+                height, filter);
+        return newBitmap;
+    }
+
     public static Drawable generateImage(Context context, @ColorInt int backClr, int backClrAlphaPerc, Bitmap image, int imageAlphaPerc, int width, int height, boolean roundCrns) {
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
-        if (backClr != 0) {
-            Paint bgPainter = new Paint();
-            bgPainter.setColor(getColorWithAlpha(backClr, backClrAlphaPerc / 100f));
-            bgPainter.setStyle(Paint.Style.FILL);
-            canvas.drawPaint(bgPainter);
-        }
-        if (image != null) {
-            Paint imgPainter = new Paint();
+        if (backClr != 0 && image == null) {
+            Paint paint = new Paint();
+            paint.setColor(getColorWithAlpha(backClr, backClrAlphaPerc / 100f));
+            paint.setStyle(Paint.Style.FILL);
+            canvas.drawPaint(paint);
+        } else if (image != null) {
+            Bitmap scaled = scaleDownBitmap(image, Math.min(width, height), true);
+            if (roundCrns)
+                scaled = getRoundedCornerBitmap(scaled, 4);
+
+            int destLeft = (width - scaled.getWidth()) / 2;
+            Rect src = new Rect(0, 0, scaled.getWidth(), scaled.getHeight());
+            Rect dest = new Rect(destLeft, 0, scaled.getWidth() + destLeft, scaled.getHeight());
+
+            Paint paint = new Paint();
+            canvas.clipRect(dest);
+            if (backClr != 0) {
+                paint.setColor(getColorWithAlpha(backClr, backClrAlphaPerc / 100f));
+                paint.setStyle(Paint.Style.FILL);
+                if (roundCrns) {
+                    RectF rectF = new RectF(dest);
+                    canvas.drawRoundRect(rectF, 4, 4, paint);
+                } else
+                    canvas.drawPaint(paint);
+            }
             if (imageAlphaPerc > 0)
-                imgPainter.setAlpha(255 / 100 * imageAlphaPerc);
-            //Bitmap scaled = Bitmap.createScaledBitmap(image, width, height, true);
-            Rect src = new Rect(0, 0, image.getWidth(), image.getHeight());
-            Rect dest = new Rect(0, 0, width, height);
-            canvas.drawBitmap(image, src, dest, imgPainter);
+                paint.setAlpha(255 / 100 * imageAlphaPerc);
+
+            canvas.drawBitmap(scaled, src, dest, paint);
         }
 
-        if (roundCrns)
+        if (roundCrns && image == null)
             return new BitmapDrawable(context.getResources(), getRoundedCornerBitmap(bitmap, 4));
         else
             return new BitmapDrawable(context.getResources(), bitmap);
@@ -431,7 +453,7 @@ public class UIHelper {
         builder.setTitle(title);
 
         final TextView confirm = new TextView(context);
-        confirm.setPadding(16,16,16,16);
+        confirm.setPadding(16, 16, 16, 16);
         confirm.setText(text);
         builder.setView(confirm);
 
@@ -447,8 +469,8 @@ public class UIHelper {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
-                if(onProcessCompleteListener != null)
-                    onProcessCompleteListener.complete(false,null);
+                if (onProcessCompleteListener != null)
+                    onProcessCompleteListener.complete(false, null);
             }
         });
 
@@ -457,8 +479,8 @@ public class UIHelper {
         builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                if(onProcessCompleteListener != null)
-                    onProcessCompleteListener.complete(false,null);
+                if (onProcessCompleteListener != null)
+                    onProcessCompleteListener.complete(false, null);
             }
         });
 

@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -15,7 +14,8 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 
 import shane.pennihome.local.smartboard.R;
@@ -28,11 +28,14 @@ import shane.pennihome.local.smartboard.ui.listeners.OnBackgroundActionListener;
 
 @SuppressWarnings({"DefaultFileTemplate", "unused"})
 public class BackgroundSelector extends LinearLayoutCompat {
-    private Button mBtnBGImg = null;
+    private ImageButton mBtnBGImg = null;
     private SeekBar msbBGImg = null;
-    private Button mBtnBGClr = null;
+    private ImageButton mBtnBGClr = null;
     private SeekBar msbBGClr = null;
-    private ViewSwiper mViewSwiper = null;
+//    private ViewSwiper mViewSwiper = null;
+
+    private ImageView mPreview;
+
     private OnBackgroundActionListener mBackgroundActionListener;
     private Thread mRenderThread;
 //    private int mBtnHeight;
@@ -71,7 +74,7 @@ public class BackgroundSelector extends LinearLayoutCompat {
 
     public void setColour(int colour) {
         mColour = colour;
-        doPropertyChange();
+        doPropertyChange(false);
     }
 
     public int getTransparency() {
@@ -80,7 +83,7 @@ public class BackgroundSelector extends LinearLayoutCompat {
 
     private void setTransparency(int transparency) {
         mTransparency = transparency;
-        doPropertyChange();
+        doPropertyChange(true);
     }
 
     public String getImage() {
@@ -89,7 +92,7 @@ public class BackgroundSelector extends LinearLayoutCompat {
 
     public void setImage(String image) {
         mImage = image;
-        doPropertyChange();
+        doPropertyChange(false);
     }
 
     public int getImageTransparency() {
@@ -98,7 +101,7 @@ public class BackgroundSelector extends LinearLayoutCompat {
 
     private void setImageTransparency(int imageTransparency) {
         mImageTransparency = imageTransparency;
-        doPropertyChange();
+        doPropertyChange(true);
     }
 
     private void initializeViews(Context context) {
@@ -120,40 +123,47 @@ public class BackgroundSelector extends LinearLayoutCompat {
         mImage = image;
         mImageTransparency = imageTransparency;
 
-        doPropertyChange();
+        doPropertyChange(false);
     }
 
     private void setColourValues(@ColorInt int colour, @SuppressWarnings("SameParameterValue") int transparency) {
         mColour = colour;
         mTransparency = transparency;
 
-        doPropertyChange();
+        doPropertyChange(false);
     }
 
     public void setImageValues(String image, @SuppressWarnings("SameParameterValue") int imageTransparency) {
         mImage = image;
         mImageTransparency = imageTransparency;
 
-        doPropertyChange();
+        doPropertyChange(false);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        ViewSwiper swiper = this.findViewById(R.id.cbv_switcher);
-        TabLayout tabs = this.findViewById(R.id.cbv_tab);
-        swiper.setTabLayout(tabs);
-        swiper.getViewAdapter().addView("Colour", R.id.cbv_tab_clr);
-        swiper.getViewAdapter().addView("Image", R.id.cbv_tab_img);
-
-        mBtnBGClr = this.findViewById(R.id.cbv_btn_bg);
-        msbBGClr = this.findViewById(R.id.cbv_sb_bg);
-
-        mBtnBGImg = this.findViewById(R.id.cbv_btn_img);
-        msbBGImg = this.findViewById(R.id.cbv_sb_img);
+//        ViewSwiper swiper = this.findViewById(R.id.cbv_switcher);
+//        TabLayout tabs = this.findViewById(R.id.cbv_tab);
+//        swiper.setTabLayout(tabs);
+//        swiper.getViewAdapter().addView("Colour", R.id.cbv_tab_clr);
+//        swiper.getViewAdapter().addView("Image", R.id.cbv_tab_img);
+//
+//        mBtnBGClr = this.findViewById(R.id.cbv_btn_bg);
+//        msbBGClr = this.findViewById(R.id.cbv_sb_bg);
+//
+//        mBtnBGImg = this.findViewById(R.id.cbv_btn_img);
+//        msbBGImg = this.findViewById(R.id.cbv_sb_img);
 
         //    mBtnBGClr.getLayoutParams().height = mBtnHeight;
 //        mBtnBGImg.getLayoutParams().height = mBtnHeight;
+
+
+        mPreview = this.findViewById(R.id.cbv_preview);
+        mBtnBGClr = this.findViewById(R.id.cbv_colour);
+        mBtnBGImg = this.findViewById(R.id.cbv_image);
+        msbBGClr = this.findViewById(R.id.cbv_colour_trans);
+        msbBGImg = this.findViewById(R.id.cbv_image_trans);
 
         final Context context = this.getContext();
         mBtnBGClr.setOnClickListener(new View.OnClickListener() {
@@ -223,10 +233,10 @@ public class BackgroundSelector extends LinearLayoutCompat {
             }
         });
 
-        doPropertyChange();
+        doPropertyChange(false);
     }
 
-    private void doPropertyChange() {
+    private void doPropertyChange(final boolean delayPreview) {
         if (mImage != null) {
             if (mRenderThread != null) {
                 mRenderThread.interrupt();
@@ -237,7 +247,8 @@ public class BackgroundSelector extends LinearLayoutCompat {
                 @Override
                 public void run() {
                     try {
-                        Thread.sleep(1000);
+                        if (delayPreview)
+                            Thread.sleep(1000);
                         renderPreview();
                     } catch (InterruptedException ignored) {
                     }
@@ -260,15 +271,13 @@ public class BackgroundSelector extends LinearLayoutCompat {
         if (mBtnBGImg == null)
             return;
 
-        if (mBtnBGImg.getLayout() == null)
-            return;
-
-        final int width = mBtnBGImg.getLayout().getWidth();
-        final int height = mBtnBGImg.getLayout().getHeight();
 
         Bitmap bitmap = null;
         if (!TextUtils.isEmpty(mImage))
             bitmap = BitmapFactory.decodeFile(mImage);
+
+        final int width = mPreview.getWidth();
+        final int height = mPreview.getHeight();
 
         final Drawable drawable = UIHelper.generateImage(getContext(),
                 mColour,
@@ -279,10 +288,10 @@ public class BackgroundSelector extends LinearLayoutCompat {
                 height,
                 true);
 
-        mBtnBGImg.post(new Runnable() {
+        mPreview.post(new Runnable() {
             @Override
             public void run() {
-                mBtnBGImg.setBackground(drawable);
+                mPreview.setImageDrawable(drawable);
             }
         });
     }

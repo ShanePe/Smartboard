@@ -11,7 +11,8 @@
     </declare-styleable>
 
     <declare-styleable name="BackgroundSelector">
-        <attr name="blockheight" />
+        <attr name="preview_height" />
+        <attr name="preview_width" />
     </declare-styleable>
 
     <declare-styleable name="ForegroundSelector">
