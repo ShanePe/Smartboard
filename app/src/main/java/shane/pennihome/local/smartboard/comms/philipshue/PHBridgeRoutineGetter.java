@@ -12,8 +12,8 @@ import shane.pennihome.local.smartboard.comms.RESTCommunicatorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.TokenHueBridge;
+import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.thingsframework.Things;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
@@ -114,7 +114,7 @@ public class PHBridgeRoutineGetter extends ICommunicator<PHBridgeRoutineGetter> 
                 Routine r = new Routine();
                 r.setId(jRout.getString("id"));
                 r.setName(jRout.getString("name") + " in all");
-                r.setSource(IThing.Sources.PhilipsHue);
+                r.setService(IService.Services.PhilipsHue);
                 mThings.add(r);
             } else {
                 for (int x = 0; x < jGroups.length(); x++) {
@@ -122,7 +122,7 @@ public class PHBridgeRoutineGetter extends ICommunicator<PHBridgeRoutineGetter> 
                     Routine r = new Routine();
                     r.setId(jRout.getString("id"));
                     r.setName(jRout.getString("name") + " in " + jGroup.getString("name"));
-                    r.setSource(IThing.Sources.PhilipsHue);
+                    r.setService(IService.Services.PhilipsHue);
                     mThings.add(r);
                 }
             }

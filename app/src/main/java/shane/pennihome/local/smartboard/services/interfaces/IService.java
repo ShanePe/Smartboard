@@ -8,6 +8,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.util.ArrayList;
+
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 
@@ -16,13 +18,13 @@ import shane.pennihome.local.smartboard.thingsframework.Things;
  */
 
 public abstract class IService extends IDatabaseObject {
+    public enum Services {SmartThings, PhilipsHue}
     @IgnoreOnCopy
     private String mInstance;
 
     public IService() {
         mInstance = this.getClass().getSimpleName();
     }
-
 
     protected abstract Things getThings() throws Exception;
 
@@ -39,6 +41,8 @@ public abstract class IService extends IDatabaseObject {
     protected abstract boolean isAwaitingAuthorisation();
 
     protected abstract void connect() throws Exception;
+
+    protected abstract ArrayList<IThingsGetter> getThingGetters();
 
     protected JSONObject buildJson(String data) throws JSONException {
         Object json = new JSONTokener(data).nextValue();

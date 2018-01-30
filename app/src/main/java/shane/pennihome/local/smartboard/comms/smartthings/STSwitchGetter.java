@@ -13,8 +13,8 @@ import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnCommResponseListener;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.TokenSmartThings;
+import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.thingsframework.Things;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
@@ -75,7 +75,7 @@ public class STSwitchGetter extends ICommunicator<STSwitchGetter> {
             d.setName(jDev.getString("name"));
             d.setState(getState(jDev));
             d.setType(jDev.getString("type"));
-            d.setSource(IThing.Sources.SmartThings);
+            d.setService(IService.Services.SmartThings);
             mThings.add(d);
         }
 

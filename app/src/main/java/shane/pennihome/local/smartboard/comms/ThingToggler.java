@@ -40,7 +40,7 @@ public class ThingToggler extends ICommunicator<ThingToggler> {
         RESTCommunicator httpCommunicator = new RESTCommunicator();
 
         String url = null;
-        switch (mThing.getSource()) {
+        switch (mThing.getService()) {
             case SmartThings:
                 TokenSmartThings tokenSmartThingsInfo = TokenSmartThings.Load();
 

@@ -13,8 +13,8 @@ import shane.pennihome.local.smartboard.comms.RESTCommunicatorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.TokenHueBridge;
+import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.thingsframework.Things;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
@@ -82,7 +82,7 @@ public class PHBridgeDeviceGetter extends ICommunicator<PHBridgeDeviceGetter> {
             d.setName(jDev.getString("name"));
             d.setState(getState(jDev));
             d.setType(jDev.getString("type"));
-            d.setSource(IThing.Sources.PhilipsHue);
+            d.setService(IService.Services.PhilipsHue);
             mThings.add(d);
         }
     }

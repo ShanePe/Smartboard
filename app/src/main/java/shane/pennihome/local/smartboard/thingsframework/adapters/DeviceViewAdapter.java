@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
+import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 import shane.pennihome.local.smartboard.thingsframework.listeners.onThingListener;
 import shane.pennihome.local.smartboard.things.switches.Switch;
@@ -43,10 +43,10 @@ public class DeviceViewAdapter extends ThingViewAdapter {
         vh.mSwitchView.setEnabled(d.getState() != Switch.States.Unreachable);
         vh.mTypeView.setText(d.getType());
 
-        if (vh.mItem.getSource() == IThing.Sources.SmartThings) {
+        if (vh.mItem.getService() == IService.Services.SmartThings) {
             vh.mImgView.setImageResource(R.drawable.icon_switch);
             vh.mSourceView.setText(R.string.device_st_label);
-        } else if (vh.mItem.getSource() == IThing.Sources.PhilipsHue) {
+        } else if (vh.mItem.getService() == IService.Services.PhilipsHue) {
             vh.mImgView.setImageResource(R.drawable.icon_phlogo);
             vh.mSourceView.setText(R.string.device_ph_label);
         }

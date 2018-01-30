@@ -12,8 +12,8 @@ import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnCommResponseListener;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.TokenSmartThings;
+import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.thingsframework.Things;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
@@ -74,7 +74,7 @@ public class STRoutineGetter extends ICommunicator<STRoutineGetter> {
             Routine r = new Routine();
             r.setId(jRout.getString("id"));
             r.setName(jRout.getString("name"));
-            r.setSource(IThing.Sources.SmartThings);
+            r.setService(IService.Services.SmartThings);
             mThings.add(r);
         }
     }

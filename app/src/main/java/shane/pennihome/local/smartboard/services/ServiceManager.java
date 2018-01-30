@@ -25,7 +25,7 @@ public class ServiceManager {
             T instance = cls.newInstance();
             DialogFragment dialogFragment = instance.getRegisterDialog();
             Bundle args = new Bundle();
-            args.putString("title", "Register Service");
+            args.putString("title", "Register SmartThingsService");
             dialogFragment.setArguments(args);
 
             FragmentManager fragmentManager = mActivity.getSupportFragmentManager();

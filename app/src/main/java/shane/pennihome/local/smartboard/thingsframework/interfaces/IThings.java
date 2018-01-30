@@ -4,15 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import shane.pennihome.local.smartboard.services.interfaces.IService;
+
 /**
  * Created by shane on 16/01/18.
  */
 
 @SuppressWarnings("ALL")
 public abstract class IThings<T extends IThing> extends ArrayList<T> {
-    public void remove(IThing.Sources sources) {
+    public void remove(IService.Services services) {
         for (T t : this)
-            if (t.getSource() == sources)
+            if (t.getService() == services)
                 remove(t);
     }
 

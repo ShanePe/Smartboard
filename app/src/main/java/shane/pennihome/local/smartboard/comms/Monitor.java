@@ -10,6 +10,7 @@ import shane.pennihome.local.smartboard.comms.smartthings.STController;
 import shane.pennihome.local.smartboard.data.TokenHueBridge;
 import shane.pennihome.local.smartboard.data.TokenSmartThings;
 import shane.pennihome.local.smartboard.data.interfaces.ITokenInfo;
+import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
@@ -29,10 +30,10 @@ public class Monitor {
     public Monitor(Activity activity) {
         mActivity = activity;
 
-//        getThings(IThing.Sources.SmartThings, new OnProcessCompleteListener<IController>() {
+//        getThings(IThing.Services.SmartThings, new OnProcessCompleteListener<IController>() {
 //            @Override
 //            public void complete(boolean success, IController source) {
-//                getThings(IThing.Sources.PhilipsHue, new OnProcessCompleteListener<IController>() {
+//                getThings(IThing.Services.PhilipsHue, new OnProcessCompleteListener<IController>() {
 //                    @Override
 //                    public void complete(boolean success, IController source) {
 //                    }
@@ -57,7 +58,7 @@ public class Monitor {
     }
 
     public void getSmartThingsThings(final OnProcessCompleteListener<STController> processComplete) {
-        getThings(IThing.Sources.SmartThings, new OnProcessCompleteListener<IController>() {
+        getThings(IService.Services.SmartThings, new OnProcessCompleteListener<IController>() {
             @Override
             public void complete(boolean success, IController source) {
                 if (processComplete != null)
@@ -67,7 +68,7 @@ public class Monitor {
     }
 
     public void getHueBridgeThings(final OnProcessCompleteListener<PHBridgeController> processComplete) {
-        getThings(IThing.Sources.PhilipsHue, new OnProcessCompleteListener<IController>() {
+        getThings(IService.Services.PhilipsHue, new OnProcessCompleteListener<IController>() {
             @Override
             public void complete(boolean success, IController source) {
                 if (processComplete != null)
@@ -76,7 +77,7 @@ public class Monitor {
         });
     }
 
-    private void getThings(IThing.Sources type, final OnProcessCompleteListener<IController> processComplete) {
+    private void getThings(IService.Services type, final OnProcessCompleteListener<IController> processComplete) {
         try {
             if(mThings == null)
                 mThings = new Things();
@@ -120,7 +121,7 @@ public class Monitor {
         }
     }
 
-    private void monitorThings(final IThing.Sources type) {
+    private void monitorThings(final IService.Services type) {
         try {
             SourceInfo s = new SourceInfo(type);
             if (s.getToken().isAuthorised()) {
@@ -136,9 +137,9 @@ public class Monitor {
         }//Don't crash on monitor thread.
     }
 
-    private void checkStateChange(IThings<Switch> src, IThing.Sources type) {
+    private void checkStateChange(IThings<Switch> src, IService.Services type) {
         for (Switch d : getThings(Switch.class)) {
-            if (d.getSource() == type) {
+            if (d.getService() == type) {
                 Switch s = src.getbyId(d.getId());
                 if (s == null)
                     d.setState(Switch.States.Unreachable);
@@ -164,8 +165,8 @@ public class Monitor {
                     try {
                         Thread.sleep(1000 * Monitor.SECOND_CHECK);
 
-                        monitorThings(IThing.Sources.SmartThings);
-                        monitorThings(IThing.Sources.PhilipsHue);
+                        monitorThings(IService.Services.SmartThings);
+                        monitorThings(IService.Services.PhilipsHue);
                     } catch (Exception ex) {
                     }
 
@@ -188,24 +189,24 @@ public class Monitor {
         private IController mController = null;
         private Activity mActivity = null;
 
-        public SourceInfo(IThing.Sources sources, Activity activity) throws Exception {
+        public SourceInfo(IService.Services services, Activity activity) throws Exception {
             mActivity = activity;
-            getTokenAndController(sources);
+            getTokenAndController(services);
         }
 
-        public SourceInfo(IThing.Sources sources) throws Exception {
-            getTokenAndController(sources);
+        public SourceInfo(IService.Services services) throws Exception {
+            getTokenAndController(services);
         }
 
-        private void getTokenAndController(IThing.Sources type) throws Exception {
-            if (type == IThing.Sources.SmartThings) {
+        private void getTokenAndController(IService.Services type) throws Exception {
+            if (type == IService.Services.SmartThings) {
                 mToken = ITokenInfo.Load(TokenSmartThings.class);
                 mController = new STController(mActivity);
-            } else if (type == IThing.Sources.PhilipsHue) {
+            } else if (type == IService.Services.PhilipsHue) {
                 mToken = ITokenInfo.Load(TokenHueBridge.class);
                 mController = new PHBridgeController(mActivity);
             } else
-                throw new Exception("Invalid Sources Type");
+                throw new Exception("Invalid Services Type");
         }
 
         public ITokenInfo getToken() {

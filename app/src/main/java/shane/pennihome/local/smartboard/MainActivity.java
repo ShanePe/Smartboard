@@ -32,7 +32,7 @@ import shane.pennihome.local.smartboard.fragments.HueBridgeFragment;
 import shane.pennihome.local.smartboard.fragments.RoutineFragment;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
 import shane.pennihome.local.smartboard.services.ServiceManager;
-import shane.pennihome.local.smartboard.services.SmartThings.ServiceSwitch;
+import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 
 @SuppressWarnings("unused")
 public class MainActivity extends AppCompatActivity
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity
 
     private void smartThingsConnect() {
         ServiceManager serviceManager = new ServiceManager(this);
-        serviceManager.registerService(ServiceSwitch.class);
+        serviceManager.registerService(SmartThingsService.class);
 //        final SmartThingsFragment fragment = new SmartThingsFragment();
 //        //noinspection unchecked
 //        fragment.setmProcessComplete(new OnProcessCompleteListener<AppCompatActivity>() {

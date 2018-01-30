@@ -8,6 +8,7 @@ import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListen
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
+import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
@@ -25,7 +26,7 @@ public abstract class IThing extends IDatabaseObject {
     private final String mInstance;
     private transient onThingListener mOnThingListener;
     private String mId;
-    private Sources mSources;
+    private IService.Services mServices;
     @IgnoreOnCopy
     private IBlock mBlock;
     public IThing() {
@@ -66,12 +67,12 @@ public abstract class IThing extends IDatabaseObject {
 
     public abstract int getDefaultIconResource();
 
-    public Sources getSource() {
-        return mSources;
+    public IService.Services getService() {
+        return mServices;
     }
 
-    public void setSource(Sources sources) {
-        this.mSources = sources;
+    public void setService(IService.Services services) {
+        this.mServices = services;
     }
 
     public String getId() {
@@ -148,7 +149,7 @@ public abstract class IThing extends IDatabaseObject {
 
     String getKey()
     {
-        return String.format("%s%s%s%s", getId(), getName(), getSource(), getThingType());
+        return String.format("%s%s%s%s", getId(), getName(), getService(), getThingType());
     }
 
     protected onThingListener getOnThingListener()
@@ -165,8 +166,6 @@ public abstract class IThing extends IDatabaseObject {
         thing.setBlock(getBlock());
         return thing;
     }
-
-    public enum Sources {SmartThings, PhilipsHue}
 
     public enum Types {Switch, Routine}
 }

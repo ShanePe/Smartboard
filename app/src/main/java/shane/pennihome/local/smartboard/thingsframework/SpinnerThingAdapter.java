@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
 /**
@@ -56,10 +57,10 @@ public class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
         TextView txtName = (TextView) convertView.findViewById(R.id.txt_spin_name);
         TextView txtSrc = (TextView) convertView.findViewById(R.id.txt_spin_source);
 
-        if (thing.getSource() == IThing.Sources.SmartThings) {
+        if (thing.getService() == IService.Services.SmartThings) {
             img.setImageResource(R.drawable.icon_switch);
             txtSrc.setText(R.string.device_st_label);
-        } else if (thing.getSource() == IThing.Sources.PhilipsHue) {
+        } else if (thing.getService() == IService.Services.PhilipsHue) {
             img.setImageResource(R.drawable.icon_phlogo);
             txtSrc.setText(R.string.device_ph_label);
         }

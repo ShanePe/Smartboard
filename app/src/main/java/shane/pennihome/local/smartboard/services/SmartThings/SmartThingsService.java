@@ -3,10 +3,13 @@ package shane.pennihome.local.smartboard.services.SmartThings;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -16,13 +19,16 @@ import shane.pennihome.local.smartboard.comms.ExecutorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.OnExecutorRequestActionListener;
 import shane.pennihome.local.smartboard.data.NameValuePair;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
+import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
+import shane.pennihome.local.smartboard.things.routines.Routine;
+import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 
 /**
  * Created by shane on 29/01/18.
  */
 
-public class Service extends IService {
+public class SmartThingsService extends IService {
     public final static String ST_CLIENT_ID = "953f9b86-9a48-461a-91e9-c9544dd980c4";
     public final static String ST_CLIENT_SECRET = "8da94852-2c55-47b0-89ee-79ce8ac3bcd5";
     public final static String ST_REDIRECT_URI = "http://localhost:4567/oauth/callback";
@@ -41,7 +47,10 @@ public class Service extends IService {
 
     @Override
     protected Things getThings() throws Exception {
-        return null;
+        Things things = new Things();
+        for (IThingsGetter g : getThingGetters())
+            things.addAll(g.getThings());
+        return things;
     }
 
     @Override
@@ -58,7 +67,7 @@ public class Service extends IService {
 
     @Override
     protected boolean isValid() {
-        return false;
+        return isAuthorised() && !isAwaitingAuthorisation();
     }
 
     @Override
@@ -119,6 +128,14 @@ public class Service extends IService {
     }
 
     @Override
+    protected ArrayList<IThingsGetter> getThingGetters() {
+        ArrayList<IThingsGetter> thingsGetters = new ArrayList<>();
+        thingsGetters.add(new SwitchGetter());
+        thingsGetters.add(new RoutineGetter());
+        return thingsGetters;
+    }
+
+    @Override
     public Types getDatabaseType() {
         return Types.Service;
     }
@@ -129,5 +146,99 @@ public class Service extends IService {
 
     public void setAuthorisationCode(String authorisationCode) {
         mAuthorisationCode = authorisationCode;
+    }
+
+    public static SmartThingsService Load(String json) {
+        try {
+            return IService.Load(SmartThingsService.class, json);
+        } catch (Exception e) {
+            return new SmartThingsService();
+        }
+    }
+
+    protected class SwitchGetter extends IThingsGetter {
+
+        private Switch.States getState(JSONObject j) throws JSONException {
+            if (j.getString("value").equals("on"))
+                return Switch.States.On;
+            else
+                return Switch.States.Off;
+        }
+
+        @Override
+        public String getLoadMessage() {
+            return "Getting SmartThings switches";
+        }
+
+        @Override
+        public Things getThings() throws Exception {
+            Things things = new Things();
+            Executor executor = new Executor();
+            ExecutorResult result = executor.execute(new ExecutorRequest(
+                    new URL(mRequestUrl + "/switches"),
+                    ExecutorRequest.Types.GET,
+                    new OnExecutorRequestActionListener() {
+                        @Override
+                        public void OnPresend(HttpURLConnection connection) {
+                            connection.setRequestProperty("Authorization", "Bearer " + mToken);
+                        }
+                    })).get();
+
+            if (!result.isSuccess())
+                throw result.getError();
+
+            JSONArray jObjURI = new JSONArray(result.getResult());
+            for (int i = 0; i < jObjURI.length(); i++) {
+                JSONObject jDev = jObjURI.getJSONObject(i);
+                Switch d = new Switch();
+                d.setId(jDev.getString("id"));
+                d.setName(jDev.getString("name"));
+                d.setState(getState(jDev));
+                d.setType(jDev.getString("type"));
+                d.setService(Services.SmartThings);
+                things.add(d);
+            }
+
+            return things;
+        }
+    }
+
+    protected class RoutineGetter extends IThingsGetter {
+
+        @Override
+        public String getLoadMessage() {
+            return "Getting SmartThings Routines";
+        }
+
+        @Override
+        public Things getThings() throws Exception {
+            Things things = new Things();
+            Executor executor = new Executor();
+            ExecutorResult result = executor.execute(new ExecutorRequest(
+                    new URL(mRequestUrl + "/routines"),
+                    ExecutorRequest.Types.GET,
+                    new OnExecutorRequestActionListener() {
+                        @Override
+                        public void OnPresend(HttpURLConnection connection) {
+                            connection.setRequestProperty("Authorization", "Bearer " + mToken);
+                        }
+                    })).get();
+
+            if (!result.isSuccess())
+                throw result.getError();
+
+            JSONArray jObjURI = new JSONArray(result.getResult());
+            for (int i = 0; i < jObjURI.length(); i++) {
+                JSONObject jRoutine = jObjURI.getJSONObject(i);
+
+                Routine r = new Routine();
+                r.setId(jRoutine.getString("id"));
+                r.setName(jRoutine.getString("name"));
+                r.setService(Services.SmartThings);
+                things.add(r);
+            }
+
+            return things;
+        }
     }
 }

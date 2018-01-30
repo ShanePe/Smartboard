@@ -19,14 +19,14 @@ import shane.pennihome.local.smartboard.data.sql.DBEngine;
  */
 
 public class RegisterDialog extends DialogFragment {
-    Service mService;
+    SmartThingsService mSmartThingsService;
 
-    public Service getService() {
-        return mService;
+    public SmartThingsService getService() {
+        return mSmartThingsService;
     }
 
-    public void setService(Service service) {
-        mService = service;
+    public void setService(SmartThingsService smartThingsService) {
+        mSmartThingsService = smartThingsService;
     }
 
     @Nullable
@@ -40,10 +40,10 @@ public class RegisterDialog extends DialogFragment {
         web.getSettings().setAppCacheEnabled(true);
         web.getSettings().setGeolocationEnabled(true);
 
-        String requestUrl = (Service.ST_OAUTH_URL +
-                "?redirect_uri=" + Service.ST_REDIRECT_URI +
-                "&response_type=code&client_id=" + Service.ST_CLIENT_ID +
-                "&scope=" + Service.ST_OAUTH_SCOPE);
+        String requestUrl = (SmartThingsService.ST_OAUTH_URL +
+                "?redirect_uri=" + SmartThingsService.ST_REDIRECT_URI +
+                "&response_type=code&client_id=" + SmartThingsService.ST_CLIENT_ID +
+                "&scope=" + SmartThingsService.ST_OAUTH_SCOPE);
 
         Bundle args = getArguments();
         assert args != null;
@@ -59,9 +59,9 @@ public class RegisterDialog extends DialogFragment {
                     if (url.contains("?code=") && !authComplete) {
                         Uri uri = Uri.parse(url);
 
-                        mService.setAuthorisationCode(uri.getQueryParameter("code"));
-                        mService.register();
-                        new DBEngine(getActivity()).writeToDatabase(mService);
+                        mSmartThingsService.setAuthorisationCode(uri.getQueryParameter("code"));
+                        mSmartThingsService.register();
+                        new DBEngine(getActivity()).writeToDatabase(mSmartThingsService);
                         authComplete = true;
                         getDialog().dismiss();
 

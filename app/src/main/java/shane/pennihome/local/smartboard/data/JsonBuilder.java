@@ -12,7 +12,7 @@ import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
 
-import shane.pennihome.local.smartboard.services.SmartThings.ServiceSwitch;
+import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
@@ -68,8 +68,8 @@ public class JsonBuilder {
                 JsonObject jService = json.getAsJsonObject();
 
                 switch (jService.get("mInstance").getAsString().toLowerCase()) {
-                    case "serviceswitch":
-                        return ServiceSwitch.Load(jService.toString());
+                    case "smartthingsservice":
+                        return SmartThingsService.Load(jService.toString());
                     default:
                         throw new JsonParseException("Invalid type of service : " + jService.get("mInstance").getAsString());
                 }
@@ -103,15 +103,12 @@ public class JsonBuilder {
         builder.registerTypeAdapter(IService.class, new JsonSerializer<IService>() {
             @Override
             public JsonElement serialize(IService src, Type typeOfSrc, JsonSerializationContext context) {
-                if (src instanceof ServiceSwitch)
-                    return context.serialize((ServiceSwitch) src);
+                if (src instanceof SmartThingsService)
+                    return context.serialize((SmartThingsService) src);
                 else
                     throw new JsonParseException("Invalid type of service : " + src.toString());
             }
         });
-
-
-
 
         return builder.create();
     }
