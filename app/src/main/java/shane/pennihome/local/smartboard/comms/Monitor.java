@@ -10,9 +10,9 @@ import shane.pennihome.local.smartboard.comms.smartthings.STController;
 import shane.pennihome.local.smartboard.data.TokenHueBridge;
 import shane.pennihome.local.smartboard.data.TokenSmartThings;
 import shane.pennihome.local.smartboard.data.interfaces.ITokenInfo;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 /**
@@ -22,9 +22,24 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 @SuppressWarnings("ALL")
 public class Monitor {
     private static final int SECOND_CHECK = 120;
+    private static Things mThings;
     private final Activity mActivity;
     private Thread mMonitorThread = null;
-    private static Things mThings;
+
+    public Monitor(Activity activity) {
+        mActivity = activity;
+
+//        getThings(IThing.Sources.SmartThings, new OnProcessCompleteListener<IController>() {
+//            @Override
+//            public void complete(boolean success, IController source) {
+//                getThings(IThing.Sources.PhilipsHue, new OnProcessCompleteListener<IController>() {
+//                    @Override
+//                    public void complete(boolean success, IController source) {
+//                    }
+//                });
+//            }
+//        });
+    }
 
     public static Things getThings() {
         return Monitor.mThings;
@@ -32,21 +47,6 @@ public class Monitor {
 
     public static void setThings(Things mThings) {
         Monitor.mThings = mThings;
-    }
-
-    public Monitor(Activity activity) {
-        mActivity = activity;
-
-        getThings(IThing.Sources.SmartThings, new OnProcessCompleteListener<IController>() {
-            @Override
-            public void complete(boolean success, IController source) {
-                getThings(IThing.Sources.PhilipsHue, new OnProcessCompleteListener<IController>() {
-                    @Override
-                    public void complete(boolean success, IController source) {
-                    }
-                });
-            }
-        });
     }
 
     public <T extends IThing> IThings<T> getThings(Class<T> cls)

@@ -76,6 +76,4 @@ public class SwitchBlock extends IBlock {
     {
         return UIHelper.getColorWithAlpha(getBackgroundColourOn(), getBackgroundColourTransparencyOn() / 100f);
     }
-
-
 }

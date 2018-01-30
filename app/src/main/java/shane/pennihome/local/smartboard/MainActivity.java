@@ -19,7 +19,6 @@ import java.util.List;
 import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.comms.philipshue.PHBridgeController;
-import shane.pennihome.local.smartboard.comms.smartthings.STController;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Dashboards;
 import shane.pennihome.local.smartboard.data.Globals;
@@ -31,8 +30,9 @@ import shane.pennihome.local.smartboard.fragments.DashboardFragment;
 import shane.pennihome.local.smartboard.fragments.DeviceFragment;
 import shane.pennihome.local.smartboard.fragments.HueBridgeFragment;
 import shane.pennihome.local.smartboard.fragments.RoutineFragment;
-import shane.pennihome.local.smartboard.fragments.SmartThingsFragment;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
+import shane.pennihome.local.smartboard.services.ServiceManager;
+import shane.pennihome.local.smartboard.services.SmartThings.ServiceSwitch;
 
 @SuppressWarnings("unused")
 public class MainActivity extends AppCompatActivity
@@ -148,23 +148,25 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void smartThingsConnect() {
-        final SmartThingsFragment fragment = new SmartThingsFragment();
-        //noinspection unchecked
-        fragment.setmProcessComplete(new OnProcessCompleteListener<AppCompatActivity>() {
-            @Override
-            public void complete(boolean success, AppCompatActivity source) {
-                if (success) {
-                    mMonitor.getSmartThingsThings(new OnProcessCompleteListener<STController>() {
-                        @Override
-                        public void complete(boolean success, STController source) {
-                        }
-                    });
-                }
-            }
-        });
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("smartThingsConnect");
-        ft.replace(R.id.content_main, fragment);
-        ft.commit();
+        ServiceManager serviceManager = new ServiceManager(this);
+        serviceManager.registerService(ServiceSwitch.class);
+//        final SmartThingsFragment fragment = new SmartThingsFragment();
+//        //noinspection unchecked
+//        fragment.setmProcessComplete(new OnProcessCompleteListener<AppCompatActivity>() {
+//            @Override
+//            public void complete(boolean success, AppCompatActivity source) {
+//                if (success) {
+//                    mMonitor.getSmartThingsThings(new OnProcessCompleteListener<STController>() {
+//                        @Override
+//                        public void complete(boolean success, STController source) {
+//                        }
+//                    });
+//                }
+//            }
+//        });
+//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("smartThingsConnect");
+//        ft.replace(R.id.content_main, fragment);
+//        ft.commit();
     }
 
     @Override

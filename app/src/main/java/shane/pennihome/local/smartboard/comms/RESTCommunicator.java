@@ -70,7 +70,6 @@ public class RESTCommunicator {
             writer.write(getQuery(queryStringParameters));
             writer.flush();
             writer.close();
-
         }
         if (jsonObject != null)
             os.write((jsonObject.toString() + "\r\n").getBytes("UTF-8"));

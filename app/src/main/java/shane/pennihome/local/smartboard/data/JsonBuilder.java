@@ -12,6 +12,8 @@ import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
 
+import shane.pennihome.local.smartboard.services.SmartThings.ServiceSwitch;
+import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
 import shane.pennihome.local.smartboard.things.switches.Switch;
@@ -59,6 +61,21 @@ public class JsonBuilder {
             }
         });
 
+
+        builder.registerTypeAdapter(IService.class, new JsonDeserializer<IService>() {
+            @Override
+            public IService deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                JsonObject jService = json.getAsJsonObject();
+
+                switch (jService.get("mInstance").getAsString().toLowerCase()) {
+                    case "serviceswitch":
+                        return ServiceSwitch.Load(jService.toString());
+                    default:
+                        throw new JsonParseException("Invalid type of service : " + jService.get("mInstance").getAsString());
+                }
+            }
+        });
+
         builder.registerTypeAdapter(IThing.class, new JsonSerializer<IThing>() {
             @Override
             public JsonElement serialize(IThing src, Type typeOfSrc, JsonSerializationContext context) {
@@ -82,6 +99,19 @@ public class JsonBuilder {
                     throw new JsonParseException("Invalid type of block : " + src.toString());
             }
         });
+
+        builder.registerTypeAdapter(IService.class, new JsonSerializer<IService>() {
+            @Override
+            public JsonElement serialize(IService src, Type typeOfSrc, JsonSerializationContext context) {
+                if (src instanceof ServiceSwitch)
+                    return context.serialize((ServiceSwitch) src);
+                else
+                    throw new JsonParseException("Invalid type of service : " + src.toString());
+            }
+        });
+
+
+
 
         return builder.create();
     }

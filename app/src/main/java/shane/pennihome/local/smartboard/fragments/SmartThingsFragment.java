@@ -76,7 +76,6 @@ public class SmartThingsFragment extends IFragment {
                 // Check if the answer contains a code
                 if (url.contains("?code=") && !authComplete) {
                     // check answer
-
                     Uri uri = Uri.parse(url);
 
                     // Code recovery

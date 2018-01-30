@@ -19,10 +19,6 @@ import shane.pennihome.local.smartboard.data.JsonBuilder;
 
 @SuppressWarnings("DefaultFileTemplate")
 public abstract class IDatabaseObject {
-    @SuppressWarnings("WeakerAccess")
-    @Retention(RetentionPolicy.RUNTIME)
-    public @interface IgnoreOnCopy{}
-
     @IgnoreOnCopy
     private String mDataId;
     private String mName = "";
@@ -74,8 +70,6 @@ public abstract class IDatabaseObject {
         return JsonBuilder.Get().toJson(this);
     }
 
-    public enum Types {Dashboard, Group, Thing, Block}
-
     public void copyValuesFrom(IDatabaseObject from) {
         ArrayList<Field> fieldsTo = new ArrayList<>();
         ArrayList<Field> fieldsFrom = new ArrayList<>();
@@ -115,5 +109,12 @@ public abstract class IDatabaseObject {
         }
 
         return fields;
+    }
+
+    public enum Types {Dashboard, Group, Thing, Block, Service}
+
+    @SuppressWarnings("WeakerAccess")
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface IgnoreOnCopy {
     }
 }
