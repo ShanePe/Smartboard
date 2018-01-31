@@ -14,6 +14,7 @@ import shane.pennihome.local.smartboard.data.TokenHueBridge;
 import shane.pennihome.local.smartboard.data.TokenSmartThings;
 import shane.pennihome.local.smartboard.data.interfaces.ITokenInfo;
 import shane.pennihome.local.smartboard.services.ServiceManager;
+import shane.pennihome.local.smartboard.services.Services;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
 import shane.pennihome.local.smartboard.things.switches.Switch;
@@ -31,27 +32,66 @@ public class Monitor {
     private static Things mThings;
     private final Activity mActivity;
     private Thread mMonitorThread = null;
+    private static Services mServices = null;
+
+    public static Services getServices() {
+        return mServices;
+    }
+
+    public static void setServices(Services services) {
+        Monitor.mServices = services;
+    }
+
+    public static Things getThings() {
+        if(mThings == null)
+            mThings = new Things();
+        return Monitor.mThings;
+    }
+
+    public static void setThings(Things mThings) {
+        Monitor.mThings = mThings;
+    }
+
+    public static  <T extends IThing> IThings<T> getThings(Class<T> cls)
+    {
+        IThings<T> items = getThings().getOfType(cls);
+        items.sort();
+        return items;
+    }
+
 
     public Monitor(final AppCompatActivity activity) {
         mActivity = activity;
+        setServices(ServiceManager.getActiveServices(activity));
+        processThings(activity,new OnProcessCompleteListener<ServiceManager.ServiceLoader.ServiceLoaderResult>() {
+            @Override
+            public void complete(boolean success, ServiceManager.ServiceLoader.ServiceLoaderResult source) {
+                getThings().clear();
+                setThings(source.getResult());
+                for(String e:source.getErrors().keySet())
+                    if (activity != null)
+                        Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG);
+            }
+        });
+    }
 
+    private void processThings(OnProcessCompleteListener onProcessCompleteListener)
+    {
+        processThings(null, onProcessCompleteListener);
+    }
+
+    private void processThings(final AppCompatActivity activity, OnProcessCompleteListener onProcessCompleteListener)
+    {
         ServiceManager.ServiceLoader loader = new ServiceManager().getServiceLoader();
         loader.setActivity(activity);
-        for (IService s : ServiceManager.getActiveServices(activity))
+        for (IService s : getServices())
             if (s.isValid())
                 loader.getServices().add(s);
             else if (s.isAwaitingAction() && activity != null)
                 Toast.makeText(activity, String.format("Service %s is awaiting an action.", s.getName()), Toast.LENGTH_LONG);
         try {
-            loader.setOnProcessCompleteListener(new OnProcessCompleteListener<ServiceManager.ServiceLoaderResult>() {
-                @Override
-                public void complete(boolean success, ServiceManager.ServiceLoaderResult source) {
-                    mThings = source.getResult();
-                    for(String e:source.getErrors().keySet())
-                        if (activity != null)
-                            Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG);
-                }
-            });
+            if(onProcessCompleteListener != null)
+                loader.setOnProcessCompleteListener(onProcessCompleteListener);
             loader.execute();
 
         } catch (Exception e) {
@@ -60,116 +100,30 @@ public class Monitor {
             else
                 e.printStackTrace();
         }
-
-
-//        getThings(IThing.ServicesTypes.SmartThings, new OnProcessCompleteListener<IController>() {
-//            @Override
-//            public void complete(boolean success, IController source) {
-//                getThings(IThing.ServicesTypes.PhilipsHue, new OnProcessCompleteListener<IController>() {
-//                    @Override
-//                    public void complete(boolean success, IController source) {
-//                    }
-//                });
-//            }
-//        });
     }
 
-    public static Things getThings() {
-        return Monitor.mThings;
-    }
+    public void Start() {
+        Stop();
 
-    public static void setThings(Things mThings) {
-        Monitor.mThings = mThings;
-    }
-
-    public <T extends IThing> IThings<T> getThings(Class<T> cls)
-    {
-        IThings<T> items = mThings.getOfType(cls);
-        items.sort();
-        return items;
-    }
-
-    public void getSmartThingsThings(final OnProcessCompleteListener<STController> processComplete) {
-        getThings(IService.ServicesTypes.SmartThings, new OnProcessCompleteListener<IController>() {
+        mMonitorThread = new Thread(new Runnable() {
             @Override
-            public void complete(boolean success, IController source) {
-                if (processComplete != null)
-                    processComplete.complete(success, (STController) source);
+            public void run() {
+                while (true) {
+                    try {
+                      Thread.sleep(1000 * Monitor.SECOND_CHECK);
+                      processThings();
+
+                    } catch (Exception ex) {
+                    }
+
+                }
             }
         });
+
+        mMonitorThread.start();
     }
 
-    public void getHueBridgeThings(final OnProcessCompleteListener<PHBridgeController> processComplete) {
-        getThings(IService.ServicesTypes.PhilipsHue, new OnProcessCompleteListener<IController>() {
-            @Override
-            public void complete(boolean success, IController source) {
-                if (processComplete != null)
-                    processComplete.complete(success, (PHBridgeController) source);
-            }
-        });
-    }
-
-    private void getThings(IService.ServicesTypes type, final OnProcessCompleteListener<IController> processComplete) {
-        try {
-            if(mThings == null)
-                mThings = new Things();
-            else
-                mThings.remove(type);
-
-            SourceInfo s = new SourceInfo(type, mActivity);
-
-            if (s.getToken().isAwaitingAuthorisation())
-                s.getController().getAll(new OnProcessCompleteListener<IController>() {
-                    @Override
-                    public void complete(boolean success, IController source) {
-                        if (success) {
-                            mThings.addAll(source.getThings());
-                        }
-                        if (processComplete != null)
-                            processComplete.complete(success, source);
-                    }
-                });
-            else if (s.getToken().isAuthorised())
-                s.getController().getThings(new OnProcessCompleteListener<IController>() {
-                    @Override
-                    public void complete(boolean success, IController source) {
-                        if (success) {
-                            mThings.addAll(source.getThings());
-                        }
-
-                        if (processComplete != null)
-                            processComplete.complete(success, source);
-                    }
-                });
-            else if (processComplete != null)
-                processComplete.complete(true, s.getController());
-
-        } catch (Exception ex) {
-            if (mActivity != null)
-                Toast.makeText(mActivity, "Error gettings things for " + type.name(), Toast.LENGTH_SHORT).show();
-
-            if (processComplete != null)
-                processComplete.complete(true, null);
-        }
-    }
-
-    private void monitorThings(final IService.ServicesTypes type) {
-        try {
-            SourceInfo s = new SourceInfo(type);
-            if (s.getToken().isAuthorised()) {
-                s.getController().getDevices(new OnProcessCompleteListener<IThings<Switch>>() {
-                    @Override
-                    public void complete(boolean success, IThings<Switch> source) {
-                        if (success)
-                            checkStateChange(source, type);
-                    }
-                });
-            }
-        } catch (Exception ex) {
-        }//Don't crash on monitor thread.
-    }
-
-    private void checkStateChange(IThings<Switch> src, IService.ServicesTypes type) {
+    private void checkStateChange() {
         for (Switch d : getThings(Switch.class)) {
             if (d.getService() == type) {
                 Switch s = src.getbyId(d.getId());
@@ -187,27 +141,126 @@ public class Monitor {
             mThings.addAll(src);
     }
 
-    public void Start() {
-        Stop();
+//
+//    public void getSmartThingsThings(final OnProcessCompleteListener<STController> processComplete) {
+//        getThings(IService.ServicesTypes.SmartThings, new OnProcessCompleteListener<IController>() {
+//            @Override
+//            public void complete(boolean success, IController source) {
+//                if (processComplete != null)
+//                    processComplete.complete(success, (STController) source);
+//            }
+//        });
+//    }
+//
+//    public void getHueBridgeThings(final OnProcessCompleteListener<PHBridgeController> processComplete) {
+//        getThings(IService.ServicesTypes.PhilipsHue, new OnProcessCompleteListener<IController>() {
+//            @Override
+//            public void complete(boolean success, IController source) {
+//                if (processComplete != null)
+//                    processComplete.complete(success, (PHBridgeController) source);
+//            }
+//        });
+//    }
 
-        mMonitorThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(1000 * Monitor.SECOND_CHECK);
+//    private void getThings(IService.ServicesTypes type, final OnProcessCompleteListener<IController> processComplete) {
+//        try {
+//            if(mThings == null)
+//                mThings = new Things();
+//            else
+//                mThings.remove(type);
+//
+//            SourceInfo s = new SourceInfo(type, mActivity);
+//
+//            if (s.getToken().isAwaitingAuthorisation())
+//                s.getController().getAll(new OnProcessCompleteListener<IController>() {
+//                    @Override
+//                    public void complete(boolean success, IController source) {
+//                        if (success) {
+//                            mThings.addAll(source.getThings());
+//                        }
+//                        if (processComplete != null)
+//                            processComplete.complete(success, source);
+//                    }
+//                });
+//            else if (s.getToken().isAuthorised())
+//                s.getController().getThings(new OnProcessCompleteListener<IController>() {
+//                    @Override
+//                    public void complete(boolean success, IController source) {
+//                        if (success) {
+//                            mThings.addAll(source.getThings());
+//                        }
+//
+//                        if (processComplete != null)
+//                            processComplete.complete(success, source);
+//                    }
+//                });
+//            else if (processComplete != null)
+//                processComplete.complete(true, s.getController());
+//
+//        } catch (Exception ex) {
+//            if (mActivity != null)
+//                Toast.makeText(mActivity, "Error gettings things for " + type.name(), Toast.LENGTH_SHORT).show();
+//
+//            if (processComplete != null)
+//                processComplete.complete(true, null);
+//        }
+//    }
 
-                        monitorThings(IService.ServicesTypes.SmartThings);
-                        monitorThings(IService.ServicesTypes.PhilipsHue);
-                    } catch (Exception ex) {
-                    }
+//    private void monitorThings(final IService.ServicesTypes type) {
+//        try {
+//            SourceInfo s = new SourceInfo(type);
+//            if (s.getToken().isAuthorised()) {
+//                s.getController().getDevices(new OnProcessCompleteListener<IThings<Switch>>() {
+//                    @Override
+//                    public void complete(boolean success, IThings<Switch> source) {
+//                        if (success)
+//                            checkStateChange(source, type);
+//                    }
+//                });
+//            }
+//        } catch (Exception ex) {
+//        }//Don't crash on monitor thread.
+//    }
 
-                }
-            }
-        });
+//    private void checkStateChange(IThings<Switch> src, IService.ServicesTypes type) {
+//        for (Switch d : getThings(Switch.class)) {
+//            if (d.getService() == type) {
+//                Switch s = src.getbyId(d.getId());
+//                if (s == null)
+//                    d.setState(Switch.States.Unreachable);
+//                else {
+//                    if (s.getState() != d.getState())
+//                        d.setState(s.getState());
+//                    src.remove(s);
+//                }
+//            }
+//        }
+//
+//        if (src.size() != 0)
+//            mThings.addAll(src);
+//    }
 
-        mMonitorThread.start();
-    }
+//    public void Start() {
+//        Stop();
+//
+//        mMonitorThread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//                    try {
+//                        Thread.sleep(1000 * Monitor.SECOND_CHECK);
+//
+//                        monitorThings(IService.ServicesTypes.SmartThings);
+//                        monitorThings(IService.ServicesTypes.PhilipsHue);
+//                    } catch (Exception ex) {
+//                    }
+//
+//                }
+//            }
+//        });
+//
+//        mMonitorThread.start();
+//    }
 
     private void Stop() {
         if (mMonitorThread != null) {

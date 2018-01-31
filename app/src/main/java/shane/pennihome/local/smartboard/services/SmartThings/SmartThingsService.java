@@ -149,14 +149,12 @@ public class SmartThingsService extends IService {
         mAuthorisationCode = authorisationCode;
     }
 
-    protected class Connector extends IThingsGetter{
+    protected class Connector implements IThingsGetter{
 
-        @Override
         public String getLoadMessage() {
             return "Connecting to SmartThings";
         }
 
-        @Override
         public Things getThings() throws Exception {
             ExecutorResult result = Executor.fulfil(
                     new ExecutorRequest(new URL(ST_ENDPOINT_URL),
@@ -176,9 +174,14 @@ public class SmartThingsService extends IService {
 
             return new Things();
         }
+
+        @Override
+        public int getUniqueId() {
+            return 1;
+        }
     }
 
-    protected class SwitchGetter extends IThingsGetter {
+    protected class SwitchGetter implements IThingsGetter {
 
         private Switch.States getState(JSONObject j) throws JSONException {
             if (j.getString("value").equals("on"))
@@ -187,12 +190,10 @@ public class SmartThingsService extends IService {
                 return Switch.States.Off;
         }
 
-        @Override
         public String getLoadMessage() {
             return "Getting SmartThings switches";
         }
 
-        @Override
         public Things getThings() throws Exception {
             Things things = new Things();
             ExecutorResult result = Executor.fulfil(new ExecutorRequest(
@@ -222,16 +223,19 @@ public class SmartThingsService extends IService {
 
             return things;
         }
-    }
-
-    protected class RoutineGetter extends IThingsGetter {
 
         @Override
+        public int getUniqueId() {
+            return 2;
+        }
+    }
+
+    protected class RoutineGetter implements IThingsGetter {
+
         public String getLoadMessage() {
             return "Getting SmartThings Routines";
         }
 
-        @Override
         public Things getThings() throws Exception {
             Things things = new Things();
             ExecutorResult result = Executor.fulfil(new ExecutorRequest(
@@ -259,6 +263,11 @@ public class SmartThingsService extends IService {
             }
 
             return things;
+        }
+
+        @Override
+        public int getUniqueId() {
+            return 3;
         }
     }
 }

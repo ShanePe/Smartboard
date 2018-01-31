@@ -1,5 +1,7 @@
-package shane.pennihome.local.smartboard.adapters;
+package shane.pennihome.local.smartboard.services.adapters;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,34 +75,25 @@ public class ServiceLoadAdapter extends RecyclerView.Adapter<ServiceLoadAdapter.
         }
 
         public void slideOut() {
-            final Animation animation = AnimationUtils.loadAnimation(mView.getContext(), R.anim.slide_out_left);
+            final Animation animation = AnimationUtils.loadAnimation(mView.getContext(), R.anim.slide_out_up);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
+                public void onAnimationStart(Animation animation) {}
+                @Override
+                public void onAnimationRepeat(Animation animation) {}
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     mView.setVisibility(View.GONE);
-                    int getterPosition = mGetters.indexOf(mGetter);
-                    mGetters.remove(mGetter);
-                    mRecycleView.getAdapter().notifyItemRemoved(getterPosition);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
                 }
             });
+
             mView.post(new Runnable() {
                 @Override
                 public void run() {
                     mView.startAnimation(animation);
                 }
             });
-
-
 
         }
     }

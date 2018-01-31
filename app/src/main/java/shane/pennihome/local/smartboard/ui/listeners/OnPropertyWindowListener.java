@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.listeners;
+package shane.pennihome.local.smartboard.ui.listeners;
 
 import android.view.View;
 

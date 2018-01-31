@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.listeners.OnThingSelectListener;
+import shane.pennihome.local.smartboard.ui.listeners.OnThingSelectListener;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 

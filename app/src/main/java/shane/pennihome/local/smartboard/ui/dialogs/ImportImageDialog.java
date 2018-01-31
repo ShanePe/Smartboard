@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.dialogs;
+package shane.pennihome.local.smartboard.ui.dialogs;
 
 import android.content.Context;
 import android.content.Intent;

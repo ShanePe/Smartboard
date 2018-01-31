@@ -8,7 +8,8 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
  * Created by SPennicott on 30/01/2018.
  */
 
-public abstract class IThingsGetter {
-    public abstract String getLoadMessage();
-    public abstract Things getThings() throws Exception;
+public interface IThingsGetter {
+    String getLoadMessage();
+    Things getThings() throws Exception;
+    int getUniqueId();
 }

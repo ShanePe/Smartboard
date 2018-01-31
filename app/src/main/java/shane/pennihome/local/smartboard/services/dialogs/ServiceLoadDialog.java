@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.dialogs;
+package shane.pennihome.local.smartboard.services.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.adapters.ServiceLoadAdapter;
+import shane.pennihome.local.smartboard.services.adapters.ServiceLoadAdapter;
 import shane.pennihome.local.smartboard.services.Services;
 import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
 
@@ -28,40 +28,29 @@ public class ServiceLoadDialog extends DialogFragment {
     Services mServices;
     RecyclerView mRecycleView;
 
-    @Override
+   @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setRetainInstance(true);
         setCancelable(false);
     }
 
     @NonNull
-//    @Override
-//    public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-//
-//
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        builder.setView(view);
-//        return builder.create();
-//    }
-
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
         View view = inflater.inflate(R.layout.service_startup_list, null);
-        view.setBackground(new ColorDrawable(Color.TRANSPARENT));
-        Context context = view.getContext();
 
         mRecycleView = (RecyclerView) view;
         ServiceLoadAdapter loadAdapter = new ServiceLoadAdapter();
         loadAdapter.setServices(getServices());
         mRecycleView.setAdapter(loadAdapter);
-        mRecycleView.setLayoutManager(new LinearLayoutManager(context));
-        return view;
+        mRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        return new AlertDialog.Builder(getContext(),R.style.transparentDialog)
+                .setView(view)
+                .create();
     }
 
     public static ServiceLoadDialog newInstance(Services services) {
@@ -78,22 +67,11 @@ public class ServiceLoadDialog extends DialogFragment {
         mServices = services;
     }
 
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.service_startup_list, container, false);
-//        mRecycleView = view.findViewById(R.id.sl_list);
-//        ServiceLoadAdapter loadAdapter = new ServiceLoadAdapter();
-//        loadAdapter.setServices(getServices());
-//        return view;
-//    }
-
     public void setGetterSuccess(IThingsGetter getter) {
         ServiceLoadAdapter.ViewHolder viewHolder = findViewHolder(getter);
         if (viewHolder == null)
             return;
         viewHolder.slideOut();
-
     }
 
     private ServiceLoadAdapter.ViewHolder findViewHolder(IThingsGetter getter) {
@@ -102,7 +80,7 @@ public class ServiceLoadDialog extends DialogFragment {
 
         for (int i = 0; i < mRecycleView.getChildCount(); i++) {
             ServiceLoadAdapter.ViewHolder vh = (ServiceLoadAdapter.ViewHolder) mRecycleView.findViewHolderForAdapterPosition(i);
-            if (vh.getThingGetter().getClass().equals(getter.getClass()))
+            if (vh.getThingGetter().getUniqueId() == getter.getUniqueId())
                 return vh;
         }
 

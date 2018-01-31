@@ -15,7 +15,7 @@ import java.util.HashMap;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
-import shane.pennihome.local.smartboard.dialogs.ServiceLoadDialog;
+import shane.pennihome.local.smartboard.services.dialogs.ServiceLoadDialog;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
 import shane.pennihome.local.smartboard.thingsframework.Things;
@@ -56,29 +56,8 @@ public class ServiceManager {
         return new ServiceLoader();
     }
 
-    public class ServiceLoaderResult {
-        private HashMap<String, IThingsGetter> mErrors;
-        private Things mResult;
 
-        public boolean isSuccess() {
-            return getErrors().size() == 0;
-        }
-
-        public HashMap<String, IThingsGetter> getErrors() {
-            if (mErrors == null)
-                mErrors = new HashMap<String, IThingsGetter>();
-
-            return mErrors;
-        }
-
-        public Things getResult() {
-            if (mResult == null)
-                mResult = new Things();
-            return mResult;
-        }
-    }
-
-    public class ServiceLoader extends AsyncTask<IThingsGetter, IThingsGetter, ServiceLoaderResult> {
+    public class ServiceLoader extends AsyncTask<IThingsGetter, IThingsGetter, ServiceLoader.ServiceLoaderResult> {
         AppCompatActivity mActivity;
         Services mServices;
         ServiceLoadDialog mServiceLoadDialog;
@@ -149,14 +128,36 @@ public class ServiceManager {
             if (mOnProcessCompleteListener != null)
                 mOnProcessCompleteListener.complete(true, result);
 
-            //if (mServiceLoadDialog != null)
-           //     mServiceLoadDialog.dismiss();
+            if (mServiceLoadDialog != null)
+                mServiceLoadDialog.dismiss();
         }
 
         @Override
         protected void onProgressUpdate(IThingsGetter... values) {
             if (mServiceLoadDialog != null)
                 mServiceLoadDialog.setGetterSuccess(values[0]);
+        }
+
+        public class ServiceLoaderResult {
+            private HashMap<String, IThingsGetter> mErrors;
+            private Things mResult;
+
+            public boolean isSuccess() {
+                return getErrors().size() == 0;
+            }
+
+            public HashMap<String, IThingsGetter> getErrors() {
+                if (mErrors == null)
+                    mErrors = new HashMap<String, IThingsGetter>();
+
+                return mErrors;
+            }
+
+            public Things getResult() {
+                if (mResult == null)
+                    mResult = new Things();
+                return mResult;
+            }
         }
     }
 }
