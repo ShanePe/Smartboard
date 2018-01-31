@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import java.util.Map;
+
 import shane.pennihome.local.smartboard.comms.interfaces.IController;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.comms.philipshue.PHBridgeController;
@@ -13,6 +15,7 @@ import shane.pennihome.local.smartboard.data.TokenSmartThings;
 import shane.pennihome.local.smartboard.data.interfaces.ITokenInfo;
 import shane.pennihome.local.smartboard.services.ServiceManager;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
+import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
@@ -29,7 +32,7 @@ public class Monitor {
     private final Activity mActivity;
     private Thread mMonitorThread = null;
 
-    public Monitor(AppCompatActivity activity) {
+    public Monitor(final AppCompatActivity activity) {
         mActivity = activity;
 
         ServiceManager.ServiceLoader loader = new ServiceManager().getServiceLoader();
@@ -40,7 +43,17 @@ public class Monitor {
             else if (s.isAwaitingAction() && activity != null)
                 Toast.makeText(activity, String.format("Service %s is awaiting an action.", s.getName()), Toast.LENGTH_LONG);
         try {
-            mThings = loader.getThings();
+            loader.setOnProcessCompleteListener(new OnProcessCompleteListener<ServiceManager.ServiceLoaderResult>() {
+                @Override
+                public void complete(boolean success, ServiceManager.ServiceLoaderResult source) {
+                    mThings = source.getResult();
+                    for(String e:source.getErrors().keySet())
+                        if (activity != null)
+                            Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG);
+                }
+            });
+            loader.execute();
+
         } catch (Exception e) {
             if (activity != null)
                 Toast.makeText(activity, String.format("Error : %s", e.getMessage()), Toast.LENGTH_LONG);

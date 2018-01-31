@@ -1,12 +1,15 @@
 package shane.pennihome.local.smartboard.services.SmartThings;
 
+import android.app.Dialog;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -47,8 +50,8 @@ public class RegisterDialog extends DialogFragment {
 
         Bundle args = getArguments();
         assert args != null;
-        getDialog().setTitle(args.getString("title"));
-
+//        getDialog().setTitle(args.getString("title"));
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         web.setWebViewClient(new WebViewClient() {
             boolean authComplete = false;
 

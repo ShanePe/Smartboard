@@ -3,12 +3,16 @@ package shane.pennihome.local.smartboard.services;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.dialogs.ServiceLoadDialog;
@@ -52,10 +56,41 @@ public class ServiceManager {
         return new ServiceLoader();
     }
 
-    public class ServiceLoader {
+    public class ServiceLoaderResult {
+        private HashMap<String, IThingsGetter> mErrors;
+        private Things mResult;
+
+        public boolean isSuccess() {
+            return getErrors().size() == 0;
+        }
+
+        public HashMap<String, IThingsGetter> getErrors() {
+            if (mErrors == null)
+                mErrors = new HashMap<String, IThingsGetter>();
+
+            return mErrors;
+        }
+
+        public Things getResult() {
+            if (mResult == null)
+                mResult = new Things();
+            return mResult;
+        }
+    }
+
+    public class ServiceLoader extends AsyncTask<IThingsGetter, IThingsGetter, ServiceLoaderResult> {
         AppCompatActivity mActivity;
         Services mServices;
         ServiceLoadDialog mServiceLoadDialog;
+        OnProcessCompleteListener<ServiceLoaderResult> mOnProcessCompleteListener;
+
+        public OnProcessCompleteListener<ServiceLoaderResult> getOnProcessCompleteListener() {
+            return mOnProcessCompleteListener;
+        }
+
+        public void setOnProcessCompleteListener(OnProcessCompleteListener<ServiceLoaderResult> onProcessCompleteListener) {
+            this.mOnProcessCompleteListener = onProcessCompleteListener;
+        }
 
         public Activity getActivity() {
             return mActivity;
@@ -76,55 +111,49 @@ public class ServiceManager {
             mServices = services;
         }
 
-//        @Override
-//        protected Things doInBackground(IThingsGetter... iThingsGetters) {
-//        }
+        private ServiceLoaderResult getThings() {
+            ServiceLoaderResult serviceLoaderResult = new ServiceLoaderResult();
 
-        public Things getThings() {
-            onPreExecute();
-            Things things = new Things();
-            try {
-                Thread.yield();
-                for (IService s : getServices()) {
-                    s.connect();
-                    for (IThingsGetter g : s.getThingGetters()) {
-                        things.addAll(g.getThings());
+            for (IService s : getServices()) {
+                for (IThingsGetter g : s.getThingGetters()) {
+                    try {
+                        serviceLoaderResult.getResult().addAll(g.getThings());
                         onProgressUpdate(g);
+                    } catch (Exception e) {
+                        serviceLoaderResult.getErrors().put(e.getMessage(), g);
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
 
-            onPostExecute(things);
-            return things;
-
+            return serviceLoaderResult;
         }
 
-        //        @Override
-        protected void onPreExecute() {
-            //          super.onPreExecute();
+        private void loadDialog() {
+            mServiceLoadDialog = ServiceLoadDialog.newInstance(getServices());
+            mServiceLoadDialog.show(mActivity.getSupportFragmentManager(), "service_loader");
+        }
 
+        @Override
+        protected void onPreExecute() {
             if (mActivity != null)
                 loadDialog();
         }
 
-        private void loadDialog() {
-            mServiceLoadDialog = new ServiceLoadDialog();
-            mServiceLoadDialog.setCancelable(false);
-            mServiceLoadDialog.setServices(getServices());
-
-            mServiceLoadDialog.show(mActivity.getSupportFragmentManager(), "service_loader");
+        @Override
+        protected ServiceLoaderResult doInBackground(IThingsGetter... iThingsGetters) {
+            return getThings();
         }
 
-        //        @Override
-        protected void onPostExecute(Things iThings) {
-//            super.onPostExecute(iThings);
-            if (mServiceLoadDialog != null)
-                mServiceLoadDialog.dismiss();
+        @Override
+        protected void onPostExecute(ServiceLoaderResult result) {
+            if (mOnProcessCompleteListener != null)
+                mOnProcessCompleteListener.complete(true, result);
+
+            //if (mServiceLoadDialog != null)
+           //     mServiceLoadDialog.dismiss();
         }
 
-        //        @Override
+        @Override
         protected void onProgressUpdate(IThingsGetter... values) {
             if (mServiceLoadDialog != null)
                 mServiceLoadDialog.setGetterSuccess(values[0]);

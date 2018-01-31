@@ -73,7 +73,7 @@ public class ServiceLoadAdapter extends RecyclerView.Adapter<ServiceLoadAdapter.
         }
 
         public void slideOut() {
-            Animation animation = AnimationUtils.loadAnimation(mView.getContext(), R.anim.slide_out_left);
+            final Animation animation = AnimationUtils.loadAnimation(mView.getContext(), R.anim.slide_out_left);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -82,6 +82,7 @@ public class ServiceLoadAdapter extends RecyclerView.Adapter<ServiceLoadAdapter.
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
+                    mView.setVisibility(View.GONE);
                     int getterPosition = mGetters.indexOf(mGetter);
                     mGetters.remove(mGetter);
                     mRecycleView.getAdapter().notifyItemRemoved(getterPosition);
@@ -92,7 +93,13 @@ public class ServiceLoadAdapter extends RecyclerView.Adapter<ServiceLoadAdapter.
 
                 }
             });
-            mView.startAnimation(animation);
+            mView.post(new Runnable() {
+                @Override
+                public void run() {
+                    mView.startAnimation(animation);
+                }
+            });
+
 
 
         }

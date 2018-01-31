@@ -2,6 +2,7 @@ package shane.pennihome.local.smartboard.services.SmartThings;
 
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -69,8 +70,6 @@ public class SmartThingsService extends IService {
 
     @Override
     protected void register() throws Exception {
-        Executor executor = new Executor();
-
         ExecutorRequest request = new ExecutorRequest(new URL(ST_TOKEN_URL), ExecutorRequest.Types.POST);
         request.getQueryStringParameters().add(new NameValuePair("code", getAuthorisationCode()));
         request.getQueryStringParameters().add(new NameValuePair("client_id", ST_CLIENT_ID));
@@ -78,7 +77,7 @@ public class SmartThingsService extends IService {
         request.getQueryStringParameters().add(new NameValuePair("redirect_uri", ST_REDIRECT_URI));
         request.getQueryStringParameters().add(new NameValuePair("grant_type", ST_GRANT_TYPE));
 
-        ExecutorResult executorResult = executor.execute(request).get();
+        ExecutorResult executorResult = Executor.fulfil(request);
         if (!executorResult.isSuccess())
             throw executorResult.getError();
 
@@ -110,8 +109,7 @@ public class SmartThingsService extends IService {
 
     @Override
     public void connect() throws Exception {
-        Executor executor = new Executor();
-        ExecutorResult result = executor.execute(
+        ExecutorResult result = Executor.fulfil(
                 new ExecutorRequest(new URL(ST_ENDPOINT_URL),
                         ExecutorRequest.Types.GET,
                         new OnExecutorRequestActionListener() {
@@ -119,7 +117,7 @@ public class SmartThingsService extends IService {
                             public void OnPresend(HttpURLConnection connection) {
                                 connection.setRequestProperty("Authorization", "Bearer " + mToken);
                             }
-                        })).get();
+                        }));
 
         if (!result.isSuccess())
             throw result.getError();
@@ -131,6 +129,8 @@ public class SmartThingsService extends IService {
     @Override
     public ArrayList<IThingsGetter> getThingGetters() {
         ArrayList<IThingsGetter> thingsGetters = new ArrayList<>();
+        if(TextUtils.isEmpty(mRequestUrl))
+            thingsGetters.add(new Connector());
         thingsGetters.add(new SwitchGetter());
         thingsGetters.add(new RoutineGetter());
         return thingsGetters;
@@ -147,6 +147,35 @@ public class SmartThingsService extends IService {
 
     public void setAuthorisationCode(String authorisationCode) {
         mAuthorisationCode = authorisationCode;
+    }
+
+    protected class Connector extends IThingsGetter{
+
+        @Override
+        public String getLoadMessage() {
+            return "Connecting to SmartThings";
+        }
+
+        @Override
+        public Things getThings() throws Exception {
+            ExecutorResult result = Executor.fulfil(
+                    new ExecutorRequest(new URL(ST_ENDPOINT_URL),
+                            ExecutorRequest.Types.GET,
+                            new OnExecutorRequestActionListener() {
+                                @Override
+                                public void OnPresend(HttpURLConnection connection) {
+                                    connection.setRequestProperty("Authorization", "Bearer " + mToken);
+                                }
+                            }));
+
+            if (!result.isSuccess())
+                throw result.getError();
+
+            JSONObject jsUrl = buildJsonResponse(result.getResult());
+            mRequestUrl = jsUrl.getString("uri");
+
+            return new Things();
+        }
     }
 
     protected class SwitchGetter extends IThingsGetter {
@@ -166,8 +195,7 @@ public class SmartThingsService extends IService {
         @Override
         public Things getThings() throws Exception {
             Things things = new Things();
-            Executor executor = new Executor();
-            ExecutorResult result = executor.execute(new ExecutorRequest(
+            ExecutorResult result = Executor.fulfil(new ExecutorRequest(
                     new URL(mRequestUrl + "/switches"),
                     ExecutorRequest.Types.GET,
                     new OnExecutorRequestActionListener() {
@@ -175,7 +203,7 @@ public class SmartThingsService extends IService {
                         public void OnPresend(HttpURLConnection connection) {
                             connection.setRequestProperty("Authorization", "Bearer " + mToken);
                         }
-                    })).get();
+                    }));
 
             if (!result.isSuccess())
                 throw result.getError();
@@ -206,8 +234,7 @@ public class SmartThingsService extends IService {
         @Override
         public Things getThings() throws Exception {
             Things things = new Things();
-            Executor executor = new Executor();
-            ExecutorResult result = executor.execute(new ExecutorRequest(
+            ExecutorResult result = Executor.fulfil(new ExecutorRequest(
                     new URL(mRequestUrl + "/routines"),
                     ExecutorRequest.Types.GET,
                     new OnExecutorRequestActionListener() {
@@ -215,7 +242,7 @@ public class SmartThingsService extends IService {
                         public void OnPresend(HttpURLConnection connection) {
                             connection.setRequestProperty("Authorization", "Bearer " + mToken);
                         }
-                    })).get();
+                    }));
 
             if (!result.isSuccess())
                 throw result.getError();

@@ -1,6 +1,7 @@
 package shane.pennihome.local.smartboard.comms;
 
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -12,6 +13,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -23,6 +25,24 @@ import shane.pennihome.local.smartboard.data.NameValuePair;
  */
 
 public class Executor extends AsyncTask<ExecutorRequest, Integer, ExecutorResult> {
+    private static boolean isOnUIThread()
+    {
+        return Thread.currentThread() == Looper.getMainLooper().getThread();
+    }
+
+    public static ExecutorResult fulfil(ExecutorRequest request)
+    {
+        Executor executor = new Executor();
+        if(isOnUIThread())
+            try {
+                return executor.execute(request).get();
+            } catch (Exception e) {
+                return new ExecutorResult(e);
+            }
+        else
+            return executor.executeRequest(request);
+    }
+
     private ExecutorResult executeRequest(ExecutorRequest request) {
         try {
             Log.d("Url : ", request.getUrl().toString());
