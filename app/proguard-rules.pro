@@ -17,5 +17,5 @@
 #-keepattributes SourceFile,LineNumberTable
 
 # If you keep the line number information, uncomment this to
-# hide the original services file name.
+# hide the original servicesTypes file name.
 #-renamesourcefileattribute SourceFile

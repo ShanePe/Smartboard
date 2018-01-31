@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity
 
     private void init() {
         mMonitor = new Monitor(this);
-        mMonitor.Start();
+        // mMonitor.Start();
     }
 
     public void populateDashbboards() {
@@ -148,8 +148,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void smartThingsConnect() {
-        ServiceManager serviceManager = new ServiceManager(this);
-        serviceManager.registerService(SmartThingsService.class);
+        ServiceManager serviceManager = new ServiceManager();
+        serviceManager.registerService(this, SmartThingsService.class);
+        //serviceManager.registerService(SmartThingsService.class);
 //        final SmartThingsFragment fragment = new SmartThingsFragment();
 //        //noinspection unchecked
 //        fragment.setmProcessComplete(new OnProcessCompleteListener<AppCompatActivity>() {

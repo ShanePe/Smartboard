@@ -21,8 +21,8 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
 @SuppressWarnings("ALL")
 public class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
-    private Things mThings = new Things();
     private final Context mContext;
+    private Things mThings = new Things();
 
     public SpinnerThingAdapter(Context context) {
         this.mContext = context;
@@ -57,10 +57,10 @@ public class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
         TextView txtName = (TextView) convertView.findViewById(R.id.txt_spin_name);
         TextView txtSrc = (TextView) convertView.findViewById(R.id.txt_spin_source);
 
-        if (thing.getService() == IService.Services.SmartThings) {
+        if (thing.getService() == IService.ServicesTypes.SmartThings) {
             img.setImageResource(R.drawable.icon_switch);
             txtSrc.setText(R.string.device_st_label);
-        } else if (thing.getService() == IService.Services.PhilipsHue) {
+        } else if (thing.getService() == IService.ServicesTypes.PhilipsHue) {
             img.setImageResource(R.drawable.icon_phlogo);
             txtSrc.setText(R.string.device_ph_label);
         }

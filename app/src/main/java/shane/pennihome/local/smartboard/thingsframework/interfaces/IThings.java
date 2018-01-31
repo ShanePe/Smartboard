@@ -12,9 +12,9 @@ import shane.pennihome.local.smartboard.services.interfaces.IService;
 
 @SuppressWarnings("ALL")
 public abstract class IThings<T extends IThing> extends ArrayList<T> {
-    public void remove(IService.Services services) {
+    public void remove(IService.ServicesTypes servicesTypes) {
         for (T t : this)
-            if (t.getService() == services)
+            if (t.getService() == servicesTypes)
                 remove(t);
     }
 

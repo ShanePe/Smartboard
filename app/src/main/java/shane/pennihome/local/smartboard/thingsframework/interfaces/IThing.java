@@ -26,7 +26,7 @@ public abstract class IThing extends IDatabaseObject {
     private final String mInstance;
     private transient onThingListener mOnThingListener;
     private String mId;
-    private IService.Services mServices;
+    private IService.ServicesTypes mServicesTypes;
     @IgnoreOnCopy
     private IBlock mBlock;
     public IThing() {
@@ -67,12 +67,12 @@ public abstract class IThing extends IDatabaseObject {
 
     public abstract int getDefaultIconResource();
 
-    public IService.Services getService() {
-        return mServices;
+    public IService.ServicesTypes getService() {
+        return mServicesTypes;
     }
 
-    public void setService(IService.Services services) {
-        this.mServices = services;
+    public void setService(IService.ServicesTypes servicesTypes) {
+        this.mServicesTypes = servicesTypes;
     }
 
     public String getId() {

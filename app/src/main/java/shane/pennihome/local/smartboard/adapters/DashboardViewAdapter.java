@@ -87,8 +87,6 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
             }
         });
 
-
-
         final int dragState = holder.getDragStateFlags();
 
         int bgResId = R.drawable.btn_round;

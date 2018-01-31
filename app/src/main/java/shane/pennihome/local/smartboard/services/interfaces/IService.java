@@ -2,6 +2,7 @@ package shane.pennihome.local.smartboard.services.interfaces;
 
 
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,6 +11,7 @@ import org.json.JSONTokener;
 
 import java.util.ArrayList;
 
+import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 
@@ -18,33 +20,43 @@ import shane.pennihome.local.smartboard.thingsframework.Things;
  */
 
 public abstract class IService extends IDatabaseObject {
-    public enum Services {SmartThings, PhilipsHue}
     @IgnoreOnCopy
     private String mInstance;
-
     public IService() {
+
         mInstance = this.getClass().getSimpleName();
+    }
+
+    public static IService Load(String json) {
+        IService ret = null;
+        try {
+            ret = JsonBuilder.Get().fromJson(json, IService.class);
+        } catch (Exception e) {
+            Log.e("Smartboard", "Error : " + e.getMessage());
+        }
+
+        return ret;
     }
 
     protected abstract Things getThings() throws Exception;
 
-    protected abstract String getDescription();
-
     public abstract DialogFragment getRegisterDialog();
-
-    protected abstract boolean isValid();
 
     protected abstract void register() throws Exception;
 
-    protected abstract boolean isAuthorised();
+    public abstract boolean isRegistered();
 
-    protected abstract boolean isAwaitingAuthorisation();
+    public abstract boolean isAwaitingAction();
 
-    protected abstract void connect() throws Exception;
+    public abstract void connect() throws Exception;
 
-    protected abstract ArrayList<IThingsGetter> getThingGetters();
+    public abstract ArrayList<IThingsGetter> getThingGetters();
 
-    protected JSONObject buildJson(String data) throws JSONException {
+    public boolean isValid() {
+        return isRegistered() && !isAwaitingAction();
+    }
+
+    protected JSONObject buildJsonResponse(String data) throws JSONException {
         Object json = new JSONTokener(data).nextValue();
         if (json instanceof JSONObject)
             return (JSONObject) json;
@@ -55,4 +67,6 @@ public abstract class IService extends IDatabaseObject {
 
         throw new JSONException("Invalid JSON Response");
     }
+
+    public enum ServicesTypes {SmartThings, PhilipsHue}
 }

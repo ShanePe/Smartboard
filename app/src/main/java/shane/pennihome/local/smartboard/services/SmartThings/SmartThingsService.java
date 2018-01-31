@@ -37,13 +37,20 @@ public class SmartThingsService extends IService {
     public final static String ST_OAUTH_URL = "https://graph.api.smartthings.com/oauth/authorize";
     public final static String ST_ENDPOINT_URL = "https://graph.api.smartthings.com/api/smartapps/endpoints";
     public final static String ST_OAUTH_SCOPE = "app";
-    public final static String ST_SERVER_URI = "https://www.googleapis.com/auth/urlshortener";
 
     String mToken;
     String mRequestUrl;
     private Date mExpires;
     private String mType;
     private String mAuthorisationCode;
+
+    public static SmartThingsService Load(String json) {
+        try {
+            return IService.Load(SmartThingsService.class, json);
+        } catch (Exception e) {
+            return new SmartThingsService();
+        }
+    }
 
     @Override
     protected Things getThings() throws Exception {
@@ -54,20 +61,10 @@ public class SmartThingsService extends IService {
     }
 
     @Override
-    protected String getDescription() {
-        return null;
-    }
-
-    @Override
     public DialogFragment getRegisterDialog() {
         RegisterDialog registerDialog = new RegisterDialog();
         registerDialog.setService(this);
         return registerDialog;
-    }
-
-    @Override
-    protected boolean isValid() {
-        return isAuthorised() && !isAwaitingAuthorisation();
     }
 
     @Override
@@ -85,7 +82,7 @@ public class SmartThingsService extends IService {
         if (!executorResult.isSuccess())
             throw executorResult.getError();
 
-        JSONObject jsToken = buildJson(executorResult.getResult());
+        JSONObject jsToken = buildJsonResponse(executorResult.getResult());
 
         mToken = jsToken.getString("access_token");
         mType = jsToken.getString("token_type");
@@ -96,19 +93,23 @@ public class SmartThingsService extends IService {
     }
 
     @Override
-    public boolean isAuthorised() {
-        Calendar c = Calendar.getInstance();
-        return (!TextUtils.isEmpty(mToken) && mExpires.after(c.getTime()) && !TextUtils.isEmpty(mRequestUrl));
+    public String getName() {
+        return "SmartThings";
     }
 
     @Override
-    public boolean isAwaitingAuthorisation() {
+    public boolean isRegistered() {
         Calendar c = Calendar.getInstance();
-        return (!TextUtils.isEmpty(mToken) && mExpires.after(c.getTime()) && TextUtils.isEmpty(mRequestUrl));
+        return (!TextUtils.isEmpty(mToken) && mExpires.after(c.getTime()));
     }
 
     @Override
-    protected void connect() throws Exception {
+    public boolean isAwaitingAction() {
+        return false;
+    }
+
+    @Override
+    public void connect() throws Exception {
         Executor executor = new Executor();
         ExecutorResult result = executor.execute(
                 new ExecutorRequest(new URL(ST_ENDPOINT_URL),
@@ -123,12 +124,12 @@ public class SmartThingsService extends IService {
         if (!result.isSuccess())
             throw result.getError();
 
-        JSONObject jsUrl = buildJson(result.getResult());
+        JSONObject jsUrl = buildJsonResponse(result.getResult());
         mRequestUrl = jsUrl.getString("uri");
     }
 
     @Override
-    protected ArrayList<IThingsGetter> getThingGetters() {
+    public ArrayList<IThingsGetter> getThingGetters() {
         ArrayList<IThingsGetter> thingsGetters = new ArrayList<>();
         thingsGetters.add(new SwitchGetter());
         thingsGetters.add(new RoutineGetter());
@@ -146,14 +147,6 @@ public class SmartThingsService extends IService {
 
     public void setAuthorisationCode(String authorisationCode) {
         mAuthorisationCode = authorisationCode;
-    }
-
-    public static SmartThingsService Load(String json) {
-        try {
-            return IService.Load(SmartThingsService.class, json);
-        } catch (Exception e) {
-            return new SmartThingsService();
-        }
     }
 
     protected class SwitchGetter extends IThingsGetter {
@@ -195,7 +188,7 @@ public class SmartThingsService extends IService {
                 d.setName(jDev.getString("name"));
                 d.setState(getState(jDev));
                 d.setType(jDev.getString("type"));
-                d.setService(Services.SmartThings);
+                d.setService(ServicesTypes.SmartThings);
                 things.add(d);
             }
 
@@ -234,7 +227,7 @@ public class SmartThingsService extends IService {
                 Routine r = new Routine();
                 r.setId(jRoutine.getString("id"));
                 r.setName(jRoutine.getString("name"));
-                r.setService(Services.SmartThings);
+                r.setService(ServicesTypes.SmartThings);
                 things.add(r);
             }
 

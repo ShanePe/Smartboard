@@ -11,6 +11,7 @@ import java.util.List;
 
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
+import shane.pennihome.local.smartboard.services.interfaces.IService;
 
 /**
  * Created by shane on 13/01/18.
@@ -97,6 +98,8 @@ public class DBEngine extends SQLiteOpenHelper {
                     case Dashboard:
                         dbO = Dashboard.Load(c.getString(3));
                         break;
+                    case Service:
+                        dbO = IService.Load(c.getString(3));
                 }
                 if(dbO != null) {
                     dbO.setPosition(c.getInt(2));
