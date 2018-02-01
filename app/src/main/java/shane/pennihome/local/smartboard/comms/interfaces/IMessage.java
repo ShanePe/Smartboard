@@ -1,8 +1,6 @@
 package shane.pennihome.local.smartboard.comms.interfaces;
 
-import android.app.Notification;
-
-import org.json.JSONException;
+import android.content.Intent;
 
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 
@@ -10,10 +8,12 @@ import shane.pennihome.local.smartboard.data.JsonBuilder;
  * Created by SPennicott on 01/02/2018.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public abstract class IMessage<T> {
-    protected T mValue;
+    @SuppressWarnings("unused")
+    private final String mInstance;
+    private T mValue;
     private IMessageSource mSource;
-    private String mInstance;
 
     public IMessage() {
         mInstance = this.getClass().getSimpleName();
@@ -30,6 +30,17 @@ public abstract class IMessage<T> {
         mInstance = this.getClass().getSimpleName();
     }
 
+    public static <T extends IMessage<?>> T fromJson(Class<T> cls, String json) {
+        return JsonBuilder.get().fromJson(json, cls);
+    }
+
+    public static IMessage<?> fromIntent(Intent intent) {
+        if (!intent.hasExtra("message"))
+            return null;
+
+        return fromJson(IMessage.class, intent.getStringExtra("message"));
+    }
+
     public IMessageSource getSource() {
         return mSource;
     }
@@ -38,6 +49,7 @@ public abstract class IMessage<T> {
     {
         return mValue;
     }
+
     public void setValue(T value)
     {
         mValue = value;
@@ -47,11 +59,7 @@ public abstract class IMessage<T> {
         return this.getClass().getSimpleName();
     }
 
-    public String toJson() throws JSONException {
-          return new JsonBuilder().Get().toJson(this);
-    }
-
-    public static <T extends IMessage<?>> T  fromJson(Class<T> cls, String json) {
-        return JsonBuilder.Get().fromJson(json, cls);
+    public String toJson() {
+        return JsonBuilder.get().toJson(this);
     }
 }

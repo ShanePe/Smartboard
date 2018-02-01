@@ -57,14 +57,14 @@ public class Globals extends Application{
         return nextId;
     }
 
-    public static Globals getInstance()
+    private static Globals getInstance()
     {
         return mInstance;
     }
 
     public static Context getContext()
     {
-        return mInstance.getApplicationContext();
+        return getInstance().getApplicationContext();
     }
 
     @Override

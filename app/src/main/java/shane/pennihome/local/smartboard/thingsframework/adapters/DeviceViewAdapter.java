@@ -9,6 +9,7 @@ import android.widget.Toast;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.ExecutorResult;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
+import shane.pennihome.local.smartboard.things.switches.OnSwitchStateChangeListener;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
@@ -18,8 +19,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 @SuppressWarnings("DefaultFileTemplate")
 public class DeviceViewAdapter extends ThingViewAdapter {
-
-    public DeviceViewAdapter(IThings items) {
+    public DeviceViewAdapter(final IThings items) {
         super(items);
     }
 
@@ -55,12 +55,21 @@ public class DeviceViewAdapter extends ThingViewAdapter {
         vh.mSwitchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vh.mSwitchView.setEnabled(false);
                 ExecutorResult result = vh.mItem.execute();
                 if(result.isSuccess())
                     vh.mSwitchView.setChecked(vh.mItem.isOn());
                 else
-                    Toast.makeText(vh.mSwitchView.getContext(), "Error:" + result.getError().getMessage(), Toast.LENGTH_SHORT);
+                    Toast.makeText(vh.mSwitchView.getContext(), "Error:" + result.getError().getMessage(), Toast.LENGTH_SHORT).show();
+                vh.mSwitchView.setEnabled(true);
+            }
+        });
 
+        vh.mItem.setOnSwitchStateChangeListener(new OnSwitchStateChangeListener() {
+            @Override
+            public void OnStateChange(boolean isOn, boolean isUnreachable) {
+                vh.mSwitchView.setEnabled(!isUnreachable);
+                vh.mSwitchView.setChecked(isOn);
             }
         });
     }

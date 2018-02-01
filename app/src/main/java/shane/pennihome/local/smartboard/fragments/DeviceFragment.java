@@ -15,6 +15,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 @SuppressWarnings("DefaultFileTemplate")
 public class DeviceFragment extends ThingFragment {
 
+
     @Override
     public int getFragmentLayout() {
         return R.layout.fragment_device_list;
@@ -29,4 +30,6 @@ public class DeviceFragment extends ThingFragment {
     IThings getDataSource() {
         return Monitor.getMonitor().getThings(Switch.class);
     }
+
+
 }

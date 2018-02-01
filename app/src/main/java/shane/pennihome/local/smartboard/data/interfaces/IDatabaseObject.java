@@ -26,11 +26,8 @@ public abstract class IDatabaseObject {
     private long mPosition = 0;
 
     private static <V extends IDatabaseObject> V fromJson(Class<V> cls, String json) {
-        return JsonBuilder.Get().fromJson(json, cls);
+        return JsonBuilder.get().fromJson(json, cls);
     }
-
-    public void initialise()
-    {}
 
     public static <V extends IDatabaseObject> V Load(Class<V> cls, String objJson) throws IllegalAccessException, InstantiationException {
         V inst = cls.newInstance();
@@ -38,6 +35,9 @@ public abstract class IDatabaseObject {
             inst = fromJson(cls, objJson);
         inst.initialise();
         return inst;
+    }
+
+    protected void initialise() {
     }
 
     public String getDataID() {
@@ -70,7 +70,7 @@ public abstract class IDatabaseObject {
     public abstract Types getDatabaseType();
 
     public String toJson() {
-        return JsonBuilder.Get().toJson(this);
+        return JsonBuilder.get().toJson(this);
     }
 
     public void copyValuesFrom(IDatabaseObject from) {

@@ -1,7 +1,5 @@
 package shane.pennihome.local.smartboard.comms;
 
-import android.content.Intent;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -9,10 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage;
-import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessageSource;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.services.ServiceLoader;
 import shane.pennihome.local.smartboard.services.ServiceManager;
@@ -54,8 +50,7 @@ public class Monitor {
     }
 
     public static Monitor Create(final AppCompatActivity activity) {
-        try {
-            Broadcaster.setPause(true);
+
             getMonitor().setServices(ServiceManager.getActiveServices(activity));
 
             getMonitor().getThingsFromService(activity, new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
@@ -66,9 +61,6 @@ public class Monitor {
                         Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG);
                 }
             });
-        }finally {
-            Broadcaster.setPause(false);
-        }
         return getMonitor();
     }
 
@@ -148,17 +140,32 @@ public class Monitor {
         mMonitorThread.start();
     }
 
+    public void AddService(AppCompatActivity activity, IService service) {
+        getServices().remove(service.getServiceType());
+        getThings().remove(service.getServiceType());
+
+
+    }
+
     private void verifyThingState(Things currentThings) {
-        for (IThing oldThing : getThings()) {
-            oldThing.setUnreachable(false);
-            IThing newThing = currentThings.getbyId(oldThing.getId());
+        for (IThing currentThing : getThings()) {
+            currentThing.setUnreachable(false);
+            IThing newThing = currentThings.getbyId(currentThing.getId());
 
             if (newThing == null) {
-                oldThing.setUnreachable(true);
+                currentThing.setUnreachable(true);
+                if (this instanceof IMessageSource)
+                    Broadcaster.broadcastMessage(new SwitchStateChangedMessage((IMessageSource) currentThing, SwitchStateChangedMessage.SwitchStates.Unreachable));
+
             } else {
-                if (oldThing instanceof Switch) {
-                    if (((Switch) oldThing).isOn() != ((Switch) newThing).isOn()) {
-                        ((Switch) oldThing).setOn(((Switch) newThing).isOn());
+                if (currentThing instanceof Switch) {
+                    Switch currentSwitch = (Switch) currentThing;
+                    Switch newSwitch = (Switch) newThing;
+                    if (currentSwitch.isOn() != newSwitch.isOn()) {
+                        currentSwitch.setOn(newSwitch.isOn());
+                        Broadcaster.broadcastMessage(new SwitchStateChangedMessage(currentSwitch, currentSwitch.isOn() ?
+                                SwitchStateChangedMessage.SwitchStates.On :
+                                SwitchStateChangedMessage.SwitchStates.Off));
                     }
                 }
                 currentThings.remove(newThing);
@@ -181,15 +188,15 @@ public class Monitor {
     public String toJson() throws JSONException {
         JSONObject ret = new JSONObject();
         JsonBuilder builder = new JsonBuilder();
-        ret.put("things", builder.Get().toJson(mThings));
-        ret.put("services", builder.Get().toJson(mServices));
+        ret.put("things", builder.get().toJson(mThings));
+        ret.put("services", builder.get().toJson(mServices));
         return ret.toString();
     }
 
     private void fromJson(String json) throws JSONException {
         JsonBuilder builder = new JsonBuilder();
         JSONObject item = new JSONObject(json);
-        getMonitor().setThings(builder.Get().fromJson(item.getString("things"), Things.class));
-        getMonitor().setServices(builder.Get().fromJson(item.getString("things"), Services.class));
+        getMonitor().setThings(builder.get().fromJson(item.getString("things"), Things.class));
+        getMonitor().setServices(builder.get().fromJson(item.getString("things"), Services.class));
     }
 }

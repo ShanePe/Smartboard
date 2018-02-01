@@ -41,6 +41,13 @@ public abstract class IThings<T extends IThing> extends ArrayList<T> {
         return null;
     }
 
+    public T getByKey(String key) {
+        for (T t : this)
+            if (t.getKey().equals(key))
+                return t;
+        return null;
+    }
+
     public void sort() {
         Collections.sort(this, new Comparator<T>() {
             @Override

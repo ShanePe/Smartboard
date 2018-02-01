@@ -3,12 +3,10 @@ package shane.pennihome.local.smartboard.things.switches;
 import android.graphics.Color;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.comms.Broadcaster;
 import shane.pennihome.local.smartboard.comms.ExecutorResult;
 import shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessageSource;
-import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.thingsframework.Things;
@@ -23,8 +21,8 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandl
 public class Switch extends IThing implements IMessageSource {
     private String mType;
     private boolean mOn;
-
     @IgnoreOnCopy
+    private OnSwitchStateChangeListener mOnSwitchStateChangeListener;
 
     public static Switch Load(String json) {
         try {
@@ -34,6 +32,14 @@ public class Switch extends IThing implements IMessageSource {
         }
     }
 
+    public OnSwitchStateChangeListener getOnSwitchStateChangeListener() {
+        return mOnSwitchStateChangeListener;
+    }
+
+    public void setOnSwitchStateChangeListener(OnSwitchStateChangeListener onSwitchStateChangeListener) {
+        mOnSwitchStateChangeListener = onSwitchStateChangeListener;
+    }
+
     public boolean isOn() {
         return mOn;
     }
@@ -41,10 +47,16 @@ public class Switch extends IThing implements IMessageSource {
     public void setOn(final boolean on) {
         boolean pre = mOn;
         mOn = on;
-        if (pre != mOn)
-            Broadcaster.broadcastMessage(new SwitchStateChangedMessage(this, mOn ?
-                    SwitchStateChangedMessage.SwitchStates.On :
-                    SwitchStateChangedMessage.SwitchStates.Off));
+        if (pre != mOn && mOnSwitchStateChangeListener != null)
+            mOnSwitchStateChangeListener.OnStateChange(isOn(), isUnreachable());
+    }
+
+    @Override
+    public void setUnreachable(boolean unreachable) {
+        boolean pre = unreachable;
+        super.setUnreachable(unreachable);
+        if (pre != isUnreachable() && mOnSwitchStateChangeListener != null)
+            mOnSwitchStateChangeListener.OnStateChange(isOn(), isUnreachable());
     }
 
     @Override
@@ -116,18 +128,10 @@ public class Switch extends IThing implements IMessageSource {
     @Override
     public void messageReceived(IMessage<?> message) {
         if (message instanceof SwitchStateChangedMessage)
-            switch (((SwitchStateChangedMessage) message).getValue()) {
-                case Unreachable:
-                    mUnreachable = true;
-                    mOn = false;
-                    break;
-                case On:
-                    mUnreachable = false;
-                    mOn = true;
-                    break;
-                case Off:
-                    mUnreachable = false;
-                    mOn = false;
+            if (message.getSource() != null) {
+                Switch src = (Switch) message.getSource();
+                setUnreachable(src.isUnreachable());
+                setOn(src.isOn());
             }
     }
 

@@ -2,7 +2,6 @@ package shane.pennihome.local.smartboard.services.interfaces;
 
 
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,11 +12,8 @@ import java.util.ArrayList;
 
 import shane.pennihome.local.smartboard.comms.ExecutorResult;
 import shane.pennihome.local.smartboard.comms.Monitor;
-import shane.pennihome.local.smartboard.comms.interfaces.IMessageSource;
-import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
-import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
@@ -38,7 +34,7 @@ public abstract class IService extends IDatabaseObject {
     }
 
     public static <T extends IService> T fromJson(Class<T> cls, String json) {
-        return JsonBuilder.Get().fromJson(json, cls);
+        return JsonBuilder.get().fromJson(json, cls);
     }
 
     public boolean isActive() {
@@ -63,10 +59,12 @@ public abstract class IService extends IDatabaseObject {
 
     public abstract Things getThings() throws Exception;
 
+    @SuppressWarnings("SameReturnValue")
     public abstract ServicesTypes getServiceType();
 
     public abstract <T extends IThing> ArrayList<IThingsGetter> getThingsGetter(Class<T> cls);
-    public abstract <T extends IThingsGetter, V extends IThing> T getThingExecutor(Class<V> cls);
+
+    protected abstract <V extends IThing> IThingsGetter getThingExecutor(Class<V> cls);
 
     public ExecutorResult executeThing(IThing thing)
     {

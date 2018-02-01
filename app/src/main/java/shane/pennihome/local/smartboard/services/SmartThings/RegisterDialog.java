@@ -67,6 +67,7 @@ public class RegisterDialog extends DialogFragment {
                         mSmartThingsService.setAuthorisationCode(uri.getQueryParameter("code"));
                         mSmartThingsService.register();
                         new DBEngine(getActivity()).writeToDatabase(mSmartThingsService);
+
                         authComplete = true;
                         getDialog().dismiss();
 

@@ -14,7 +14,7 @@ import shane.pennihome.local.smartboard.data.JsonBuilder;
 public abstract class ITokenInfo {
 
     private static <V extends ITokenInfo> V fromJson(Class<V> cls, String json) {
-        return JsonBuilder.Get().fromJson(json, cls);
+        return JsonBuilder.get().fromJson(json, cls);
     }
 
     public static <V extends ITokenInfo> V Load(Class<V> cls) throws IllegalAccessException, InstantiationException {
@@ -33,7 +33,7 @@ public abstract class ITokenInfo {
     public abstract boolean isAwaitingAuthorisation();
 
     private String toJson() {
-        return JsonBuilder.Get().toJson(this);
+        return JsonBuilder.get().toJson(this);
     }
 
     @SuppressLint("ApplySharedPref")

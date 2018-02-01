@@ -30,7 +30,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
 @SuppressWarnings({"ALL", "RedundantCast"})
 public class JsonBuilder {
-    public static Gson Get() {
+    public static Gson get() {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(IThing.class, new JsonDeserializer<IThing>() {
             @Override

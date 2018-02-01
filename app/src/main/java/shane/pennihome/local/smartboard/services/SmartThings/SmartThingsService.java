@@ -1,13 +1,11 @@
 package shane.pennihome.local.smartboard.services.SmartThings;
 
-import android.net.Uri;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -17,12 +15,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.comms.Broadcaster;
 import shane.pennihome.local.smartboard.comms.Executor;
 import shane.pennihome.local.smartboard.comms.ExecutorRequest;
 import shane.pennihome.local.smartboard.comms.ExecutorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.OnExecutorRequestActionListener;
-import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.NameValuePair;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
@@ -163,10 +159,10 @@ public class SmartThingsService extends IService {
     }
 
     @Override
-    public <T extends IThingsGetter, V extends IThing> T getThingExecutor(Class<V> cls) {
+    public <V extends IThing> IThingsGetter getThingExecutor(Class<V> cls) {
         for (IThingsGetter t : getThingGetters())
             if (t.getThingType().equals(cls) || t.getThingType().equals(IThing.class))
-                return (T)t;
+                return t;
 
         return null;
     }
@@ -248,24 +244,19 @@ public class SmartThingsService extends IService {
             if (!result.isSuccess())
                 throw result.getError();
 
-            try {
-                Broadcaster.setPause(true);
-                JSONArray jObjURI = new JSONArray(result.getResult());
-                for (int i = 0; i < jObjURI.length(); i++) {
-                    JSONObject jDev = jObjURI.getJSONObject(i);
-                    Switch d = new Switch();
-                    d.setId(jDev.getString("id"));
-                    d.setName(jDev.getString("name"));
-                    d.setOn(jDev.getString("value").equals("on"));
-                    d.setType(jDev.getString("type"));
-                    d.setService(ServicesTypes.SmartThings);
-                    d.initialise();
-                    things.add(d);
-                }
+            JSONArray jObjURI = new JSONArray(result.getResult());
+            for (int i = 0; i < jObjURI.length(); i++) {
+                JSONObject jDev = jObjURI.getJSONObject(i);
+                Switch d = new Switch();
+                d.setId(jDev.getString("id"));
+                d.setName(jDev.getString("name"));
+                d.setOn(jDev.getString("value").equals("on"));
+                d.setType(jDev.getString("type"));
+                d.setService(ServicesTypes.SmartThings);
+                d.initialise();
+                things.add(d);
             }
-            finally {
-                Broadcaster.setPause(false);
-            }
+
             return things;
         }
 

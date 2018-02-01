@@ -2468,6 +2468,8 @@
     <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="ThingPropertiesClrSelector" />
     <pattern value="shane.pennihome.local.smartboard.ui.UIHelper" method="scaleDownBitmap" />
     <pattern value="com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils" method="WrapperAdapterUtils" />
+    <pattern value="shane.pennihome.local.smartboard.comms.interfaces.IMessage" method="getValue" />
+    <pattern value="shane.pennihome.local.smartboard.comms.interfaces.IMessage" method="setValue" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

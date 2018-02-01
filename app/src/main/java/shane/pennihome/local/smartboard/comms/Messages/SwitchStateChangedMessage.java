@@ -2,15 +2,13 @@ package shane.pennihome.local.smartboard.comms.Messages;
 
 import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessageSource;
-import shane.pennihome.local.smartboard.services.interfaces.IService;
 
 /**
  * Created by SPennicott on 01/02/2018.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class SwitchStateChangedMessage extends IMessage<SwitchStateChangedMessage.SwitchStates> {
-    public enum SwitchStates{Off,On,Unreachable}
-
     public SwitchStateChangedMessage() {
         super();
     }
@@ -27,4 +25,6 @@ public class SwitchStateChangedMessage extends IMessage<SwitchStateChangedMessag
             return new SwitchStateChangedMessage();
         }
     }
+
+    public enum SwitchStates {Off, On, Unreachable}
 }

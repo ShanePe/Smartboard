@@ -32,7 +32,7 @@ public class Dashboard extends IDatabaseObject {
     public static Dashboard Load(String json) {
         Dashboard ret = new Dashboard();
         try {
-            ret = JsonBuilder.Get().fromJson(json, Dashboard.class);
+            ret = JsonBuilder.get().fromJson(json, Dashboard.class);
         } catch (Exception e) {
             Log.e("Smartboard", "Error : " + e.getMessage());
         }

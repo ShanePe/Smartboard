@@ -76,6 +76,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void init(Bundle savedInstanceState) {
+        //DBEngine db = new DBEngine(this);
+        //db.cleanDataStore();
+
         if (savedInstanceState != null) {
             String monitor = savedInstanceState.getString("monitor");
             if (monitor != null)

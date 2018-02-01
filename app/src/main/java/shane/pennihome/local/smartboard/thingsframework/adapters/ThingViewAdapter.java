@@ -10,7 +10,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 public abstract class ThingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     final IThings mValues;
-
     protected ThingViewAdapter(IThings items) {
         mValues = items;
     }
