@@ -16,4 +16,12 @@ public class Services extends ArrayList<IService> {
                 return true;
         return false;
     }
+
+    public IService getByType(IService.ServicesTypes type)
+    {
+        for (IService s : this)
+            if(s.getServiceType() == type)
+                return s;
+        return null;
+    }
 }

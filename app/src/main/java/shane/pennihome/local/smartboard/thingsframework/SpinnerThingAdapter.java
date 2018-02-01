@@ -57,10 +57,10 @@ public class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
         TextView txtName = (TextView) convertView.findViewById(R.id.txt_spin_name);
         TextView txtSrc = (TextView) convertView.findViewById(R.id.txt_spin_source);
 
-        if (thing.getService() == IService.ServicesTypes.SmartThings) {
+        if (thing.getServiceType() == IService.ServicesTypes.SmartThings) {
             img.setImageResource(R.drawable.icon_switch);
             txtSrc.setText(R.string.device_st_label);
-        } else if (thing.getService() == IService.ServicesTypes.PhilipsHue) {
+        } else if (thing.getServiceType() == IService.ServicesTypes.PhilipsHue) {
             img.setImageResource(R.drawable.icon_phlogo);
             txtSrc.setText(R.string.device_ph_label);
         }

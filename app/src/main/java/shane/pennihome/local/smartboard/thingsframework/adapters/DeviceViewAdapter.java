@@ -4,8 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.comms.ExecutorResult;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
@@ -42,10 +44,10 @@ public class DeviceViewAdapter extends ThingViewAdapter {
         vh.mSwitchView.setEnabled(!d.isUnreachable());
         vh.mTypeView.setText(d.getType());
 
-        if (vh.mItem.getService() == IService.ServicesTypes.SmartThings) {
+        if (vh.mItem.getServiceType() == IService.ServicesTypes.SmartThings) {
             vh.mImgView.setImageResource(R.drawable.icon_switch);
             vh.mSourceView.setText(R.string.device_st_label);
-        } else if (vh.mItem.getService() == IService.ServicesTypes.PhilipsHue) {
+        } else if (vh.mItem.getServiceType() == IService.ServicesTypes.PhilipsHue) {
             vh.mImgView.setImageResource(R.drawable.icon_phlogo);
             vh.mSourceView.setText(R.string.device_ph_label);
         }
@@ -53,17 +55,14 @@ public class DeviceViewAdapter extends ThingViewAdapter {
         vh.mSwitchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // vh.mItem.Toggle();
+                ExecutorResult result = vh.mItem.execute();
+                if(result.isSuccess())
+                    vh.mSwitchView.setChecked(vh.mItem.isOn());
+                else
+                    Toast.makeText(vh.mSwitchView.getContext(), "Error:" + result.getError().getMessage(), Toast.LENGTH_SHORT);
+
             }
         });
-
-//        vh.mItem.setOnThingListener(new OnSwitchActionListener() {
-//            @Override
-//            public void StateChanged() {
-//                vh.mSwitchView.setChecked(vh.mItem.isOn());
-//                vh.mSwitchView.setEnabled(!vh.mItem.isUnreachable());
-//            }
-//        });
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -14,7 +14,7 @@ import shane.pennihome.local.smartboard.services.interfaces.IService;
 public abstract class IThings<T extends IThing> extends ArrayList<T> {
     public void remove(IService.ServicesTypes servicesTypes) {
         for (T t : this)
-            if (t.getService() == servicesTypes)
+            if (t.getServiceType() == servicesTypes)
                 remove(t);
     }
 

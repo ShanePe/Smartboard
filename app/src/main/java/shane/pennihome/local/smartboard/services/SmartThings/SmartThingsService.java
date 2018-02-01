@@ -1,23 +1,28 @@
 package shane.pennihome.local.smartboard.services.SmartThings;
 
+import android.net.Uri;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.comms.Broadcaster;
 import shane.pennihome.local.smartboard.comms.Executor;
 import shane.pennihome.local.smartboard.comms.ExecutorRequest;
 import shane.pennihome.local.smartboard.comms.ExecutorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.OnExecutorRequestActionListener;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.NameValuePair;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
@@ -61,6 +66,11 @@ public class SmartThingsService extends IService {
         for (IThingsGetter g : getThingGetters())
             things.addAll(g.getThings());
         return things;
+    }
+
+    @Override
+    public ServicesTypes getServiceType() {
+        return ServicesTypes.SmartThings;
     }
 
     @Override
@@ -153,6 +163,15 @@ public class SmartThingsService extends IService {
     }
 
     @Override
+    public <T extends IThingsGetter, V extends IThing> T getThingExecutor(Class<V> cls) {
+        for (IThingsGetter t : getThingGetters())
+            if (t.getThingType().equals(cls) || t.getThingType().equals(IThing.class))
+                return (T)t;
+
+        return null;
+    }
+
+    @Override
     public Types getDatabaseType() {
         return Types.Service;
     }
@@ -200,6 +219,13 @@ public class SmartThingsService extends IService {
         public Type getThingType() {
             return IThing.class;
         }
+
+        @Override
+        public ExecutorResult execute(IThing thing) {
+            return null;
+        }
+
+
     }
 
     protected class SwitchGetter implements IThingsGetter {
@@ -222,18 +248,24 @@ public class SmartThingsService extends IService {
             if (!result.isSuccess())
                 throw result.getError();
 
-            JSONArray jObjURI = new JSONArray(result.getResult());
-            for (int i = 0; i < jObjURI.length(); i++) {
-                JSONObject jDev = jObjURI.getJSONObject(i);
-                Switch d = new Switch();
-                d.setId(jDev.getString("id"));
-                d.setName(jDev.getString("name"));
-                d.setOn(jDev.getString("value").equals("on"));
-                d.setType(jDev.getString("type"));
-                d.setService(ServicesTypes.SmartThings);
-                things.add(d);
+            try {
+                Broadcaster.setPause(true);
+                JSONArray jObjURI = new JSONArray(result.getResult());
+                for (int i = 0; i < jObjURI.length(); i++) {
+                    JSONObject jDev = jObjURI.getJSONObject(i);
+                    Switch d = new Switch();
+                    d.setId(jDev.getString("id"));
+                    d.setName(jDev.getString("name"));
+                    d.setOn(jDev.getString("value").equals("on"));
+                    d.setType(jDev.getString("type"));
+                    d.setService(ServicesTypes.SmartThings);
+                    d.initialise();
+                    things.add(d);
+                }
             }
-
+            finally {
+                Broadcaster.setPause(false);
+            }
             return things;
         }
 
@@ -245,6 +277,22 @@ public class SmartThingsService extends IService {
         @Override
         public Type getThingType() {
             return Switch.class;
+        }
+
+        @Override
+        public ExecutorResult execute(IThing thing) {
+            try {
+                String url = mRequestUrl + "/switches/" + URLEncoder.encode(thing.getId(), "UTF-8") + "/" +(((Switch) thing).isOn() ? "off" : "on");
+                return Executor.fulfil(new ExecutorRequest(new URL(url), ExecutorRequest.Types.PUT, new OnExecutorRequestActionListener() {
+                    @Override
+                    public void OnPreExecute(HttpURLConnection connection) {
+                        connection.setRequestProperty("Authorization", "Bearer " + mToken);
+                    }
+                }));
+
+            } catch (Exception e) {
+               return new ExecutorResult(e);
+            }
         }
     }
 
@@ -277,6 +325,7 @@ public class SmartThingsService extends IService {
                 r.setId(jRoutine.getString("id"));
                 r.setName(jRoutine.getString("name"));
                 r.setService(ServicesTypes.SmartThings);
+                r.initialise();
                 things.add(r);
             }
 
@@ -291,6 +340,22 @@ public class SmartThingsService extends IService {
         @Override
         public Type getThingType() {
             return Routine.class;
+        }
+
+        @Override
+        public ExecutorResult execute(IThing thing) {
+            try {
+                String url = mRequestUrl + "/routines/" + URLEncoder.encode(thing.getId(), "UTF-8");
+                return Executor.fulfil(new ExecutorRequest(new URL(url), ExecutorRequest.Types.PUT,new OnExecutorRequestActionListener() {
+                    @Override
+                    public void OnPreExecute(HttpURLConnection connection) {
+                        connection.setRequestProperty("Authorization", "Bearer " + mToken);
+                    }
+                }));
+
+            } catch (Exception e) {
+                return new ExecutorResult(e);
+            }
         }
     }
 }

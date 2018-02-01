@@ -3,15 +3,17 @@ package shane.pennihome.local.smartboard.things.switches;
 import android.graphics.Color;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.comms.Broadcaster;
+import shane.pennihome.local.smartboard.comms.ExecutorResult;
 import shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessageSource;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandler;
-import shane.pennihome.local.smartboard.thingsframework.listeners.OnSwitchActionListener;
 
 /**
  * Created by shane on 28/12/17.
@@ -21,8 +23,8 @@ import shane.pennihome.local.smartboard.thingsframework.listeners.OnSwitchAction
 public class Switch extends IThing implements IMessageSource {
     private String mType;
     private boolean mOn;
+
     @IgnoreOnCopy
-    private transient OnSwitchActionListener mOnSwitchActionListener;
 
     public static Switch Load(String json) {
         try {
@@ -36,13 +38,22 @@ public class Switch extends IThing implements IMessageSource {
         return mOn;
     }
 
-    public void setOn(boolean on) {
-        boolean preOn = mOn;
+    public void setOn(final boolean on) {
+        boolean pre = mOn;
         mOn = on;
+        if (pre != mOn)
+            Broadcaster.broadcastMessage(new SwitchStateChangedMessage(this, mOn ?
+                    SwitchStateChangedMessage.SwitchStates.On :
+                    SwitchStateChangedMessage.SwitchStates.Off));
+    }
 
-//        if (preOn != mOn)
-//            if (getOnThingListener() != null)
-//                getOnThingListener().StateChanged();
+    @Override
+    public ExecutorResult execute() {
+        ExecutorResult result = super.execute();
+        if(result!=null)
+            if(result.isSuccess())
+                setOn(!isOn());
+        return result;
     }
 
     public String getType() {
@@ -57,7 +68,7 @@ public class Switch extends IThing implements IMessageSource {
     public void setBlockDefaults(Group group) {
         super.setBlockDefaults(group);
 
-        SwitchBlock block = (SwitchBlock)getBlock();
+        SwitchBlock block = (SwitchBlock) getBlock();
 
         block.setBackgroundColourTransparencyOn(100);
         block.setBackgroundColourOn(group.getDefaultBlockBackgroundColourOn() != 0 ?
@@ -67,11 +78,6 @@ public class Switch extends IThing implements IMessageSource {
         block.setForegroundColourOn(group.getDefaultBlockForeColourOn() != 0 ?
                 group.getDefaultBlockForeColourOn() :
                 Color.parseColor("black"));
-    }
-
-    @Override
-    public void successfulToggle(IThing thing) {
-        setOn(!isOn());
     }
 
     @Override
@@ -88,7 +94,7 @@ public class Switch extends IThing implements IMessageSource {
     }
 
     @Override
-    public  Class getBlockType() {
+    public Class getBlockType() {
         return SwitchBlock.class;
     }
 
@@ -109,22 +115,23 @@ public class Switch extends IThing implements IMessageSource {
 
     @Override
     public void messageReceived(IMessage<?> message) {
-        if(message instanceof SwitchStateChangedMessage)
-            switch (((SwitchStateChangedMessage)message).getValue())
-            {
+        if (message instanceof SwitchStateChangedMessage)
+            switch (((SwitchStateChangedMessage) message).getValue()) {
                 case Unreachable:
-                    setUnreachable(true);
-                    setOn(false);
+                    mUnreachable = true;
+                    mOn = false;
                     break;
                 case On:
-                    setUnreachable(false);
-                    setOn(true);
+                    mUnreachable = false;
+                    mOn = true;
                     break;
                 case Off:
-                    setUnreachable(false);
-                    setOn(false);
+                    mUnreachable = false;
+                    mOn = false;
             }
     }
+
+
 
     @Override
     public IDatabaseObject.Types getDatabaseType() {

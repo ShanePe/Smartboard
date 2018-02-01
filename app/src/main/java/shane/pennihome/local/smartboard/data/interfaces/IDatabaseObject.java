@@ -29,11 +29,14 @@ public abstract class IDatabaseObject {
         return JsonBuilder.Get().fromJson(json, cls);
     }
 
+    public void initialise()
+    {}
+
     public static <V extends IDatabaseObject> V Load(Class<V> cls, String objJson) throws IllegalAccessException, InstantiationException {
         V inst = cls.newInstance();
         if (!objJson.equals(""))
             inst = fromJson(cls, objJson);
-
+        inst.initialise();
         return inst;
     }
 

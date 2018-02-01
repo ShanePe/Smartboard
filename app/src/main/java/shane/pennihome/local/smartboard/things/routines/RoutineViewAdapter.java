@@ -39,10 +39,10 @@ public class RoutineViewAdapter extends ThingViewAdapter {
         vh.mItem = r;
         vh.mNameView.setText(r.getName());
 
-        if (vh.mItem.getService() == IService.ServicesTypes.SmartThings) {
+        if (vh.mItem.getServiceType() == IService.ServicesTypes.SmartThings) {
             vh.mImgView.setImageResource(R.drawable.icon_switch);
             vh.mSourceView.setText(R.string.device_st_label);
-        } else if (vh.mItem.getService() == IService.ServicesTypes.PhilipsHue) {
+        } else if (vh.mItem.getServiceType() == IService.ServicesTypes.PhilipsHue) {
             vh.mImgView.setImageResource(R.drawable.icon_phlogo);
             vh.mSourceView.setText(R.string.device_ph_label);
         }

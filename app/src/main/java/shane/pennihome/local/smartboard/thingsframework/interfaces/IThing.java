@@ -8,9 +8,13 @@ import android.graphics.Color;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import shane.pennihome.local.smartboard.comms.Broadcaster;
+import shane.pennihome.local.smartboard.comms.ExecutorResult;
 import shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage;
+import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessageSource;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
@@ -38,13 +42,16 @@ public abstract class IThing extends IDatabaseObject {
     @IgnoreOnCopy
     private IBlock mBlock;
     @IgnoreOnCopy
-    private transient boolean mUnreachable;
+    protected transient boolean mUnreachable;
     @IgnoreOnCopy
     private transient BroadcastReceiver mBroadcastReceiver;
 
     public IThing() {
         mInstance = this.getClass().getSimpleName();
+    }
 
+    public void initialise()
+    {
         if(this instanceof IMessageSource) {
             final IThing me = this;
 
@@ -53,7 +60,7 @@ public abstract class IThing extends IDatabaseObject {
                 public void onReceive(Context context, Intent intent) {
                     IMessage<?> message = IMessage.fromJson(IMessage.class, intent.getStringExtra("message"));
                     if (message.getSource() != null)
-                        if (message.getSource().getClass().isInstance(me))
+                        if (message.getSource().getClass().isInstance(me) && me.getKey().equals(message.getSource().getKey()) && !me.equals(message.getSource()))
                             messageReceived(message);
                 }
             };
@@ -89,7 +96,10 @@ public abstract class IThing extends IDatabaseObject {
     }
 
     public void setUnreachable(boolean unreachable) {
+        boolean pre = mUnreachable;
         mUnreachable = unreachable;
+        if (this instanceof IMessageSource && pre != mUnreachable)
+            Broadcaster.broadcastMessage(new SwitchStateChangedMessage((IMessageSource) this, SwitchStateChangedMessage.SwitchStates.Unreachable));
     }
 
     public abstract String getFriendlyName();
@@ -102,13 +112,19 @@ public abstract class IThing extends IDatabaseObject {
 
     public abstract IThingUIHandler getUIHandler();
 
-    protected abstract void successfulToggle(@SuppressWarnings("unused") IThing thing);
-
     public abstract int getDefaultIconResource();
 
     public abstract void messageReceived(IMessage<?> message);
 
-    public IService.ServicesTypes getService() {
+    public ExecutorResult execute()
+    {
+        IService service = Monitor.getMonitor().getServices().getByType(getServiceType());
+        if(service!=null)
+            return service.executeThing(this);
+        return null;
+    }
+
+    public IService.ServicesTypes getServiceType() {
         return mServicesTypes;
     }
 
@@ -123,21 +139,6 @@ public abstract class IThing extends IDatabaseObject {
     public void setId(String id) {
         this.mId = id;
     }
-
-//    public void Toggle() {
-//        final IThing me = this;
-//        ThingToggler thingToggler = new ThingToggler(this, new OnProcessCompleteListener<ThingToggler>() {
-//            @Override
-//            public void complete(boolean success, ThingToggler source) {
-//                if (success) {
-//                    successfulToggle(me);
-//                    if (mOnThingListener != null)
-//                        mOnThingListener.Toggled();
-//                }
-//            }
-//        });
-//        thingToggler.execute();
-//    }
 
     public String toJson() {
         return JsonBuilder.Get().toJson(this);
@@ -185,8 +186,8 @@ public abstract class IThing extends IDatabaseObject {
         mBlock = block;
     }
 
-    String getKey() {
-        return String.format("%s%s%s%s", getId(), getName(), getService(), getThingType());
+    public String getKey() {
+        return String.format("%s%s%s%s", getId(), getName(), getServiceType(), getThingType());
     }
 
 //    protected OnSwitchActionListener getOnThingListener() {
@@ -201,7 +202,6 @@ public abstract class IThing extends IDatabaseObject {
         thing.setBlock(getBlock());
         return thing;
     }
-
 
     @Override
     protected void finalize() throws Throwable {

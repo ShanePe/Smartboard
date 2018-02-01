@@ -10,6 +10,6 @@ public abstract class OnSwitchActionListener {
     public void Toggled() {
     }
 
-    public void StateChanged() {
+    public void StateChanged(boolean isOn, boolean isUnreachable) {
     }
 }

@@ -54,17 +54,21 @@ public class Monitor {
     }
 
     public static Monitor Create(final AppCompatActivity activity) {
-        getMonitor().setServices(ServiceManager.getActiveServices(activity));
+        try {
+            Broadcaster.setPause(true);
+            getMonitor().setServices(ServiceManager.getActiveServices(activity));
 
-        getMonitor().getThingsFromService(activity, new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
-            @Override
-            public void complete(boolean success, ServiceLoader.ServiceLoaderResult source) {
-                getMonitor().setThings(source.getResult());
-                for (String e : source.getErrors().keySet())
-                    Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG);
-            }
-        });
-
+            getMonitor().getThingsFromService(activity, new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
+                @Override
+                public void complete(boolean success, ServiceLoader.ServiceLoaderResult source) {
+                    getMonitor().setThings(source.getResult());
+                    for (String e : source.getErrors().keySet())
+                        Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG);
+                }
+            });
+        }finally {
+            Broadcaster.setPause(false);
+        }
         return getMonitor();
     }
 
@@ -151,15 +155,10 @@ public class Monitor {
 
             if (newThing == null) {
                 oldThing.setUnreachable(true);
-                if (oldThing instanceof IMessageSource)
-                    broadcastMessage(new SwitchStateChangedMessage((IMessageSource) oldThing, SwitchStateChangedMessage.SwitchStates.Unreachable));
             } else {
                 if (oldThing instanceof Switch) {
                     if (((Switch) oldThing).isOn() != ((Switch) newThing).isOn()) {
                         ((Switch) oldThing).setOn(((Switch) newThing).isOn());
-                        broadcastMessage(new SwitchStateChangedMessage((Switch) oldThing, ((Switch) oldThing).isOn() ?
-                                SwitchStateChangedMessage.SwitchStates.On :
-                                SwitchStateChangedMessage.SwitchStates.Off));
                     }
                 }
                 currentThings.remove(newThing);
@@ -170,20 +169,7 @@ public class Monitor {
             getThings().addAll(currentThings);
     }
 
-    private void broadcastMessage(final IMessage message) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Intent intent = new Intent(message.getMessageType());
-                    intent.putExtra("message", message.toJson());
-                    LocalBroadcastManager.getInstance(Globals.getContext()).sendBroadcast(intent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
+
 
     private void stop() {
         if (mMonitorThread != null) {

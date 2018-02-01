@@ -11,11 +11,15 @@ import org.json.JSONTokener;
 
 import java.util.ArrayList;
 
+import shane.pennihome.local.smartboard.comms.ExecutorResult;
 import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessageSource;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
+import shane.pennihome.local.smartboard.things.routines.Routine;
+import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
@@ -24,15 +28,16 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  */
 
 @SuppressWarnings("DefaultFileTemplate")
-public abstract class IService extends IDatabaseObject{
+public abstract class IService extends IDatabaseObject {
     @SuppressWarnings("FieldCanBeLocal")
     @IgnoreOnCopy
     private final String mInstance;
+
     public IService() {
         mInstance = this.getClass().getSimpleName();
     }
 
-    public static <T extends IService> T  fromJson(Class<T> cls, String json) {
+    public static <T extends IService> T fromJson(Class<T> cls, String json) {
         return JsonBuilder.Get().fromJson(json, cls);
     }
 
@@ -58,7 +63,25 @@ public abstract class IService extends IDatabaseObject{
 
     public abstract Things getThings() throws Exception;
 
+    public abstract ServicesTypes getServiceType();
+
     public abstract <T extends IThing> ArrayList<IThingsGetter> getThingsGetter(Class<T> cls);
+    public abstract <T extends IThingsGetter, V extends IThing> T getThingExecutor(Class<V> cls);
+
+    public ExecutorResult executeThing(IThing thing)
+    {
+        IThingsGetter executor = null;
+        if(thing instanceof Switch)
+            executor = getThingExecutor(Switch.class);
+        else if(thing instanceof Routine)
+            executor = getThingExecutor(Routine.class);
+
+        if(executor!=null)
+            return executor.execute(thing);
+        return null;
+    }
+
+
     public boolean isValid() {
         return isRegistered() && !isAwaitingAction();
     }

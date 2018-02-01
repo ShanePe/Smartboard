@@ -9,11 +9,11 @@ public class ExecutorResult {
     private Exception mError;
     private String mResult;
 
-    ExecutorResult(Exception mError) {
+    public ExecutorResult(Exception mError) {
         this.mError = mError;
     }
 
-    ExecutorResult(String mResult) {
+    public ExecutorResult(String mResult) {
         this.mResult = mResult;
     }
 

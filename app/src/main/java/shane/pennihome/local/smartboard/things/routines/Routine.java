@@ -22,11 +22,6 @@ public class Routine extends IThing {
     }
 
     @Override
-    public void successfulToggle(IThing thing) {
-
-    }
-
-    @Override
     public String getFriendlyName() {
         return "Routines";
     }

@@ -5,4 +5,5 @@ package shane.pennihome.local.smartboard.comms.interfaces;
  */
 
 public interface IMessageSource {
+    String getKey();
 }
