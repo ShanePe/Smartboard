@@ -5,7 +5,7 @@ package shane.pennihome.local.smartboard.thingsframework.listeners;
  */
 
 @SuppressWarnings({"DefaultFileTemplate", "EmptyMethod"})
-public abstract class onThingListener {
+public abstract class OnSwitchActionListener {
     @SuppressWarnings("WeakerAccess")
     public void Toggled() {
     }

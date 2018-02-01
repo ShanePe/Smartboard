@@ -99,7 +99,7 @@ public class DBEngine extends SQLiteOpenHelper {
                         dbO = Dashboard.Load(c.getString(3));
                         break;
                     case Service:
-                        dbO = IService.Load(c.getString(3));
+                        dbO = IService.fromJson(IService.class, c.getString(3));
                 }
                 if(dbO != null) {
                     dbO.setPosition(c.getInt(2));

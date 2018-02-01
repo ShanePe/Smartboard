@@ -12,8 +12,10 @@ import org.json.JSONTokener;
 import java.util.ArrayList;
 
 import shane.pennihome.local.smartboard.comms.Monitor;
+import shane.pennihome.local.smartboard.comms.interfaces.IMessageSource;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
+import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
@@ -22,24 +24,16 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  */
 
 @SuppressWarnings("DefaultFileTemplate")
-public abstract class IService extends IDatabaseObject {
+public abstract class IService extends IDatabaseObject{
     @SuppressWarnings("FieldCanBeLocal")
     @IgnoreOnCopy
     private final String mInstance;
     public IService() {
-
         mInstance = this.getClass().getSimpleName();
     }
 
-    public static IService Load(String json) {
-        IService ret = null;
-        try {
-            ret = JsonBuilder.Get().fromJson(json, IService.class);
-        } catch (Exception e) {
-            Log.e("Smartboard", "Error : " + e.getMessage());
-        }
-
-        return ret;
+    public static <T extends IService> T  fromJson(Class<T> cls, String json) {
+        return JsonBuilder.Get().fromJson(json, cls);
     }
 
     public boolean isActive() {

@@ -1,6 +1,7 @@
 package shane.pennihome.local.smartboard.things.routines;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
@@ -56,6 +57,11 @@ public class Routine extends IThing {
     @Override
     public int getDefaultIconResource() {
         return R.drawable.icon_def_routine;
+    }
+
+    @Override
+    public void messageReceived(IMessage<?> message) {
+
     }
 
     @Override

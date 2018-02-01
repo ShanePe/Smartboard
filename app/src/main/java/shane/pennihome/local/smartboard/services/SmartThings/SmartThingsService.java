@@ -49,7 +49,7 @@ public class SmartThingsService extends IService {
 
     public static SmartThingsService Load(String json) {
         try {
-            return IService.Load(SmartThingsService.class, json);
+            return IService.fromJson(SmartThingsService.class, json);
         } catch (Exception e) {
             return new SmartThingsService();
         }

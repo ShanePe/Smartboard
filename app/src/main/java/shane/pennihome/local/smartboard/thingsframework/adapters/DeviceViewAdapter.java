@@ -9,7 +9,6 @@ import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
-import shane.pennihome.local.smartboard.thingsframework.listeners.onThingListener;
 
 /**
  * Created by shane on 29/12/17.
@@ -54,17 +53,17 @@ public class DeviceViewAdapter extends ThingViewAdapter {
         vh.mSwitchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vh.mItem.Toggle();
+               // vh.mItem.Toggle();
             }
         });
 
-        vh.mItem.setOnThingListener(new onThingListener() {
-            @Override
-            public void StateChanged() {
-                vh.mSwitchView.setChecked(vh.mItem.isOn());
-                vh.mSwitchView.setEnabled(!vh.mItem.isUnreachable());
-            }
-        });
+//        vh.mItem.setOnThingListener(new OnSwitchActionListener() {
+//            @Override
+//            public void StateChanged() {
+//                vh.mSwitchView.setChecked(vh.mItem.isOn());
+//                vh.mSwitchView.setEnabled(!vh.mItem.isUnreachable());
+//            }
+//        });
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

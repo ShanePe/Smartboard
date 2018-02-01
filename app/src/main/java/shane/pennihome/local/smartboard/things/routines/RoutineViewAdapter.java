@@ -50,7 +50,7 @@ public class RoutineViewAdapter extends ThingViewAdapter {
         vh.mButtonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                r.Toggle();
+               // r.Toggle();
             }
         });
     }

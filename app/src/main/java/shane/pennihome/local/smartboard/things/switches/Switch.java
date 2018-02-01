@@ -3,20 +3,26 @@ package shane.pennihome.local.smartboard.things.switches;
 import android.graphics.Color;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage;
+import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
+import shane.pennihome.local.smartboard.comms.interfaces.IMessageSource;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandler;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnSwitchActionListener;
 
 /**
  * Created by shane on 28/12/17.
  */
 
 @SuppressWarnings({"ALL", "unused"})
-public class Switch extends IThing {
+public class Switch extends IThing implements IMessageSource {
     private String mType;
     private boolean mOn;
+    @IgnoreOnCopy
+    private transient OnSwitchActionListener mOnSwitchActionListener;
 
     public static Switch Load(String json) {
         try {
@@ -34,9 +40,9 @@ public class Switch extends IThing {
         boolean preOn = mOn;
         mOn = on;
 
-        if (preOn != mOn)
-            if (getOnThingListener() != null)
-                getOnThingListener().StateChanged();
+//        if (preOn != mOn)
+//            if (getOnThingListener() != null)
+//                getOnThingListener().StateChanged();
     }
 
     public String getType() {
@@ -99,6 +105,25 @@ public class Switch extends IThing {
     @Override
     public int getDefaultIconResource() {
         return R.drawable.icon_def_switch;
+    }
+
+    @Override
+    public void messageReceived(IMessage<?> message) {
+        if(message instanceof SwitchStateChangedMessage)
+            switch (((SwitchStateChangedMessage)message).getValue())
+            {
+                case Unreachable:
+                    setUnreachable(true);
+                    setOn(false);
+                    break;
+                case On:
+                    setUnreachable(false);
+                    setOn(true);
+                    break;
+                case Off:
+                    setUnreachable(false);
+                    setOn(false);
+            }
     }
 
     @Override

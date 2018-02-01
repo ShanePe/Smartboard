@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.data;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -10,7 +11,7 @@ import java.util.Random;
  */
 
 @SuppressWarnings("DefaultFileTemplate")
-public class Globals {
+public class Globals extends Application{
     public final static String ACTIVITY = "SmartBoard";
     public final static String ST_CLIENT_ID = "953f9b86-9a48-461a-91e9-c9544dd980c4";
     public final static String ST_CLIENT_SECRET = "8da94852-2c55-47b0-89ee-79ce8ac3bcd5";
@@ -23,6 +24,7 @@ public class Globals {
     public final static String PH_DISCOVER_URL = "https://www.meethue.com/api/nupnp";
     public final static String ST_SERVER_URI = "https://www.googleapis.com/auth/urlshortener";
     private static SharedPreferences mPrefs;
+    private static Globals mInstance;
 
     public static SharedPreferences getSharedPreferences() {
         return mPrefs;
@@ -55,11 +57,19 @@ public class Globals {
         return nextId;
     }
 
-  /*  public static Activity getContext() {
-        return _context;
+    public static Globals getInstance()
+    {
+        return mInstance;
     }
 
-    public static void setContext(Activity _context) {
-        Globals._context = _context;
-    }*/
+    public static Context getContext()
+    {
+        return mInstance.getApplicationContext();
+    }
+
+    @Override
+    public void onCreate() {
+        mInstance = this;
+        super.onCreate();
+    }
 }

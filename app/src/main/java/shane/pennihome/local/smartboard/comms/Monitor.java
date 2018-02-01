@@ -1,12 +1,18 @@
 package shane.pennihome.local.smartboard.comms;
 
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage;
+import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
+import shane.pennihome.local.smartboard.comms.interfaces.IMessageSource;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
+import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.services.ServiceLoader;
 import shane.pennihome.local.smartboard.services.ServiceManager;
@@ -142,18 +148,41 @@ public class Monitor {
         for (IThing oldThing : getThings()) {
             oldThing.setUnreachable(false);
             IThing newThing = currentThings.getbyId(oldThing.getId());
-            if (newThing == null)
+
+            if (newThing == null) {
                 oldThing.setUnreachable(true);
-            else {
-                if (oldThing instanceof Switch)
-                    if (((Switch) oldThing).isOn() != ((Switch) newThing).isOn())
+                if (oldThing instanceof IMessageSource)
+                    broadcastMessage(new SwitchStateChangedMessage((IMessageSource) oldThing, SwitchStateChangedMessage.SwitchStates.Unreachable));
+            } else {
+                if (oldThing instanceof Switch) {
+                    if (((Switch) oldThing).isOn() != ((Switch) newThing).isOn()) {
                         ((Switch) oldThing).setOn(((Switch) newThing).isOn());
+                        broadcastMessage(new SwitchStateChangedMessage((Switch) oldThing, ((Switch) oldThing).isOn() ?
+                                SwitchStateChangedMessage.SwitchStates.On :
+                                SwitchStateChangedMessage.SwitchStates.Off));
+                    }
+                }
                 currentThings.remove(newThing);
             }
         }
 
         if (currentThings.size() != 0)
             getThings().addAll(currentThings);
+    }
+
+    private void broadcastMessage(final IMessage message) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Intent intent = new Intent(message.getMessageType());
+                    intent.putExtra("message", message.toJson());
+                    LocalBroadcastManager.getInstance(Globals.getContext()).sendBroadcast(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     private void stop() {
