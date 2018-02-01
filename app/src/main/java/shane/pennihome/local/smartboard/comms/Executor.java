@@ -13,7 +13,6 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -24,6 +23,7 @@ import shane.pennihome.local.smartboard.data.NameValuePair;
  * Created by shane on 29/01/18.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class Executor extends AsyncTask<ExecutorRequest, Integer, ExecutorResult> {
     private static boolean isOnUIThread()
     {
@@ -61,16 +61,17 @@ public class Executor extends AsyncTask<ExecutorRequest, Integer, ExecutorResult
                 return new ExecutorResult(doGET(connection, request));
             else if (request.getType() == ExecutorRequest.Types.POST)
                 return new ExecutorResult(doPOST(connection, request));
-            else if (request.getType() == ExecutorRequest.Types.PUT)
-                return new ExecutorResult(doPUT(connection, request));
-            else
+            else if (request.getType() == ExecutorRequest.Types.PUT) {
+                doPUT(connection, request);
+                return new ExecutorResult("");
+            } else
                 throw new Exception("Type not supported" + request.getType().toString());
         } catch (Exception ex) {
             return new ExecutorResult(ex);
         }
     }
 
-    private String doPUT(HttpURLConnection connection, ExecutorRequest request) throws IOException {
+    private void doPUT(HttpURLConnection connection, ExecutorRequest request) throws IOException {
         if (request.getPutBody() != null) {
             connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             connection.setRequestProperty("Accept", "application/json");
@@ -84,7 +85,7 @@ public class Executor extends AsyncTask<ExecutorRequest, Integer, ExecutorResult
         connection.setDoInput(true);
 
         if (request.getOnExecutorRequestActionListener() != null)
-            request.getOnExecutorRequestActionListener().OnPresend(connection);
+            request.getOnExecutorRequestActionListener().OnPreExecute(connection);
 
         if (request.getPutBody() != null) {
             OutputStream os = connection.getOutputStream();
@@ -95,8 +96,6 @@ public class Executor extends AsyncTask<ExecutorRequest, Integer, ExecutorResult
         int resCode = connection.getResponseCode();
         if (resCode != HttpsURLConnection.HTTP_NO_CONTENT && resCode != HttpsURLConnection.HTTP_OK)
             throw new IOException("Message not sent.");
-
-        return "";
     }
 
     private String doPOST(HttpURLConnection connection, ExecutorRequest request) throws IOException {
@@ -106,7 +105,7 @@ public class Executor extends AsyncTask<ExecutorRequest, Integer, ExecutorResult
         connection.setRequestProperty("Connection", "close");
 
         if (request.getOnExecutorRequestActionListener() != null)
-            request.getOnExecutorRequestActionListener().OnPresend(connection);
+            request.getOnExecutorRequestActionListener().OnPreExecute(connection);
 
         OutputStream os = connection.getOutputStream();
 
@@ -141,7 +140,7 @@ public class Executor extends AsyncTask<ExecutorRequest, Integer, ExecutorResult
         connection.setDoInput(true);
 
         if (request.getOnExecutorRequestActionListener() != null)
-            request.getOnExecutorRequestActionListener().OnPresend(connection);
+            request.getOnExecutorRequestActionListener().OnPreExecute(connection);
 
         int resCode = connection.getResponseCode();
         if (resCode != HttpsURLConnection.HTTP_OK)

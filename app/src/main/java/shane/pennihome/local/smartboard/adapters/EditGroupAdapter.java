@@ -25,12 +25,12 @@ import shane.pennihome.local.smartboard.SmartboardActivity;
 import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Group;
-import shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener;
-import shane.pennihome.local.smartboard.ui.listeners.OnThingSelectListener;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
 import shane.pennihome.local.smartboard.ui.GroupViewHandler;
 import shane.pennihome.local.smartboard.ui.UIHelper;
+import shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener;
+import shane.pennihome.local.smartboard.ui.listeners.OnThingSelectListener;
 
 /**
  * Created by shane on 20/01/18.
@@ -119,7 +119,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
                     @Override
                     public void ThingSelected(IThing thing) {
                         createBlockInstance(thing, group);
-                        UIHelper.showThingPropertyWindow(mSmartboardActivity, thing.getFilteredView(Monitor.getThings()),
+                        UIHelper.showThingPropertyWindow(mSmartboardActivity, thing.getFilteredView(Monitor.getMonitor().getThings()),
                                 thing, group, new OnThingSetListener() {
                                     @Override
                                     public void OnSet(IThing thing) {

@@ -1,22 +1,17 @@
 package shane.pennihome.local.smartboard.comms;
 
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import java.util.Map;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import shane.pennihome.local.smartboard.comms.interfaces.IController;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.comms.philipshue.PHBridgeController;
-import shane.pennihome.local.smartboard.comms.smartthings.STController;
-import shane.pennihome.local.smartboard.data.TokenHueBridge;
-import shane.pennihome.local.smartboard.data.TokenSmartThings;
-import shane.pennihome.local.smartboard.data.interfaces.ITokenInfo;
+import shane.pennihome.local.smartboard.data.JsonBuilder;
+import shane.pennihome.local.smartboard.services.ServiceLoader;
 import shane.pennihome.local.smartboard.services.ServiceManager;
 import shane.pennihome.local.smartboard.services.Services;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
-import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
@@ -28,70 +23,82 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 @SuppressWarnings("ALL")
 public class Monitor {
-    private static final int SECOND_CHECK = 120;
-    private static Things mThings;
-    private final Activity mActivity;
+    private static final int SECOND_CHECK = 30;//120;
+    private static Monitor mMonitor;
+    private Things mThings;
+    private Services mServices = null;
     private Thread mMonitorThread = null;
-    private static Services mServices = null;
 
-    public static Services getServices() {
+    private Monitor() {
+    }
+
+    public static Monitor getMonitor() {
+        if (mMonitor == null)
+            mMonitor = new Monitor();
+        return mMonitor;
+    }
+
+    public static boolean IsInstaniated() {
+        return (mMonitor != null);
+    }
+
+    public static Monitor Create(String json) throws JSONException {
+        getMonitor().fromJson(json);
+        return getMonitor();
+    }
+
+    public static Monitor Create(final AppCompatActivity activity) {
+        getMonitor().setServices(ServiceManager.getActiveServices(activity));
+
+        getMonitor().getThingsFromService(activity, new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
+            @Override
+            public void complete(boolean success, ServiceLoader.ServiceLoaderResult source) {
+                getMonitor().setThings(source.getResult());
+                for (String e : source.getErrors().keySet())
+                    Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG);
+            }
+        });
+
+        return getMonitor();
+    }
+
+    public Services getServices() {
         return mServices;
     }
 
-    public static void setServices(Services services) {
-        Monitor.mServices = services;
+    private void setServices(Services services) {
+        mServices = services;
     }
 
-    public static Things getThings() {
-        if(mThings == null)
+    public Things getThings() {
+        if (mThings == null)
             mThings = new Things();
-        return Monitor.mThings;
+        return mThings;
     }
 
-    public static void setThings(Things mThings) {
-        Monitor.mThings = mThings;
+    private void setThings(Things things) {
+        mThings = things;
     }
 
-    public static  <T extends IThing> IThings<T> getThings(Class<T> cls)
-    {
+    public <T extends IThing> IThings<T> getThings(Class<T> cls) {
         IThings<T> items = getThings().getOfType(cls);
         items.sort();
         return items;
     }
 
-
-    public Monitor(final AppCompatActivity activity) {
-        mActivity = activity;
-        setServices(ServiceManager.getActiveServices(activity));
-        processThings(activity,new OnProcessCompleteListener<ServiceManager.ServiceLoader.ServiceLoaderResult>() {
-            @Override
-            public void complete(boolean success, ServiceManager.ServiceLoader.ServiceLoaderResult source) {
-                getThings().clear();
-                setThings(source.getResult());
-                for(String e:source.getErrors().keySet())
-                    if (activity != null)
-                        Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG);
-            }
-        });
+    private void getThingsFromService(OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult> onProcessCompleteListener) {
+        getThingsFromService(null, onProcessCompleteListener);
     }
 
-    private void processThings(OnProcessCompleteListener onProcessCompleteListener)
-    {
-        processThings(null, onProcessCompleteListener);
-    }
-
-    private void processThings(final AppCompatActivity activity, OnProcessCompleteListener onProcessCompleteListener)
-    {
-        ServiceManager.ServiceLoader loader = new ServiceManager().getServiceLoader();
-        loader.setActivity(activity);
+    private void getThingsFromService(final AppCompatActivity activity, OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult> onProcessCompleteListener) {
+        ServiceLoader loader = new ServiceLoader(activity);
         for (IService s : getServices())
             if (s.isValid())
                 loader.getServices().add(s);
             else if (s.isAwaitingAction() && activity != null)
                 Toast.makeText(activity, String.format("Service %s is awaiting an action.", s.getName()), Toast.LENGTH_LONG);
         try {
-            if(onProcessCompleteListener != null)
-                loader.setOnProcessCompleteListener(onProcessCompleteListener);
+            loader.setOnProcessCompleteListener(onProcessCompleteListener);
             loader.execute();
 
         } catch (Exception e) {
@@ -102,17 +109,25 @@ public class Monitor {
         }
     }
 
-    public void Start() {
-        Stop();
+    private void updateThingsFromService() {
+        getThingsFromService(new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
+            @Override
+            public void complete(boolean success, ServiceLoader.ServiceLoaderResult source) {
+                verifyThingState(source.getResult());
+            }
+        });
+    }
+
+    public void start() {
+        stop();
 
         mMonitorThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
                     try {
-                      Thread.sleep(1000 * Monitor.SECOND_CHECK);
-                      processThings();
-
+                        Thread.sleep(1000 * Monitor.SECOND_CHECK);
+                        updateThingsFromService();
                     } catch (Exception ex) {
                     }
 
@@ -123,183 +138,43 @@ public class Monitor {
         mMonitorThread.start();
     }
 
-    private void checkStateChange() {
-        for (Switch d : getThings(Switch.class)) {
-            if (d.getService() == type) {
-                Switch s = src.getbyId(d.getId());
-                if (s == null)
-                    d.setState(Switch.States.Unreachable);
-                else {
-                    if (s.getState() != d.getState())
-                        d.setState(s.getState());
-                    src.remove(s);
-                }
+    private void verifyThingState(Things currentThings) {
+        for (IThing oldThing : getThings()) {
+            oldThing.setUnreachable(false);
+            IThing newThing = currentThings.getbyId(oldThing.getId());
+            if (newThing == null)
+                oldThing.setUnreachable(true);
+            else {
+                if (oldThing instanceof Switch)
+                    if (((Switch) oldThing).isOn() != ((Switch) newThing).isOn())
+                        ((Switch) oldThing).setOn(((Switch) newThing).isOn());
+                currentThings.remove(newThing);
             }
         }
 
-        if (src.size() != 0)
-            mThings.addAll(src);
+        if (currentThings.size() != 0)
+            getThings().addAll(currentThings);
     }
 
-//
-//    public void getSmartThingsThings(final OnProcessCompleteListener<STController> processComplete) {
-//        getThings(IService.ServicesTypes.SmartThings, new OnProcessCompleteListener<IController>() {
-//            @Override
-//            public void complete(boolean success, IController source) {
-//                if (processComplete != null)
-//                    processComplete.complete(success, (STController) source);
-//            }
-//        });
-//    }
-//
-//    public void getHueBridgeThings(final OnProcessCompleteListener<PHBridgeController> processComplete) {
-//        getThings(IService.ServicesTypes.PhilipsHue, new OnProcessCompleteListener<IController>() {
-//            @Override
-//            public void complete(boolean success, IController source) {
-//                if (processComplete != null)
-//                    processComplete.complete(success, (PHBridgeController) source);
-//            }
-//        });
-//    }
-
-//    private void getThings(IService.ServicesTypes type, final OnProcessCompleteListener<IController> processComplete) {
-//        try {
-//            if(mThings == null)
-//                mThings = new Things();
-//            else
-//                mThings.remove(type);
-//
-//            SourceInfo s = new SourceInfo(type, mActivity);
-//
-//            if (s.getToken().isAwaitingAuthorisation())
-//                s.getController().getAll(new OnProcessCompleteListener<IController>() {
-//                    @Override
-//                    public void complete(boolean success, IController source) {
-//                        if (success) {
-//                            mThings.addAll(source.getThings());
-//                        }
-//                        if (processComplete != null)
-//                            processComplete.complete(success, source);
-//                    }
-//                });
-//            else if (s.getToken().isAuthorised())
-//                s.getController().getThings(new OnProcessCompleteListener<IController>() {
-//                    @Override
-//                    public void complete(boolean success, IController source) {
-//                        if (success) {
-//                            mThings.addAll(source.getThings());
-//                        }
-//
-//                        if (processComplete != null)
-//                            processComplete.complete(success, source);
-//                    }
-//                });
-//            else if (processComplete != null)
-//                processComplete.complete(true, s.getController());
-//
-//        } catch (Exception ex) {
-//            if (mActivity != null)
-//                Toast.makeText(mActivity, "Error gettings things for " + type.name(), Toast.LENGTH_SHORT).show();
-//
-//            if (processComplete != null)
-//                processComplete.complete(true, null);
-//        }
-//    }
-
-//    private void monitorThings(final IService.ServicesTypes type) {
-//        try {
-//            SourceInfo s = new SourceInfo(type);
-//            if (s.getToken().isAuthorised()) {
-//                s.getController().getDevices(new OnProcessCompleteListener<IThings<Switch>>() {
-//                    @Override
-//                    public void complete(boolean success, IThings<Switch> source) {
-//                        if (success)
-//                            checkStateChange(source, type);
-//                    }
-//                });
-//            }
-//        } catch (Exception ex) {
-//        }//Don't crash on monitor thread.
-//    }
-
-//    private void checkStateChange(IThings<Switch> src, IService.ServicesTypes type) {
-//        for (Switch d : getThings(Switch.class)) {
-//            if (d.getService() == type) {
-//                Switch s = src.getbyId(d.getId());
-//                if (s == null)
-//                    d.setState(Switch.States.Unreachable);
-//                else {
-//                    if (s.getState() != d.getState())
-//                        d.setState(s.getState());
-//                    src.remove(s);
-//                }
-//            }
-//        }
-//
-//        if (src.size() != 0)
-//            mThings.addAll(src);
-//    }
-
-//    public void Start() {
-//        Stop();
-//
-//        mMonitorThread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                while (true) {
-//                    try {
-//                        Thread.sleep(1000 * Monitor.SECOND_CHECK);
-//
-//                        monitorThings(IService.ServicesTypes.SmartThings);
-//                        monitorThings(IService.ServicesTypes.PhilipsHue);
-//                    } catch (Exception ex) {
-//                    }
-//
-//                }
-//            }
-//        });
-//
-//        mMonitorThread.start();
-//    }
-
-    private void Stop() {
+    private void stop() {
         if (mMonitorThread != null) {
             mMonitorThread.interrupt();
             mMonitorThread = null;
         }
     }
 
-    private class SourceInfo {
-        private ITokenInfo mToken = null;
-        private IController mController = null;
-        private Activity mActivity = null;
+    public String toJson() throws JSONException {
+        JSONObject ret = new JSONObject();
+        JsonBuilder builder = new JsonBuilder();
+        ret.put("things", builder.Get().toJson(mThings));
+        ret.put("services", builder.Get().toJson(mServices));
+        return ret.toString();
+    }
 
-        public SourceInfo(IService.ServicesTypes servicesTypes, Activity activity) throws Exception {
-            mActivity = activity;
-            getTokenAndController(servicesTypes);
-        }
-
-        public SourceInfo(IService.ServicesTypes servicesTypes) throws Exception {
-            getTokenAndController(servicesTypes);
-        }
-
-        private void getTokenAndController(IService.ServicesTypes type) throws Exception {
-            if (type == IService.ServicesTypes.SmartThings) {
-                mToken = ITokenInfo.Load(TokenSmartThings.class);
-                mController = new STController(mActivity);
-            } else if (type == IService.ServicesTypes.PhilipsHue) {
-                mToken = ITokenInfo.Load(TokenHueBridge.class);
-                mController = new PHBridgeController(mActivity);
-            } else
-                throw new Exception("Invalid ServicesTypes Type");
-        }
-
-        public ITokenInfo getToken() {
-            return mToken;
-        }
-
-        public IController getController() {
-            return mController;
-        }
+    private void fromJson(String json) throws JSONException {
+        JsonBuilder builder = new JsonBuilder();
+        JSONObject item = new JSONObject(json);
+        getMonitor().setThings(builder.Get().fromJson(item.getString("things"), Things.class));
+        getMonitor().setServices(builder.Get().fromJson(item.getString("things"), Services.class));
     }
 }

@@ -48,15 +48,15 @@ import java.util.UUID;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Group;
-import shane.pennihome.local.smartboard.ui.dialogs.ImportImageDialog;
-import shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener;
-import shane.pennihome.local.smartboard.ui.listeners.OnThingSelectListener;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.adapters.ThingSelectionAdapter;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
+import shane.pennihome.local.smartboard.ui.dialogs.ImportImageDialog;
+import shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener;
+import shane.pennihome.local.smartboard.ui.listeners.OnThingSelectListener;
 
 /**
  * Created by shane on 16/01/18.
@@ -215,15 +215,7 @@ public class UIHelper {
             return Off;
         else if (thing instanceof Switch) {
             Switch sw = (Switch) thing;
-            if (sw.getState() == null)
-                return Off;
-
-            switch (sw.getState()) {
-                case On:
-                    return On;
-                default:
-                    return Off;
-            }
+            return sw.isOn() ? On : Off;
         } else
             return 0;
     }

@@ -3,7 +3,6 @@ package shane.pennihome.local.smartboard.comms.philipshue;
 import android.content.Context;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
@@ -77,23 +76,15 @@ public class PHBridgeDeviceGetter extends ICommunicator<PHBridgeDeviceGetter> {
         JSONArray jDevices = result.getResult().getJSONArray("devices");
         for (int i = 0; i < jDevices.length(); i++) {
             JSONObject jDev = jDevices.getJSONObject(i);
+            JSONObject jState = jDev.getJSONObject("state");
             Switch d = new Switch();
             d.setId(jDev.getString("id"));
             d.setName(jDev.getString("name"));
-            d.setState(getState(jDev));
+            d.setUnreachable(!jState.getBoolean("reachable"));
+            d.setOn(jState.getBoolean("on"));
             d.setType(jDev.getString("type"));
             d.setService(IService.ServicesTypes.PhilipsHue);
             mThings.add(d);
         }
-    }
-
-    private Switch.States getState(JSONObject j) throws JSONException {
-        JSONObject jState = j.getJSONObject("state");
-        if (!jState.getBoolean("reachable"))
-            return Switch.States.Unreachable;
-        if (jState.getBoolean("on"))
-            return Switch.States.On;
-        else
-            return Switch.States.Off;
     }
 }

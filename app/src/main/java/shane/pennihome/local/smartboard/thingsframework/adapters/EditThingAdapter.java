@@ -98,7 +98,7 @@ public class EditThingAdapter extends RecyclerView.Adapter<IThingUIHandler.BaseE
         holder.getContainer().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.showThingPropertyWindow(mSmartboardActivity,thing.getFilteredView(Monitor.getThings()) , thing, new OnThingSetListener() {
+                UIHelper.showThingPropertyWindow(mSmartboardActivity, thing.getFilteredView(Monitor.getMonitor().getThings()), thing, new OnThingSetListener() {
                     @Override
                     public void OnSet(IThing thing) {
                         mGroup.getGroupViewHandler().NotifyChanged();

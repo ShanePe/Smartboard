@@ -2,18 +2,18 @@ package shane.pennihome.local.smartboard.services.SmartThings;
 
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
-import android.widget.TextView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.Executor;
 import shane.pennihome.local.smartboard.comms.ExecutorRequest;
 import shane.pennihome.local.smartboard.comms.ExecutorResult;
@@ -24,24 +24,26 @@ import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
 /**
  * Created by shane on 29/01/18.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class SmartThingsService extends IService {
-    public final static String ST_CLIENT_ID = "953f9b86-9a48-461a-91e9-c9544dd980c4";
-    public final static String ST_CLIENT_SECRET = "8da94852-2c55-47b0-89ee-79ce8ac3bcd5";
-    public final static String ST_REDIRECT_URI = "http://localhost:4567/oauth/callback";
-    public final static String ST_GRANT_TYPE = "authorization_code";
-    public final static String ST_TOKEN_URL = "https://graph.api.smartthings.com/oauth/token";
-    public final static String ST_OAUTH_URL = "https://graph.api.smartthings.com/oauth/authorize";
-    public final static String ST_ENDPOINT_URL = "https://graph.api.smartthings.com/api/smartapps/endpoints";
-    public final static String ST_OAUTH_SCOPE = "app";
-
-    String mToken;
-    String mRequestUrl;
+    final static String ST_CLIENT_ID = "953f9b86-9a48-461a-91e9-c9544dd980c4";
+    final static String ST_REDIRECT_URI = "http://localhost:4567/oauth/callback";
+    final static String ST_OAUTH_URL = "https://graph.api.smartthings.com/oauth/authorize";
+    final static String ST_OAUTH_SCOPE = "app";
+    private final static String ST_CLIENT_SECRET = "8da94852-2c55-47b0-89ee-79ce8ac3bcd5";
+    private final static String ST_GRANT_TYPE = "authorization_code";
+    private final static String ST_TOKEN_URL = "https://graph.api.smartthings.com/oauth/token";
+    private final static String ST_ENDPOINT_URL = "https://graph.api.smartthings.com/api/smartapps/endpoints";
+    private String mToken;
+    private String mRequestUrl;
     private Date mExpires;
+    @SuppressWarnings("FieldCanBeLocal")
     private String mType;
     private String mAuthorisationCode;
 
@@ -54,7 +56,7 @@ public class SmartThingsService extends IService {
     }
 
     @Override
-    protected Things getThings() throws Exception {
+    public Things getThings() throws Exception {
         Things things = new Things();
         for (IThingsGetter g : getThingGetters())
             things.addAll(g.getThings());
@@ -66,6 +68,11 @@ public class SmartThingsService extends IService {
         RegisterDialog registerDialog = new RegisterDialog();
         registerDialog.setService(this);
         return registerDialog;
+    }
+
+    @Override
+    public int getDrawableIconResource() {
+        return R.drawable.icon_st_logo_large;
     }
 
     @Override
@@ -109,12 +116,12 @@ public class SmartThingsService extends IService {
 
     @Override
     public void connect() throws Exception {
-        ExecutorResult result = Executor.fulfil(
+        @SuppressWarnings("unused") ExecutorResult result = Executor.fulfil(
                 new ExecutorRequest(new URL(ST_ENDPOINT_URL),
                         ExecutorRequest.Types.GET,
                         new OnExecutorRequestActionListener() {
                             @Override
-                            public void OnPresend(HttpURLConnection connection) {
+                            public void OnPreExecute(HttpURLConnection connection) {
                                 connection.setRequestProperty("Authorization", "Bearer " + mToken);
                             }
                         }));
@@ -137,15 +144,24 @@ public class SmartThingsService extends IService {
     }
 
     @Override
+    public <T extends IThing> ArrayList<IThingsGetter> getThingsGetter(Class<T> cls) {
+        ArrayList<IThingsGetter> thingGetters = new ArrayList<>();
+        for (IThingsGetter t : getThingGetters())
+            if (t.getThingType().equals(cls) || t.getThingType().equals(IThing.class))
+                thingGetters.add(t);
+        return thingGetters;
+    }
+
+    @Override
     public Types getDatabaseType() {
         return Types.Service;
     }
 
-    public String getAuthorisationCode() {
+    private String getAuthorisationCode() {
         return mAuthorisationCode;
     }
 
-    public void setAuthorisationCode(String authorisationCode) {
+    void setAuthorisationCode(String authorisationCode) {
         mAuthorisationCode = authorisationCode;
     }
 
@@ -161,7 +177,7 @@ public class SmartThingsService extends IService {
                             ExecutorRequest.Types.GET,
                             new OnExecutorRequestActionListener() {
                                 @Override
-                                public void OnPresend(HttpURLConnection connection) {
+                                public void OnPreExecute(HttpURLConnection connection) {
                                     connection.setRequestProperty("Authorization", "Bearer " + mToken);
                                 }
                             }));
@@ -179,17 +195,14 @@ public class SmartThingsService extends IService {
         public int getUniqueId() {
             return 1;
         }
+
+        @Override
+        public Type getThingType() {
+            return IThing.class;
+        }
     }
 
     protected class SwitchGetter implements IThingsGetter {
-
-        private Switch.States getState(JSONObject j) throws JSONException {
-            if (j.getString("value").equals("on"))
-                return Switch.States.On;
-            else
-                return Switch.States.Off;
-        }
-
         public String getLoadMessage() {
             return "Getting SmartThings switches";
         }
@@ -201,7 +214,7 @@ public class SmartThingsService extends IService {
                     ExecutorRequest.Types.GET,
                     new OnExecutorRequestActionListener() {
                         @Override
-                        public void OnPresend(HttpURLConnection connection) {
+                        public void OnPreExecute(HttpURLConnection connection) {
                             connection.setRequestProperty("Authorization", "Bearer " + mToken);
                         }
                     }));
@@ -215,7 +228,7 @@ public class SmartThingsService extends IService {
                 Switch d = new Switch();
                 d.setId(jDev.getString("id"));
                 d.setName(jDev.getString("name"));
-                d.setState(getState(jDev));
+                d.setOn(jDev.getString("value").equals("on"));
                 d.setType(jDev.getString("type"));
                 d.setService(ServicesTypes.SmartThings);
                 things.add(d);
@@ -227,6 +240,11 @@ public class SmartThingsService extends IService {
         @Override
         public int getUniqueId() {
             return 2;
+        }
+
+        @Override
+        public Type getThingType() {
+            return Switch.class;
         }
     }
 
@@ -243,7 +261,7 @@ public class SmartThingsService extends IService {
                     ExecutorRequest.Types.GET,
                     new OnExecutorRequestActionListener() {
                         @Override
-                        public void OnPresend(HttpURLConnection connection) {
+                        public void OnPreExecute(HttpURLConnection connection) {
                             connection.setRequestProperty("Authorization", "Bearer " + mToken);
                         }
                     }));
@@ -268,6 +286,11 @@ public class SmartThingsService extends IService {
         @Override
         public int getUniqueId() {
             return 3;
+        }
+
+        @Override
+        public Type getThingType() {
+            return Routine.class;
         }
     }
 }

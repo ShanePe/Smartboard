@@ -73,18 +73,14 @@ public class STSwitchGetter extends ICommunicator<STSwitchGetter> {
             Switch d = new Switch();
             d.setId(jDev.getString("id"));
             d.setName(jDev.getString("name"));
-            d.setState(getState(jDev));
+            d.setOn(getOnState(jDev));
             d.setType(jDev.getString("type"));
             d.setService(IService.ServicesTypes.SmartThings);
             mThings.add(d);
         }
-
     }
 
-    private Switch.States getState(JSONObject j) throws JSONException {
-        if (j.getString("value").equals("on"))
-            return Switch.States.On;
-        else
-            return Switch.States.Off;
+    private boolean getOnState(JSONObject j) throws JSONException {
+        return j.getString("value").equals("on");
     }
 }

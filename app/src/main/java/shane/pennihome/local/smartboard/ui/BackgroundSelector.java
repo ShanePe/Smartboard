@@ -51,13 +51,11 @@ public class BackgroundSelector extends LinearLayoutCompat {
     public BackgroundSelector(Context context, AttributeSet attrs) {
         super(context, attrs);
         initializeViews(context);
-        handleAttrs(context, attrs);
     }
 
     public BackgroundSelector(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initializeViews(context);
-        handleAttrs(context, attrs);
     }
 
     public void setBackgroundActionListener(OnBackgroundActionListener backgroundActionListener) {
@@ -105,9 +103,6 @@ public class BackgroundSelector extends LinearLayoutCompat {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
         inflater.inflate(R.layout.custom_background_selector, this);
-    }
-
-    private void handleAttrs(Context context, AttributeSet attrs) {
     }
 
     public void setInitialValues(@ColorInt int colour, int transparency, String image, int imageTransparency) {

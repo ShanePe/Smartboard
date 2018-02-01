@@ -1,7 +1,5 @@
 package shane.pennihome.local.smartboard.services.adapters;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +19,10 @@ import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
  * Created by shane on 30/01/18.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class ServiceLoadAdapter extends RecyclerView.Adapter<ServiceLoadAdapter.ViewHolder> {
-    Services mServices;
-    ArrayList<IThingsGetter> mGetters;
-    RecyclerView mRecycleView;
+    private Services mServices;
+    private ArrayList<IThingsGetter> mGetters;
 
     public Services getServices() {
         if (mServices == null)
@@ -44,7 +42,6 @@ public class ServiceLoadAdapter extends RecyclerView.Adapter<ServiceLoadAdapter.
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.service_startup, parent, false);
 
-        mRecycleView = (RecyclerView) parent;
         return new ViewHolder(view);
     }
 
@@ -60,8 +57,8 @@ public class ServiceLoadAdapter extends RecyclerView.Adapter<ServiceLoadAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        View mView;
-        TextView mDesc;
+        final View mView;
+        final TextView mDesc;
         IThingsGetter mGetter;
 
         public ViewHolder(View itemView) {

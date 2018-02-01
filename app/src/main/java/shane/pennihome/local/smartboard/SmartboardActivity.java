@@ -15,12 +15,12 @@ import android.view.inputmethod.InputMethodManager;
 
 import shane.pennihome.local.smartboard.adapters.EditGroupAdapter;
 import shane.pennihome.local.smartboard.comms.Monitor;
-import shane.pennihome.local.smartboard.fragments.tabs.GroupFragment;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
+import shane.pennihome.local.smartboard.fragments.tabs.GroupFragment;
 import shane.pennihome.local.smartboard.fragments.tabs.SmartboardFragment;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
 public class SmartboardActivity extends AppCompatActivity {
 
@@ -72,9 +72,9 @@ public class SmartboardActivity extends AppCompatActivity {
         for (Group g : mDashboard.getGroups())
             for (IThing thing : g.getThings())
                 if (thing != null) {
-                    int thingPos = Monitor.getThings().GetIndex(thing);
+                    int thingPos = Monitor.getMonitor().getThings().GetIndex(thing);
                     if (thingPos != -1)
-                        thing.copyValuesFrom(Monitor.getThings().get(thingPos));
+                        thing.copyValuesFrom(Monitor.getMonitor().getThings().get(thingPos));
                 }
     }
 

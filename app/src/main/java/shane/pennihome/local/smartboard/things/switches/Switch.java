@@ -15,8 +15,8 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandl
 
 @SuppressWarnings({"ALL", "unused"})
 public class Switch extends IThing {
-    private States mState;
     private String mType;
+    private boolean mOn;
 
     public static Switch Load(String json) {
         try {
@@ -26,16 +26,17 @@ public class Switch extends IThing {
         }
     }
 
-    public States getState() {
-        return mState;
+    public boolean isOn() {
+        return mOn;
     }
 
-    public void setState(States state) {
-        States pre = getState();
-        this.mState = state;
+    public void setOn(boolean on) {
+        boolean preOn = mOn;
+        mOn = on;
 
-        if (pre != state && getOnThingListener() != null)
-            getOnThingListener().StateChanged();
+        if (preOn != mOn)
+            if (getOnThingListener() != null)
+                getOnThingListener().StateChanged();
     }
 
     public String getType() {
@@ -44,10 +45,6 @@ public class Switch extends IThing {
 
     public void setType(String _type) {
         this.mType = _type;
-    }
-
-    public boolean isOn() {
-        return getState() == States.On;
     }
 
     @Override
@@ -68,10 +65,7 @@ public class Switch extends IThing {
 
     @Override
     public void successfulToggle(IThing thing) {
-        if (getState() == States.Off)
-            setState(States.On);
-        else if (getState() == States.On)
-            setState(States.Off);
+        setOn(!isOn());
     }
 
     @Override
@@ -111,6 +105,4 @@ public class Switch extends IThing {
     public IDatabaseObject.Types getDatabaseType() {
         return IDatabaseObject.Types.Thing;
     }
-
-    public enum States {Off, On, Unreachable}
 }

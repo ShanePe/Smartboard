@@ -732,6 +732,36 @@
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper$3 void onWindowShown(android.view.View view)" />
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper$2 void onShow(android.content.DialogInterface dialog)" />
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper$1 void ThingSelected(shane.pennihome.local.smartboard.thingsframework.interfaces.IThing thing)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.BackgroundSelector$9 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.BackgroundSelector$7 void onClick(android.view.View view)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.BackgroundSelector mPreview" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.services.interfaces.IService mInstance" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing mUnreachable" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing mServicesTypes" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$6 com.google.gson.JsonElement serialize(shane.pennihome.local.smartboard.services.interfaces.IService src, java.lang.reflect.Type typeOfSrc, com.google.gson.JsonSerializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$5 com.google.gson.JsonElement serialize(shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock src, java.lang.reflect.Type typeOfSrc, com.google.gson.JsonSerializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$4 com.google.gson.JsonElement serialize(shane.pennihome.local.smartboard.thingsframework.interfaces.IThing src, java.lang.reflect.Type typeOfSrc, com.google.gson.JsonSerializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$3 shane.pennihome.local.smartboard.services.interfaces.IService deserialize(com.google.gson.JsonElement json, java.lang.reflect.Type typeOfT, com.google.gson.JsonDeserializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.comms.Monitor$4 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.comms.Monitor$3 void complete(boolean success, shane.pennihome.local.smartboard.services.ServiceLoader.ServiceLoaderResult source)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.comms.Monitor$1 void complete(boolean success, shane.pennihome.local.smartboard.services.ServiceLoader.ServiceLoaderResult source)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.comms.Monitor mServices" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineThingHandler.EditorViewHolder mContainer" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineThingHandler.EditorViewHolder mBaSize" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineThingHandler.EditorViewHolder mBaDevice" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineThingHandler.EditorViewHolder mBaImg" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineThingHandler.EditorViewHolder mBaName" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineThingHandler.EditorViewHolder mLayout" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.services.adapters.ServiceLoadAdapter mRecycleView" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService$1 void OnPreExecute(java.net.HttpURLConnection connection)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService mType" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.Switch mOn" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler.EditorViewHolder mContainer" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler.EditorViewHolder mBaSize" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler.EditorViewHolder mBaDevice" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler.EditorViewHolder mBaImg" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler.EditorViewHolder mBaName" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler.EditorViewHolder mLayout" />
     </entry_points>
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="setOnValueChangedListener" />
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="getDimension" />
@@ -2359,6 +2389,85 @@
     <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="setBackgroundImage" />
     <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="getBackgroundImage" />
     <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" />
+    <pattern value="com.h6ah4i.android.widget.advrecyclerview.utils.DebugWrapperAdapterTest.BadUnwrapPositionAdapter" method="BadUnwrapPositionAdapter" />
+    <pattern value="com.h6ah4i.android.widget.advrecyclerview.utils.DebugWrapperAdapterTest.BadWrapPositionAdapter" method="BadWrapPositionAdapter" />
+    <pattern value="com.h6ah4i.android.widget.advrecyclerview.utils.DebugWrapperAdapterTest.GoodWrapperAdapter" method="GoodWrapperAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.adapters.EditGroupAdapter.ViewHolder" method="ViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.adapters.EditGroupAdapter" method="EditGroupAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.comms.ExecutorRequest" method="setPutBody" />
+    <pattern value="shane.pennihome.local.smartboard.comms.ExecutorRequest" method="setPostJson" />
+    <pattern value="shane.pennihome.local.smartboard.comms.ExecutorRequest" method="setOnExecutorRequestActionListener" />
+    <pattern value="shane.pennihome.local.smartboard.comms.ExecutorRequest" method="setUrl" />
+    <pattern value="shane.pennihome.local.smartboard.comms.ExecutorRequest" />
+    <pattern value="com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableAdapterHelper" method="ExpandableAdapterHelper" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="setForegroundColour" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="getForegroundColour" />
+    <pattern value="shane.pennihome.local.smartboard.services.interfaces.IService" method="getThingsGetter" />
+    <pattern value="shane.pennihome.local.smartboard.services.interfaces.IService" method="getThings" />
+    <pattern value="shane.pennihome.local.smartboard.services.interfaces.IService" method="connect" />
+    <pattern value="shane.pennihome.local.smartboard.services.interfaces.IService" method="register" />
+    <pattern value="shane.pennihome.local.smartboard.services.interfaces.IService" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing" method="setService" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing" method="getService" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing" method="setUnreachable" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing" method="isUnreachable" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="verifyThingState" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="updateThingsFromService" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="getThingsFromService" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="setServices" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="getServices" />
+    <pattern value="shane.pennihome.local.smartboard.data.NameValuePair" method="NameValuePair" />
+    <pattern value="shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener" method="onOkSelected" />
+    <pattern value="shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener" method="onWindowShown" />
+    <pattern value="shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener" />
+    <pattern value="shane.pennihome.local.smartboard.ui.listeners.OnThingSelectListener" method="ThingSelected" />
+    <pattern value="shane.pennihome.local.smartboard.ui.listeners.OnThingSelectListener" />
+    <pattern value="com.h6ah4i.android.widget.advrecyclerview.utils.RecyclerViewAdapterUtils" method="RecyclerViewAdapterUtils" />
+    <pattern value="shane.pennihome.local.smartboard.services.SmartThings.RegisterDialog" method="getService" />
+    <pattern value="shane.pennihome.local.smartboard.services.SmartThings.RegisterDialog" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineThingHandler.EditorViewHolder" method="toString" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineThingHandler.EditorViewHolder" method="EditorViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineThingHandler.EditorViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineThingHandler" method="getEditorViewResourceID" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineThingHandler" method="getViewResourceID" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineThingHandler" method="BindViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineThingHandler" method="GetEditorViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineThingHandler" method="populateBlockFromView" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineThingHandler" method="buildBlockPropertyView" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineThingHandler" method="RoutineThingHandler" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineThingHandler" />
+    <pattern value="shane.pennihome.local.smartboard.services.adapters.ServiceLoadAdapter" method="getServices" />
+    <pattern value="shane.pennihome.local.smartboard.services.adapters.ServiceLoadAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.services.dialogs.ServiceLoadDialog" method="setServices" />
+    <pattern value="shane.pennihome.local.smartboard.services.dialogs.ServiceLoadDialog" />
+    <pattern value="shane.pennihome.local.smartboard.services.ServiceLoader.ServiceLoaderResult" method="isSuccess" />
+    <pattern value="shane.pennihome.local.smartboard.services.ServiceLoader.ServiceLoaderResult" />
+    <pattern value="shane.pennihome.local.smartboard.services.ServiceLoader" method="setServices" />
+    <pattern value="shane.pennihome.local.smartboard.services.ServiceLoader" method="ServiceLoader" />
+    <pattern value="shane.pennihome.local.smartboard.services.ServiceLoader" method="getOnProcessCompleteListener" />
+    <pattern value="shane.pennihome.local.smartboard.services.ServiceLoader" />
+    <pattern value="shane.pennihome.local.smartboard.services.ServiceManager" method="registerService" />
+    <pattern value="shane.pennihome.local.smartboard.services.ServiceManager" />
+    <pattern value="shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService" method="connect" />
+    <pattern value="shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService" />
+    <pattern value="com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipingItemOperator" method="SwipingItemOperator" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.Switch" method="setOn" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="SwitchPropertiesClrSelector" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler.EditorViewHolder" method="toString" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler.EditorViewHolder" method="EditorViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler.EditorViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler" method="getEditorViewResourceID" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler" method="getViewResourceID" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler" method="BindViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler" method="GetEditorViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler" method="populateBlockFromView" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler" method="buildBlockPropertyView" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler" method="SwitchThingHandler" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler" />
+    <pattern value="shane.pennihome.local.smartboard.fragments.ThingFragment" method="getMainActivity" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="ThingPropertiesClrSelector" />
+    <pattern value="shane.pennihome.local.smartboard.ui.UIHelper" method="scaleDownBitmap" />
+    <pattern value="com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils" method="WrapperAdapterUtils" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

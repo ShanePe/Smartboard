@@ -40,7 +40,7 @@ public class DeviceViewAdapter extends ThingViewAdapter {
         vh.mItem = d;
         vh.mNameView.setText(d.getName());
         vh.mSwitchView.setChecked(d.isOn());
-        vh.mSwitchView.setEnabled(d.getState() != Switch.States.Unreachable);
+        vh.mSwitchView.setEnabled(!d.isUnreachable());
         vh.mTypeView.setText(d.getType());
 
         if (vh.mItem.getService() == IService.ServicesTypes.SmartThings) {
@@ -62,7 +62,7 @@ public class DeviceViewAdapter extends ThingViewAdapter {
             @Override
             public void StateChanged() {
                 vh.mSwitchView.setChecked(vh.mItem.isOn());
-                vh.mSwitchView.setEnabled(vh.mItem.getState() != Switch.States.Unreachable);
+                vh.mSwitchView.setEnabled(!vh.mItem.isUnreachable());
             }
         });
     }

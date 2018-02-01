@@ -11,17 +11,21 @@ import org.json.JSONTokener;
 
 import java.util.ArrayList;
 
+import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
 /**
  * Created by shane on 29/01/18.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public abstract class IService extends IDatabaseObject {
+    @SuppressWarnings("FieldCanBeLocal")
     @IgnoreOnCopy
-    private String mInstance;
+    private final String mInstance;
     public IService() {
 
         mInstance = this.getClass().getSimpleName();
@@ -38,20 +42,29 @@ public abstract class IService extends IDatabaseObject {
         return ret;
     }
 
-    protected abstract Things getThings() throws Exception;
+    public boolean isActive() {
+        return Monitor.getMonitor().getServices().hasService(this);
+    }
 
     public abstract DialogFragment getRegisterDialog();
 
+    @SuppressWarnings("SameReturnValue")
+    public abstract int getDrawableIconResource();
+
     protected abstract void register() throws Exception;
 
-    public abstract boolean isRegistered();
+    protected abstract boolean isRegistered();
 
+    @SuppressWarnings("SameReturnValue")
     public abstract boolean isAwaitingAction();
 
     public abstract void connect() throws Exception;
 
     public abstract ArrayList<IThingsGetter> getThingGetters();
 
+    public abstract Things getThings() throws Exception;
+
+    public abstract <T extends IThing> ArrayList<IThingsGetter> getThingsGetter(Class<T> cls);
     public boolean isValid() {
         return isRegistered() && !isAwaitingAction();
     }

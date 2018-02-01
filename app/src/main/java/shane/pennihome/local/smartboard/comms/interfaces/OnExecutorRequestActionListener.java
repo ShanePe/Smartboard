@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
  * Created by shane on 29/01/18.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public interface OnExecutorRequestActionListener {
-    void OnPresend(HttpURLConnection connection);
+    void OnPreExecute(HttpURLConnection connection);
 }

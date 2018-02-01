@@ -17,8 +17,6 @@ import android.webkit.CookieManager;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.comms.Monitor;
-import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.comms.philipshue.PHBridgeController;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Dashboards;
 import shane.pennihome.local.smartboard.data.Globals;
@@ -30,6 +28,7 @@ import shane.pennihome.local.smartboard.fragments.DashboardFragment;
 import shane.pennihome.local.smartboard.fragments.DeviceFragment;
 import shane.pennihome.local.smartboard.fragments.HueBridgeFragment;
 import shane.pennihome.local.smartboard.fragments.RoutineFragment;
+import shane.pennihome.local.smartboard.fragments.ServicesFragment;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
 import shane.pennihome.local.smartboard.services.ServiceManager;
 import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
@@ -39,7 +38,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         HueBridgeFragment.OnListFragmentInteractionListener {
 
-    private Monitor mMonitor = null;
     private Dashboards mDashboards;
 
     @Override
@@ -74,7 +72,23 @@ public class MainActivity extends AppCompatActivity
 
         CookieManager.getInstance().setAcceptCookie(true);
 
-        init();
+        init(savedInstanceState);
+    }
+
+    private void init(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            String monitor = savedInstanceState.getString("monitor");
+            if (monitor != null)
+                try {
+                    Monitor.Create(monitor);
+                } catch (Exception ignored) {
+                }
+        }
+        if (!Monitor.IsInstaniated())
+            Monitor.Create(this);
+
+
+        Monitor.getMonitor().start();
     }
 
     @Override
@@ -109,7 +123,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.btn_st_connect)
-            smartThingsConnect();
+            serviceList();
         else if (id == R.id.btn_ph_connect)
             hueBridgeConnect();
         else if (id == R.id.btn_device_mnu)
@@ -122,11 +136,6 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private void init() {
-        mMonitor = new Monitor(this);
-        // mMonitor.Start();
     }
 
     public void populateDashbboards() {
@@ -143,31 +152,9 @@ public class MainActivity extends AppCompatActivity
         mDashboards.sort();
     }
 
-    public Monitor getMonitor() {
-        return mMonitor;
-    }
-
     private void smartThingsConnect() {
         ServiceManager serviceManager = new ServiceManager();
         serviceManager.registerService(this, SmartThingsService.class);
-        //serviceManager.registerService(SmartThingsService.class);
-//        final SmartThingsFragment fragment = new SmartThingsFragment();
-//        //noinspection unchecked
-//        fragment.setmProcessComplete(new OnProcessCompleteListener<AppCompatActivity>() {
-//            @Override
-//            public void complete(boolean success, AppCompatActivity source) {
-//                if (success) {
-//                    mMonitor.getSmartThingsThings(new OnProcessCompleteListener<STController>() {
-//                        @Override
-//                        public void complete(boolean success, STController source) {
-//                        }
-//                    });
-//                }
-//            }
-//        });
-//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("smartThingsConnect");
-//        ft.replace(R.id.content_main, fragment);
-//        ft.commit();
     }
 
     @Override
@@ -179,6 +166,14 @@ public class MainActivity extends AppCompatActivity
             actionBar.hide();
 
         super.onResume();
+    }
+
+    private void serviceList() {
+        final ServicesFragment fragment = new ServicesFragment();
+        //noinspection unchecked
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("serviceList");
+        ft.replace(R.id.content_main, fragment);
+        ft.commit();
     }
 
     private void hueBridgeConnect() {
@@ -225,7 +220,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public Dashboards getDashboards() {
-        if(mDashboards == null)
+        if (mDashboards == null)
             return new Dashboards();
 
         return mDashboards;
@@ -240,11 +235,21 @@ public class MainActivity extends AppCompatActivity
         philipHueHub.Save();
 
         backToMainActivity();
-        mMonitor.getHueBridgeThings(new OnProcessCompleteListener<PHBridgeController>() {
-            @Override
-            public void complete(boolean success, PHBridgeController source) {
+//        mMonitor.getHueBridgeThings(new OnProcessCompleteListener<PHBridgeController>() {
+//            @Override
+//            public void complete(boolean success, PHBridgeController source) {
+//
+//            }
+//        });
+    }
 
-            }
-        });
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        try {
+            if (Monitor.IsInstaniated())
+                outState.putString("monitor", Monitor.getMonitor().toJson());
+        } catch (Exception ignored) {
+        }
     }
 }

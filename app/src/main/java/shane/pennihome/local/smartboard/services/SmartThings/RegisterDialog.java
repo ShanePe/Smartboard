@@ -1,6 +1,6 @@
 package shane.pennihome.local.smartboard.services.SmartThings;
 
-import android.app.Dialog;
+import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,8 +21,9 @@ import shane.pennihome.local.smartboard.data.sql.DBEngine;
  * Created by shane on 29/01/18.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class RegisterDialog extends DialogFragment {
-    SmartThingsService mSmartThingsService;
+    private SmartThingsService mSmartThingsService;
 
     public SmartThingsService getService() {
         return mSmartThingsService;
@@ -32,9 +33,10 @@ public class RegisterDialog extends DialogFragment {
         mSmartThingsService = smartThingsService;
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_smart_things, container, false);
 
         WebView web = view.findViewById(R.id.st_webview);

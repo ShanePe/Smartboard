@@ -29,6 +29,9 @@ public abstract class IThing extends IDatabaseObject {
     private IService.ServicesTypes mServicesTypes;
     @IgnoreOnCopy
     private IBlock mBlock;
+    @IgnoreOnCopy
+    private transient boolean mUnreachable;
+
     public IThing() {
         mInstance = this.getClass().getSimpleName();
     }
@@ -51,6 +54,15 @@ public abstract class IThing extends IDatabaseObject {
             default:
                 throw new Exception("Invalid Type to create");
         }
+    }
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public boolean isUnreachable() {
+        return mUnreachable;
+    }
+
+    public void setUnreachable(boolean unreachable) {
+        mUnreachable = unreachable;
     }
 
     public abstract String getFriendlyName();

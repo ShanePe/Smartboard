@@ -12,21 +12,22 @@ import shane.pennihome.local.smartboard.data.NameValuePair;
  * Created by shane on 29/01/18.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class ExecutorRequest {
+    private final Types mType;
+    private final ArrayList<NameValuePair> mQueryStringParameters;
     private URL mUrl;
     private OnExecutorRequestActionListener mOnExecutorRequestActionListener;
-    private Types mType;
-    private ArrayList<NameValuePair> mQueryStringParameters;
     private JSONObject mPostJson;
     private String mPutBody;
 
-    public ExecutorRequest(URL mUrl, Types mType) {
+    public ExecutorRequest(URL mUrl, @SuppressWarnings("SameParameterValue") Types mType) {
         this.mUrl = mUrl;
         this.mType = mType;
         mQueryStringParameters = new ArrayList<>();
     }
 
-    public ExecutorRequest(URL mUrl, Types mType, OnExecutorRequestActionListener mOnExecutorRequestActionListener) {
+    public ExecutorRequest(URL mUrl, @SuppressWarnings("SameParameterValue") Types mType, OnExecutorRequestActionListener mOnExecutorRequestActionListener) {
         this.mUrl = mUrl;
         this.mOnExecutorRequestActionListener = mOnExecutorRequestActionListener;
         this.mType = mType;
@@ -41,7 +42,7 @@ public class ExecutorRequest {
         mUrl = url;
     }
 
-    public OnExecutorRequestActionListener getOnExecutorRequestActionListener() {
+    OnExecutorRequestActionListener getOnExecutorRequestActionListener() {
         return mOnExecutorRequestActionListener;
     }
 
@@ -57,7 +58,7 @@ public class ExecutorRequest {
         return mQueryStringParameters;
     }
 
-    public JSONObject getPostJson() {
+    JSONObject getPostJson() {
         return mPostJson;
     }
 
@@ -65,7 +66,7 @@ public class ExecutorRequest {
         mPostJson = postJson;
     }
 
-    public String getPutBody() {
+    String getPutBody() {
         return mPutBody;
     }
 
