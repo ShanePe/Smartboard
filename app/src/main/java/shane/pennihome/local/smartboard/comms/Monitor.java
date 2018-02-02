@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.comms;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -92,20 +93,24 @@ public class Monitor {
         getThingsFromService(null, onProcessCompleteListener);
     }
 
-    private void getThingsFromService(final AppCompatActivity activity, OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult> onProcessCompleteListener) {
-        ServiceLoader loader = new ServiceLoader(activity);
-        for (IService s : getServices())
+    private void getThingsFromService(final Context context, OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult> onProcessCompleteListener) {
+        getThingsFromService(context, getServices(), onProcessCompleteListener);
+    }
+
+    private void getThingsFromService(final Context context, Services services, OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult> onProcessCompleteListener) {
+        ServiceLoader loader = new ServiceLoader(context);
+        for (IService s : services)
             if (s.isValid())
                 loader.getServices().add(s);
-            else if (s.isAwaitingAction() && activity != null)
-                Toast.makeText(activity, String.format("Service %s is awaiting an action.", s.getName()), Toast.LENGTH_LONG);
+            else if (s.isAwaitingAction() && context != null)
+                Toast.makeText(context, String.format("Service %s is awaiting an action.", s.getName()), Toast.LENGTH_LONG);
         try {
             loader.setOnProcessCompleteListener(onProcessCompleteListener);
             loader.execute();
 
         } catch (Exception e) {
-            if (activity != null)
-                Toast.makeText(activity, String.format("Error : %s", e.getMessage()), Toast.LENGTH_LONG);
+            if (context != null)
+                Toast.makeText(context, String.format("Error : %s", e.getMessage()), Toast.LENGTH_LONG);
             else
                 e.printStackTrace();
         }
@@ -140,11 +145,29 @@ public class Monitor {
         mMonitorThread.start();
     }
 
-    public void AddService(AppCompatActivity activity, IService service) {
+    public void removeService(IService service) {
         getServices().remove(service.getServiceType());
-        getThings().remove(service.getServiceType());
+        for (IThing t : getThings().getByService(service))
+            t.setUnreachable(true);
+    }
 
+    public void AddService(final Context context, IService service, final OnProcessCompleteListener onProcessCompleteListener) {
+        getServices().remove(service.getServiceType());
+        getThings().remove(service);
 
+        Services services = new Services();
+        services.add(service);
+        getServices().add(service);
+        getThingsFromService(context, services, new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
+            @Override
+            public void complete(boolean success, ServiceLoader.ServiceLoaderResult source) {
+                getMonitor().getThings().addAll(source.getResult());
+                for (String e : source.getErrors().keySet())
+                    Toast.makeText(context, String.format("Error getting things : %s", e), Toast.LENGTH_LONG);
+                if (onProcessCompleteListener != null)
+                    onProcessCompleteListener.complete(true, null);
+            }
+        });
     }
 
     private void verifyThingState(Things currentThings) {

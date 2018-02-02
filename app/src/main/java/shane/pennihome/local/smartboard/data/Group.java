@@ -2,9 +2,9 @@ package shane.pennihome.local.smartboard.data;
 
 import android.support.annotation.ColorInt;
 
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
-import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
+import shane.pennihome.local.smartboard.thingsframework.Blocks;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.ui.GroupViewHandler;
 
 /**
@@ -13,7 +13,8 @@ import shane.pennihome.local.smartboard.ui.GroupViewHandler;
 
 @SuppressWarnings({"DefaultFileTemplate", "unused"})
 public class Group extends IDatabaseObject {
-    private final Things mThings = new Things();
+    private final Blocks mBlocks = new Blocks();
+    private boolean mIsUIExpanded;
     private boolean mDisplayName = false;
     private @ColorInt
     int mDefaultBlockForeColourOff;
@@ -24,15 +25,6 @@ public class Group extends IDatabaseObject {
     private @ColorInt
     int mDefaultBlockBackColourOn;
     private transient GroupViewHandler mGroupViewHandler;
-    boolean mIsUIExpanded;
-
-    public boolean isUIExpanded() {
-        return mIsUIExpanded;
-    }
-
-    public void setUIExpanded(boolean UIExpanded) {
-        mIsUIExpanded = UIExpanded;
-    }
 
     public Group() {
     }
@@ -49,8 +41,21 @@ public class Group extends IDatabaseObject {
         }
     }
 
-    public Things getThings() {
-        return mThings;
+    public boolean isUIExpanded() {
+        return mIsUIExpanded;
+    }
+
+    public void setUIExpanded(boolean UIExpanded) {
+        mIsUIExpanded = UIExpanded;
+    }
+
+    void loadThings() {
+        for (IBlock b : getBlocks())
+            b.loadThing();
+    }
+
+    public Blocks getBlocks() {
+        return mBlocks;
     }
 
     @Override
@@ -66,8 +71,8 @@ public class Group extends IDatabaseObject {
         this.mDisplayName = displayName;
     }
 
-    public IThing getThingsAt(int index) {
-        return mThings.get(index);
+    public IBlock getBlockAt(int index) {
+        return mBlocks.get(index);
     }
 
     public @ColorInt

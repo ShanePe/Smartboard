@@ -14,13 +14,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import shane.pennihome.local.smartboard.adapters.EditGroupAdapter;
-import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.data.Dashboard;
-import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.fragments.tabs.GroupFragment;
 import shane.pennihome.local.smartboard.fragments.tabs.SmartboardFragment;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
 public class SmartboardActivity extends AppCompatActivity {
 
@@ -50,6 +47,7 @@ public class SmartboardActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         assert extras != null;
         mDashboard = Dashboard.Load(extras.getString("dashboard"));
+        mDashboard.loadThings();
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -68,17 +66,7 @@ public class SmartboardActivity extends AppCompatActivity {
 
             }
         });
-
-        for (Group g : mDashboard.getGroups())
-            for (IThing thing : g.getThings())
-                if (thing != null) {
-                    int thingPos = Monitor.getMonitor().getThings().GetIndex(thing);
-                    if (thingPos != -1)
-                        thing.copyValuesFrom(Monitor.getMonitor().getThings().get(thingPos));
-                }
     }
-
-
 
     private void WriteDashboardToDatabase() {
         if (mDashboard == null)
@@ -128,18 +116,12 @@ public class SmartboardActivity extends AppCompatActivity {
         return mDashboard;
     }
 
-/*    public EditGroupAdapter getGroupAdapter() {
-        return mEditGroupAdapter;
-    }*/
-
     public EditGroupAdapter getGroupAdapter()
     {
         return mEditGroupAdapter;
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-        //private SmartboardActivity mContext;
-
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }

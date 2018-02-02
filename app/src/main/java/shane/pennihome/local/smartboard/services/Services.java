@@ -26,8 +26,10 @@ public class Services extends ArrayList<IService> {
     }
 
     public void remove(IService.ServicesTypes servicesTypes) {
+        Services remove = new Services();
         for (IService s : this)
             if (s.getServiceType() == servicesTypes)
-                remove(s);
+                remove.add(s);
+        this.removeAll(remove);
     }
 }

@@ -15,8 +15,9 @@ import android.widget.Spinner;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.thingsframework.SpinnerThingAdapter;
 import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
-import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
 
 /**
  * Created by shane on 27/01/18.
@@ -124,13 +125,16 @@ public class ThingProperties extends LinearLayoutCompat {
         mSpThing.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mThing = (IThing) adapterView.getItemAtPosition(i);
+                IThing thing = (IThing) adapterView.getItemAtPosition(i);
                 if (TextUtils.isEmpty(mName))
                     mName = mThing.getName();
 
-                if (TextUtils.isEmpty(mName) || mThing.getName().equals(mName))
-                    mName = mThing.getName();
+                if (mThing == null)
+                    mName = thing.getName();
+                else if (TextUtils.isEmpty(mName) || mThing.getName().equals(mName))
+                    mName = thing.getName();
 
+                mThing = thing;
                 doPropertyChange();
             }
 
@@ -211,24 +215,24 @@ public class ThingProperties extends LinearLayoutCompat {
         requestLayout();
     }
 
-    public void initialise(Things things, IThing thing) {
+    public void initialise(Things things, IBlock block) {
         mThings = things;
-        mThing = thing;
-        mName = thing.getBlock().getName();
-        mBlockWidth = thing.getBlock().getWidth();
-        mBlockHeight = thing.getBlock().getHeight();
+        mThing = block.getThing();
+        mName = block.getName();
+        mBlockWidth = block.getWidth();
+        mBlockHeight = block.getHeight();
 
         doSpinnerThings();
         doPropertyChange();
     }
 
-    public void populate(IThing thing, @SuppressWarnings("SameParameterValue") OnThingSetListener onThingSetListener) {
-        thing.copyValuesFrom(mThing);
-        thing.getBlock().setName(mName);
-        thing.getBlock().setWidth(mBlockWidth);
-        thing.getBlock().setHeight(mBlockHeight);
-
-        if (onThingSetListener != null)
-            onThingSetListener.OnSet(getThing());
+    public void populate(IBlock block, @SuppressWarnings("SameParameterValue") OnBlockSetListener onBlockSetListener) {
+        block.setName(mName);
+        block.setWidth(mBlockWidth);
+        block.setHeight(mBlockHeight);
+        block.setThing(mThing);
+        block.setThingKey(mThing.getKey());
+        if (onBlockSetListener != null)
+            onBlockSetListener.OnSet(block);
     }
 }

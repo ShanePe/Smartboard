@@ -2,13 +2,18 @@ package shane.pennihome.local.smartboard.thingsframework.interfaces;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.text.TextUtils;
 import android.view.View;
 
+import shane.pennihome.local.smartboard.comms.Monitor;
+import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
+import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
+import shane.pennihome.local.smartboard.things.switches.SwitchBlock;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 
 /**
@@ -28,9 +33,65 @@ public abstract class IBlock extends IDatabaseObject {
     private int mBackTrans;
     private String mBackImage;
     private int mBGImgTrans;
+    private String mThingKey;
+    private transient IThing mThing;
 
     public IBlock() {
         mInstance = this.getClass().getSimpleName();
+    }
+
+    public static int GetTypeID(IBlock block) {
+        return block.getThingType().ordinal();
+    }
+
+    public static IBlock CreateByTypeID(int i) throws Exception {
+        IThing.Types enumVal = IThing.Types.values()[i];
+        switch (enumVal) {
+            case Switch:
+                return new SwitchBlock();
+            case Routine:
+                return new RoutineBlock();
+            default:
+                throw new Exception("Invalid Type to create");
+        }
+    }
+
+    public IThing getThing() {
+        return mThing;
+    }
+
+    public void setThing(IThing thing) {
+        mThing = thing;
+    }
+
+    public String getThingKey() {
+        return mThingKey;
+    }
+
+    public void setThingKey(String thingKey) {
+        mThingKey = thingKey;
+    }
+
+    public abstract int getDefaultIconResource();
+
+    public abstract String getFriendlyName();
+
+    public void setBlockDefaults(Group group) {
+        setWidth(1);
+        setHeight(1);
+
+        setBackgroundColour(group.getDefaultBlockBackgroundColourOff() != 0 ?
+                group.getDefaultBlockBackgroundColourOff() :
+                Color.parseColor("#ff5a595b"));
+
+        setForegroundColour(group.getDefaultBlockForeColourOff() != 0 ?
+                group.getDefaultBlockForeColourOff() :
+                Color.WHITE);
+
+        setBackgroundColourTransparency(100);
+        setBackgroundImage(null);
+        setBackgroundImageTransparency(100);
+
     }
 
     @Override
@@ -96,6 +157,10 @@ public abstract class IBlock extends IDatabaseObject {
         this.mBGImgTrans = bgImgTrans;
     }
 
+    public abstract IThing.Types getThingType();
+
+    public abstract IBlockUIHandler getUIHandler();
+
     @ColorInt
     public int getBackgroundColourWithAlpha()
     {
@@ -128,5 +193,10 @@ public abstract class IBlock extends IDatabaseObject {
                 });
             }
         });
+    }
+
+    public void loadThing() {
+        if (TextUtils.isEmpty(getThingKey()) || mThing != null)
+            mThing = Monitor.getMonitor().getThings().getByKey(getThingKey());
     }
 }

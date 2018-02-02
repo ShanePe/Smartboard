@@ -8,23 +8,23 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemView
 
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.thingsframework.Things;
-import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
 
 /**
  * Created by SPennicott on 17/01/2018.
  */
 
 @SuppressWarnings("ALL")
-public abstract class IThingUIHandler {
-    private IThing mIThing;
+public abstract class IBlockUIHandler {
+    private IBlock mIBlock;
 
-    protected IThingUIHandler(IThing iThing) {
-        mIThing = iThing;
+    protected IBlockUIHandler(IBlock block) {
+        mIBlock = block;
     }
 
     public abstract void buildBlockPropertyView(Activity activity, View view, Things things, Group group);
 
-    public abstract void populateBlockFromView(View view, OnThingSetListener onThingSetListener);
+    public abstract void populateBlockFromView(View view, OnBlockSetListener onBlockSetListener);
 
     public abstract BaseEditorViewHolder GetEditorViewHolder(View view);
 
@@ -34,18 +34,18 @@ public abstract class IThingUIHandler {
 
     public abstract int getEditorViewResourceID();
 
-    protected IThing getThing() {
-        return mIThing;
+    protected IBlock getBlock() {
+        return mIBlock;
     }
 
-    public void setThing(IThing thing)
+    public void setBlock(IBlock block)
     {
-        mIThing = thing;
+        mIBlock = block;
     }
 
-    public <E extends IThing> E getThing(Class<E> cls) {
+    public <E extends IBlock> E getBlock(Class<E> cls) {
         //noinspection unchecked
-        return (E) getThing();
+        return (E) getBlock();
     }
 
     public class BaseEditorViewHolder extends AbstractDraggableItemViewHolder {

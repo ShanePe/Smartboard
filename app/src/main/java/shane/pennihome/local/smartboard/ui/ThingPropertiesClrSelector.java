@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.ui.listeners.OnBackgroundActionListener;
 import shane.pennihome.local.smartboard.ui.listeners.OnForegroundActionListener;
 
@@ -146,23 +146,23 @@ public class ThingPropertiesClrSelector extends LinearLayoutCompat {
         requestLayout();
     }
 
-    public void initialise(IThing thing) {
-        mBackgroundColour = thing.getBlock().getBackgroundColour();
-        mBackgroundColourTransparency = thing.getBlock().getBackgroundColourTransparency();
-        mBackgroundImage = thing.getBlock().getBackgroundImage();
-        mBackgroundImageTransparency = thing.getBlock().getBackgroundImageTransparency();
+    public void initialise(IBlock block) {
+        mBackgroundColour = block.getBackgroundColour();
+        mBackgroundColourTransparency = block.getBackgroundColourTransparency();
+        mBackgroundImage = block.getBackgroundImage();
+        mBackgroundImageTransparency = block.getBackgroundImageTransparency();
 
-        mForegroundColour = thing.getBlock().getForegroundColour();
+        mForegroundColour = block.getForegroundColour();
 
         doPropertyChange();
     }
 
-    public void populate(IThing thing) {
-        thing.getBlock().setBackgroundColour(mBackgroundColour);
-        thing.getBlock().setBackgroundColourTransparency(mBackgroundColourTransparency);
-        thing.getBlock().setBackgroundImage(mBackgroundImage);
-        thing.getBlock().setBackgroundImageTransparency(mBackgroundImageTransparency);
+    public void populate(IBlock block) {
+        block.setBackgroundColour(mBackgroundColour);
+        block.setBackgroundColourTransparency(mBackgroundColourTransparency);
+        block.setBackgroundImage(mBackgroundImage);
+        block.setBackgroundImageTransparency(mBackgroundImageTransparency);
 
-        thing.getBlock().setForegroundColour(mForegroundColour);
+        block.setForegroundColour(mForegroundColour);
     }
 }

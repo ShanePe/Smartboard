@@ -1,9 +1,14 @@
 package shane.pennihome.local.smartboard.things.switches;
 
+import android.graphics.Color;
 import android.support.annotation.ColorInt;
 
+import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 
 /**
@@ -75,5 +80,39 @@ public class SwitchBlock extends IBlock {
     int getBackgroundColourWithAlphaOn()
     {
         return UIHelper.getColorWithAlpha(getBackgroundColourOn(), getBackgroundColourTransparencyOn() / 100f);
+    }
+
+    @Override
+    public int getDefaultIconResource() {
+        return R.drawable.icon_def_switch;
+    }
+
+    @Override
+    public String getFriendlyName() {
+        return "Switch";
+    }
+
+    @Override
+    public void setBlockDefaults(Group group) {
+        super.setBlockDefaults(group);
+
+        setBackgroundColourTransparencyOn(100);
+        setBackgroundColourOn(group.getDefaultBlockBackgroundColourOn() != 0 ?
+                group.getDefaultBlockBackgroundColourOn() :
+                Color.parseColor("#FF4081"));
+
+        setForegroundColourOn(group.getDefaultBlockForeColourOn() != 0 ?
+                group.getDefaultBlockForeColourOn() :
+                Color.parseColor("black"));
+    }
+
+    @Override
+    public IThing.Types getThingType() {
+        return IThing.Types.Switch;
+    }
+
+    @Override
+    public IBlockUIHandler getUIHandler() {
+        return new SwitchBlockHandler(this);
     }
 }

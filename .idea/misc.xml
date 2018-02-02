@@ -2470,6 +2470,9 @@
     <pattern value="com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils" method="WrapperAdapterUtils" />
     <pattern value="shane.pennihome.local.smartboard.comms.interfaces.IMessage" method="getValue" />
     <pattern value="shane.pennihome.local.smartboard.comms.interfaces.IMessage" method="setValue" />
+    <pattern value="shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject" method="copyValuesFrom" />
+    <pattern value="shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingProperties" method="getThing" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

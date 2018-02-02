@@ -12,9 +12,9 @@ import android.widget.TextView;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.thingsframework.Things;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandler;
-import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.ui.ThingProperties;
 import shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector;
 import shane.pennihome.local.smartboard.ui.ViewSwiper;
@@ -24,9 +24,9 @@ import shane.pennihome.local.smartboard.ui.ViewSwiper;
  */
 
 @SuppressWarnings("ALL")
-public class RoutineThingHandler extends IThingUIHandler {
-    public RoutineThingHandler(IThing iThing) {
-        super(iThing);
+public class RoutineBlockHandler extends IBlockUIHandler {
+    public RoutineBlockHandler(IBlock block) {
+        super(block);
     }
 
     @Override
@@ -40,20 +40,20 @@ public class RoutineThingHandler extends IThingUIHandler {
         ThingProperties tpProps = view.findViewById(R.id.rt_properties);
         ThingPropertiesClrSelector tpBackground = view.findViewById(R.id.rt_background);
 
-        tpProps.initialise(things, getThing());
-        tpBackground.initialise(getThing());
+        tpProps.initialise(things, getBlock());
+        tpBackground.initialise(getBlock());
     }
 
     @Override
-    public void populateBlockFromView(View view, OnThingSetListener onThingSetListener) {
+    public void populateBlockFromView(View view, OnBlockSetListener onBlockSetListener) {
         ThingProperties tbProps = view.findViewById(R.id.rt_properties);
         ThingPropertiesClrSelector tbBackground = view.findViewById(R.id.rt_background);
 
-        tbProps.populate(getThing(), null);
-        tbBackground.populate(getThing());
+        tbProps.populate(getBlock(), null);
+        tbBackground.populate(getBlock());
 
-        if (onThingSetListener != null)
-            onThingSetListener.OnSet(getThing());
+        if (onBlockSetListener != null)
+            onBlockSetListener.OnSet(getBlock());
     }
 
     @Override
@@ -64,15 +64,15 @@ public class RoutineThingHandler extends IThingUIHandler {
     public void BindViewHolder(BaseEditorViewHolder viewHolder, int backgroundResourceId) {
         EditorViewHolder holder = (EditorViewHolder) viewHolder;
 
-        holder.mBaName.setText(getThing().getBlock().getName());
-        if (getThing() != null)
-            holder.mBaImg.setImageResource(getThing().getDefaultIconResource());
+        holder.mBaName.setText(getBlock().getName());
+        holder.mBaImg.setImageResource(getBlock().getDefaultIconResource());
 
-        holder.mBaDevice.setText(getThing().getName());
-        holder.mBaSize.setText(String.format("%s x %s", getThing().getBlock().getWidth(), getThing().getBlock().getHeight()));
+        if (getBlock().getThingKey() != null)
+            holder.mBaDevice.setText(getBlock().getThing().getName());
+        holder.mBaSize.setText(String.format("%s x %s", getBlock().getWidth(), getBlock().getHeight()));
 
-        @ColorInt final int bgClr = getThing().getBlock().getBackgroundColourWithAlpha();
-        @ColorInt int fgClr = getThing().getBlock().getForegroundColour();
+        @ColorInt final int bgClr = getBlock().getBackgroundColourWithAlpha();
+        @ColorInt int fgClr = getBlock().getForegroundColour();
 
         // getThing().getBlock().renderBackground(holder.mLayout);
         holder.mLayout.setBackgroundColor(bgClr);

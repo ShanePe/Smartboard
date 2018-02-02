@@ -12,28 +12,27 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropM
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
-import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.fragments.DashboardFragment;
-import shane.pennihome.local.smartboard.thingsframework.Things;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandler;
-import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
+import shane.pennihome.local.smartboard.thingsframework.Blocks;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 
 /**
  * Created by shane on 15/01/18.
  */
 @SuppressWarnings("ALL")
-public class EditThingAdapter extends RecyclerView.Adapter<IThingUIHandler.BaseEditorViewHolder>
-        implements DraggableItemAdapter<IThingUIHandler.BaseEditorViewHolder> {
+public class EditBlockAdapter extends RecyclerView.Adapter<IBlockUIHandler.BaseEditorViewHolder>
+        implements DraggableItemAdapter<IBlockUIHandler.BaseEditorViewHolder> {
 
     private final SmartboardActivity mSmartboardActivity;
     private final Group mGroup;
-    private Things mThings;
+    private Blocks mBlocks;
 
-    public EditThingAdapter(SmartboardActivity smartboardActivity, Group group, DashboardFragment.OnListFragmentInteractionListener listener) {
-        mThings = new Things();
+    public EditBlockAdapter(SmartboardActivity smartboardActivity, Group group, DashboardFragment.OnListFragmentInteractionListener listener) {
+        mBlocks = new Blocks();
         DashboardFragment.OnListFragmentInteractionListener mListener = listener;
         mSmartboardActivity = smartboardActivity;
         mGroup = group;
@@ -54,18 +53,18 @@ public class EditThingAdapter extends RecyclerView.Adapter<IThingUIHandler.BaseE
 
     @Override
     public int getItemViewType(int position) {
-        return IThing.GetTypeID(mThings.get(position));
+        return IBlock.GetTypeID(mBlocks.get(position));
     }
 
     @Override
-    public IThingUIHandler.BaseEditorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        IThing thing;
+    public IBlockUIHandler.BaseEditorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        IBlock block;
         try {
-            thing = IThing.CreateByTypeID(viewType);
+            block = IBlock.CreateByTypeID(viewType);
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(thing.getUIHandler().getViewResourceID(), parent, false);
+                    .inflate(block.getUIHandler().getViewResourceID(), parent, false);
 
-            return thing.getUIHandler().GetEditorViewHolder(view);
+            return block.getUIHandler().GetEditorViewHolder(view);
         }
         catch (Exception e) {
             return null;
@@ -73,34 +72,34 @@ public class EditThingAdapter extends RecyclerView.Adapter<IThingUIHandler.BaseE
     }
 
     @Override
-    public void onBindViewHolder(final IThingUIHandler.BaseEditorViewHolder holder, final int position) {
+    public void onBindViewHolder(final IBlockUIHandler.BaseEditorViewHolder holder, final int position) {
         final int dragState = holder.getDragStateFlags();
 
         int bgResId = 0;
 
-        if (((dragState & EditThingAdapter.Draggable.STATE_FLAG_IS_UPDATED) != 0)) {
+        if (((dragState & EditBlockAdapter.Draggable.STATE_FLAG_IS_UPDATED) != 0)) {
 
-            if ((dragState & EditThingAdapter.Draggable.STATE_FLAG_IS_ACTIVE) != 0) {
+            if ((dragState & EditBlockAdapter.Draggable.STATE_FLAG_IS_ACTIVE) != 0) {
                 bgResId = R.drawable.bg_item_dragging_active_state;
 
                 // need to clear drawable state here to get correct appearance of the dragging item.
                 //DrawableUtils.clearState(holder.mContainer.getForeground());
-            } else if ((dragState & EditThingAdapter.Draggable.STATE_FLAG_DRAGGING) != 0) {
+            } else if ((dragState & EditBlockAdapter.Draggable.STATE_FLAG_DRAGGING) != 0) {
                 bgResId = R.drawable.bg_item_dragging_state;
             } else {
                 bgResId = R.drawable.bg_item_normal_state;
             }
         }
 
-        final IThing thing = mThings.get(position);
-        final IThingUIHandler handler = thing.getUIHandler();
+        final IBlock block = mBlocks.get(position);
+        final IBlockUIHandler handler = block.getUIHandler();
 
         holder.getContainer().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.showThingPropertyWindow(mSmartboardActivity, thing.getFilteredView(Monitor.getMonitor().getThings()), thing, new OnThingSetListener() {
+                UIHelper.showBlockPropertyWindow(mSmartboardActivity, block, new OnBlockSetListener() {
                     @Override
-                    public void OnSet(IThing thing) {
+                    public void OnSet(IBlock block) {
                         mGroup.getGroupViewHandler().NotifyChanged();
                     }
                 });
@@ -112,29 +111,29 @@ public class EditThingAdapter extends RecyclerView.Adapter<IThingUIHandler.BaseE
 
     @Override
     public long getItemId(int position) {
-        return mThings.get(position).getPosition();
+        return mBlocks.get(position).getPosition();
     }
 
-    public Things getThings() {
-        return this.mThings;
+    public Blocks getBlocks() {
+        return this.mBlocks;
     }
 
-    public void setThings(Things mValues) {
-        this.mThings = mValues;
+    public void setBlocks(Blocks mValues) {
+        this.mBlocks = mValues;
     }
 
     @Override
     public int getItemCount() {
-        return mThings.size();
+        return mBlocks.size();
     }
 
     @Override
-    public boolean onCheckCanStartDrag(IThingUIHandler.BaseEditorViewHolder holder, int position, int x, int y) {
+    public boolean onCheckCanStartDrag(IBlockUIHandler.BaseEditorViewHolder holder, int position, int x, int y) {
         return true;
     }
 
     @Override
-    public ItemDraggableRange onGetItemDraggableRange(IThingUIHandler.BaseEditorViewHolder holder, int position) {
+    public ItemDraggableRange onGetItemDraggableRange(IBlockUIHandler.BaseEditorViewHolder holder, int position) {
         return null;
     }
 
@@ -142,9 +141,9 @@ public class EditThingAdapter extends RecyclerView.Adapter<IThingUIHandler.BaseE
     public void onMoveItem(int fromPosition, int toPosition) {
         int mItemMoveMode = RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT;
         if (mItemMoveMode == RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT) {
-           getThings().moveItem(fromPosition, toPosition);
+            getBlocks().moveItem(fromPosition, toPosition);
         } else {
-            getThings().swapItem(fromPosition, toPosition);
+            getBlocks().swapItem(fromPosition, toPosition);
         }
     }
 

@@ -47,7 +47,6 @@ public class ServiceManager {
             @SuppressWarnings("unused") FragmentManager fragmentManager = activity.getSupportFragmentManager();
             dialogFragment.show(activity.getSupportFragmentManager(), "Service_Register");
         } catch (Exception ex) {
-
             Toast.makeText(activity, "Error : " + ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }

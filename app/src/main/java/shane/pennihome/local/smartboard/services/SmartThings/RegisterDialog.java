@@ -15,6 +15,8 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.comms.Monitor;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
 
 /**
@@ -66,11 +68,15 @@ public class RegisterDialog extends DialogFragment {
 
                         mSmartThingsService.setAuthorisationCode(uri.getQueryParameter("code"));
                         mSmartThingsService.register();
-                        new DBEngine(getActivity()).writeToDatabase(mSmartThingsService);
-
                         authComplete = true;
-                        getDialog().dismiss();
 
+                        new DBEngine(getActivity()).writeToDatabase(mSmartThingsService);
+                        Monitor.getMonitor().AddService(getContext(), mSmartThingsService, new OnProcessCompleteListener() {
+                            @Override
+                            public void complete(boolean success, Object source) {
+                                getDialog().dismiss();
+                            }
+                        });
                     } else if (url.contains("error=access_denied"))
                         throw new Exception("Access denied");
                 } catch (Exception ex) {

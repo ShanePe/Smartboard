@@ -2,6 +2,8 @@ package shane.pennihome.local.smartboard.fragments.tabs;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,87 +77,23 @@ public class SmartboardFragment extends Fragment {
                 mSbAct.getDashboard().setBackgroundImage(imageFile);
             }
         });
-//        final Button btnBGClr = rootView.findViewById(R.id.dash_btn_bg);
-//        mBtnBGImg = rootView.findViewById(R.id.dash_btn_img);
-//        final SeekBar sbBGClr = rootView.findViewById(R.id.dash_sb_bg);
-//        msbBGImg = rootView.findViewById(R.id.dash_sb_img);
 
         editText.setText(mSbAct.getDashboard().getName());
-//
-//        btnBGClr.setBackgroundColor(mSbAct.getDashboard().getBackgroundColourWithAlpha());
-//
-//        if(!TextUtils.isEmpty(mSbAct.getDashboard().getBackgroundImage()))
-//            mBtnBGImg.setBackground(mSbAct.getDashboard().getBackgroundImageWithAlpha(mSbAct));
-//
-//        sbBGClr.setProgress(mSbAct.getDashboard().getBackgroundColourTransparency());
-//        msbBGImg.setProgress(mSbAct.getDashboard().getBackgroundImageTransparency());
-//
-//        editText.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                mSbAct.getDashboard().setName(s.toString());
-//            }
-//        });
-//
-//        btnBGClr.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                UIHelper.showColourPicker(mSbAct, mSbAct.getDashboard().getBackgroundColour(), new OnProcessCompleteListener() {
-//                    @Override
-//                    public void complete(boolean success, Object source) {
-//                        @ColorInt int clr = (int) source;
-//                        mSbAct.getDashboard().setBackgroundColour(clr);
-//                        mSbAct.getDashboard().setBackgroundColourTransparency(100);
-//                        sbBGClr.setProgress(100);
-//                        btnBGClr.setBackgroundColor(mSbAct.getDashboard().getBackgroundColourWithAlpha());
-//                        doBGImage();
-//                    }
-//                });
-//            }
-//        });
-//
-//        sbBGClr.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-//                mSbAct.getDashboard().setBackgroundColourTransparency(i);
-//                btnBGClr.setBackgroundColor(mSbAct.getDashboard().getBackgroundColourWithAlpha());
-//                doBGImage();
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {}
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {}
-//        });
-//
-//        msbBGImg.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-//                mSbAct.getDashboard().setBackgroundImageTransparency(i);
-//                doBGImage();
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {}
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {}
-//        });
-//
-//        final Fragment me = this;
-//        mBtnBGImg.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                UIHelper.showImageImport(me);
-//            }
-//        });
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mSbAct.getDashboard().setName(s.toString());
+            }
+        });
         return rootView;
     }
 }

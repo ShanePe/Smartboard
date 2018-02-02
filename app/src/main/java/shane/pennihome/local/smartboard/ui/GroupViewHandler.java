@@ -22,14 +22,14 @@ import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListen
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.fragments.DashboardFragment;
-import shane.pennihome.local.smartboard.thingsframework.adapters.EditThingAdapter;
+import shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter;
 
 /**
  * Created by shane on 15/01/18.
  */
 @SuppressWarnings("ALL")
 public class GroupViewHandler {
-    private EditThingAdapter mEditThingAdapter;
+    private EditBlockAdapter mEditBlockAdapter;
     private SmartboardActivity mSmartboardActivity;
 
     public GroupViewHandler(SmartboardActivity smartboardActivity, ViewGroup parent, View view, Group group) {
@@ -61,7 +61,7 @@ public class GroupViewHandler {
         dragDropManager.setItemMoveMode(RecyclerViewDragDropManager.ITEM_MOVE_MODE_DEFAULT);
 
         //adapter
-        mEditThingAdapter = new EditThingAdapter(smartboardActivity, group, new DashboardFragment.OnListFragmentInteractionListener() {
+        mEditBlockAdapter = new EditBlockAdapter(smartboardActivity, group, new DashboardFragment.OnListFragmentInteractionListener() {
             @Override
             public void onListFragmentInteraction(Dashboard item) {
 
@@ -107,7 +107,7 @@ public class GroupViewHandler {
                             item.setVisibility(View.VISIBLE);
                             if(success) {
                                 int at = rv.getChildAdapterPosition(item);
-                                mEditThingAdapter.getThings().remove(at);
+                                mEditBlockAdapter.getBlocks().remove(at);
                                 mSmartboardActivity.DataChanged();
                             }
                         }
@@ -116,11 +116,11 @@ public class GroupViewHandler {
             }
         });
 
-        mEditThingAdapter.setThings(group.getThings());
+        mEditBlockAdapter.setBlocks(group.getBlocks());
         GeneralItemAnimator animator = new DraggableItemAnimator(); // DraggableItemAnimator is required to make item animations properly.
 
         recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setAdapter(dragDropManager.createWrappedAdapter(mEditThingAdapter));  // requires *wrapped* adapter
+        recyclerView.setAdapter(dragDropManager.createWrappedAdapter(mEditBlockAdapter));  // requires *wrapped* adapter
         recyclerView.setItemAnimator(animator);
 
         dragDropManager.attachRecyclerView(recyclerView);
@@ -139,7 +139,8 @@ public class GroupViewHandler {
         mSmartboardActivity.DataChanged();
     }
 
-    public EditThingAdapter getDashboardBlockAdapter() {
-        return mEditThingAdapter;
+    public EditBlockAdapter getDashboardBlockAdapter() {
+        return mEditBlockAdapter;
     }
 }
+

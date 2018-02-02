@@ -46,17 +46,18 @@ import java.io.InputStream;
 import java.util.UUID;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.switches.Switch;
-import shane.pennihome.local.smartboard.thingsframework.Things;
-import shane.pennihome.local.smartboard.thingsframework.adapters.ThingSelectionAdapter;
+import shane.pennihome.local.smartboard.thingsframework.adapters.BlockSelectionAdapter;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
-import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.ui.dialogs.ImportImageDialog;
+import shane.pennihome.local.smartboard.ui.listeners.OnBlockSelectListener;
 import shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener;
-import shane.pennihome.local.smartboard.ui.listeners.OnThingSelectListener;
 
 /**
  * Created by shane on 16/01/18.
@@ -70,16 +71,16 @@ public class UIHelper {
         importImageDialog.show(fragmentManager, "image_import");
     }
 
-    public static void showThingPropertyWindow(AppCompatActivity activity, Things things, IThing thing, OnThingSetListener onThingSetListener) {
-        showThingPropertyWindow(activity, things, thing, null, onThingSetListener);
+    public static void showBlockPropertyWindow(AppCompatActivity activity, IBlock block, OnBlockSetListener onBlockSetListener) {
+        showBlockPropertyWindow(activity, block, null, onBlockSetListener);
     }
 
-    public static void showThingsSelectionWindow(AppCompatActivity activity, final OnThingSelectListener onThingSelectListener) {
+    public static void showBlockSelectionWindow(AppCompatActivity activity, final OnBlockSelectListener onBlockSelectListener) {
         final DialogInterface[] dial = new DialogInterface[1];
-        ThingSelectionAdapter adapter = new ThingSelectionAdapter(new OnThingSelectListener() {
+        BlockSelectionAdapter adapter = new BlockSelectionAdapter(new OnBlockSelectListener() {
             @Override
-            public void ThingSelected(IThing thing) {
-                onThingSelectListener.ThingSelected(thing);
+            public void BlockSelected(IBlock block) {
+                onBlockSelectListener.BlockSelected(block);
                 dial[0].dismiss();
             }
         });
@@ -93,20 +94,20 @@ public class UIHelper {
                 });
     }
 
-    public static void showThingPropertyWindow(final AppCompatActivity activity, final Things things, final IThing thing,
-                                               final Group group, final OnThingSetListener onThingSetListener) {
-        if (thing == null)
+    public static void showBlockPropertyWindow(final AppCompatActivity activity, final IBlock block,
+                                               final Group group, final OnBlockSetListener onBlockSetListener) {
+        if (block == null)
             return;
 
-        showPropertyWindow(activity, "Add Block", thing.getUIHandler().getEditorViewResourceID(), new OnPropertyWindowListener() {
+        showPropertyWindow(activity, "Add Block", block.getUIHandler().getEditorViewResourceID(), new OnPropertyWindowListener() {
             @Override
             public void onWindowShown(View view) {
-                thing.getUIHandler().buildBlockPropertyView(activity, view, things, group);
+                block.getUIHandler().buildBlockPropertyView(activity, view, Monitor.getMonitor().getThings().getFilterViewForBlock(block), group);
             }
 
             @Override
             public void onOkSelected(View view) {
-                thing.getUIHandler().populateBlockFromView(view, onThingSetListener);
+                block.getUIHandler().populateBlockFromView(view, onBlockSetListener);
             }
         });
     }

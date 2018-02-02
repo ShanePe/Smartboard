@@ -22,15 +22,14 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemView
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
-import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Group;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
-import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.ui.GroupViewHandler;
 import shane.pennihome.local.smartboard.ui.UIHelper;
+import shane.pennihome.local.smartboard.ui.listeners.OnBlockSelectListener;
 import shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener;
-import shane.pennihome.local.smartboard.ui.listeners.OnThingSelectListener;
 
 /**
  * Created by shane on 20/01/18.
@@ -115,15 +114,14 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
         holder.mBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.showThingsSelectionWindow(mSmartboardActivity, new OnThingSelectListener() {
+                UIHelper.showBlockSelectionWindow(mSmartboardActivity, new OnBlockSelectListener() {
                     @Override
-                    public void ThingSelected(IThing thing) {
-                        createBlockInstance(thing, group);
-                        UIHelper.showThingPropertyWindow(mSmartboardActivity, thing.getFilteredView(Monitor.getMonitor().getThings()),
-                                thing, group, new OnThingSetListener() {
+                    public void BlockSelected(IBlock block) {
+                        createBlockInstance(block, group);
+                        UIHelper.showBlockPropertyWindow(mSmartboardActivity, block, group, new OnBlockSetListener() {
                                     @Override
-                                    public void OnSet(IThing thing) {
-                                        group.getThings().add(thing);
+                                    public void OnSet(IBlock block) {
+                                        group.getBlocks().add(block);
                                         group.getGroupViewHandler().NotifyChanged();
                                         if (!holder.mExpanded)
                                             holder.showBlocks(true);
@@ -161,10 +159,9 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
         holder.mContainer.setBackgroundResource(bgResId);
     }
 
-    private void createBlockInstance(IThing thing, Group group) {
+    private void createBlockInstance(IBlock block, Group group) {
         try {
-            thing.CreateBlock();
-            thing.setBlockDefaults(group);
+            block.setBlockDefaults(group);
         } catch (Exception ex) {
             Toast.makeText(mSmartboardActivity, "Error creating block instance", Toast.LENGTH_LONG).show();
         }
@@ -320,7 +317,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
 // --Commented out by Inspection STOP (25/01/2018 17:32)
 
         void showBlocks(boolean show) {
-            int itemCount = (mGroup == null ? mRVBlocks.getChildCount():mGroup.getThings().size());
+            int itemCount = (mGroup == null ? mRVBlocks.getChildCount() : mGroup.getBlocks().size());
             if (itemCount == 0 && show)
                 show = false;
 
@@ -344,7 +341,7 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
                 mChildCount.setVisibility(View.GONE);
             else
             {
-                int itemCount = (mGroup == null ? mRVBlocks.getChildCount():mGroup.getThings().size());
+                int itemCount = (mGroup == null ? mRVBlocks.getChildCount() : mGroup.getBlocks().size());
                 mChildCount.setText(String.format("| %s |",itemCount));
                 mChildCount.setVisibility(itemCount != 0 ? View.VISIBLE : View.GONE);
             }

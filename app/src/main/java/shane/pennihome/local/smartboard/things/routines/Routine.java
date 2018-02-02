@@ -1,11 +1,8 @@
 package shane.pennihome.local.smartboard.things.routines;
 
-import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
-import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandler;
 
 /**
  * Created by shane on 28/12/17.
@@ -22,36 +19,8 @@ public class Routine extends IThing {
     }
 
     @Override
-    public String getFriendlyName() {
-        return "Routines";
-    }
-
-    @Override
-    public Things getFilteredView(Things source) {
-        Things things = new Things();
-        things.addAll(source.getOfType(Routine.class));
-        things.sort();
-        return things;
-    }
-
-    @Override
-    public Class getBlockType() {
-        return RoutineBlock.class;
-    }
-
-    @Override
     public Types getThingType() {
         return Types.Routine;
-    }
-
-    @Override
-    public IThingUIHandler getUIHandler() {
-        return new RoutineThingHandler(this);
-    }
-
-    @Override
-    public int getDefaultIconResource() {
-        return R.drawable.icon_def_routine;
     }
 
     @Override

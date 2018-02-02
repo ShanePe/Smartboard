@@ -12,9 +12,9 @@ import android.widget.TextView;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.thingsframework.Things;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThingUIHandler;
-import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingSetListener;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.ui.ThingProperties;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 import shane.pennihome.local.smartboard.ui.ViewSwiper;
@@ -24,10 +24,10 @@ import shane.pennihome.local.smartboard.ui.ViewSwiper;
  */
 
 @SuppressWarnings("ALL")
-public class SwitchThingHandler extends IThingUIHandler {
+public class SwitchBlockHandler extends IBlockUIHandler {
 
-    public SwitchThingHandler(IThing iThing) {
-        super(iThing);
+    public SwitchBlockHandler(IBlock block) {
+        super(block);
     }
 
     @Override
@@ -41,20 +41,20 @@ public class SwitchThingHandler extends IThingUIHandler {
         ThingProperties tpProps = view.findViewById(R.id.sw_properties);
         SwitchPropertiesClrSelector tpBackground = view.findViewById(R.id.sw_background);
 
-        tpProps.initialise(things, getThing());
-        tpBackground.initialise(getThing(Switch.class));
+        tpProps.initialise(things, getBlock());
+        tpBackground.initialise(getBlock(SwitchBlock.class));
     }
 
     @Override
-    public void populateBlockFromView(View view, OnThingSetListener onThingSetListener) {
+    public void populateBlockFromView(View view, OnBlockSetListener onBlockSetListener) {
         ThingProperties tbProps = view.findViewById(R.id.sw_properties);
         SwitchPropertiesClrSelector tbBackground = view.findViewById(R.id.sw_background);
 
-        tbProps.populate(getThing(), null);
-        tbBackground.populate(getThing());
+        tbProps.populate(getBlock(), null);
+        tbBackground.populate(getBlock(SwitchBlock.class));
 
-        if (onThingSetListener != null)
-            onThingSetListener.OnSet(getThing());
+        if (onBlockSetListener != null)
+            onBlockSetListener.OnSet(getBlock());
     }
 
     @Override
@@ -65,15 +65,15 @@ public class SwitchThingHandler extends IThingUIHandler {
     public void BindViewHolder(BaseEditorViewHolder viewHolder, int backgroundResourceId) {
         EditorViewHolder holder = (EditorViewHolder) viewHolder;
 
-        holder.mBaName.setText(getThing().getName());
-        if (getThing() != null)
-            holder.mBaImg.setImageResource(getThing().getDefaultIconResource());
+        holder.mBaName.setText(getBlock().getName());
+        holder.mBaImg.setImageResource(getBlock().getDefaultIconResource());
 
-        holder.mBaDevice.setText(getThing().getName());
-        holder.mBaSize.setText(String.format("%s x %s", getThing().getBlock().getWidth(), getThing().getBlock().getHeight()));
+        if (getBlock().getThing() != null)
+            holder.mBaDevice.setText(getBlock().getThing().getName());
+        holder.mBaSize.setText(String.format("%s x %s", getBlock().getWidth(), getBlock().getHeight()));
 
-        @ColorInt final int bgClr = UIHelper.getThingColour(getThing(), getThing().getBlock().getBackgroundColourWithAlpha(), getThing().getBlock(SwitchBlock.class).getBackgroundColourWithAlphaOn());
-        @ColorInt int fgClr = UIHelper.getThingColour(getThing(), getThing().getBlock().getForegroundColour(), getThing().getBlock(SwitchBlock.class).getForegroundColourOn());
+        @ColorInt final int bgClr = UIHelper.getThingColour(getBlock().getThing(), getBlock().getBackgroundColourWithAlpha(), getBlock(SwitchBlock.class).getBackgroundColourWithAlphaOn());
+        @ColorInt int fgClr = UIHelper.getThingColour(getBlock().getThing(), getBlock().getForegroundColour(), getBlock(SwitchBlock.class).getForegroundColourOn());
 
         holder.mLayout.setBackgroundColor(bgClr);
         holder.mBaName.setTextColor(fgClr);
@@ -94,7 +94,7 @@ public class SwitchThingHandler extends IThingUIHandler {
         return R.layout.prop_block_switch;
     }
 
-    public class EditorViewHolder extends IThingUIHandler.BaseEditorViewHolder {
+    public class EditorViewHolder extends IBlockUIHandler.BaseEditorViewHolder {
         public final LinearLayout mLayout;
         public final TextView mBaName;
         public final ImageView mBaImg;

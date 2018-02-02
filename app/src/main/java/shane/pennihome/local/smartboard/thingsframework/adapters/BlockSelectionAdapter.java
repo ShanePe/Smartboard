@@ -9,22 +9,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.ui.listeners.OnThingSelectListener;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
-import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.Blocks;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
+import shane.pennihome.local.smartboard.ui.listeners.OnBlockSelectListener;
 
 /**
  * Created by shane on 17/01/18.
  */
 
 @SuppressWarnings("ALL")
-public class ThingSelectionAdapter extends RecyclerView.Adapter<ThingSelectionAdapter.ViewHolder> {
+public class BlockSelectionAdapter extends RecyclerView.Adapter<BlockSelectionAdapter.ViewHolder> {
 
-    private final Things mThings;
-    private final OnThingSelectListener mOnThingSelectListener;
-    public ThingSelectionAdapter(OnThingSelectListener onThingSelectListener) {
-        this.mThings = Things.getAvailableTypes();
-        this.mOnThingSelectListener = onThingSelectListener;
+    private final Blocks mBlocks;
+    private final OnBlockSelectListener mOnBlockSelectListener;
+
+    public BlockSelectionAdapter(OnBlockSelectListener onBlockSelectListener) {
+        this.mBlocks = Blocks.getAvailableTypes();
+        this.mOnBlockSelectListener = onBlockSelectListener;
     }
 
     @Override
@@ -36,22 +37,22 @@ public class ThingSelectionAdapter extends RecyclerView.Adapter<ThingSelectionAd
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final IThing t = mThings.get(position);
+        final IBlock t = mBlocks.get(position);
         holder.mText.setText(t.getFriendlyName());
         holder.mImg.setImageResource(t.getDefaultIconResource());
 
         holder.mContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mOnThingSelectListener != null)
-                    mOnThingSelectListener.ThingSelected(t);
+                if (mOnBlockSelectListener != null)
+                    mOnBlockSelectListener.BlockSelected(t);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mThings.size();
+        return mBlocks.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder

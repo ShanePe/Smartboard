@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import shane.pennihome.local.smartboard.services.interfaces.IService;
+import shane.pennihome.local.smartboard.thingsframework.Things;
 
 /**
  * Created by shane on 16/01/18.
@@ -12,10 +13,13 @@ import shane.pennihome.local.smartboard.services.interfaces.IService;
 
 @SuppressWarnings("ALL")
 public abstract class IThings<T extends IThing> extends ArrayList<T> {
-    public void remove(IService.ServicesTypes servicesTypes) {
+    public void remove(IService service) {
+        Things remove = new Things();
         for (T t : this)
-            if (t.getServiceType() == servicesTypes)
-                remove(t);
+            if (t.getServiceType() == service.getServiceType())
+                remove.add(t);
+
+        this.removeAll(remove);
     }
 
     public <T extends IThing> boolean containsType(Class<T> cls)

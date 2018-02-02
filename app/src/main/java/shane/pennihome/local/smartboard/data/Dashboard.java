@@ -40,6 +40,11 @@ public class Dashboard extends IDatabaseObject {
         return ret;
     }
 
+    public void loadThings() {
+        for (Group g : getGroups())
+            g.loadThings();
+    }
+
     public int getBackgroundImageTransparency() {
         return mBackgroundImageTrans;
     }

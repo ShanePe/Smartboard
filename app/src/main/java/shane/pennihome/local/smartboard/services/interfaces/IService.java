@@ -1,6 +1,7 @@
 package shane.pennihome.local.smartboard.services.interfaces;
 
 
+import android.content.Context;
 import android.support.v4.app.DialogFragment;
 
 import org.json.JSONArray;
@@ -14,6 +15,7 @@ import shane.pennihome.local.smartboard.comms.ExecutorResult;
 import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
+import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
@@ -65,6 +67,13 @@ public abstract class IService extends IDatabaseObject {
     public abstract <T extends IThing> ArrayList<IThingsGetter> getThingsGetter(Class<T> cls);
 
     protected abstract <V extends IThing> IThingsGetter getThingExecutor(Class<V> cls);
+
+    public void Unregister(Context context) {
+        DBEngine engine = new DBEngine(context);
+        engine.deleteFromDatabase(this);
+
+        Monitor.getMonitor().removeService(this);
+    }
 
     public ExecutorResult executeThing(IThing thing)
     {

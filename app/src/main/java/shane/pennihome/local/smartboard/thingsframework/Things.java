@@ -1,8 +1,7 @@
 package shane.pennihome.local.smartboard.thingsframework;
 
-import shane.pennihome.local.smartboard.comms.Monitor;
-import shane.pennihome.local.smartboard.things.routines.Routine;
-import shane.pennihome.local.smartboard.things.switches.Switch;
+import shane.pennihome.local.smartboard.services.interfaces.IService;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
@@ -12,14 +11,22 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 @SuppressWarnings("ALL")
 public class Things extends IThings<IThing> {
-    public static Things getAvailableTypes() {
+    public Things getFilterViewForBlock(IBlock block) {
+        Things ret = new Things();
+        for (IThing t : this)
+            if (t.getThingType() == block.getThingType())
+                ret.add(t);
+        ret.sort();
+        return ret;
+    }
 
-        Things things = new Things();
-        if (Monitor.getMonitor().getThings().containsType(Switch.class))
-            things.add(new Switch());
-        if (Monitor.getMonitor().getThings().containsType(Routine.class))
-            things.add(new Routine());
-        return things;
+    public Things getByService(IService service) {
+        Things ret = new Things();
+        for (IThing t : this)
+            if (t.getServiceType() == service.getServiceType())
+                ret.add(t);
+
+        return ret;
     }
 
     public <E extends IThing, F extends IThings<E>> F getOfType(Class<E> cls) {

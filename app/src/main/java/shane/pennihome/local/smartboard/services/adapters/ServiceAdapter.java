@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.services.ServiceManager;
 import shane.pennihome.local.smartboard.services.Services;
 import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
+import shane.pennihome.local.smartboard.ui.UIHelper;
 
 /**
  * Created by shane on 31/01/18.
@@ -46,11 +48,24 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
             @Override
             public void onClick(View view) {
                 ServiceManager serviceManager = new ServiceManager();
-                if (!holder.mService.isActive())
+                if (holder.mService.isActive())
+                    UIHelper.showConfirm(holder.mView.getContext(), "Confirm",
+                            String.format("Are you sure you want to unregister from the %s service?", holder.mService.getName()),
+                            new OnProcessCompleteListener() {
+                                @Override
+                                public void complete(boolean success, Object source) {
+                                    if (success) {
+                                        holder.mService.Unregister(holder.mView.getContext());
+                                        notifyItemChanged(holder.getAdapterPosition());
+                                    }
+                                }
+                            });
+                else {
                     serviceManager.registerService((AppCompatActivity) holder.mView.getContext(), SmartThingsService.class);
+                    notifyItemChanged(holder.getAdapterPosition());
+                }
             }
         });
-
     }
 
     @Override

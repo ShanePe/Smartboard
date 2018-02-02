@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.ui.BackgroundSelector;
 import shane.pennihome.local.smartboard.ui.ForegroundSelector;
 import shane.pennihome.local.smartboard.ui.ViewSwiper;
@@ -233,38 +232,38 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
         requestLayout();
     }
 
-    public void initialise(Switch thing) {
-        mBackgroundColourOff = thing.getBlock().getBackgroundColour();
-        mBackgroundColourTransparencyOff = thing.getBlock().getBackgroundColourTransparency();
-        mBackgroundImageOff = thing.getBlock().getBackgroundImage();
-        mBackgroundImageTransparencyOff = thing.getBlock().getBackgroundImageTransparency();
+    public void initialise(SwitchBlock block) {
+        mBackgroundColourOff = block.getBackgroundColour();
+        mBackgroundColourTransparencyOff = block.getBackgroundColourTransparency();
+        mBackgroundImageOff = block.getBackgroundImage();
+        mBackgroundImageTransparencyOff = block.getBackgroundImageTransparency();
 
-        mForegroundColourOff = thing.getBlock().getForegroundColour();
+        mForegroundColourOff = block.getForegroundColour();
 
-        mBackgroundColourOn = thing.getBlock(SwitchBlock.class).getBackgroundColourOn();
-        mBackgroundColourTransparencyOn = thing.getBlock(SwitchBlock.class).getBackgroundColourTransparencyOn();
-        mBackgroundImageOn = thing.getBlock(SwitchBlock.class).getBackgroundImageOn();
-        mBackgroundImageTransparencyOn = thing.getBlock(SwitchBlock.class).getBackgroundImageTransparencyOn();
+        mBackgroundColourOn = block.getBackgroundColourOn();
+        mBackgroundColourTransparencyOn = block.getBackgroundColourTransparencyOn();
+        mBackgroundImageOn = block.getBackgroundImageOn();
+        mBackgroundImageTransparencyOn = block.getBackgroundImageTransparencyOn();
 
-        mForegroundColourOn = thing.getBlock(SwitchBlock.class).getForegroundColourOn();
+        mForegroundColourOn = block.getForegroundColourOn();
 
         doPropertyChange();
     }
 
-    public void populate(IThing thing) {
-        thing.getBlock().setBackgroundColour(mBackgroundColourOff);
-        thing.getBlock().setBackgroundColourTransparency(mBackgroundColourTransparencyOff);
-        thing.getBlock().setBackgroundImage(mBackgroundImageOff);
-        thing.getBlock().setBackgroundImageTransparency(mBackgroundImageTransparencyOff);
+    public void populate(SwitchBlock block) {
+        block.setBackgroundColour(mBackgroundColourOff);
+        block.setBackgroundColourTransparency(mBackgroundColourTransparencyOff);
+        block.setBackgroundImage(mBackgroundImageOff);
+        block.setBackgroundImageTransparency(mBackgroundImageTransparencyOff);
 
-        thing.getBlock().setForegroundColour(mForegroundColourOff);
+        block.setForegroundColour(mForegroundColourOff);
 
-        thing.getBlock(SwitchBlock.class).setBackgroundColourOn(mBackgroundColourOn);
-        thing.getBlock(SwitchBlock.class).setBackgroundColourTransparencyOn(mBackgroundColourTransparencyOn);
-        thing.getBlock(SwitchBlock.class).setBackgroundImageOn(mBackgroundImageOn);
-        thing.getBlock(SwitchBlock.class).setBackgroundImageTransparencyOn(mBackgroundImageTransparencyOn);
+        block.setBackgroundColourOn(mBackgroundColourOn);
+        block.setBackgroundColourTransparencyOn(mBackgroundColourTransparencyOn);
+        block.setBackgroundImageOn(mBackgroundImageOn);
+        block.setBackgroundImageTransparencyOn(mBackgroundImageTransparencyOn);
 
-        thing.getBlock(SwitchBlock.class).setForegroundColourOn(mForegroundColourOn);
+        block.setForegroundColourOn(mForegroundColourOn);
 
     }
 }
