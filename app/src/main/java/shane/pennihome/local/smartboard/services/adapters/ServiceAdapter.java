@@ -47,7 +47,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         holder.btnService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ServiceManager serviceManager = new ServiceManager();
+                final ServiceManager serviceManager = new ServiceManager();
                 if (holder.mService.isActive())
                     UIHelper.showConfirm(holder.mView.getContext(), "Confirm",
                             String.format("Are you sure you want to unregister from the %s service?", holder.mService.getName()),
@@ -55,14 +55,24 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
                                 @Override
                                 public void complete(boolean success, Object source) {
                                     if (success) {
-                                        holder.mService.Unregister(holder.mView.getContext());
-                                        notifyItemChanged(holder.getAdapterPosition());
+                                        serviceManager.unRegisterService(holder.mView.getContext(), holder.mService, new OnProcessCompleteListener() {
+                                            @Override
+                                            public void complete(boolean success, Object source) {
+                                                if(success)
+                                                    notifyItemChanged(holder.getAdapterPosition());
+                                            }
+                                        });
                                     }
                                 }
                             });
                 else {
-                    serviceManager.registerService((AppCompatActivity) holder.mView.getContext(), SmartThingsService.class);
-                    notifyItemChanged(holder.getAdapterPosition());
+                    serviceManager.registerService((AppCompatActivity) holder.mView.getContext(), holder.mService, new OnProcessCompleteListener<IService>() {
+                        @Override
+                        public void complete(boolean success, IService source) {
+                            holder.mService = source;
+                            notifyItemChanged(holder.getAdapterPosition());
+                        }
+                    });
                 }
             }
         });

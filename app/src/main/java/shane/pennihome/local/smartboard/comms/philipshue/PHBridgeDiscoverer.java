@@ -14,7 +14,7 @@ import shane.pennihome.local.smartboard.comms.interfaces.ICommunicator;
 import shane.pennihome.local.smartboard.comms.interfaces.OnCommResponseListener;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Globals;
-import shane.pennihome.local.smartboard.data.HueBridge;
+import shane.pennihome.local.smartboard.services.PhillipsHue.HueBridge;
 
 /**
  * Created by shane on 30/12/17.

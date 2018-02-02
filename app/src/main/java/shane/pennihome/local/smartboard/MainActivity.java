@@ -20,13 +20,13 @@ import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Dashboards;
 import shane.pennihome.local.smartboard.data.Globals;
-import shane.pennihome.local.smartboard.data.HueBridge;
+import shane.pennihome.local.smartboard.services.PhillipsHue.HueBridge;
 import shane.pennihome.local.smartboard.data.TokenHueBridge;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.fragments.DashboardFragment;
 import shane.pennihome.local.smartboard.fragments.DeviceFragment;
-import shane.pennihome.local.smartboard.fragments.HueBridgeFragment;
+import shane.pennihome.local.smartboard.services.PhillipsHue.HueBridgeFragment;
 import shane.pennihome.local.smartboard.fragments.RoutineFragment;
 import shane.pennihome.local.smartboard.fragments.ServicesFragment;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity
 
     private void smartThingsConnect() {
         ServiceManager serviceManager = new ServiceManager();
-        serviceManager.registerService(this, SmartThingsService.class);
+        serviceManager.registerService(this, new SmartThingsService(), null);
     }
 
     @Override

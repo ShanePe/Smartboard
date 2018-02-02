@@ -11,7 +11,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 @SuppressWarnings("ALL")
 public class Things extends IThings<IThing> {
-    public Things getFilterViewForBlock(IBlock block) {
+    public Things getForBlock(IBlock block) {
         Things ret = new Things();
         for (IThing t : this)
             if (t.getThingType() == block.getThingType())
@@ -20,7 +20,7 @@ public class Things extends IThings<IThing> {
         return ret;
     }
 
-    public Things getByService(IService service) {
+    public Things getForService(IService service) {
         Things ret = new Things();
         for (IThing t : this)
             if (t.getServiceType() == service.getServiceType())

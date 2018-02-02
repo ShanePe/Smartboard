@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,26 +14,14 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.comms.Monitor;
-import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.data.sql.DBEngine;
+import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
 
 /**
  * Created by shane on 29/01/18.
  */
 
 @SuppressWarnings("DefaultFileTemplate")
-public class RegisterDialog extends DialogFragment {
-    private SmartThingsService mSmartThingsService;
-
-    public SmartThingsService getService() {
-        return mSmartThingsService;
-    }
-
-    public void setService(SmartThingsService smartThingsService) {
-        mSmartThingsService = smartThingsService;
-    }
-
+public class SmartThingsFragment extends IRegisterServiceFragment {
     @SuppressLint("SetJavaScriptEnabled")
     @Nullable
     @Override
@@ -52,9 +39,6 @@ public class RegisterDialog extends DialogFragment {
                 "&response_type=code&client_id=" + SmartThingsService.ST_CLIENT_ID +
                 "&scope=" + SmartThingsService.ST_OAUTH_SCOPE);
 
-        Bundle args = getArguments();
-        assert args != null;
-//        getDialog().setTitle(args.getString("title"));
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         web.setWebViewClient(new WebViewClient() {
             boolean authComplete = false;
@@ -63,20 +47,16 @@ public class RegisterDialog extends DialogFragment {
             public void onPageFinished(WebView view, String url) {
                 try {
                     super.onPageFinished(view, url);
+
                     if (url.contains("?code=") && !authComplete) {
                         Uri uri = Uri.parse(url);
 
-                        mSmartThingsService.setAuthorisationCode(uri.getQueryParameter("code"));
-                        mSmartThingsService.register();
+                        getService(SmartThingsService.class).setAuthorisationCode(uri.getQueryParameter("code"));
                         authComplete = true;
+                        dismiss();
+                        if (getOnProcessCompleteListener() != null)
+                            getOnProcessCompleteListener().complete(true, getService());
 
-                        new DBEngine(getActivity()).writeToDatabase(mSmartThingsService);
-                        Monitor.getMonitor().AddService(getContext(), mSmartThingsService, new OnProcessCompleteListener() {
-                            @Override
-                            public void complete(boolean success, Object source) {
-                                getDialog().dismiss();
-                            }
-                        });
                     } else if (url.contains("error=access_denied"))
                         throw new Exception("Access denied");
                 } catch (Exception ex) {

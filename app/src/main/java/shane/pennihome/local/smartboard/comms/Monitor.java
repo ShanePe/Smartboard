@@ -146,12 +146,12 @@ public class Monitor {
     }
 
     public void removeService(IService service) {
-        getServices().remove(service.getServiceType());
-        for (IThing t : getThings().getByService(service))
+        for (IThing t : getThings().getForService(service))
             t.setUnreachable(true);
+        getServices().remove(service);
     }
 
-    public void AddService(final Context context, IService service, final OnProcessCompleteListener onProcessCompleteListener) {
+    public void AddService(final Context context, IService service) {
         getServices().remove(service.getServiceType());
         getThings().remove(service);
 
@@ -164,8 +164,6 @@ public class Monitor {
                 getMonitor().getThings().addAll(source.getResult());
                 for (String e : source.getErrors().keySet())
                     Toast.makeText(context, String.format("Error getting things : %s", e), Toast.LENGTH_LONG);
-                if (onProcessCompleteListener != null)
-                    onProcessCompleteListener.complete(true, null);
             }
         });
     }

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import shane.pennihome.local.smartboard.comms.ExecutorResult;
 import shane.pennihome.local.smartboard.comms.Monitor;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
@@ -20,6 +21,7 @@ import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
+import shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener;
 
 /**
  * Created by shane on 29/01/18.
@@ -43,12 +45,12 @@ public abstract class IService extends IDatabaseObject {
         return Monitor.getMonitor().getServices().hasService(this);
     }
 
-    public abstract DialogFragment getRegisterDialog();
+    public abstract IRegisterServiceFragment getRegisterDialog();
 
     @SuppressWarnings("SameReturnValue")
     public abstract int getDrawableIconResource();
 
-    protected abstract void register() throws Exception;
+    public abstract void register(Context context) throws Exception;
 
     protected abstract boolean isRegistered();
 
@@ -59,7 +61,13 @@ public abstract class IService extends IDatabaseObject {
 
     public abstract ArrayList<IThingsGetter> getThingGetters();
 
-    public abstract Things getThings() throws Exception;
+    public Things getThings() throws Exception
+    {
+        Things things = new Things();
+        for (IThingsGetter g : getThingGetters())
+            things.addAll(g.getThings());
+        return things;
+    }
 
     @SuppressWarnings("SameReturnValue")
     public abstract ServicesTypes getServiceType();
@@ -68,11 +76,7 @@ public abstract class IService extends IDatabaseObject {
 
     protected abstract <V extends IThing> IThingsGetter getThingExecutor(Class<V> cls);
 
-    public void Unregister(Context context) {
-        DBEngine engine = new DBEngine(context);
-        engine.deleteFromDatabase(this);
-
-        Monitor.getMonitor().removeService(this);
+    public void unregister() {
     }
 
     public ExecutorResult executeThing(IThing thing)
@@ -87,7 +91,6 @@ public abstract class IService extends IDatabaseObject {
             return executor.execute(thing);
         return null;
     }
-
 
     public boolean isValid() {
         return isRegistered() && !isAwaitingAction();

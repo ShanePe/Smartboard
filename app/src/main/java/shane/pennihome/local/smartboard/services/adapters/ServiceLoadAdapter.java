@@ -49,6 +49,7 @@ public class ServiceLoadAdapter extends RecyclerView.Adapter<ServiceLoadAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mGetter = mGetters.get(position);
         holder.mDesc.setText(holder.mGetter.getLoadMessage());
+        holder.mGetter.setDescriptionTextView(holder.mDesc);
     }
 
     @Override

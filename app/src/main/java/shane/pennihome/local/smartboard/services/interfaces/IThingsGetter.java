@@ -1,5 +1,7 @@
 package shane.pennihome.local.smartboard.services.interfaces;
 
+import android.widget.TextView;
+
 import java.lang.reflect.Type;
 
 import shane.pennihome.local.smartboard.comms.ExecutorResult;
@@ -15,7 +17,7 @@ public interface IThingsGetter {
     String getLoadMessage();
     Things getThings() throws Exception;
     int getUniqueId();
-
+    void setDescriptionTextView(TextView txtDescription);
     Type getThingType();
     ExecutorResult execute(IThing thing);
 }

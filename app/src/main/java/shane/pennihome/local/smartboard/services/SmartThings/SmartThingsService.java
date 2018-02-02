@@ -1,7 +1,8 @@
 package shane.pennihome.local.smartboard.services.SmartThings;
 
-import android.support.v4.app.DialogFragment;
+import android.content.Context;
 import android.text.TextUtils;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,6 +21,7 @@ import shane.pennihome.local.smartboard.comms.ExecutorRequest;
 import shane.pennihome.local.smartboard.comms.ExecutorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.OnExecutorRequestActionListener;
 import shane.pennihome.local.smartboard.data.NameValuePair;
+import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
 import shane.pennihome.local.smartboard.things.routines.Routine;
@@ -57,23 +59,13 @@ public class SmartThingsService extends IService {
     }
 
     @Override
-    public Things getThings() throws Exception {
-        Things things = new Things();
-        for (IThingsGetter g : getThingGetters())
-            things.addAll(g.getThings());
-        return things;
-    }
-
-    @Override
     public ServicesTypes getServiceType() {
         return ServicesTypes.SmartThings;
     }
 
     @Override
-    public DialogFragment getRegisterDialog() {
-        RegisterDialog registerDialog = new RegisterDialog();
-        registerDialog.setService(this);
-        return registerDialog;
+    public IRegisterServiceFragment getRegisterDialog() {
+        return new SmartThingsFragment();
     }
 
     @Override
@@ -82,7 +74,7 @@ public class SmartThingsService extends IService {
     }
 
     @Override
-    protected void register() throws Exception {
+    public void register(Context context) throws Exception {
         ExecutorRequest request = new ExecutorRequest(new URL(ST_TOKEN_URL), ExecutorRequest.Types.POST);
         request.getQueryStringParameters().add(new NameValuePair("code", getAuthorisationCode()));
         request.getQueryStringParameters().add(new NameValuePair("client_id", ST_CLIENT_ID));
@@ -122,21 +114,8 @@ public class SmartThingsService extends IService {
 
     @Override
     public void connect() throws Exception {
-        @SuppressWarnings("unused") ExecutorResult result = Executor.fulfil(
-                new ExecutorRequest(new URL(ST_ENDPOINT_URL),
-                        ExecutorRequest.Types.GET,
-                        new OnExecutorRequestActionListener() {
-                            @Override
-                            public void OnPreExecute(HttpURLConnection connection) {
-                                connection.setRequestProperty("Authorization", "Bearer " + mToken);
-                            }
-                        }));
-
-        if (!result.isSuccess())
-            throw result.getError();
-
-        JSONObject jsUrl = buildJsonResponse(result.getResult());
-        mRequestUrl = jsUrl.getString("uri");
+       Connector connector = new Connector();
+       connector.getThings();
     }
 
     @Override
@@ -212,6 +191,11 @@ public class SmartThingsService extends IService {
         }
 
         @Override
+        public void setDescriptionTextView(TextView txtDescription) {
+
+        }
+
+        @Override
         public Type getThingType() {
             return IThing.class;
         }
@@ -263,6 +247,11 @@ public class SmartThingsService extends IService {
         @Override
         public int getUniqueId() {
             return 2;
+        }
+
+        @Override
+        public void setDescriptionTextView(TextView txtDescription) {
+
         }
 
         @Override
@@ -326,6 +315,11 @@ public class SmartThingsService extends IService {
         @Override
         public int getUniqueId() {
             return 3;
+        }
+
+        @Override
+        public void setDescriptionTextView(TextView txtDescription) {
+
         }
 
         @Override

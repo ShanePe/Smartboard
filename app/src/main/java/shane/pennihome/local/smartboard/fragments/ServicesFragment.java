@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.services.adapters.ServiceAdapter;
 
@@ -34,5 +36,17 @@ public class ServicesFragment extends Fragment {
             recyclerView.setAdapter(new ServiceAdapter());
         }
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null) {
+            ActionBar actionBar = activity.getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.show();
+            }
+        }
+        super.onResume();
     }
 }

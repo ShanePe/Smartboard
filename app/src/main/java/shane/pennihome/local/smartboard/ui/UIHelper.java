@@ -102,7 +102,7 @@ public class UIHelper {
         showPropertyWindow(activity, "Add Block", block.getUIHandler().getEditorViewResourceID(), new OnPropertyWindowListener() {
             @Override
             public void onWindowShown(View view) {
-                block.getUIHandler().buildBlockPropertyView(activity, view, Monitor.getMonitor().getThings().getFilterViewForBlock(block), group);
+                block.getUIHandler().buildBlockPropertyView(activity, view, Monitor.getMonitor().getThings().getForBlock(block), group);
             }
 
             @Override

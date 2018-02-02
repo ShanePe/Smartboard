@@ -1,4 +1,6 @@
-package shane.pennihome.local.smartboard.data;
+package shane.pennihome.local.smartboard.services.PhillipsHue;
+
+import shane.pennihome.local.smartboard.data.TokenHueBridge;
 
 /**
  * Created by shane on 31/12/17.
@@ -10,12 +12,12 @@ public class HueBridge {
     private String mId;
     private String mToken;
 
-    public static HueBridge FromTokenInfo(TokenHueBridge token) {
-        HueBridge b = new HueBridge();
-        b.setId(token.getId());
-        b.setIp(token.getAddress());
-        b.setToken(token.getToken());
-        return b;
+    public HueBridge() {
+    }
+
+    public HueBridge(String id, String ip) {
+        this.mIp = ip;
+        this.mId = id;
     }
 
     public String getIp() {

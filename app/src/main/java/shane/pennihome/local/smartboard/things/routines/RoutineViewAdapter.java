@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
@@ -47,10 +48,13 @@ public class RoutineViewAdapter extends ThingViewAdapter {
             vh.mSourceView.setText(R.string.device_ph_label);
         }
 
+        vh.mButtonView.setEnabled(!vh.mItem.isUnreachable());
+
         vh.mButtonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // r.Toggle();
+               vh.mItem.execute();
+                Toast.makeText(vh.mImgView.getContext(), "Execute routine : " + vh.mItem.getName(), Toast.LENGTH_SHORT ).show();
             }
         });
     }

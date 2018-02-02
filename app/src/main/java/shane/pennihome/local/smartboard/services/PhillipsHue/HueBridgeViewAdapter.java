@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.adapters;
+package shane.pennihome.local.smartboard.services.PhillipsHue;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,11 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.data.HueBridge;
-import shane.pennihome.local.smartboard.fragments.HueBridgeFragment.OnListFragmentInteractionListener;
+import shane.pennihome.local.smartboard.services.PhillipsHue.HueBridgeFragment.OnListFragmentInteractionListener;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link shane.pennihome.local.smartboard.data.HueBridge} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link HueBridge} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */

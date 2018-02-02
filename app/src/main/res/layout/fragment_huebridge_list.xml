@@ -9,5 +9,5 @@
     android:layout_height="match_parent"
     android:background="@drawable/default_background"
     app:layoutManager="LinearLayoutManager"
-    tools:context="shane.pennihome.local.smartboard.fragments.HueBridgeFragment"
+    tools:context="shane.pennihome.local.smartboard.services.PhillipsHue.HueBridgeFragment"
     tools:listitem="@layout/fragment_huebridge" />

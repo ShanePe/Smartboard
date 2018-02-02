@@ -8,10 +8,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import shane.pennihome.local.smartboard.comms.Monitor;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
+import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
+import shane.pennihome.local.smartboard.services.PhillipsHue.PhillipsHueService;
 import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
+import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
+import shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener;
 
 /**
  * Created by shane on 29/01/18.
@@ -33,25 +39,49 @@ public class ServiceManager {
     public static Services getServices() {
         Services services = new Services();
         services.add(new SmartThingsService());
+        services.add(new PhillipsHueService());
         return services;
     }
 
-    public <T extends IService> void registerService(AppCompatActivity activity, Class<T> cls) {
+    public void registerService(final AppCompatActivity activity, final IService service, final OnProcessCompleteListener<IService> onProcessCompleteListener) {
         try {
-            T instance = cls.newInstance();
-            DialogFragment dialogFragment = instance.getRegisterDialog();
-            Bundle args = new Bundle();
-            args.putString("title", "Register SmartThingsService");
-            dialogFragment.setArguments(args);
-
-            @SuppressWarnings("unused") FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            IRegisterServiceFragment dialogFragment = service.getRegisterDialog();
+            dialogFragment.setService(service);
+            dialogFragment.setOnProcessCompleteListener(new OnProcessCompleteListener<IService>() {
+                @Override
+                public void complete(boolean success, IService source) {
+                    if(success)
+                    {
+                        try {
+                            service.register(activity);
+                            new DBEngine(activity).writeToDatabase(source);
+                            Monitor.getMonitor().AddService(activity, source);
+                        } catch (Exception e) {
+                            Toast.makeText(activity,"Could not register service : " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    if(onProcessCompleteListener != null)
+                        onProcessCompleteListener.complete(success, source);
+                }
+            });
             dialogFragment.show(activity.getSupportFragmentManager(), "Service_Register");
         } catch (Exception ex) {
             Toast.makeText(activity, "Error : " + ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
-//    public ServiceLoader getServiceLoader() {
-//        return new ServiceLoader();
-//    }
+    public void unRegisterService(Context context, IService service, OnProcessCompleteListener onProcessCompleteListener)
+    {
+        service.unregister();
+
+        IService storedService = Monitor.getMonitor().getServices().getByType(service.getServiceType());
+        if(storedService!=null) {
+            DBEngine engine = new DBEngine(context);
+            engine.deleteFromDatabase(storedService);
+
+            Monitor.getMonitor().removeService(storedService);
+        }
+        if(onProcessCompleteListener!=null)
+            onProcessCompleteListener.complete(true, null);
+    }
 }
