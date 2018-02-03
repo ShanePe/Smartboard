@@ -20,8 +20,6 @@ import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Dashboards;
 import shane.pennihome.local.smartboard.data.Globals;
-import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridge;
-import shane.pennihome.local.smartboard.data.TokenHueBridge;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.fragments.DashboardFragment;
@@ -35,8 +33,7 @@ import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 
 @SuppressWarnings("unused")
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        HueBridgeFragment.OnListFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     private Dashboards mDashboards;
 
@@ -225,23 +222,6 @@ public class MainActivity extends AppCompatActivity
             return new Dashboards();
 
         return mDashboards;
-    }
-
-    @Override
-    public void onListFragmentInteraction(HueBridge item) {
-        TokenHueBridge philipHueHub = TokenHueBridge.Load();
-        philipHueHub.setAddress(item.getIp());
-        philipHueHub.setId(item.getId());
-        philipHueHub.setToken("");
-        philipHueHub.Save();
-
-        backToMainActivity();
-//        mMonitor.getHueBridgeThings(new OnProcessCompleteListener<PHBridgeController>() {
-//            @Override
-//            public void complete(boolean success, PHBridgeController source) {
-//
-//            }
-//        });
     }
 
     @Override
