@@ -1,6 +1,8 @@
 package shane.pennihome.local.smartboard.services.SmartThings;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -40,29 +45,54 @@ public class SmartThingsFragment extends IRegisterServiceFragment {
                 "&scope=" + SmartThingsService.ST_OAUTH_SCOPE);
 
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        final ProgressDialog dialog = new ProgressDialog(getContext());
+        dialog.setMessage("Loading ...");
         web.setWebViewClient(new WebViewClient() {
             boolean authComplete = false;
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                dialog.show();
+                view.setVisibility(View.GONE);
+                super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+                Toast.makeText(view.getContext(), "Could not connect to SmartThings", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+                super.onReceivedHttpError(view, request, errorResponse);
+//                dialog.dismiss();
+                Toast.makeText(view.getContext(), "Could not connect to SmartThings : " + errorResponse.getReasonPhrase(), Toast.LENGTH_LONG).show();
+                //if (getOnProcessCompleteListener() != null)
+                //    getOnProcessCompleteListener().complete(false, getService());
+            }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 try {
                     super.onPageFinished(view, url);
-
+                    dialog.dismiss();
+                    view.setVisibility(View.VISIBLE);
                     if (url.contains("?code=") && !authComplete) {
                         Uri uri = Uri.parse(url);
 
                         getService(SmartThingsService.class).setAuthorisationCode(uri.getQueryParameter("code"));
                         authComplete = true;
-                        dismiss();
                         if (getOnProcessCompleteListener() != null)
                             getOnProcessCompleteListener().complete(true, getService());
 
                     } else if (url.contains("error=access_denied"))
                         throw new Exception("Access denied");
                 } catch (Exception ex) {
-                    authComplete = true;
                     Toast.makeText(getActivity(), "Error : " + ex.getMessage(), Toast.LENGTH_SHORT).show();
-                    getDialog().dismiss();
+                    authComplete = true;
+                    if (getOnProcessCompleteListener() != null)
+                        getOnProcessCompleteListener().complete(false, getService());
                 }
             }
         });

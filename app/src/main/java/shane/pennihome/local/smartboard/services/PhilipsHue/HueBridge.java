@@ -1,6 +1,4 @@
-package shane.pennihome.local.smartboard.services.PhillipsHue;
-
-import shane.pennihome.local.smartboard.data.TokenHueBridge;
+package shane.pennihome.local.smartboard.services.PhilipsHue;
 
 /**
  * Created by shane on 31/12/17.

@@ -51,17 +51,18 @@ public class Monitor {
     }
 
     public static Monitor Create(final AppCompatActivity activity) {
+        getMonitor().setServices(ServiceManager.getActiveServices(activity));
 
-            getMonitor().setServices(ServiceManager.getActiveServices(activity));
-
-            getMonitor().getThingsFromService(activity, new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
-                @Override
-                public void complete(boolean success, ServiceLoader.ServiceLoaderResult source) {
+        getMonitor().getThingsFromService(activity, new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
+            @Override
+            public void complete(boolean success, final ServiceLoader.ServiceLoaderResult source) {
+                if (success)
                     getMonitor().setThings(source.getResult());
+                else
                     for (String e : source.getErrors().keySet())
-                        Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG);
-                }
-            });
+                        Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG).show();
+            }
+        });
         return getMonitor();
     }
 
@@ -196,7 +197,6 @@ public class Monitor {
         if (currentThings.size() != 0)
             getThings().addAll(currentThings);
     }
-
 
 
     private void stop() {

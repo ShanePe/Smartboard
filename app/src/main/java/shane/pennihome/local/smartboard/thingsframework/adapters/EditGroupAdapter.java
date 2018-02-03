@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.adapters;
+package shane.pennihome.local.smartboard.thingsframework.adapters;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
@@ -202,53 +202,10 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
 
     }
 
-// --Commented out by Inspection START (25/01/2018 17:32):
-//    private ViewHolder getViewHolderAtPosition(int position) {
-//        if (mRecycleView == null)
-//            return null;
-//
-//        View view = mRecycleView.getLayoutManager().findViewByPosition(position);
-//        if (view == null)
-//            return null;
-//
-//        RecyclerView.ViewHolder holder = mRecycleView.getChildViewHolder(view);
-//        if (holder == null)
-//            return null;
-//
-//        return (ViewHolder) holder;
-//
-//    }
-// --Commented out by Inspection STOP (25/01/2018 17:32)
-
     @Override
     public void onItemDragFinished(int fromPosition, int toPosition, boolean result) {
         this.notifyDataSetChanged();
     }
-
-// --Commented out by Inspection START (26/01/18 14:33):
-//    private void scaleView(final View view, boolean expanded) {
-//        if (expanded) {
-//            view.setVisibility(View.VISIBLE);
-//            view.setAlpha(0.0f);
-//            //view.setTranslationY(0.0f);
-//
-//            view.animate()
-//                    .alpha(1.0f)
-//                    .setListener(null);
-//        } else {
-//            view.animate()
-//                    .alpha(0.0f)
-//                    .setListener(new AnimatorListenerAdapter() {
-//                        @Override
-//                        public void onAnimationEnd(Animator animation) {
-//                            super.onAnimationEnd(animation);
-//                            view.setVisibility(View.GONE);
-//                        }
-//                    });
-//        }
-//
-//    }
-// --Commented out by Inspection STOP (26/01/18 14:33)
 
     private void rotateView(final View view, final boolean expanded) {
         RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -309,12 +266,6 @@ public class EditGroupAdapter extends RecyclerView.Adapter<EditGroupAdapter.View
 
             showBlocksAction(false);
         }
-
-// --Commented out by Inspection START (25/01/2018 17:32):
-//        void Toggle() {
-//            showBlocks(!mExpanded);
-//        }
-// --Commented out by Inspection STOP (25/01/2018 17:32)
 
         void showBlocks(boolean show) {
             int itemCount = (mGroup == null ? mRVBlocks.getChildCount() : mGroup.getBlocks().size());

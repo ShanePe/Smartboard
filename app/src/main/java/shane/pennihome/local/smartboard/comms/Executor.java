@@ -25,6 +25,7 @@ import shane.pennihome.local.smartboard.data.NameValuePair;
 
 @SuppressWarnings("DefaultFileTemplate")
 public class Executor extends AsyncTask<ExecutorRequest, Integer, ExecutorResult> {
+
     private static boolean isOnUIThread()
     {
         return Thread.currentThread() == Looper.getMainLooper().getThread();
@@ -93,7 +94,7 @@ public class Executor extends AsyncTask<ExecutorRequest, Integer, ExecutorResult
             os.close();
         }
 
-        int resCode = connection.getResponseCode();
+        int resCode = getResponse(connection);
         if (resCode != HttpsURLConnection.HTTP_NO_CONTENT && resCode != HttpsURLConnection.HTTP_OK)
             throw new IOException("Message not sent.");
     }
@@ -122,7 +123,7 @@ public class Executor extends AsyncTask<ExecutorRequest, Integer, ExecutorResult
 
         os.close();
 
-        if (connection.getResponseCode() != HttpsURLConnection.HTTP_OK)
+        if (getResponse(connection) != HttpsURLConnection.HTTP_OK)
             throw new IOException("Could not connect.");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "iso-8859-1"), 8);
@@ -142,7 +143,7 @@ public class Executor extends AsyncTask<ExecutorRequest, Integer, ExecutorResult
         if (request.getOnExecutorRequestActionListener() != null)
             request.getOnExecutorRequestActionListener().OnPreExecute(connection);
 
-        int resCode = connection.getResponseCode();
+        int resCode = getResponse(connection);
         if (resCode != HttpsURLConnection.HTTP_OK)
             throw new IOException("Could not connect.");
 
@@ -154,6 +155,31 @@ public class Executor extends AsyncTask<ExecutorRequest, Integer, ExecutorResult
         }
 
         return sb.toString();
+    }
+
+    private int getResponse(HttpURLConnection connection) throws IOException {
+        int tries = 0;
+        int mAttempts = 3;
+        while(tries < mAttempts)
+        {
+            try {
+                return connection.getResponseCode();
+            } catch (IOException e) {
+                if(tries>= mAttempts)
+                    throw e;
+                else
+                {
+                    try {
+                        int mPause = 1000;
+                        Thread.sleep(mPause);
+                        tries++;
+                    } catch (InterruptedException Ignored) {
+                        throw new IOException("Connection aborted");
+                    }
+                }
+            }
+        }
+        throw new IOException("Could not connect");
     }
 
     private String buildQueryString(List<NameValuePair> params) throws UnsupportedEncodingException {

@@ -4,12 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/hue_device_list"
     android:name="shane.pennihome.local.smartboard.Fragments.DeviceFragment"
-    style="@style/listStyle"
+    style="@style/repeaterListStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/default_background"
     app:layoutManager="LinearLayoutManager"
     tools:context="shane.pennihome.local.smartboard.fragments.DeviceFragment"
-    tools:listitem="@layout/fragment_device">
-
-</android.support.v7.widget.RecyclerView>
+    tools:listitem="@layout/fragment_device" />

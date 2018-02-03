@@ -2,7 +2,6 @@ package shane.pennihome.local.smartboard.services.interfaces;
 
 
 import android.content.Context;
-import android.support.v4.app.DialogFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,7 +20,6 @@ import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
-import shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener;
 
 /**
  * Created by shane on 29/01/18.
@@ -41,6 +39,22 @@ public abstract class IService extends IDatabaseObject {
         return JsonBuilder.get().fromJson(json, cls);
     }
 
+    private <V extends IThing> IThingsGetter getThingExecutor(Class<V> cls) {
+        for (IThingsGetter t : getThingGetters())
+            if (t.getThingType().equals(cls) || t.getThingType().equals(IThing.class))
+                return t;
+
+        return null;
+    }
+
+    public <T extends IThing> ArrayList<IThingsGetter> getThingsGetter(Class<T> cls) {
+        ArrayList<IThingsGetter> thingGetters = new ArrayList<>();
+        for (IThingsGetter t : getThingGetters())
+            if (t.getThingType().equals(cls) || t.getThingType().equals(IThing.class))
+                thingGetters.add(t);
+        return thingGetters;
+    }
+
     public boolean isActive() {
         return Monitor.getMonitor().getServices().hasService(this);
     }
@@ -50,7 +64,13 @@ public abstract class IService extends IDatabaseObject {
     @SuppressWarnings("SameReturnValue")
     public abstract int getDrawableIconResource();
 
-    public abstract void register(Context context) throws Exception;
+    public void register(Context context, OnProcessCompleteListener<IService> onProcessCompleteListener)
+    {
+        new DBEngine(context).writeToDatabase(this);
+        Monitor.getMonitor().AddService(context, this);
+        if(onProcessCompleteListener!=null)
+            onProcessCompleteListener.complete(true, this);
+    }
 
     protected abstract boolean isRegistered();
 
@@ -69,14 +89,21 @@ public abstract class IService extends IDatabaseObject {
         return things;
     }
 
+
+
     @SuppressWarnings("SameReturnValue")
     public abstract ServicesTypes getServiceType();
 
-    public abstract <T extends IThing> ArrayList<IThingsGetter> getThingsGetter(Class<T> cls);
+    public void unregister(Context context, OnProcessCompleteListener<Void> onProcessCompleteListener) {
+        IService storedService = Monitor.getMonitor().getServices().getByType(this.getServiceType());
+        if (storedService != null) {
+            DBEngine engine = new DBEngine(context);
+            engine.deleteFromDatabase(storedService);
 
-    protected abstract <V extends IThing> IThingsGetter getThingExecutor(Class<V> cls);
-
-    public void unregister() {
+            Monitor.getMonitor().removeService(storedService);
+        }
+        if (onProcessCompleteListener != null)
+            onProcessCompleteListener.complete(true, null);
     }
 
     public ExecutorResult executeThing(IThing thing)

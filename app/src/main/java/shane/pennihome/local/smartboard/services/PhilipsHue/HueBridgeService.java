@@ -1,0 +1,502 @@
+package shane.pennihome.local.smartboard.services.PhilipsHue;
+
+import android.content.Context;
+import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Type;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.comms.Executor;
+import shane.pennihome.local.smartboard.comms.ExecutorRequest;
+import shane.pennihome.local.smartboard.comms.ExecutorResult;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
+import shane.pennihome.local.smartboard.data.Globals;
+import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
+import shane.pennihome.local.smartboard.services.interfaces.IService;
+import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
+import shane.pennihome.local.smartboard.things.routines.Routine;
+import shane.pennihome.local.smartboard.things.switches.Switch;
+import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
+
+/**
+ * Created by SPennicott on 02/02/2018.
+ */
+
+@SuppressWarnings("DefaultFileTemplate")
+public class HueBridgeService extends IService {
+    private final static String PH_DISCOVER_URL = "https://www.meethue.com/api/nupnp";
+    private String mAddress;
+    private String mToken;
+
+    private String getAddress() {
+        return mAddress;
+    }
+
+    void setAddress(String address) {
+        if(mAddress == null)
+            mAddress = "";
+        this.mAddress = address;
+    }
+
+    private String getToken() {
+        if(mToken == null)
+            mToken = "";
+        return mToken;
+    }
+
+    @Override
+    public String getName() {
+        return "Philips Hue";
+    }
+
+    private void setToken(String token) {
+        this.mToken = token;
+    }
+
+    @Override
+    public IRegisterServiceFragment getRegisterDialog() {
+        return new HueBridgeFragment();
+    }
+
+    @Override
+    public int getDrawableIconResource() {
+        return R.drawable.icon_phlogo_large;
+    }
+
+    @Override
+    public void register(final Context context, final OnProcessCompleteListener<IService> onProcessCompleteListener){
+        RegisterHandler handler = new RegisterHandler(context, new Connector(), new OnProcessCompleteListener<Exception>() {
+            @Override
+            public void complete(boolean success, Exception source) {
+                if(success)
+                    HueBridgeService.super.register(context, onProcessCompleteListener);
+                else
+                    Toast.makeText(context, "Error : " + source.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        handler.execute();
+
+    }
+
+    public static HueBridgeService Load(String json) {
+        try {
+            return IService.fromJson(HueBridgeService.class, json);
+        } catch (Exception e) {
+            return new HueBridgeService();
+        }
+    }
+
+    @Override
+    protected boolean isRegistered() {
+        return !TextUtils.isEmpty(getAddress()) && !TextUtils.isEmpty(getToken());
+    }
+
+    @Override
+    public boolean isAwaitingAction() {
+        return !TextUtils.isEmpty(getAddress()) && TextUtils.isEmpty(getToken());
+    }
+
+    @Override
+    public void connect() throws Exception {
+        Connector connector = new Connector();
+        connector.getThings();
+    }
+
+    @Override
+    public ArrayList<IThingsGetter> getThingGetters() {
+        ArrayList<IThingsGetter> thingsGetters = new ArrayList<>();
+        if(isAwaitingAction() || !isRegistered())
+            thingsGetters.add(new Connector());
+        thingsGetters.add(new SwitchGetter());
+        thingsGetters.add(new RoutineGetter());
+        return thingsGetters;
+    }
+
+    @Override
+    public ServicesTypes getServiceType() {
+        return ServicesTypes.PhilipsHue;
+    }
+
+    @Override
+    public Types getDatabaseType() {
+        return Types.Service;
+    }
+
+    ArrayList<HueBridge> discover() throws Exception
+    {
+            ArrayList<HueBridge> bridges = new ArrayList<>();
+            ExecutorResult result = Executor.fulfil(new ExecutorRequest(new URL(PH_DISCOVER_URL), ExecutorRequest.Types.GET));
+
+            if(!result.isSuccess())
+                throw result.getError();
+
+            JSONArray jBridges = new JSONArray(result.getResult());
+            if(jBridges.length() == 0)
+                throw new Error("No bridges found");
+
+            for (int i = 0; i < jBridges.length(); i++) {
+                JSONObject jBrid = jBridges.getJSONObject(i);
+                bridges.add(new HueBridge(jBrid.getString("id"), jBrid.getString("internalipaddress")));
+            }
+        return bridges;
+    }
+
+    private static class RegisterHandler extends AsyncTask<Void, Void, Exception>
+    {
+        private final WeakReference<Context> mContext;
+        private final WeakReference<Connector> mConnector;
+        private final OnProcessCompleteListener<Exception> mOnProcessCompleteListener;
+        private HueBridgeLinkDialog mDialog;
+
+        RegisterHandler(Context context, Connector connector, OnProcessCompleteListener<Exception> onProcessCompleteListener) {
+            this.mContext = new WeakReference<>(context);
+            this.mConnector = new WeakReference<>(connector);
+            this.mOnProcessCompleteListener = onProcessCompleteListener;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mDialog = new HueBridgeLinkDialog();
+            mDialog.setDescription(mConnector.get().getLoadMessage());
+            mDialog.show(((AppCompatActivity)mContext.get()).getSupportFragmentManager(),"Hue_wait");
+            mDialog.setOnLoadCompleteListener(new OnProcessCompleteListener<TextView>() {
+                @Override
+                public void complete(boolean success, TextView source) {
+                    mConnector.get().setDescriptionTextView(source);
+                }
+            });
+            mDialog.setOnCancelClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mConnector.get().cancel();
+                }
+            });
+        }
+
+        @Override
+        protected void onPostExecute(Exception e) {
+            mDialog.dismiss();
+            mOnProcessCompleteListener.complete(e==null, e);
+        }
+
+        @Override
+        protected Exception doInBackground(Void... voids) {
+            try {
+                mConnector.get().getThings();
+                return null;
+            }catch(Exception ex)
+            {
+                return ex;
+            }
+        }
+    }
+
+    public class Connector implements IThingsGetter
+    {
+        private boolean mCancel;
+        TextView mTextDesc;
+        @Override
+        public String getLoadMessage() {
+            return "Connecting to Philips Hue Bridge";
+        }
+
+        void cancel()
+        {
+            UpdateDialog("Cancelling ...");
+            mCancel = true;
+
+        }
+
+        private void UpdateDialog(final String msg)
+        {
+            Log.i(String.format("%s %s",(mTextDesc == null),msg),"testing");
+            if(mTextDesc != null)
+                mTextDesc.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mTextDesc.setText(msg);
+                    }
+                });
+        }
+        @Override
+        public Things getThings() throws Exception {
+            URL url = new URL(String.format("http://%s/api", getAddress()));
+            JSONObject jPost = new JSONObject(String.format("{\"devicetype\":\"%s#%s\"}",Globals.ACTIVITY, Globals.getSharedPreferences().getString("uid", "unknown")));
+            ExecutorRequest request = new ExecutorRequest(url, ExecutorRequest.Types.POST);
+            request.setPostJson(jPost);
+
+            ExecutorResult result = Executor.fulfil(request);
+
+            if(!result.isSuccess())
+                throw result.getError();
+
+            JSONObject jObj = new JSONArray(result.getResult()).getJSONObject(0);
+            if (jObj.has("error")) {
+                JSONObject jError = jObj.getJSONObject("error");
+
+                int loopCount = 0;
+                int errorCode = jError.getInt("type");
+                while (errorCode == 101) {
+                    if(mCancel)
+                        throw new Exception("Cancelled by user.");
+
+                    if (loopCount > 36)
+                        throw new Exception("Timeout waiting for authorisation push.");
+
+                    UpdateDialog("Please press the link button on the Hue Bridge.");
+                    Thread.sleep(5000);
+
+                    result = Executor.fulfil(request);
+                    if(!result.isSuccess())
+                        throw result.getError();
+
+                    jObj = new JSONArray(result.getResult()).getJSONObject(0);
+                    if (jObj.has("error")) {
+                        jError = jObj.getJSONObject("error");
+
+                        errorCode = jError.getInt("type");
+                        if (errorCode != 101)
+                            throw new Exception(jError.getString("description"));
+                    } else
+                        break;
+                    loopCount += 1;
+                }
+            }
+
+            if (jObj.has("success")) {
+            {
+               JSONObject jSuc = jObj.getJSONObject("success");
+               setToken(jSuc.getString("username"));
+            }
+            } else
+                throw new Exception("Did not get authorisation for Hue Bridge");
+
+            return new Things();
+        }
+
+        @Override
+        public int getUniqueId() {
+            return 4;
+        }
+
+        @Override
+        public void setDescriptionTextView(TextView txtDescription) {
+            mTextDesc = txtDescription;
+        }
+
+        @Override
+        public Type getThingType() {
+            return IThing.class;
+        }
+
+        @Override
+        public ExecutorResult execute(IThing thing) {
+            return null;
+        }
+    }
+
+    public class SwitchGetter implements IThingsGetter
+    {
+
+        @Override
+        public String getLoadMessage() {
+            return "Getting Philips Hue lights";
+        }
+
+        @Override
+        public Things getThings() throws Exception {
+            Things things = new Things();
+
+            ExecutorResult result = Executor.fulfil(new ExecutorRequest(new URL(String.format("http://%s/api/%s/lights",getAddress(),getToken())), ExecutorRequest.Types.GET ));
+            if(!result.isSuccess())
+                throw result.getError();
+
+            JSONObject jDevices = new JSONObject(result.getResult());
+
+            Iterator<String> iterator = jDevices.keys();
+            while (iterator.hasNext()) {
+                String k = iterator.next();
+                JSONObject jDev = jDevices.getJSONObject(k);
+                JSONObject jState = jDev.getJSONObject("state");
+
+                Switch d = new Switch();
+                d.setId(k);
+                d.setName(jDev.getString("name"));
+                d.setUnreachable(!jState.getBoolean("reachable"));
+                d.setOn(jState.getBoolean("on"));
+                d.setType(jDev.getString("type"));
+                d.setService(ServicesTypes.PhilipsHue);
+                d.initialise();
+                things.add(d);
+            }
+
+
+            return things;
+        }
+
+        @Override
+        public int getUniqueId() {
+            return 5;
+        }
+
+        @Override
+        public void setDescriptionTextView(TextView txtDescription) {
+
+        }
+
+        @Override
+        public Type getThingType() {
+            return Switch.class;
+        }
+
+        @Override
+        public ExecutorResult execute(IThing thing) {
+            try
+            {
+                ExecutorRequest request = new ExecutorRequest(new URL(String.format("http://%s/api/%s/lights/%s/state", getAddress(), getToken(), thing.getId())), ExecutorRequest.Types.PUT);
+                request.setPutBody(String.format("{\"on\":%s}", !((Switch) thing).isOn()));
+
+                return Executor.fulfil(request);
+
+            }catch (Exception e)
+            {
+                return new ExecutorResult(e);
+            }
+
+        }
+    }
+
+    public class RoutineGetter implements IThingsGetter
+    {
+
+        @Override
+        public String getLoadMessage() {
+            return "Getting SmartThings Routines";
+        }
+
+        @Override
+        public Things getThings() throws Exception {
+            Things things = new Things();
+            ExecutorResult groupResult = Executor.fulfil(new ExecutorRequest(new URL(String.format("http://%s/api/%s/groups",getAddress(),getToken())),ExecutorRequest.Types.GET));
+            if(!groupResult.isSuccess())
+                throw groupResult.getError();
+
+            ExecutorResult sceneResult = Executor.fulfil(new ExecutorRequest(new URL(String.format("http://%s/api/%s/scenes",getAddress(),getToken())),ExecutorRequest.Types.GET));
+            if(!sceneResult.isSuccess())
+                throw sceneResult.getError();
+
+            final JSONArray groups = new JSONArray();
+            JSONObject jGroup = new JSONObject(groupResult.getResult());
+            JSONObject jRoutine = new JSONObject(sceneResult.getResult());
+
+            Iterator<String> iterator = jGroup.keys();
+
+            while (iterator.hasNext()) {
+                String k = iterator.next();
+                JSONObject jGp = jGroup.getJSONObject(k);
+                JSONArray jLight = jGp.getJSONArray("lights");
+                StringBuilder sLightKey = new StringBuilder();
+                for (int i = 0; i < jLight.length(); i++)
+                    sLightKey.append(jLight.getString(i));
+                jGp.put("id", k);
+                jGp.put("lkey", sLightKey.toString());
+                groups.put(jGp);
+            }
+
+            final JSONArray routines = new JSONArray();
+
+            iterator = jRoutine.keys();
+            while (iterator.hasNext()) {
+                String k = iterator.next();
+                JSONObject jRt = jRoutine.getJSONObject(k);
+                JSONArray jLight = jRt.getJSONArray("lights");
+                StringBuilder sLightKey = new StringBuilder();
+                for (int i = 0; i < jLight.length(); i++)
+                    sLightKey.append(jLight.getString(i));
+
+                jRt.put("id", k);
+                jRt.put("lkey", sLightKey.toString());
+
+                JSONArray relGroups = new JSONArray();
+                for (int x = 0; x < groups.length(); x++) {
+                    JSONObject jG = groups.getJSONObject(x);
+                    if (jG.getString("lkey").equals(sLightKey.toString()))
+                        relGroups.put(jG);
+                }
+
+                jRt.put("groups", relGroups);
+                routines.put(jRt);
+            }
+
+            for (int i = 0; i < routines.length(); i++) {
+                JSONObject jRout = routines.getJSONObject(i);
+                JSONArray jGroups = jRout.getJSONArray("groups");
+
+                if (jGroups.length() == 0) {
+                    Routine r = new Routine();
+                    r.setId(jRout.getString("id"));
+                    r.setName(jRout.getString("name") + " in all");
+                    r.setService(IService.ServicesTypes.PhilipsHue);
+                    r.initialise();
+                    things.add(r);
+                } else {
+                    for (int x = 0; x < jGroups.length(); x++) {
+                        JSONObject jgrp = jGroups.getJSONObject(x);
+                        Routine r = new Routine();
+                        r.setId(jRout.getString("id"));
+                        r.setName(jRout.getString("name") + " in " + jgrp.getString("name"));
+                        r.setService(IService.ServicesTypes.PhilipsHue);
+                        r.initialise();
+                        things.add(r);
+                    }
+                }
+            }
+
+            return things;
+        }
+
+        @Override
+        public int getUniqueId() {
+            return 6;
+        }
+
+        @Override
+        public void setDescriptionTextView(TextView txtDescription) {
+
+        }
+
+        @Override
+        public Type getThingType() {
+            return Routine.class;
+        }
+
+        @Override
+        public ExecutorResult execute(IThing thing) {
+           try
+           {
+               ExecutorRequest request = new ExecutorRequest(new URL(String.format("http://%s/api/%s/groups/0/action", getAddress(), getToken())), ExecutorRequest.Types.PUT);
+               request.setPutBody(String.format("{\"scene\":\"%s\"}", thing.getId()));
+
+               return Executor.fulfil(request);
+
+           }catch(Exception e)
+           {
+               return new ExecutorResult(e);
+           }
+        }
+    }
+}

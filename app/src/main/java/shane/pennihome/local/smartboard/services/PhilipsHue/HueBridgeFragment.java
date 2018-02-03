@@ -1,6 +1,5 @@
-package shane.pennihome.local.smartboard.services.PhillipsHue;
+package shane.pennihome.local.smartboard.services.PhilipsHue;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -8,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,14 +32,9 @@ import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFrag
 @SuppressWarnings("unused")
 public class HueBridgeFragment extends IRegisterServiceFragment {
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 1;
     private List<HueBridge> mHueBridge = new ArrayList<>();
+    private HueBridgeViewAdapter aptr;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public HueBridgeFragment() {
     }
 
@@ -49,7 +42,6 @@ public class HueBridgeFragment extends IRegisterServiceFragment {
     public static HueBridgeFragment newInstance(int columnCount) {
         HueBridgeFragment fragment = new HueBridgeFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,10 +49,6 @@ public class HueBridgeFragment extends IRegisterServiceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
 
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null) {
@@ -71,53 +59,47 @@ public class HueBridgeFragment extends IRegisterServiceFragment {
 
     }
 
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog d = super.onCreateDialog(savedInstanceState);
-        d.setTitle("Please select you Phillips hue bridge");
+        d.setTitle("Please select you Philips hue bridge");
         return d;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        new DoDiscovery(getContext(), new OnProcessCompleteListener<ArrayList<HueBridge>>() {
+            @Override
+            public void complete(boolean success, ArrayList<HueBridge> source) {
+                if(success) {
+                    aptr.setItems(source);
+                    aptr.notifyDataSetChanged();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Could not get Philips Hue Bridges.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).execute(getService(HueBridgeService.class));
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_huebridge_list, container, false);
 
-        final Activity act = getActivity();
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            final RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        RecyclerView recyclerView = (RecyclerView) view;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        aptr = new HueBridgeViewAdapter(new ArrayList<HueBridge>(), new OnListFragmentInteractionListener() {
+            @Override
+            public void onListFragmentInteraction(HueBridge item) {
+                getService(HueBridgeService.class).setAddress(item.getIp());
+                if (getOnProcessCompleteListener() != null)
+                    getOnProcessCompleteListener().complete(true, getService());
             }
-
-            new DoDiscovery(getActivity(), new OnProcessCompleteListener<ArrayList<HueBridge>>() {
-                @Override
-                public void complete(boolean success, ArrayList<HueBridge> source) {
-                    if(success)
-                        recyclerView.setAdapter(new HueBridgeViewAdapter(source, new OnListFragmentInteractionListener() {
-                            @Override
-                            public void onListFragmentInteraction(HueBridge item) {
-                                getService(PhillipsHueService.class).setAddress(item.getIp());
-                                dismiss();
-                                if (getOnProcessCompleteListener() != null)
-                                    getOnProcessCompleteListener().complete(true, getService());
-
-                            }
-                        }));
-                    else {
-                        Toast.makeText(getActivity(), "Could not get Pillip Hue Bridges.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }).execute(getService(PhillipsHueService.class));
-        }
-
+        });
+        recyclerView.setAdapter(aptr);
         return view;
     }
 
@@ -133,20 +115,20 @@ public class HueBridgeFragment extends IRegisterServiceFragment {
         void onListFragmentInteraction(HueBridge item);
     }
 
-    private static class DoDiscovery extends AsyncTask<PhillipsHueService, Void, ArrayList<HueBridge>>
+    private static class DoDiscovery extends AsyncTask<HueBridgeService, Void, ArrayList<HueBridge>>
     {
         ProgressDialog mDialog;
-        private WeakReference<Context> mContext;
-        private OnProcessCompleteListener<ArrayList<HueBridge>> mOnProcessCompleteListener;
-        public DoDiscovery(Context context, OnProcessCompleteListener<ArrayList<HueBridge>> onProcessCompleteListener) {
-            this.mContext = new WeakReference<Context>(context);
+        private final WeakReference<Context> mContext;
+        private final OnProcessCompleteListener<ArrayList<HueBridge>> mOnProcessCompleteListener;
+        DoDiscovery(Context context, OnProcessCompleteListener<ArrayList<HueBridge>> onProcessCompleteListener) {
+            this.mContext = new WeakReference<>(context);
             this.mOnProcessCompleteListener = onProcessCompleteListener;
         }
 
         @Override
         protected void onPreExecute() {
             mDialog = new ProgressDialog(mContext.get());
-            mDialog.setMessage("Scanning for Phillips Hue Bridges.");
+            mDialog.setMessage("Scanning for Philips Hue Bridges.");
             mDialog.setIndeterminate(false);
             mDialog.setCancelable(true);
             mDialog.show();
@@ -159,13 +141,12 @@ public class HueBridgeFragment extends IRegisterServiceFragment {
         }
 
         @Override
-        protected ArrayList<HueBridge> doInBackground(PhillipsHueService... services) {
+        protected ArrayList<HueBridge> doInBackground(HueBridgeService... services) {
             try {
-                return services[0].Discover();
+                return services[0].discover();
             } catch (Exception e) {
                return null;
             }
         }
     }
-
 }

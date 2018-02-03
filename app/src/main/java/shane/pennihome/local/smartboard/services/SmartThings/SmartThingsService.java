@@ -3,6 +3,7 @@ package shane.pennihome.local.smartboard.services.SmartThings;
 import android.content.Context;
 import android.text.TextUtils;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,6 +21,7 @@ import shane.pennihome.local.smartboard.comms.Executor;
 import shane.pennihome.local.smartboard.comms.ExecutorRequest;
 import shane.pennihome.local.smartboard.comms.ExecutorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.OnExecutorRequestActionListener;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.NameValuePair;
 import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
@@ -74,26 +76,34 @@ public class SmartThingsService extends IService {
     }
 
     @Override
-    public void register(Context context) throws Exception {
-        ExecutorRequest request = new ExecutorRequest(new URL(ST_TOKEN_URL), ExecutorRequest.Types.POST);
-        request.getQueryStringParameters().add(new NameValuePair("code", getAuthorisationCode()));
-        request.getQueryStringParameters().add(new NameValuePair("client_id", ST_CLIENT_ID));
-        request.getQueryStringParameters().add(new NameValuePair("client_secret", ST_CLIENT_SECRET));
-        request.getQueryStringParameters().add(new NameValuePair("redirect_uri", ST_REDIRECT_URI));
-        request.getQueryStringParameters().add(new NameValuePair("grant_type", ST_GRANT_TYPE));
+    public void register(Context context, OnProcessCompleteListener<IService> onProcessCompleteListener) {
+        try {
+            ExecutorRequest request = new ExecutorRequest(new URL(ST_TOKEN_URL), ExecutorRequest.Types.POST);
+            request.getQueryStringParameters().add(new NameValuePair("code", getAuthorisationCode()));
+            request.getQueryStringParameters().add(new NameValuePair("client_id", ST_CLIENT_ID));
+            request.getQueryStringParameters().add(new NameValuePair("client_secret", ST_CLIENT_SECRET));
+            request.getQueryStringParameters().add(new NameValuePair("redirect_uri", ST_REDIRECT_URI));
+            request.getQueryStringParameters().add(new NameValuePair("grant_type", ST_GRANT_TYPE));
 
-        ExecutorResult executorResult = Executor.fulfil(request);
-        if (!executorResult.isSuccess())
-            throw executorResult.getError();
+            ExecutorResult executorResult = Executor.fulfil(request);
+            if (!executorResult.isSuccess())
+                throw executorResult.getError();
 
-        JSONObject jsToken = buildJsonResponse(executorResult.getResult());
+            JSONObject jsToken = buildJsonResponse(executorResult.getResult());
 
-        mToken = jsToken.getString("access_token");
-        mType = jsToken.getString("token_type");
-        int minutes = Integer.parseInt(jsToken.getString("expires_in"));
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.MINUTE, minutes);
-        mExpires = c.getTime();
+            mToken = jsToken.getString("access_token");
+            mType = jsToken.getString("token_type");
+            int minutes = Integer.parseInt(jsToken.getString("expires_in"));
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.MINUTE, minutes);
+            mExpires = c.getTime();
+
+            super.register(context, onProcessCompleteListener);
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(context, "Error : " + ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -126,24 +136,6 @@ public class SmartThingsService extends IService {
         thingsGetters.add(new SwitchGetter());
         thingsGetters.add(new RoutineGetter());
         return thingsGetters;
-    }
-
-    @Override
-    public <T extends IThing> ArrayList<IThingsGetter> getThingsGetter(Class<T> cls) {
-        ArrayList<IThingsGetter> thingGetters = new ArrayList<>();
-        for (IThingsGetter t : getThingGetters())
-            if (t.getThingType().equals(cls) || t.getThingType().equals(IThing.class))
-                thingGetters.add(t);
-        return thingGetters;
-    }
-
-    @Override
-    public <V extends IThing> IThingsGetter getThingExecutor(Class<V> cls) {
-        for (IThingsGetter t : getThingGetters())
-            if (t.getThingType().equals(cls) || t.getThingType().equals(IThing.class))
-                return t;
-
-        return null;
     }
 
     @Override

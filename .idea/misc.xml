@@ -2473,6 +2473,13 @@
     <pattern value="shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject" method="copyValuesFrom" />
     <pattern value="shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject" />
     <pattern value="shane.pennihome.local.smartboard.ui.ThingProperties" method="getThing" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhillipsHue.HueBridgeViewAdapter" method="getItems" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeLinkDialog" method="getDescription" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeLinkDialog" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeViewAdapter" method="getItems" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeViewAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment" method="getService" />
+    <pattern value="shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

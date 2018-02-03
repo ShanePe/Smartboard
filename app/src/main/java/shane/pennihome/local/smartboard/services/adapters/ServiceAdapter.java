@@ -12,7 +12,6 @@ import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.services.ServiceManager;
 import shane.pennihome.local.smartboard.services.Services;
-import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 
@@ -55,9 +54,9 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
                                 @Override
                                 public void complete(boolean success, Object source) {
                                     if (success) {
-                                        serviceManager.unRegisterService(holder.mView.getContext(), holder.mService, new OnProcessCompleteListener() {
+                                        serviceManager.unRegisterService(holder.mView.getContext(), holder.mService, new OnProcessCompleteListener<Void>() {
                                             @Override
-                                            public void complete(boolean success, Object source) {
+                                            public void complete(boolean success, Void source) {
                                                 if(success)
                                                     notifyItemChanged(holder.getAdapterPosition());
                                             }

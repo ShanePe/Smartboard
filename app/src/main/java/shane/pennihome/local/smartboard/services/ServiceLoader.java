@@ -31,14 +31,6 @@ public class ServiceLoader extends AsyncTask<IThingsGetter, IThingsGetter, Servi
             mServiceLoadDialog = new ServiceLoadDialog(context);
     }
 
-//    public Activity getActivity() {
-//        return mActivity;
-//    }
-//
-//    public void setActivity(AppCompatActivity activity) {
-//        mActivity = activity;
-//    }
-
     public OnProcessCompleteListener<ServiceLoaderResult> getOnProcessCompleteListener() {
         return mOnProcessCompleteListener;
     }
@@ -95,7 +87,7 @@ public class ServiceLoader extends AsyncTask<IThingsGetter, IThingsGetter, Servi
     protected void onPostExecute(ServiceLoaderResult serviceLoaderResult) {
         //super.onPostExecute(serviceLoaderResult);
         if (mOnProcessCompleteListener != null)
-            mOnProcessCompleteListener.complete(true, serviceLoaderResult);
+            mOnProcessCompleteListener.complete(serviceLoaderResult.getErrors().size() == 0, serviceLoaderResult);
 
         if (mServiceLoadDialog != null)
             mServiceLoadDialog.dismiss();

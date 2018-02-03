@@ -127,9 +127,8 @@ public class ThingProperties extends LinearLayoutCompat {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 IThing thing = (IThing) adapterView.getItemAtPosition(i);
                 if (TextUtils.isEmpty(mName))
-                    mName = mThing.getName();
-
-                if (mThing == null)
+                    mName = thing.getName();
+                else if (mThing == null)
                     mName = thing.getName();
                 else if (TextUtils.isEmpty(mName) || mThing.getName().equals(mName))
                     mName = thing.getName();

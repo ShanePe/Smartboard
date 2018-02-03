@@ -2,6 +2,9 @@
   <dictionary name="SPennicott">
     <words>
       <w>childcount</w>
+      <w>jgrp</w>
+      <w>oncancelclicklistener</w>
+      <w>onloadcompletelistener</w>
     </words>
   </dictionary>
 </component>

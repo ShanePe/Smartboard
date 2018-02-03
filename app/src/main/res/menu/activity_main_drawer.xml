@@ -2,27 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-
-    <group>
+    <group android:id="@+id/mnu_hub_grp">
         <item
-            android:id="@+id/btn_st_connect"
-            android:icon="@drawable/icon_stlogo"
-            android:title="@string/mnu_authorise_st" />
+            android:id="@+id/mnu_hubs"
+            android:icon="@drawable/icon_hub"
+            android:title="@string/mnu_hubs" />
+    </group>
+    <group android:id="@+id/mnu_dash_grp">
         <item
-            android:id="@+id/btn_ph_connect"
-            android:icon="@drawable/icon_phlogo"
-            android:title="@string/mnu_auth_ph" />
+            android:id="@+id/mnu_dashboard"
+            android:icon="@drawable/icon_dashboard"
+            android:title="@string/mnu_dashboard" />
+    </group>
+    <group android:id="@+id/mnu_item_grp">
         <item
-            android:id="@+id/btn_device_mnu"
+            android:id="@+id/mnu_device"
             android:icon="@drawable/icon_switch"
             android:title="@string/mnu_devices" />
         <item
-            android:id="@+id/btn_routine_mnu"
+            android:id="@+id/mnu_routine"
             android:icon="@drawable/icon_routine"
             android:title="@string/mnu_routine" />
-        <item
-            android:id="@+id/btn_dashboard_mnu"
-            android:icon="@drawable/icon_dashboard"
-            android:title="@string/mnu_dashboard" />
     </group>
 </menu>

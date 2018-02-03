@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:layout_margin="4dp"
     android:background="@drawable/btn_round"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    style="@style/listStyle">
 
     <TextView
         android:id="@+id/things_select_name"

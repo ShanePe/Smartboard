@@ -15,6 +15,7 @@ import java.lang.reflect.Type;
 import shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessageSource;
+import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeService;
 import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.things.routines.Routine;
@@ -73,6 +74,8 @@ public class JsonBuilder {
                 switch (jService.get("mInstance").getAsString().toLowerCase()) {
                     case "smartthingsservice":
                         return SmartThingsService.Load(jService.toString());
+                    case "huebridgeservice":
+                        return HueBridgeService.Load(jService.toString());
                     default:
                         throw new JsonParseException("Invalid type of service : " + jService.get("mInstance").getAsString());
                 }
@@ -166,6 +169,8 @@ public class JsonBuilder {
             public JsonElement serialize(IService src, Type typeOfSrc, JsonSerializationContext context) {
                 if (src instanceof SmartThingsService)
                     return context.serialize((SmartThingsService) src);
+                if(src instanceof HueBridgeService)
+                    return context.serialize((HueBridgeService) src);
                 else
                     throw new JsonParseException("Invalid type of service : " + src.toString());
             }

@@ -9,12 +9,20 @@ public class ExecutorResult {
     private Exception mError;
     private String mResult;
 
+    private String fixFaultyResultString(String fix)
+    {
+        String result = fix.trim();
+        if(result.startsWith("[") && !result.endsWith("]"))
+            return result + "]";
+        else
+            return result;
+    }
     public ExecutorResult(Exception mError) {
         this.mError = mError;
     }
 
-    public ExecutorResult(String mResult) {
-        this.mResult = mResult;
+    ExecutorResult(String mResult) {
+        this.mResult = fixFaultyResultString(mResult);
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")

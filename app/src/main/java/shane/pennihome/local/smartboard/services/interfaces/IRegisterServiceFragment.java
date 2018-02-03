@@ -8,11 +8,12 @@ import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListen
  * Created by SPennicott on 02/02/2018.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class IRegisterServiceFragment extends DialogFragment {
     private OnProcessCompleteListener<IService> mOnProcessCompleteListener;
     private IService mService;
 
-    public OnProcessCompleteListener getOnProcessCompleteListener() {
+    protected OnProcessCompleteListener<IService> getOnProcessCompleteListener() {
         return mOnProcessCompleteListener;
     }
 
@@ -20,12 +21,13 @@ public class IRegisterServiceFragment extends DialogFragment {
         this.mOnProcessCompleteListener = onProcessCompleteListener;
     }
 
-    public IService getService() {
+    protected IService getService() {
         return mService;
     }
 
-    public <T extends IService> T getService(Class<T> cls) {
-        return (T)getService();
+    protected <T extends IService> T getService(Class<T> c) {
+        //noinspection unchecked
+        return (T)mService;
     }
 
     public void setService(IService service) {

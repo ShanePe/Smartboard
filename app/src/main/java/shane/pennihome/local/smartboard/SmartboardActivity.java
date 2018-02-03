@@ -13,7 +13,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import shane.pennihome.local.smartboard.adapters.EditGroupAdapter;
+import shane.pennihome.local.smartboard.thingsframework.adapters.EditGroupAdapter;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.fragments.tabs.GroupFragment;

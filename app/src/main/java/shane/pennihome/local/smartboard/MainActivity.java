@@ -20,13 +20,13 @@ import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Dashboards;
 import shane.pennihome.local.smartboard.data.Globals;
-import shane.pennihome.local.smartboard.services.PhillipsHue.HueBridge;
+import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridge;
 import shane.pennihome.local.smartboard.data.TokenHueBridge;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.fragments.DashboardFragment;
 import shane.pennihome.local.smartboard.fragments.DeviceFragment;
-import shane.pennihome.local.smartboard.services.PhillipsHue.HueBridgeFragment;
+import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment;
 import shane.pennihome.local.smartboard.fragments.RoutineFragment;
 import shane.pennihome.local.smartboard.fragments.ServicesFragment;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
@@ -125,15 +125,13 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.btn_st_connect)
+        if (id == R.id.mnu_hubs)
             serviceList();
-        else if (id == R.id.btn_ph_connect)
-            hueBridgeConnect();
-        else if (id == R.id.btn_device_mnu)
+        else if (id == R.id.mnu_device)
             deviceList();
-        else if (id == R.id.btn_routine_mnu)
+        else if (id == R.id.mnu_routine)
             routineList();
-        else if (id == R.id.btn_dashboard_mnu)
+        else if (id == R.id.mnu_dashboard)
             dashboardList();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

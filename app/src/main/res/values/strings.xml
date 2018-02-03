@@ -17,7 +17,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="device_st_label">SmartThings</string>
     <string name="device_ph_label">Philips Hue</string>
-    <string name="plhldr_bridge_id">%s [Id : %s]</string>
     <string name="mnu_dashboard">Dashboards</string>
     <string name="lbl_name">Name :</string>
     <string name="lbl_display_name">Display Name</string>
@@ -52,5 +51,7 @@
     <string name="title_activity_call_back">CallBackActivity</string>
     <string name="lbl_background_opacity">Background Opacity</string>
     <string name="lbl_image_opacity">Image Opacity</string>
+    <string name="lbl_cancel">Cancel</string>
+    <string name="mnu_hubs">Hubs</string>
 
 </resources>
