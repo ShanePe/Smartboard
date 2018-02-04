@@ -59,16 +59,16 @@ public class SwitchBlockHandler extends IBlockUIHandler {
 
     @Override
     public BlockEditViewHolder GetEditHolder(View view) {
-        return new EditorViewHolder(view);
+        return new SwitchEditorHolder(view);
     }
 
     @Override
     public BlockViewHolder GetViewHolder(View view) {
-        return null;
+        return new SwitchViewHolder(view);
     }
 
     public void BindViewHolder(BlockEditViewHolder viewHolder, int backgroundResourceId) {
-        EditorViewHolder holder = (EditorViewHolder) viewHolder;
+        SwitchEditorHolder holder = (SwitchEditorHolder) viewHolder;
 
         holder.mBaName.setText(getBlock().getName());
         holder.mBaImg.setImageResource(getBlock().getDefaultIconResource());
@@ -96,7 +96,7 @@ public class SwitchBlockHandler extends IBlockUIHandler {
 
     @Override
     public int getViewLayoutID() {
-        return 0;
+        return R.layout.block_view_switch;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class SwitchBlockHandler extends IBlockUIHandler {
         return R.layout.prop_block_switch;
     }
 
-    public class EditorViewHolder extends BlockEditViewHolder {
+    public class SwitchEditorHolder extends BlockEditViewHolder {
         public final LinearLayout mLayout;
         public final TextView mBaName;
         public final ImageView mBaImg;
@@ -112,7 +112,7 @@ public class SwitchBlockHandler extends IBlockUIHandler {
         public final TextView mBaSize;
         public final FrameLayout mContainer;
 
-        public EditorViewHolder(View view) {
+        public SwitchEditorHolder(View view) {
             super(view);
             mContainer = view.findViewById(R.id.sw_dashboard_block);
             mLayout = view.findViewById(R.id.sw_block_area);
@@ -125,6 +125,16 @@ public class SwitchBlockHandler extends IBlockUIHandler {
         @Override
         public String toString() {
             return super.toString() + " '" + mBaName.getText() + "'";
+        }
+    }
+
+    public class SwitchViewHolder extends BlockViewHolder {
+        TextView mTitle;
+
+        public SwitchViewHolder(View itemView) {
+            super(itemView);
+
+            mTitle = itemView.findViewById(R.id.bvs_title);
         }
     }
 }
