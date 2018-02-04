@@ -31,7 +31,9 @@ public abstract class IBlockUIHandler {
 
     public abstract BlockViewHolder GetViewHolder(View view);
 
-    public abstract void BindViewHolder(BlockEditViewHolder viewHolder, int backgroundResourceId);
+    public abstract void BindEditHolder(BlockEditViewHolder viewHolder, int backgroundResourceId);
+
+    public abstract void BindViewHolder(BlockViewHolder viewHolder);
 
     public abstract int getEditLayoutID();
 

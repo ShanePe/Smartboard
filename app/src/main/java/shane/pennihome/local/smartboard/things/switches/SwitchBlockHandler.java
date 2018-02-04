@@ -68,7 +68,7 @@ public class SwitchBlockHandler extends IBlockUIHandler {
         return new SwitchViewHolder(view);
     }
 
-    public void BindViewHolder(BlockEditViewHolder viewHolder, int backgroundResourceId) {
+    public void BindEditHolder(BlockEditViewHolder viewHolder, int backgroundResourceId) {
         SwitchEditorHolder holder = (SwitchEditorHolder) viewHolder;
 
         holder.mBaName.setText(getBlock().getName());
@@ -88,6 +88,11 @@ public class SwitchBlockHandler extends IBlockUIHandler {
 
         if (backgroundResourceId != 0)
             holder.mContainer.setBackgroundResource(backgroundResourceId);
+    }
+
+    @Override
+    public void BindViewHolder(BlockViewHolder viewHolder) {
+        
     }
 
     @Override

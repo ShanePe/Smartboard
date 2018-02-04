@@ -67,7 +67,7 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         return new RoutineViewHolder(view);
     }
 
-    public void BindViewHolder(BlockEditViewHolder viewHolder, int backgroundResourceId) {
+    public void BindEditHolder(BlockEditViewHolder viewHolder, int backgroundResourceId) {
         RoutineEditorHolder holder = (RoutineEditorHolder) viewHolder;
 
         holder.mBaName.setText(getBlock().getName());
@@ -88,6 +88,11 @@ public class RoutineBlockHandler extends IBlockUIHandler {
 
         if (backgroundResourceId != 0)
             holder.mContainer.setBackgroundResource(backgroundResourceId);
+    }
+
+    @Override
+    public void BindViewHolder(BlockViewHolder viewHolder) {
+
     }
 
     @Override

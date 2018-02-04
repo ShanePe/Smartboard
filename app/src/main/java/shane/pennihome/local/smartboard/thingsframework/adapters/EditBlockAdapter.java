@@ -103,7 +103,7 @@ public class EditBlockAdapter extends RecyclerView.Adapter<IBlockUIHandler.Block
             }
         });
 
-        handler.BindViewHolder(holder, bgResId);
+        handler.BindEditHolder(holder, bgResId);
     }
 
     @Override
