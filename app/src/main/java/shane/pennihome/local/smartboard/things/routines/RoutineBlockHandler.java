@@ -3,6 +3,7 @@ package shane.pennihome.local.smartboard.things.routines;
 import android.app.Activity;
 import android.support.annotation.ColorInt;
 import android.support.design.widget.TabLayout;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -130,11 +131,12 @@ public class RoutineBlockHandler extends IBlockUIHandler {
     }
 
     public class RoutineViewHolder extends BlockViewHolder {
+        LinearLayoutCompat mContainer;
         TextView mTitle;
 
         public RoutineViewHolder(View itemView) {
             super(itemView);
-
+            mContainer = itemView.findViewById(R.id.bvr_container);
             mTitle = itemView.findViewById(R.id.bvr_title);
         }
     }

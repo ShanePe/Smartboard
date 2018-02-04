@@ -3,6 +3,7 @@ package shane.pennihome.local.smartboard.things.switches;
 import android.app.Activity;
 import android.support.annotation.ColorInt;
 import android.support.design.widget.TabLayout;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -129,11 +130,12 @@ public class SwitchBlockHandler extends IBlockUIHandler {
     }
 
     public class SwitchViewHolder extends BlockViewHolder {
+        LinearLayoutCompat mContainer;
         TextView mTitle;
 
         public SwitchViewHolder(View itemView) {
             super(itemView);
-
+            mContainer = itemView.findViewById(R.id.bvs_container);
             mTitle = itemView.findViewById(R.id.bvs_title);
         }
     }
