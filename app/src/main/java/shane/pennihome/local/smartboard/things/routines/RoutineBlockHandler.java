@@ -92,7 +92,9 @@ public class RoutineBlockHandler extends IBlockUIHandler {
 
     @Override
     public void BindViewHolder(BlockViewHolder viewHolder) {
+        RoutineViewHolder holder = (RoutineViewHolder) viewHolder;
 
+        holder.mTitle.setText(getBlock().getName());
     }
 
     @Override

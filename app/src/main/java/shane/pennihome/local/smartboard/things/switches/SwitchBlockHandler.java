@@ -92,7 +92,9 @@ public class SwitchBlockHandler extends IBlockUIHandler {
 
     @Override
     public void BindViewHolder(BlockViewHolder viewHolder) {
-        
+        SwitchViewHolder holder = (SwitchViewHolder) viewHolder;
+
+        holder.mTitle.setText(getBlock().getName());
     }
 
     @Override
