@@ -9,5 +9,8 @@
     tools:context="shane.pennihome.local.smartboard.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-
+    <shane.pennihome.local.smartboard.ui.DashboardLayout
+        android:id="@+id/dl_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </android.support.design.widget.BottomNavigationView>

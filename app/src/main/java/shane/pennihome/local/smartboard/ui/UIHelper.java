@@ -2,6 +2,7 @@ package shane.pennihome.local.smartboard.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,6 +27,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -341,8 +343,11 @@ public class UIHelper {
     }
 
     public static Drawable generateImage(Context context, @ColorInt int backClr, int backClrAlphaPerc, Bitmap image, int imageAlphaPerc, int width, int height, boolean roundCrns) {
-        if (width == 0) width = 100;
-        if (height == 0) height = 50;
+        if (width == 0 || height == 0) {
+            DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+            width = metrics.widthPixels;
+            height = metrics.heightPixels;
+        }
 
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -362,7 +367,7 @@ public class UIHelper {
             Rect dest = new Rect(destLeft, 0, scaled.getWidth() + destLeft, scaled.getHeight());
 
             Paint paint = new Paint();
-            canvas.clipRect(dest);
+            //canvas.clipRect(dest);
             if (backClr != 0) {
                 paint.setColor(getColorWithAlpha(backClr, backClrAlphaPerc / 100f));
                 paint.setStyle(Paint.Style.FILL);

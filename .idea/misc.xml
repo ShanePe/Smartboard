@@ -762,6 +762,68 @@
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler.EditorViewHolder mBaImg" />
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler.EditorViewHolder mBaName" />
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchThingHandler.EditorViewHolder mLayout" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.BackgroundSelector$10 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.BackgroundSelector$8 void onGlobalLayout()" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.BlockSelectionAdapter.ViewHolder mImg" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.BlockSelectionAdapter.ViewHolder mText" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.BlockSelectionAdapter.ViewHolder mContainer" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.BlockSelectionAdapter$1 void onClick(android.view.View v)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.BlockSelectionAdapter mOnBlockSelectListener" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.BlockSelectionAdapter mBlocks" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter$2$1 void OnSet(shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock block)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter$2 void onClick(android.view.View v)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter mBlocks" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter mGroup" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter mSmartboardActivity" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.EditGroupAdapter.ViewHolder mContainer" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.data.Group mBlocks" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.GroupViewHandler mEditBlockAdapter" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridge mToken" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridge mId" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridge mIp" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment.DoDiscovery mOnProcessCompleteListener" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment.DoDiscovery mContext" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment.DoDiscovery mDialog" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment$2 void onListFragmentInteraction(shane.pennihome.local.smartboard.services.PhilipsHue.HueBridge item)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment$1 void complete(boolean success, java.util.ArrayList&lt;shane.pennihome.local.smartboard.services.PhilipsHue.HueBridge&gt; source)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment aptr" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment mHueBridge" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock mThing" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock mThingKey" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler mIBlock" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.comms.interfaces.IMessage mInstance" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing$2 void onReceive(android.content.Context context, android.content.Intent intent)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing mBroadcastReceiver" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$11 com.google.gson.JsonElement serialize(shane.pennihome.local.smartboard.services.interfaces.IService src, java.lang.reflect.Type typeOfSrc, com.google.gson.JsonSerializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$10 com.google.gson.JsonElement serialize(shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock src, java.lang.reflect.Type typeOfSrc, com.google.gson.JsonSerializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$9 com.google.gson.JsonElement serialize(shane.pennihome.local.smartboard.thingsframework.interfaces.IThing src, java.lang.reflect.Type typeOfSrc, com.google.gson.JsonSerializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$8 com.google.gson.JsonElement serialize(shane.pennihome.local.smartboard.comms.interfaces.IMessage&lt;?&gt; src, java.lang.reflect.Type typeOfSrc, com.google.gson.JsonSerializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$7 com.google.gson.JsonElement serialize(shane.pennihome.local.smartboard.comms.interfaces.IMessageSource src, java.lang.reflect.Type typeOfSrc, com.google.gson.JsonSerializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$6 com.google.gson.JsonElement serialize(shane.pennihome.local.smartboard.comms.interfaces.IMessage&lt;?&gt; src, java.lang.reflect.Type typeOfSrc, com.google.gson.JsonSerializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$5 shane.pennihome.local.smartboard.comms.interfaces.IMessageSource deserialize(com.google.gson.JsonElement json, java.lang.reflect.Type typeOfT, com.google.gson.JsonDeserializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$4 shane.pennihome.local.smartboard.comms.interfaces.IMessage&lt;?&gt; deserialize(com.google.gson.JsonElement json, java.lang.reflect.Type typeOfT, com.google.gson.JsonDeserializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.MainActivity$1 void run()" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.MainActivity mDashboardLayout" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.comms.Monitor$5 void complete(boolean success, shane.pennihome.local.smartboard.services.ServiceLoader.ServiceLoaderResult source)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.comms.Monitor mMonitor" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.EditorViewHolder mContainer" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.EditorViewHolder mBaSize" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.EditorViewHolder mBaDevice" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.EditorViewHolder mBaImg" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.EditorViewHolder mBaName" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.EditorViewHolder mLayout" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService.Connector$1 void OnPreExecute(java.net.HttpURLConnection connection)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.fragments.tabs.SmartboardFragment$2 void afterTextChanged(android.text.Editable s)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.fragments.tabs.SmartboardFragment$2 void onTextChanged(java.lang.CharSequence s, int start, int before, int count)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.fragments.tabs.SmartboardFragment$2 void beforeTextChanged(java.lang.CharSequence s, int start, int count, int after)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.Switch mOnSwitchStateChangeListener" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.EditorViewHolder mContainer" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.EditorViewHolder mBaSize" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.EditorViewHolder mBaDevice" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.EditorViewHolder mBaImg" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.EditorViewHolder mBaName" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.EditorViewHolder mLayout" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper$1 void BlockSelected(shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock block)" />
     </entry_points>
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="setOnValueChangedListener" />
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="getDimension" />
@@ -2480,6 +2542,154 @@
     <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeViewAdapter" />
     <pattern value="shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment" method="getService" />
     <pattern value="shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment" />
+    <pattern value="shane.pennihome.local.smartboard.ui.BackgroundSelector" method="handleRender" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockSelectionAdapter.ViewHolder" method="ViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockSelectionAdapter.ViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockSelectionAdapter" method="getItemCount" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockSelectionAdapter" method="onBindViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockSelectionAdapter" method="onCreateViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockSelectionAdapter" method="BlockSelectionAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockSelectionAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.data.Dashboard" method="loadThings" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardLayout" method="DashboardLayout" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardLayout" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.GroupViewAdapter" method="getDashboard" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.GroupViewAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView" method="DashboardView" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter.Draggable" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter" method="onItemDragFinished" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter" method="onItemDragStarted" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter" method="onCheckCanDrop" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter" method="onMoveItem" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter" method="onGetItemDraggableRange" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter" method="onCheckCanStartDrag" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter" method="getItemCount" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter" method="setBlocks" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter" method="getBlocks" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter" method="getItemId" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter" method="onBindViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter" method="onCreateViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter" method="getItemViewType" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter" method="reverseFindById" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter" method="EditBlockAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditGroupAdapter.ViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditGroupAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.comms.ExecutorRequest" method="ExecutorRequest" />
+    <pattern value="shane.pennihome.local.smartboard.data.Group" method="getBlockAt" />
+    <pattern value="shane.pennihome.local.smartboard.data.Group" method="getBlocks" />
+    <pattern value="shane.pennihome.local.smartboard.data.Group" method="loadThings" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridge" method="setToken" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridge" method="getToken" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridge" method="setId" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridge" method="getId" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridge" method="setIp" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridge" method="getIp" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridge" method="HueBridge" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridge" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment.DoDiscovery" method="doInBackground" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment.DoDiscovery" method="onPostExecute" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment.DoDiscovery" method="onPreExecute" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment.DoDiscovery" method="DoDiscovery" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment.DoDiscovery" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment.OnListFragmentInteractionListener" method="onListFragmentInteraction" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment.OnListFragmentInteractionListener" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment" method="setHueBridge" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment" method="getHueBridge" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment" method="onCreateView" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment" method="onStart" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment" method="onCreateDialog" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment" method="onCreate" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment" method="newInstance" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment" method="HueBridgeFragment" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment" />
+    <pattern value="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeViewAdapter" method="HueBridgeViewAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="loadThing" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="getUIHandler" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="getThingType" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="setBlockDefaults" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="getFriendlyName" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="getDefaultIconResource" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="setThingKey" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="getThingKey" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="setThing" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="getThing" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="CreateByTypeID" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="GetTypeID" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler.BaseEditorViewHolder" method="getContainer" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler.BaseEditorViewHolder" method="BaseEditorViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler.BaseEditorViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" method="getBlock" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" method="setBlock" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" method="getEditorViewResourceID" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" method="getViewResourceID" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" method="BindViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" method="GetEditorViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" method="populateBlockFromView" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" method="buildBlockPropertyView" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" method="IBlockUIHandler" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" />
+    <pattern value="shane.pennihome.local.smartboard.comms.interfaces.IMessage" />
+    <pattern value="shane.pennihome.local.smartboard.services.interfaces.IService" method="IService" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing" method="finalize" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing" method="getServiceType" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing" method="execute" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing" method="messageReceived" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing" method="initialise" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IThings" method="getByKey" />
+    <pattern value="shane.pennihome.local.smartboard.data.JsonBuilder" method="get" />
+    <pattern value="shane.pennihome.local.smartboard.MainActivity" method="onSaveInstanceState" />
+    <pattern value="shane.pennihome.local.smartboard.MainActivity" method="serviceList" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="fromJson" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="toJson" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="stop" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="AddService" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="removeService" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="start" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="Create" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="IsInstaniated" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="getMonitor" />
+    <pattern value="shane.pennihome.local.smartboard.ui.listeners.OnBlockSelectListener" method="BlockSelected" />
+    <pattern value="shane.pennihome.local.smartboard.ui.listeners.OnBlockSelectListener" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener" method="OnSet" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.EditorViewHolder" method="toString" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.EditorViewHolder" method="EditorViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.EditorViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler" method="getEditorViewResourceID" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler" method="getViewResourceID" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler" method="BindViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler" method="GetEditorViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler" method="populateBlockFromView" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler" method="buildBlockPropertyView" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler" method="RoutineBlockHandler" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler" />
+    <pattern value="shane.pennihome.local.smartboard.services.dialogs.ServiceLoadDialog" method="ServiceLoadDialog" />
+    <pattern value="shane.pennihome.local.smartboard.services.ServiceManager" method="ServiceManager" />
+    <pattern value="shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService.Connector" method="getThings" />
+    <pattern value="shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService.Connector" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.Switch" method="messageReceived" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.Switch" method="execute" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.Switch" method="setUnreachable" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.Switch" method="setOnSwitchStateChangeListener" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.Switch" method="getOnSwitchStateChangeListener" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.EditorViewHolder" method="toString" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.EditorViewHolder" method="EditorViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.EditorViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" method="getEditorViewResourceID" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" method="getViewResourceID" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" method="BindViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" method="GetEditorViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" method="populateBlockFromView" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" method="buildBlockPropertyView" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" method="SwitchBlockHandler" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.Things" method="getForService" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.Things" method="getForBlock" />
+    <pattern value="shane.pennihome.local.smartboard.ui.UIHelper" method="showBlockPropertyWindow" />
+    <pattern value="shane.pennihome.local.smartboard.ui.UIHelper" method="showBlockSelectionWindow" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ViewSwiper" method="isAutoHideTabs" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

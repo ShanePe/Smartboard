@@ -18,7 +18,9 @@
             android:layout_gravity="fill"
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
-            android:contentDescription="@string/content_desc_img" />
+            android:contentDescription="@string/content_desc_img"
+            android:scaleType="center"
+            app:srcCompat="@drawable/icon_wait" />
 
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="wrap_content"

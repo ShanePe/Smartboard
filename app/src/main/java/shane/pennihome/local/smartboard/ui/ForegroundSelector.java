@@ -53,7 +53,7 @@ public class ForegroundSelector extends LinearLayoutCompat {
 
     public void setColour(int colour) {
         this.mColour = colour;
-        dnPropertyChange();
+        doPropertyChange();
     }
 
     private void initializeViews(Context context) {
@@ -95,10 +95,10 @@ public class ForegroundSelector extends LinearLayoutCompat {
             }
         });
 
-        dnPropertyChange();
+        doPropertyChange();
     }
 
-    private void dnPropertyChange() {
+    private void doPropertyChange() {
         mColourBtn.setBackground(UIHelper.getButtonShape(mColour));
         invalidate();
         requestLayout();

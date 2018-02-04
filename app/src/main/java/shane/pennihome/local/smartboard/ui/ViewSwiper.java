@@ -11,8 +11,12 @@ import android.util.Pair;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import java.util.ArrayList;
+
+import shane.pennihome.local.smartboard.R;
 
 /**
  * Created by shane on 27/01/18.
@@ -22,6 +26,10 @@ import java.util.ArrayList;
 public class ViewSwiper extends ViewPager {
     private ViewAdapter mViewAdapter;
     private TabLayout mTabLayout;
+    private boolean mAutoHideTabs;
+    private Thread mTimer;
+    private Animation mSlideUpAnim;
+    private Animation mSlideDnAnim;
 
     public ViewSwiper(@NonNull Context context) {
         super(context);
@@ -29,6 +37,58 @@ public class ViewSwiper extends ViewPager {
 
     public ViewSwiper(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    public boolean isAutoHideTabs() {
+        return mAutoHideTabs;
+    }
+
+    public void setAutoHideTabs(@SuppressWarnings("SameParameterValue") boolean autoHideTabs) {
+        mAutoHideTabs = autoHideTabs;
+        if (autoHideTabs) {
+            mTabLayout.setVisibility(View.GONE);
+            //float fromXDelta, float toXDelta, float fromYDelta, float toYDelta
+//            mSlideUpAnim = new TranslateAnimation(1.0f,1.0f,0.0f,1.0f );
+//            mSlideDnAnim = new TranslateAnimation(1.0f,1.0f,1.0f,0.0f );
+//            mSlideUpAnim.setDuration(3000);
+//            mSlideDnAnim.setDuration(3000);
+//            mSlideUpAnim.setInterpolator(new AccelerateInterpolator());
+//            mSlideDnAnim.setInterpolator(new AccelerateInterpolator());
+
+            mSlideUpAnim = AnimationUtils.loadAnimation(mTabLayout.getContext(), R.anim.tab_up);
+            mSlideDnAnim = AnimationUtils.loadAnimation(mTabLayout.getContext(), R.anim.tab_down);
+            mSlideUpAnim.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            });
+            mSlideDnAnim.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    mTabLayout.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            });
+        } else {
+            mSlideUpAnim = null;
+            mSlideDnAnim = null;
+        }
     }
 
     public TabLayout getTabLayout() {
@@ -41,25 +101,82 @@ public class ViewSwiper extends ViewPager {
     }
 
     public ViewSwiper.ViewAdapter getViewAdapter() {
-        if (mViewAdapter == null) {
-            mViewAdapter = new ViewAdapter();
-            setAdapter(mViewAdapter);
-        }
+        if (mViewAdapter == null)
+            createAdapter();
+
         return mViewAdapter;
     }
+
+    private void createAdapter() {
+        mViewAdapter = new ViewAdapter();
+        setAdapter(mViewAdapter);
+        mViewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onPageScrolled(int position, float offset, int offsetPixels) {
+        super.onPageScrolled(position, offset, offsetPixels);
+
+        if (mTabLayout != null && mAutoHideTabs) {
+            if (mTabLayout.getVisibility() != View.VISIBLE) {
+                mTabLayout.setVisibility(View.VISIBLE);
+
+                mSlideDnAnim.cancel();
+                mSlideUpAnim.cancel();
+
+                mTabLayout.startAnimation(mSlideUpAnim);
+
+            }
+
+            if (mTimer != null) {
+                mTimer.interrupt();
+                mTimer = null;
+            }
+
+            mTimer = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(3000);
+                        mTabLayout.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mTabLayout.startAnimation(mSlideDnAnim);
+                            }
+                        });
+                    } catch (InterruptedException ignored) {
+                    }
+                }
+            });
+
+            mTimer.start();
+        }
+    }
+
+    void clear() {
+        createAdapter();
+    }
+
+
 
     public class ViewAdapter extends PagerAdapter {
         final ArrayList<Pair<String, Integer>> mTabs;
         final SparseArray<View> mViewCache;
 
         ViewAdapter() {
-            this.mTabs = new ArrayList<>();
+            mTabs = new ArrayList<>();
             mViewCache = new SparseArray<>();
         }
 
         public void addView(String name, int ResId) {
             mTabs.add(new Pair<>(name, ResId));
             notifyDataSetChanged();
+        }
+
+        void addView(String name, View view) {
+            int pos = mTabs.size();
+            mTabs.add(new Pair<>(name, pos));
+            mViewCache.put(pos, view);
         }
 
         @Override

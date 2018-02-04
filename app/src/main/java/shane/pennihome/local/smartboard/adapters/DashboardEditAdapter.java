@@ -26,13 +26,13 @@ import shane.pennihome.local.smartboard.ui.UIHelper;
  * specified {@link DashboardFragment.OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdapter.ViewHolder>
-        implements DraggableItemAdapter<DashboardViewAdapter.ViewHolder> {
+public class DashboardEditAdapter extends RecyclerView.Adapter<DashboardEditAdapter.ViewHolder>
+        implements DraggableItemAdapter<DashboardEditAdapter.ViewHolder> {
 
     private final DashboardFragment.OnListFragmentInteractionListener mListener;
     private Dashboards mDashboards;
 
-    public DashboardViewAdapter(Dashboards items, DashboardFragment.OnListFragmentInteractionListener listener) {
+    public DashboardEditAdapter(Dashboards items, DashboardFragment.OnListFragmentInteractionListener listener) {
         mDashboards = items;
         mListener = listener;
         setHasStableIds(true);
@@ -67,12 +67,12 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
             }
         });
 
-        final DashboardViewAdapter aptr = this;
+        final DashboardEditAdapter aptr = this;
 
         holder.mDelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                UIHelper.showConfirm(view.getContext(), "Confirm", "Are you sure you want to delete this dashboard", new OnProcessCompleteListener() {
+                UIHelper.showConfirm(view.getContext(), "Confirm", "Are you sure you want to delete this dashboard_view_group_list", new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
                         if(success)
@@ -91,11 +91,11 @@ public class DashboardViewAdapter extends RecyclerView.Adapter<DashboardViewAdap
 
         int bgResId = R.drawable.btn_round;
 
-        if (((dragState & DashboardViewAdapter.Draggable.STATE_FLAG_IS_UPDATED) != 0)) {
+        if (((dragState & DashboardEditAdapter.Draggable.STATE_FLAG_IS_UPDATED) != 0)) {
 
-            if ((dragState & DashboardViewAdapter.Draggable.STATE_FLAG_IS_ACTIVE) != 0) {
+            if ((dragState & DashboardEditAdapter.Draggable.STATE_FLAG_IS_ACTIVE) != 0) {
                 bgResId = R.drawable.btn_round_accent;
-            } else if ((dragState & DashboardViewAdapter.Draggable.STATE_FLAG_DRAGGING) != 0) {
+            } else if ((dragState & DashboardEditAdapter.Draggable.STATE_FLAG_DRAGGING) != 0) {
                 bgResId = R.drawable.btn_round_dark;
             } else {
                 bgResId = R.drawable.btn_round;

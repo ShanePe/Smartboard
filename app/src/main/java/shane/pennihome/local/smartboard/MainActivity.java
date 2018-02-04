@@ -24,18 +24,20 @@ import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.fragments.DashboardFragment;
 import shane.pennihome.local.smartboard.fragments.DeviceFragment;
-import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment;
 import shane.pennihome.local.smartboard.fragments.RoutineFragment;
 import shane.pennihome.local.smartboard.fragments.ServicesFragment;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
+import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment;
 import shane.pennihome.local.smartboard.services.ServiceManager;
 import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
+import shane.pennihome.local.smartboard.ui.DashboardLayout;
 
 @SuppressWarnings("unused")
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     private Dashboards mDashboards;
+    private DashboardLayout mDashboardLayout;
 
     @Override
     protected void onPostResume() {
@@ -69,6 +71,8 @@ public class MainActivity extends AppCompatActivity
 
         CookieManager.getInstance().setAcceptCookie(true);
 
+        mDashboardLayout = findViewById(R.id.dl_main);
+
         init(savedInstanceState);
     }
 
@@ -86,7 +90,6 @@ public class MainActivity extends AppCompatActivity
         }
         if (!Monitor.IsInstaniated())
             Monitor.Create(this);
-
 
         Monitor.getMonitor().start();
     }
@@ -138,7 +141,6 @@ public class MainActivity extends AppCompatActivity
 
     public void populateDashbboards() {
         DBEngine db = new DBEngine(this);
-        //db.cleanDataStore();
         if (mDashboards == null)
             mDashboards = new Dashboards();
         else
@@ -148,6 +150,13 @@ public class MainActivity extends AppCompatActivity
             mDashboards.add((Dashboard) d);
 
         mDashboards.sort();
+
+        mDashboardLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mDashboardLayout.setDashboards(mDashboards);
+            }
+        });
     }
 
     private void smartThingsConnect() {

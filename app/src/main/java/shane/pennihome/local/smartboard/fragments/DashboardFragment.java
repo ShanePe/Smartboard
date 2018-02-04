@@ -17,14 +17,14 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropM
 import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
-import shane.pennihome.local.smartboard.adapters.DashboardViewAdapter;
+import shane.pennihome.local.smartboard.adapters.DashboardEditAdapter;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Dashboards;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
 
 public class DashboardFragment extends IFragment {
-    private DashboardViewAdapter mDashboardAptr;
+    private DashboardEditAdapter mDashboardAptr;
 
     public DashboardFragment() {
     }
@@ -45,34 +45,6 @@ public class DashboardFragment extends IFragment {
     @SuppressWarnings("unused")
     public void saveDashboardsPosition(final Dashboards dashboards)
     {
-       /* if(mSaveThread != null)
-        {
-            mSaveThread.interrupt();
-            mSaveThread = null;
-        }
-
-        mSaveThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                 //   Thread.sleep(5000);
-                    DBEngine db = new DBEngine(getActivity());
-                    for(int i = 0;i<dashboards.size();i++)
-                    {
-                        Dashboard d = dashboards.get(i);
-                        d.setPosition(i + 1);
-                        db.updatePosition(d);
-                    };
-
-                    mSaveThread = null;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        mSaveThread.start();*/
-
         DBEngine db = new DBEngine(getActivity());
         for(int i = 0;i<dashboards.size();i++)
         {
@@ -91,12 +63,13 @@ public class DashboardFragment extends IFragment {
         Bundle options = new Bundle();
 
         saveDashboardsPosition(mDashboardAptr.getDashboards());
-        dashAdd.putExtra("dashboard", dashboard.toJson());
+        dashAdd.putExtra("dashboard_view_group_list", dashboard.toJson());
         startActivityForResult(dashAdd, 0, options);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         MainActivity main = (MainActivity) getActivity();
         assert main != null;
         main.populateDashbboards();
@@ -104,6 +77,7 @@ public class DashboardFragment extends IFragment {
             mDashboardAptr.setDashboards(main.getDashboards());
             mDashboardAptr.notifyDataSetChanged();
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -134,7 +108,7 @@ public class DashboardFragment extends IFragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
             assert activity != null;
-            recyclerView.setAdapter(dragMgr.createWrappedAdapter( mDashboardAptr = new DashboardViewAdapter(activity.getDashboards(), new OnListFragmentInteractionListener() {
+            recyclerView.setAdapter(dragMgr.createWrappedAdapter(mDashboardAptr = new DashboardEditAdapter(activity.getDashboards(), new OnListFragmentInteractionListener() {
                 @Override
                 public void onListFragmentInteraction(Dashboard item) {
                     LoadDashboard(item);
@@ -147,13 +121,14 @@ public class DashboardFragment extends IFragment {
         return view;
     }
 
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Dashboard item);
-    }
-
     @Override
     public void onDestroyView() {
         saveDashboardsPosition(mDashboardAptr.getDashboards());
         super.onDestroyView();
     }
+
+    public interface OnListFragmentInteractionListener {
+        void onListFragmentInteraction(Dashboard item);
+    }
+
 }

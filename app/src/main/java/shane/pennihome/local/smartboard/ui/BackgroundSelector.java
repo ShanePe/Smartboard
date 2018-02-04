@@ -12,14 +12,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
+import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.ui.listeners.OnBackgroundActionListener;
 
 /**
@@ -214,10 +217,32 @@ public class BackgroundSelector extends LinearLayoutCompat {
             }
         });
 
+        mPreview.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                handleRender(true);
+            }
+        });
+
         doPropertyChange(false);
     }
 
     private void doPropertyChange(final boolean delayPreview) {
+        handleRender(delayPreview);
+
+        if (mColour == 0)
+            mBtnBGClr.setBackgroundResource(R.drawable.btn_round_dark);
+        else
+            mBtnBGClr.setBackground(UIHelper.getButtonShape(UIHelper.getColorWithAlpha(mColour, mTransparency / 100f)));
+
+        msbBGImg.setProgress(mImageTransparency);
+        msbBGClr.setProgress(mTransparency);
+
+        invalidate();
+        requestLayout();
+    }
+
+    private void handleRender(final boolean delayPreview) {
         if (mRenderThread != null) {
             mRenderThread.interrupt();
             mRenderThread = null;
@@ -236,26 +261,19 @@ public class BackgroundSelector extends LinearLayoutCompat {
         });
 
         mRenderThread.start();
-
-        if (mColour == 0)
-            mBtnBGClr.setBackgroundResource(R.drawable.btn_round_dark);
-        else
-            mBtnBGClr.setBackground(UIHelper.getButtonShape(UIHelper.getColorWithAlpha(mColour, mTransparency / 100f)));
-
-        msbBGImg.setProgress(mImageTransparency);
-        msbBGClr.setProgress(mTransparency);
-
-        invalidate();
-        requestLayout();
     }
 
     private void renderPreview() {
+        final int width = mPreview.getWidth();
+        final int height = mPreview.getHeight();
+
+        if (width == 0 || height == 0)
+            return;
+
         Bitmap bitmap = null;
         if (!TextUtils.isEmpty(mImage))
             bitmap = BitmapFactory.decodeFile(mImage);
 
-        final int width = mPreview.getWidth();
-        final int height = mPreview.getHeight();
 
         final Drawable drawable = UIHelper.generateImage(getContext(),
                 mColour,
@@ -269,6 +287,7 @@ public class BackgroundSelector extends LinearLayoutCompat {
         mPreview.post(new Runnable() {
             @Override
             public void run() {
+                Log.i("Render background image", Globals.ACTIVITY);
                 mPreview.setImageDrawable(drawable);
             }
         });

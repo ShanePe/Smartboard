@@ -13,15 +13,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import shane.pennihome.local.smartboard.thingsframework.adapters.EditGroupAdapter;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.fragments.tabs.GroupFragment;
 import shane.pennihome.local.smartboard.fragments.tabs.SmartboardFragment;
+import shane.pennihome.local.smartboard.thingsframework.adapters.EditGroupAdapter;
 
 public class SmartboardActivity extends AppCompatActivity {
 
-    //private EditGroupAdapter mEditGroupAdapter;
     private Dashboard mDashboard;
     private EditGroupAdapter mEditGroupAdapter;
     @Override
@@ -41,12 +40,11 @@ public class SmartboardActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        //mEditGroupAdapter = new EditGroupAdapter(this);
         mEditGroupAdapter = new EditGroupAdapter(this);
 
         Bundle extras = getIntent().getExtras();
         assert extras != null;
-        mDashboard = Dashboard.Load(extras.getString("dashboard"));
+        mDashboard = Dashboard.Load(extras.getString("dashboard_view_group_list"));
         mDashboard.loadThings();
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
