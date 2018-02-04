@@ -36,7 +36,7 @@
                 android:layout_marginTop="4dp"
                 android:background="@drawable/btn_round_dark"
                 android:contentDescription="@string/content_desc_img"
-                android:padding="16dp"
+                android:padding="8dp"
                 android:paddingEnd="32dp"
                 android:paddingStart="32dp"
                 app:srcCompat="@drawable/icon_colour_picker" />
@@ -58,7 +58,7 @@
                 android:layout_marginTop="4dp"
                 android:background="@drawable/btn_round_dark"
                 android:contentDescription="@string/content_desc_img"
-                android:padding="16dp"
+                android:padding="8dp"
                 android:paddingEnd="32dp"
                 android:paddingStart="32dp"
                 app:srcCompat="@drawable/icon_gallery_32" />
@@ -81,10 +81,18 @@
                 android:layout_marginTop="4dp"
                 android:background="@drawable/btn_round_dark"
                 android:contentDescription="@string/content_desc_img"
-                android:padding="16dp"
+                android:padding="8dp"
                 android:paddingEnd="32dp"
                 android:paddingStart="32dp"
                 app:srcCompat="@drawable/icon_delete" />
+
+            <Spinner
+                android:id="@+id/cbv_render_style"
+                style="@style/Platform.Widget.AppCompat.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/render_options" />
+
         </android.support.v7.widget.LinearLayoutCompat>
 
 

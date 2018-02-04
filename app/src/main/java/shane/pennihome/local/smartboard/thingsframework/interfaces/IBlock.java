@@ -35,6 +35,7 @@ public abstract class IBlock extends IDatabaseObject {
     private int mBGImgTrans;
     private String mThingKey;
     private transient IThing mThing;
+    private UIHelper.ImageRenderTypes mBGImageRenderType;
 
     public IBlock() {
         mInstance = this.getClass().getSimpleName();
@@ -141,6 +142,14 @@ public abstract class IBlock extends IDatabaseObject {
         this.mBackTrans = backgroundTransparency;
     }
 
+    public UIHelper.ImageRenderTypes getBackgroundImageRenderType() {
+        return mBGImageRenderType;
+    }
+
+    public void setBackgroundImageRenderType(UIHelper.ImageRenderTypes BGImageRenderType) {
+        mBGImageRenderType = BGImageRenderType;
+    }
+
     public String getBackgroundImage() {
         return mBackImage;
     }
@@ -183,7 +192,8 @@ public abstract class IBlock extends IDatabaseObject {
                         mBGImgTrans,
                         view.getMeasuredWidth(),
                         view.getMeasuredHeight(),
-                        false);
+                        false,
+                        mBGImageRenderType);
 
                 view.post(new Runnable() {
                     @Override

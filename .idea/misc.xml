@@ -824,6 +824,20 @@
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.EditorViewHolder mBaName" />
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.EditorViewHolder mLayout" />
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper$1 void BlockSelected(shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock block)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.BackgroundSelector$11 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.BackgroundSelector$9 void onGlobalLayout()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.BackgroundSelector$8 void onNothingSelected(android.widget.AdapterView&lt;?&gt; adapterView)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.BackgroundSelector$8 void onItemSelected(android.widget.AdapterView&lt;?&gt; adapterView, android.view.View view, int i, long l)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.BackgroundSelector mImageRenderType" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.BackgroundSelector mRenderStyle" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.data.Dashboard mBackgroundImageRenderType" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.data.Dashboard mBackgroundThread" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock mBGImageRenderType" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.MainActivity$2 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.MainActivity$1 void complete(boolean success, java.lang.Void source)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.fragments.tabs.SmartboardFragment$1 void OnImageRenderTypeChanged(shane.pennihome.local.smartboard.ui.UIHelper.ImageRenderTypes imageRenderType)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper.ImageRenderTypes Stretch" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper.ImageRenderTypes Center" />
     </entry_points>
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="setOnValueChangedListener" />
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="getDimension" />
@@ -2690,6 +2704,25 @@
     <pattern value="shane.pennihome.local.smartboard.ui.UIHelper" method="showBlockPropertyWindow" />
     <pattern value="shane.pennihome.local.smartboard.ui.UIHelper" method="showBlockSelectionWindow" />
     <pattern value="shane.pennihome.local.smartboard.ui.ViewSwiper" method="isAutoHideTabs" />
+    <pattern value="shane.pennihome.local.smartboard.ui.BackgroundSelector" method="setImageRenderType" />
+    <pattern value="shane.pennihome.local.smartboard.ui.BackgroundSelector" method="getImageRenderType" />
+    <pattern value="shane.pennihome.local.smartboard.data.Dashboard" method="executeBackgroundThread" />
+    <pattern value="shane.pennihome.local.smartboard.data.Dashboard" method="getBackgroundThread" />
+    <pattern value="shane.pennihome.local.smartboard.data.Dashboard" method="setBackgroundImageRenderType" />
+    <pattern value="shane.pennihome.local.smartboard.data.Dashboard" method="getBackgroundImageRenderType" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.GroupViewAdapter" method="GroupViewAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditGroupAdapter.ViewHolder" method="ViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.EditGroupAdapter" method="EditGroupAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="setBackgroundImageRenderType" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="getBackgroundImageRenderType" />
+    <pattern value="shane.pennihome.local.smartboard.comms.interfaces.IMessage" method="IMessage" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="setBackgroundImageRenderTypeOn" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="getBackgroundImageRenderTypeOn" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="setBackgroundImageRenderTypeOff" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchPropertiesClrSelector" method="getBackgroundImageRenderTypeOff" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="setBackgroundImageRenderType" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="getBackgroundImageRenderType" />
+    <pattern value="shane.pennihome.local.smartboard.ui.UIHelper.ImageRenderTypes" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

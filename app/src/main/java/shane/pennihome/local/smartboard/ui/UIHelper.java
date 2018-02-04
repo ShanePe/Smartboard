@@ -328,21 +328,31 @@ public class UIHelper {
         return Color.argb(alpha, r, g, b);
     }
 
-    public static Bitmap scaleDownBitmap(Bitmap realImage, float maxImageSize,
-                                         boolean filter) {
-        float ratio = Math.max(
-                (float) maxImageSize / realImage.getWidth(),
-                (float) maxImageSize / realImage.getHeight());
-        //float ratio = (float) maxImageSize / realImage.getHeight();
-        int width = Math.round((float) ratio * realImage.getWidth());
-        int height = Math.round((float) ratio * realImage.getHeight());
+    private static Bitmap scaleDownBitmap(Bitmap image, int maxWidth, int maxHeight, boolean keepAspectRation) {
+        if (maxHeight > 0 && maxWidth > 0) {
+            int width = image.getWidth();
+            int height = image.getHeight();
+            if (keepAspectRation) {
+                float ratioBitmap = (float) width / (float) height;
+                float ratioMax = (float) maxWidth / (float) maxHeight;
 
-        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
-                height, filter);
-        return newBitmap;
+                int finalWidth = maxWidth;
+                int finalHeight = maxHeight;
+                if (ratioMax > ratioBitmap) {
+                    finalWidth = (int) ((float) maxHeight * ratioBitmap);
+                } else {
+                    finalHeight = (int) ((float) maxWidth / ratioBitmap);
+                }
+                image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
+            } else
+                image = Bitmap.createScaledBitmap(image, maxWidth, maxHeight, true);
+            return image;
+        } else {
+            return image;
+        }
     }
 
-    public static Drawable generateImage(Context context, @ColorInt int backClr, int backClrAlphaPerc, Bitmap image, int imageAlphaPerc, int width, int height, boolean roundCrns) {
+    public static Drawable generateImage(Context context, @ColorInt int backClr, int backClrAlphaPerc, Bitmap image, int imageAlphaPerc, int width, int height, boolean roundCrns, ImageRenderTypes imageRenderType) {
         if (width == 0 || height == 0) {
             DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
             width = metrics.widthPixels;
@@ -358,13 +368,23 @@ public class UIHelper {
             paint.setStyle(Paint.Style.FILL);
             canvas.drawPaint(paint);
         } else if (image != null) {
-            Bitmap scaled = scaleDownBitmap(image, Math.min(width, height), true);
+            if (imageRenderType == null)
+                imageRenderType = ImageRenderTypes.Center;
+
+            Bitmap scaled = scaleDownBitmap(image, width, height, imageRenderType == ImageRenderTypes.Center);
             if (roundCrns)
                 scaled = getRoundedCornerBitmap(scaled, 4);
 
-            int destLeft = (width - scaled.getWidth()) / 2;
             Rect src = new Rect(0, 0, scaled.getWidth(), scaled.getHeight());
-            Rect dest = new Rect(destLeft, 0, scaled.getWidth() + destLeft, scaled.getHeight());
+            Rect dest = null;
+
+            if (imageRenderType == ImageRenderTypes.Center) {
+                int destLeft = (width - scaled.getWidth()) / 2;
+                int destTop = (height - scaled.getHeight()) / 2;
+
+                dest = new Rect(destLeft, destTop, scaled.getWidth() + destLeft, scaled.getHeight() + destTop);
+            } else if (imageRenderType == ImageRenderTypes.Stretch)
+                dest = new Rect(0, 0, width, height);
 
             Paint paint = new Paint();
             //canvas.clipRect(dest);
@@ -388,6 +408,20 @@ public class UIHelper {
         else
             return new BitmapDrawable(context.getResources(), bitmap);
     }
+
+//    public static Bitmap scaleDownBitmap(Bitmap realImage, float maxImageSize,
+//                                         boolean filter) {
+//        float ratio = Math.min(
+//                (float) maxImageSize / realImage.getWidth(),
+//                (float) maxImageSize / realImage.getHeight());
+////        float ratio = (float) maxImageSize / realImage.getHeight();
+//        int width = Math.round((float) ratio * realImage.getWidth());
+//        int height = Math.round((float) ratio * realImage.getHeight());
+//
+//        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
+//                height, filter);
+//        return newBitmap;
+//    }
 
     public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
@@ -499,4 +533,6 @@ public class UIHelper {
         Drawable drawable = new BitmapDrawable(context.getResources(), bitmap);
         return drawable;
     }
+
+    public enum ImageRenderTypes {Center, Stretch}
 }

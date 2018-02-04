@@ -1,17 +1,22 @@
 package shane.pennihome.local.smartboard.ui;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.LinearLayout;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Dashboard;
+import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
 
 /**
@@ -57,6 +62,7 @@ public class DashboardView extends LinearLayoutCompat {
         inflater.inflate(R.layout.dashboard_view_group_list, this);
 
         mContainer = findViewById(R.id.dvgl_container);
+        mContainer.setVisibility(View.GONE);
         RecyclerView mRecycleView = findViewById(R.id.dvgl_list);
         mRecycleView.setLayoutManager(new LinearLayoutManager(context, LinearLayout.VERTICAL, false));
         mGroupViewAdapter = new GroupViewAdapter(getDashboard());
@@ -77,14 +83,24 @@ public class DashboardView extends LinearLayoutCompat {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(1000);
-                    mContainer.post(new Runnable() {
+                    Log.i("Presleep -> " + getDashboard().getName(), Globals.ACTIVITY);
+                    Thread.sleep(500);
+
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
+                            Log.i("Render thread -> " + getDashboard().getName(), Globals.ACTIVITY);
+                            mContainer.setVisibility(View.VISIBLE);
                             getDashboard().createBackground(getContext(), mContainer);
+                            AlphaAnimation animation = new AlphaAnimation(0f, 1.0f);
+                            animation.setDuration(1000);
+                            mContainer.startAnimation(animation);
                         }
                     });
+
                 } catch (InterruptedException ignored) {
+                    Log.i("Render -> BROKE " + getDashboard().getName(), Globals.ACTIVITY);
+
                 }
             }
         });

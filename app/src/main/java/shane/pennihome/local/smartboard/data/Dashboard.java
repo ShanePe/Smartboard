@@ -28,6 +28,8 @@ public class Dashboard extends IDatabaseObject {
     @ColorInt
     private int mBackgroundColour = Color.TRANSPARENT;
     private int mBackgroundClrTrans = 0;
+    private transient Thread mBackgroundThread;
+    private UIHelper.ImageRenderTypes mBackgroundImageRenderType;
 
     public static Dashboard Load(String json) {
         Dashboard ret = new Dashboard();
@@ -38,6 +40,27 @@ public class Dashboard extends IDatabaseObject {
         }
 
         return ret;
+    }
+
+    public UIHelper.ImageRenderTypes getBackgroundImageRenderType() {
+        return mBackgroundImageRenderType;
+    }
+
+    public void setBackgroundImageRenderType(UIHelper.ImageRenderTypes backgroundImageRenderType) {
+        mBackgroundImageRenderType = backgroundImageRenderType;
+    }
+
+    public Thread getBackgroundThread() {
+        return mBackgroundThread;
+    }
+
+    public void executeBackgroundThread(Runnable runnable) {
+        if (mBackgroundThread != null) {
+            mBackgroundThread.interrupt();
+            mBackgroundThread = null;
+        }
+        mBackgroundThread = new Thread(runnable);
+        mBackgroundThread.start();
     }
 
     public void loadThings() {
@@ -116,6 +139,7 @@ public class Dashboard extends IDatabaseObject {
                 getBackgroundImageTransparency(),
                 destination.getMeasuredWidth(),
                 destination.getMeasuredHeight(),
-                false));
+                false,
+                getBackgroundImageRenderType()));
     }
 }

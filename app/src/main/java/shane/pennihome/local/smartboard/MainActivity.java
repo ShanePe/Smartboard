@@ -17,6 +17,7 @@ import android.webkit.CookieManager;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.comms.Monitor;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Dashboards;
 import shane.pennihome.local.smartboard.data.Globals;
@@ -87,9 +88,15 @@ public class MainActivity extends AppCompatActivity
                     Monitor.Create(monitor);
                 } catch (Exception ignored) {
                 }
+            populateDashbboards();
         }
         if (!Monitor.IsInstaniated())
-            Monitor.Create(this);
+            Monitor.Create(this, new OnProcessCompleteListener<Void>() {
+                @Override
+                public void complete(boolean success, Void source) {
+                    populateDashbboards();
+                }
+            });
 
         Monitor.getMonitor().start();
     }
@@ -166,7 +173,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
-        populateDashbboards();
+        //populateDashbboards();
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)

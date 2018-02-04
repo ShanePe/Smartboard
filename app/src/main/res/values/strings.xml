@@ -54,4 +54,9 @@
     <string name="lbl_cancel">Cancel</string>
     <string name="mnu_hubs">Hubs</string>
 
+    <string-array name="render_options">
+        <item>Center</item>
+        <item>Stretch</item>
+    </string-array>
+
 </resources>

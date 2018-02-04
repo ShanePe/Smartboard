@@ -24,7 +24,7 @@ public class SwitchBlock extends IBlock {
     private int mBackTransOn;
     private String mBackgroundImageOn;
     private int mBackgroundImageTransparencyOn;
-
+    private UIHelper.ImageRenderTypes mBackgroundImageRenderTypeOn;
 
     public static SwitchBlock Load(String json) {
         try {
@@ -80,6 +80,14 @@ public class SwitchBlock extends IBlock {
     int getBackgroundColourWithAlphaOn()
     {
         return UIHelper.getColorWithAlpha(getBackgroundColourOn(), getBackgroundColourTransparencyOn() / 100f);
+    }
+
+    UIHelper.ImageRenderTypes getBackgroundImageRenderTypeOn() {
+        return mBackgroundImageRenderTypeOn;
+    }
+
+    void setBackgroundImageRenderTypeOn(UIHelper.ImageRenderTypes backgroundImageRenderTypeOn) {
+        mBackgroundImageRenderTypeOn = backgroundImageRenderTypeOn;
     }
 
     @Override

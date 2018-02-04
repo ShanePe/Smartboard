@@ -12,6 +12,7 @@ import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
 import shane.pennihome.local.smartboard.ui.BackgroundSelector;
 import shane.pennihome.local.smartboard.ui.LabelTextbox;
+import shane.pennihome.local.smartboard.ui.UIHelper;
 import shane.pennihome.local.smartboard.ui.listeners.OnBackgroundActionListener;
 
 @SuppressWarnings("ALL")
@@ -54,7 +55,8 @@ public class SmartboardFragment extends Fragment {
         mBGSelector.setInitialValues(mSbAct.getDashboard().getBackgroundColour(),
                 mSbAct.getDashboard().getBackgroundColourTransparency(),
                 mSbAct.getDashboard().getBackgroundImage(),
-                mSbAct.getDashboard().getBackgroundImageTransparency());
+                mSbAct.getDashboard().getBackgroundImageTransparency(),
+                mSbAct.getDashboard().getBackgroundImageRenderType());
 
         mBGSelector.setBackgroundActionListener(new OnBackgroundActionListener() {
             @Override
@@ -75,6 +77,11 @@ public class SmartboardFragment extends Fragment {
             @Override
             public void OnImageSelected(String imageFile) {
                 mSbAct.getDashboard().setBackgroundImage(imageFile);
+            }
+
+            @Override
+            public void OnImageRenderTypeChanged(UIHelper.ImageRenderTypes imageRenderType) {
+                mSbAct.getDashboard().setBackgroundImageRenderType(imageRenderType);
             }
         });
 

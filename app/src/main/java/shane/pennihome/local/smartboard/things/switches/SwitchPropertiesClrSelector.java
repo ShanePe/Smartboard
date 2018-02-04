@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.ui.BackgroundSelector;
 import shane.pennihome.local.smartboard.ui.ForegroundSelector;
+import shane.pennihome.local.smartboard.ui.UIHelper;
 import shane.pennihome.local.smartboard.ui.ViewSwiper;
 import shane.pennihome.local.smartboard.ui.listeners.OnBackgroundActionListener;
 import shane.pennihome.local.smartboard.ui.listeners.OnForegroundActionListener;
@@ -38,6 +39,9 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
     private int mBackgroundColourTransparencyOn;
     @ColorInt
     private int mForegroundColourOn;
+
+    private UIHelper.ImageRenderTypes mBackgroundImageRenderTypeOff;
+    private UIHelper.ImageRenderTypes mBackgroundImageRenderTypeOn;
 
     private BackgroundSelector mBackgroundSelectorOn;
     private ForegroundSelector mForgroundSelectorOn;
@@ -137,6 +141,22 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
         mForegroundColourOff = foregroundColourOff;
     }
 
+    public UIHelper.ImageRenderTypes getBackgroundImageRenderTypeOff() {
+        return mBackgroundImageRenderTypeOff;
+    }
+
+    public void setBackgroundImageRenderTypeOff(UIHelper.ImageRenderTypes backgroundImageRenderType) {
+        mBackgroundImageRenderTypeOff = backgroundImageRenderType;
+    }
+
+    public UIHelper.ImageRenderTypes getBackgroundImageRenderTypeOn() {
+        return mBackgroundImageRenderTypeOn;
+    }
+
+    public void setBackgroundImageRenderTypeOn(UIHelper.ImageRenderTypes backgroundImageRenderTypeOn) {
+        mBackgroundImageRenderTypeOn = backgroundImageRenderTypeOn;
+    }
+
     private void initializeViews(Context context) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -182,6 +202,11 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
             public void OnImageSelected(String imageFile) {
                 mBackgroundImageOff = imageFile;
             }
+
+            @Override
+            public void OnImageRenderTypeChanged(UIHelper.ImageRenderTypes imageRenderType) {
+                mBackgroundImageRenderTypeOff = imageRenderType;
+            }
         });
 
         mForgroundSelectorOff.setOnForegroundActionListener(new OnForegroundActionListener() {
@@ -212,6 +237,11 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
             public void OnImageSelected(String imageFile) {
                 mBackgroundImageOn = imageFile;
             }
+
+            @Override
+            public void OnImageRenderTypeChanged(UIHelper.ImageRenderTypes imageRenderType) {
+                mBackgroundImageRenderTypeOn = imageRenderType;
+            }
         });
 
         mForgroundSelectorOff.setOnForegroundActionListener(new OnForegroundActionListener() {
@@ -223,9 +253,9 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
     }
 
     private void doPropertyChange() {
-        mBackgroundSelectorOff.setInitialValues(mBackgroundColourOff, mBackgroundColourTransparencyOff, mBackgroundImageOff, mBackgroundImageTransparencyOff);
+        mBackgroundSelectorOff.setInitialValues(mBackgroundColourOff, mBackgroundColourTransparencyOff, mBackgroundImageOff, mBackgroundImageTransparencyOff, mBackgroundImageRenderTypeOff);
         mForgroundSelectorOff.setColour(mForegroundColourOff);
-        mBackgroundSelectorOn.setInitialValues(mBackgroundColourOn, mBackgroundColourTransparencyOn, mBackgroundImageOn, mBackgroundImageTransparencyOn);
+        mBackgroundSelectorOn.setInitialValues(mBackgroundColourOn, mBackgroundColourTransparencyOn, mBackgroundImageOn, mBackgroundImageTransparencyOn, mBackgroundImageRenderTypeOn);
         mForgroundSelectorOn.setColour(mForegroundColourOn);
 
         invalidate();
@@ -237,6 +267,7 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
         mBackgroundColourTransparencyOff = block.getBackgroundColourTransparency();
         mBackgroundImageOff = block.getBackgroundImage();
         mBackgroundImageTransparencyOff = block.getBackgroundImageTransparency();
+        mBackgroundImageRenderTypeOff = block.getBackgroundImageRenderType();
 
         mForegroundColourOff = block.getForegroundColour();
 
@@ -244,6 +275,7 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
         mBackgroundColourTransparencyOn = block.getBackgroundColourTransparencyOn();
         mBackgroundImageOn = block.getBackgroundImageOn();
         mBackgroundImageTransparencyOn = block.getBackgroundImageTransparencyOn();
+        mBackgroundImageRenderTypeOn = block.getBackgroundImageRenderTypeOn();
 
         mForegroundColourOn = block.getForegroundColourOn();
 
@@ -255,6 +287,7 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
         block.setBackgroundColourTransparency(mBackgroundColourTransparencyOff);
         block.setBackgroundImage(mBackgroundImageOff);
         block.setBackgroundImageTransparency(mBackgroundImageTransparencyOff);
+        block.setBackgroundImageRenderType(mBackgroundImageRenderTypeOff);
 
         block.setForegroundColour(mForegroundColourOff);
 
@@ -262,6 +295,7 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
         block.setBackgroundColourTransparencyOn(mBackgroundColourTransparencyOn);
         block.setBackgroundImageOn(mBackgroundImageOn);
         block.setBackgroundImageTransparencyOn(mBackgroundImageTransparencyOn);
+        block.setBackgroundImageRenderTypeOn(mBackgroundImageRenderTypeOn);
 
         block.setForegroundColourOn(mForegroundColourOn);
 

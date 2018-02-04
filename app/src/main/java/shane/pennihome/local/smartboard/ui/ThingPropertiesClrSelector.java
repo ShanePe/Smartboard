@@ -25,6 +25,7 @@ public class ThingPropertiesClrSelector extends LinearLayoutCompat {
     private int mBackgroundColourTransparency;
     @ColorInt
     private int mForegroundColour;
+    private UIHelper.ImageRenderTypes mBackgroundImageRenderType;
 
     private BackgroundSelector mBackgroundSelector;
     private ForegroundSelector mForgroundSelector;
@@ -86,6 +87,14 @@ public class ThingPropertiesClrSelector extends LinearLayoutCompat {
         mBackgroundColourTransparency = backgroundColourTransparency;
     }
 
+    public UIHelper.ImageRenderTypes getBackgroundImageRenderType() {
+        return mBackgroundImageRenderType;
+    }
+
+    public void setBackgroundImageRenderType(UIHelper.ImageRenderTypes backgroundImageRenderType) {
+        mBackgroundImageRenderType = backgroundImageRenderType;
+    }
+
     private void initializeViews(Context context) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -126,6 +135,11 @@ public class ThingPropertiesClrSelector extends LinearLayoutCompat {
             public void OnImageSelected(String imageFile) {
                 mBackgroundImage = imageFile;
             }
+
+            @Override
+            public void OnImageRenderTypeChanged(UIHelper.ImageRenderTypes imageRenderType) {
+                mBackgroundImageRenderType = imageRenderType;
+            }
         });
 
         mForgroundSelector.setOnForegroundActionListener(new OnForegroundActionListener() {
@@ -140,7 +154,7 @@ public class ThingPropertiesClrSelector extends LinearLayoutCompat {
     }
 
     private void doPropertyChange() {
-        mBackgroundSelector.setInitialValues(mBackgroundColour, mBackgroundColourTransparency, mBackgroundImage, mBackgroundImageTransparency);
+        mBackgroundSelector.setInitialValues(mBackgroundColour, mBackgroundColourTransparency, mBackgroundImage, mBackgroundImageTransparency, mBackgroundImageRenderType);
         mForgroundSelector.setColour(mForegroundColour);
         invalidate();
         requestLayout();
@@ -153,6 +167,7 @@ public class ThingPropertiesClrSelector extends LinearLayoutCompat {
         mBackgroundImageTransparency = block.getBackgroundImageTransparency();
 
         mForegroundColour = block.getForegroundColour();
+        mBackgroundImageRenderType = block.getBackgroundImageRenderType();
 
         doPropertyChange();
     }
@@ -162,6 +177,7 @@ public class ThingPropertiesClrSelector extends LinearLayoutCompat {
         block.setBackgroundColourTransparency(mBackgroundColourTransparency);
         block.setBackgroundImage(mBackgroundImage);
         block.setBackgroundImageTransparency(mBackgroundImageTransparency);
+        block.setBackgroundImageRenderType(mBackgroundImageRenderType);
 
         block.setForegroundColour(mForegroundColour);
     }

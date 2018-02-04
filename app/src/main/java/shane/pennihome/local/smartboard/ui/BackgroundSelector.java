@@ -5,8 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -16,9 +18,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
@@ -35,6 +40,7 @@ public class BackgroundSelector extends LinearLayoutCompat {
     private SeekBar msbBGClr = null;
     private ImageButton mBtnBGClr;
     private ImageView mPreview;
+    private Spinner mRenderStyle;
 
     private OnBackgroundActionListener mBackgroundActionListener;
     private Thread mRenderThread;
@@ -45,6 +51,7 @@ public class BackgroundSelector extends LinearLayoutCompat {
     private int mTransparency;
     private String mImage;
     private int mImageTransparency;
+    private UIHelper.ImageRenderTypes mImageRenderType;
 
     public BackgroundSelector(Context context) {
         super(context);
@@ -101,6 +108,15 @@ public class BackgroundSelector extends LinearLayoutCompat {
         doPropertyChange(true);
     }
 
+    public UIHelper.ImageRenderTypes getImageRenderType() {
+        return mImageRenderType;
+    }
+
+    public void setImageRenderType(UIHelper.ImageRenderTypes imageRenderTypes) {
+        mImageRenderType = imageRenderTypes;
+        doPropertyChange(false);
+    }
+
     private void initializeViews(Context context) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -108,12 +124,12 @@ public class BackgroundSelector extends LinearLayoutCompat {
         inflater.inflate(R.layout.custom_background_selector, this);
     }
 
-    public void setInitialValues(@ColorInt int colour, int transparency, String image, int imageTransparency) {
+    public void setInitialValues(@ColorInt int colour, int transparency, String image, int imageTransparency, UIHelper.ImageRenderTypes backgroundImageRenderType) {
         mColour = colour;
         mTransparency = transparency;
         mImage = image;
         mImageTransparency = imageTransparency;
-
+        mImageRenderType = backgroundImageRenderType;
         doPropertyChange(false);
     }
 
@@ -139,6 +155,7 @@ public class BackgroundSelector extends LinearLayoutCompat {
         msbBGClr = this.findViewById(R.id.cbv_colour_trans);
         msbBGImg = this.findViewById(R.id.cbv_image_trans);
         mBtnBGClr = this.findViewById(R.id.cbv_colour);
+        mRenderStyle = this.findViewById(R.id.cbv_render_style);
 
         ImageButton mBtnReset = this.findViewById(R.id.cbv_reset);
 
@@ -213,7 +230,24 @@ public class BackgroundSelector extends LinearLayoutCompat {
         mBtnReset.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                setInitialValues(Color.TRANSPARENT, 100, null, 100);
+                setInitialValues(Color.TRANSPARENT, 100, null, 100, UIHelper.ImageRenderTypes.Center);
+            }
+        });
+
+        mRenderStyle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                setImageRenderType(UIHelper.ImageRenderTypes.valueOf((String) adapterView.getItemAtPosition(i)));
+
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.parseColor("#424242"));
+                if (mBackgroundActionListener != null)
+                    mBackgroundActionListener.OnImageRenderTypeChanged(getImageRenderType());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
@@ -237,6 +271,8 @@ public class BackgroundSelector extends LinearLayoutCompat {
 
         msbBGImg.setProgress(mImageTransparency);
         msbBGClr.setProgress(mTransparency);
+
+        mRenderStyle.setSelection(mImageRenderType == null ? 0 : mImageRenderType.ordinal());
 
         invalidate();
         requestLayout();
@@ -282,7 +318,8 @@ public class BackgroundSelector extends LinearLayoutCompat {
                 mImageTransparency,
                 width,
                 height,
-                true);
+                true,
+                mImageRenderType);
 
         mPreview.post(new Runnable() {
             @Override

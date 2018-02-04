@@ -50,7 +50,7 @@ public class Monitor {
         return getMonitor();
     }
 
-    public static Monitor Create(final AppCompatActivity activity) {
+    public static Monitor Create(final AppCompatActivity activity, final OnProcessCompleteListener<Void> onProcessCompleteListener) {
         getMonitor().setServices(ServiceManager.getActiveServices(activity));
 
         getMonitor().getThingsFromService(activity, new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
@@ -61,6 +61,8 @@ public class Monitor {
                 else
                     for (String e : source.getErrors().keySet())
                         Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG).show();
+                if (onProcessCompleteListener != null)
+                    onProcessCompleteListener.complete(true, null);
             }
         });
         return getMonitor();
