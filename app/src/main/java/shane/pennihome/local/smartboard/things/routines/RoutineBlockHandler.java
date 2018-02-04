@@ -58,16 +58,16 @@ public class RoutineBlockHandler extends IBlockUIHandler {
 
     @Override
     public BlockEditViewHolder GetEditHolder(View view) {
-        return new EditorViewHolder(view);
+        return new RoutineEditorHolder(view);
     }
 
     @Override
     public BlockViewHolder GetViewHolder(View view) {
-        return null;
+        return new RoutineViewHolder(view);
     }
 
     public void BindViewHolder(BlockEditViewHolder viewHolder, int backgroundResourceId) {
-        EditorViewHolder holder = (EditorViewHolder) viewHolder;
+        RoutineEditorHolder holder = (RoutineEditorHolder) viewHolder;
 
         holder.mBaName.setText(getBlock().getName());
         holder.mBaImg.setImageResource(getBlock().getDefaultIconResource());
@@ -96,7 +96,7 @@ public class RoutineBlockHandler extends IBlockUIHandler {
 
     @Override
     public int getViewLayoutID() {
-        return return R.layout.block_view_routine;
+        return R.layout.block_view_routine;
     }
 
     @Override
@@ -105,7 +105,7 @@ public class RoutineBlockHandler extends IBlockUIHandler {
     }
 
 
-    public class EditorViewHolder extends BlockEditViewHolder {
+    public class RoutineEditorHolder extends BlockEditViewHolder {
         public final LinearLayout mLayout;
         public final TextView mBaName;
         public final ImageView mBaImg;
@@ -113,7 +113,7 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         public final TextView mBaSize;
         public final FrameLayout mContainer;
 
-        public EditorViewHolder(View view) {
+        public RoutineEditorHolder(View view) {
             super(view);
             mContainer = view.findViewById(R.id.rt_cv_dashboard_block);
             mLayout = view.findViewById(R.id.rt_block_area);
@@ -129,10 +129,10 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         }
     }
 
-    public class ViewHolder extends BlockViewHolder {
+    public class RoutineViewHolder extends BlockViewHolder {
         TextView mTitle;
 
-        public ViewHolder(View itemView) {
+        public RoutineViewHolder(View itemView) {
             super(itemView);
 
             mTitle = itemView.findViewById(R.id.bvr_title);
