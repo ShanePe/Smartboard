@@ -1,8 +1,6 @@
 package shane.pennihome.local.smartboard.ui;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +23,7 @@ public class DashboardView extends LinearLayoutCompat {
     private Dashboard mDashboard;
     private LinearLayoutCompat mContainer;
     private GroupViewAdapter mGroupViewAdapter;
+    private Thread mBGDrawer;
 
     public DashboardView(Context context) {
         super(context);
@@ -68,19 +67,30 @@ public class DashboardView extends LinearLayoutCompat {
         if (getDashboard() == null)
             return;
 
-        mGroupViewAdapter.setDashboard(getDashboard());
+        if (mBGDrawer != null) {
+            mBGDrawer.interrupt();
+            mBGDrawer = null;
+        }
 
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(new Runnable() {
+        mGroupViewAdapter.setDashboard(getDashboard());
+        mBGDrawer = new Thread(new Runnable() {
             @Override
             public void run() {
-                getDashboard().createBackground(getContext(), mContainer);
+                try {
+                    Thread.sleep(1000);
+                    mContainer.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            getDashboard().createBackground(getContext(), mContainer);
+                        }
+                    });
+                } catch (InterruptedException ignored) {
+                }
             }
         });
+        mBGDrawer.start();
 
         mGroupViewAdapter.notifyDataSetChanged();
-        //invalidate();
-        //requestLayout();
     }
 
     class GroupViewAdapter extends RecyclerView.Adapter<GroupViewAdapter.ViewHolder> {
