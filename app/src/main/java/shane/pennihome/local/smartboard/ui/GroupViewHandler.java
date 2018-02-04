@@ -20,6 +20,7 @@ import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Dashboard;
+import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.fragments.DashboardFragment;
 import shane.pennihome.local.smartboard.thingsframework.adapters.EditBlockAdapter;
@@ -44,7 +45,7 @@ public class GroupViewHandler {
     private void handle(SmartboardActivity smartboardActivity, final ViewGroup parent, final View view, final Group group, RecyclerView recyclerView)
     {
         mSmartboardActivity = smartboardActivity;
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(smartboardActivity, 8);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(smartboardActivity, Globals.BLOCK_COLUMNS);
 
         RecyclerViewDragDropManager dragDropManager = new RecyclerViewDragDropManager();
         dragDropManager.setDraggingItemShadowDrawable(

@@ -1,6 +1,7 @@
 package shane.pennihome.local.smartboard.ui;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -18,6 +19,8 @@ import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
 
 /**
  * Created by shane on 03/02/18.
@@ -136,6 +139,10 @@ public class DashboardView extends LinearLayoutCompat {
             holder.mGroup = mDashboard.getGroupAt(position);
             holder.mGroupTitle.setTitle(holder.mGroup.getName());
             holder.mGroupTitle.setVisibility(holder.mGroup.getDisplayName() ? View.VISIBLE : View.GONE);
+
+            int blockSize = Resources.getSystem().getDisplayMetrics().widthPixels / Globals.BLOCK_COLUMNS;
+            BlockViewAdapter adapter = new BlockViewAdapter(holder.mGroup, blockSize);
+            holder.mBlockView.setAdapter(adapter);
         }
 
         @Override
@@ -145,13 +152,55 @@ public class DashboardView extends LinearLayoutCompat {
 
         class ViewHolder extends RecyclerView.ViewHolder {
             final GroupTitle mGroupTitle;
+            RecyclerView mBlockView;
             Group mGroup;
 
             public ViewHolder(View itemView) {
                 super(itemView);
 
                 mGroupTitle = itemView.findViewById(R.id.dvg_title);
+                mBlockView = itemView.findViewById(R.id.dvg_dashboard);
             }
         }
+    }
+
+    class BlockViewAdapter extends RecyclerView.Adapter<IBlockUIHandler.BlockViewHolder> {
+        int mBlockSize;
+        private Group mGroup;
+
+        BlockViewAdapter(Group group, int blockSize) {
+            this.mGroup = group;
+            this.mBlockSize = blockSize;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return IBlock.GetTypeID(mGroup.getBlockAt(position));
+        }
+
+        @Override
+        public IBlockUIHandler.BlockViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            IBlock block;
+            try {
+                block = IBlock.CreateByTypeID(viewType);
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(block.getUIHandler().getViewLayoutID(), parent, false);
+
+                return block.getUIHandler().GetViewHolder(view);
+            } catch (Exception ignored) {
+                return null;
+            }
+        }
+
+        @Override
+        public void onBindViewHolder(IBlockUIHandler.BlockViewHolder holder, int position) {
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return mGroup.getBlocks().size();
+        }
+
     }
 }

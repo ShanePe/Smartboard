@@ -101,15 +101,15 @@ public class UIHelper {
         if (block == null)
             return;
 
-        showPropertyWindow(activity, "Add Block", block.getUIHandler().getEditorViewResourceID(), new OnPropertyWindowListener() {
+        showPropertyWindow(activity, "Add Block", block.getUIHandler().getEditorWindowLayoutID(), new OnPropertyWindowListener() {
             @Override
             public void onWindowShown(View view) {
-                block.getUIHandler().buildBlockPropertyView(activity, view, Monitor.getMonitor().getThings().getForBlock(block), group);
+                block.getUIHandler().buildEditorWindowView(activity, view, Monitor.getMonitor().getThings().getForBlock(block), group);
             }
 
             @Override
             public void onOkSelected(View view) {
-                block.getUIHandler().populateBlockFromView(view, onBlockSetListener);
+                block.getUIHandler().buildBlockFromEditorWindowView(view, onBlockSetListener);
             }
         });
     }

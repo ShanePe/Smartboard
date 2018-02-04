@@ -24,8 +24,8 @@ import shane.pennihome.local.smartboard.ui.UIHelper;
  * Created by shane on 15/01/18.
  */
 @SuppressWarnings("ALL")
-public class EditBlockAdapter extends RecyclerView.Adapter<IBlockUIHandler.BaseEditorViewHolder>
-        implements DraggableItemAdapter<IBlockUIHandler.BaseEditorViewHolder> {
+public class EditBlockAdapter extends RecyclerView.Adapter<IBlockUIHandler.BlockEditViewHolder>
+        implements DraggableItemAdapter<IBlockUIHandler.BlockEditViewHolder> {
 
     private final SmartboardActivity mSmartboardActivity;
     private final Group mGroup;
@@ -57,14 +57,14 @@ public class EditBlockAdapter extends RecyclerView.Adapter<IBlockUIHandler.BaseE
     }
 
     @Override
-    public IBlockUIHandler.BaseEditorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public IBlockUIHandler.BlockEditViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         IBlock block;
         try {
             block = IBlock.CreateByTypeID(viewType);
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(block.getUIHandler().getViewResourceID(), parent, false);
+                    .inflate(block.getUIHandler().getEditLayoutID(), parent, false);
 
-            return block.getUIHandler().GetEditorViewHolder(view);
+            return block.getUIHandler().GetEditHolder(view);
         }
         catch (Exception e) {
             return null;
@@ -72,7 +72,7 @@ public class EditBlockAdapter extends RecyclerView.Adapter<IBlockUIHandler.BaseE
     }
 
     @Override
-    public void onBindViewHolder(final IBlockUIHandler.BaseEditorViewHolder holder, final int position) {
+    public void onBindViewHolder(final IBlockUIHandler.BlockEditViewHolder holder, final int position) {
         final int dragState = holder.getDragStateFlags();
 
         int bgResId = 0;
@@ -81,9 +81,6 @@ public class EditBlockAdapter extends RecyclerView.Adapter<IBlockUIHandler.BaseE
 
             if ((dragState & EditBlockAdapter.Draggable.STATE_FLAG_IS_ACTIVE) != 0) {
                 bgResId = R.drawable.bg_item_dragging_active_state;
-
-                // need to clear drawable state here to get correct appearance of the dragging item.
-                //DrawableUtils.clearState(holder.mContainer.getForeground());
             } else if ((dragState & EditBlockAdapter.Draggable.STATE_FLAG_DRAGGING) != 0) {
                 bgResId = R.drawable.bg_item_dragging_state;
             } else {
@@ -128,12 +125,12 @@ public class EditBlockAdapter extends RecyclerView.Adapter<IBlockUIHandler.BaseE
     }
 
     @Override
-    public boolean onCheckCanStartDrag(IBlockUIHandler.BaseEditorViewHolder holder, int position, int x, int y) {
+    public boolean onCheckCanStartDrag(IBlockUIHandler.BlockEditViewHolder holder, int position, int x, int y) {
         return true;
     }
 
     @Override
-    public ItemDraggableRange onGetItemDraggableRange(IBlockUIHandler.BaseEditorViewHolder holder, int position) {
+    public ItemDraggableRange onGetItemDraggableRange(IBlockUIHandler.BlockEditViewHolder holder, int position) {
         return null;
     }
 

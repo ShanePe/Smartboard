@@ -30,7 +30,7 @@ public class RoutineBlockHandler extends IBlockUIHandler {
     }
 
     @Override
-    public void buildBlockPropertyView(final Activity activity, View view, Things things, final Group group) {
+    public void buildEditorWindowView(final Activity activity, View view, Things things, final Group group) {
         ViewSwiper viewSwiper = view.findViewById(R.id.rt_swiper);
         TabLayout tabLayout = view.findViewById(R.id.rt_tabs);
         viewSwiper.setTabLayout(tabLayout);
@@ -45,7 +45,7 @@ public class RoutineBlockHandler extends IBlockUIHandler {
     }
 
     @Override
-    public void populateBlockFromView(View view, OnBlockSetListener onBlockSetListener) {
+    public void buildBlockFromEditorWindowView(View view, OnBlockSetListener onBlockSetListener) {
         ThingProperties tbProps = view.findViewById(R.id.rt_properties);
         ThingPropertiesClrSelector tbBackground = view.findViewById(R.id.rt_background);
 
@@ -57,11 +57,16 @@ public class RoutineBlockHandler extends IBlockUIHandler {
     }
 
     @Override
-    public BaseEditorViewHolder GetEditorViewHolder(View view) {
+    public BlockEditViewHolder GetEditHolder(View view) {
         return new EditorViewHolder(view);
     }
 
-    public void BindViewHolder(BaseEditorViewHolder viewHolder, int backgroundResourceId) {
+    @Override
+    public BlockViewHolder GetViewHolder(View view) {
+        return null;
+    }
+
+    public void BindViewHolder(BlockEditViewHolder viewHolder, int backgroundResourceId) {
         EditorViewHolder holder = (EditorViewHolder) viewHolder;
 
         holder.mBaName.setText(getBlock().getName());
@@ -85,17 +90,22 @@ public class RoutineBlockHandler extends IBlockUIHandler {
     }
 
     @Override
-    public int getViewResourceID() {
-        return R.layout.dashboard_block_routine;
+    public int getEditLayoutID() {
+        return R.layout.block_edit_routine;
     }
 
     @Override
-    public int getEditorViewResourceID() {
+    public int getViewLayoutID() {
+        return return R.layout.block_view_routine;
+    }
+
+    @Override
+    public int getEditorWindowLayoutID() {
         return R.layout.prop_block_routine;
     }
 
 
-    public class EditorViewHolder extends BaseEditorViewHolder {
+    public class EditorViewHolder extends BlockEditViewHolder {
         public final LinearLayout mLayout;
         public final TextView mBaName;
         public final ImageView mBaImg;
@@ -116,6 +126,16 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         @Override
         public String toString() {
             return super.toString() + " '" + mBaName.getText() + "'";
+        }
+    }
+
+    public class ViewHolder extends BlockViewHolder {
+        TextView mTitle;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            mTitle = itemView.findViewById(R.id.bvr_title);
         }
     }
 }

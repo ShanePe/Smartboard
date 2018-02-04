@@ -31,7 +31,7 @@ public class SwitchBlockHandler extends IBlockUIHandler {
     }
 
     @Override
-    public void buildBlockPropertyView(final Activity activity, View view, Things things, final Group group) {
+    public void buildEditorWindowView(final Activity activity, View view, Things things, final Group group) {
         ViewSwiper viewSwiper = view.findViewById(R.id.sw_swiper);
         TabLayout tabLayout = view.findViewById(R.id.sw_tabs);
         viewSwiper.setTabLayout(tabLayout);
@@ -46,7 +46,7 @@ public class SwitchBlockHandler extends IBlockUIHandler {
     }
 
     @Override
-    public void populateBlockFromView(View view, OnBlockSetListener onBlockSetListener) {
+    public void buildBlockFromEditorWindowView(View view, OnBlockSetListener onBlockSetListener) {
         ThingProperties tbProps = view.findViewById(R.id.sw_properties);
         SwitchPropertiesClrSelector tbBackground = view.findViewById(R.id.sw_background);
 
@@ -58,11 +58,16 @@ public class SwitchBlockHandler extends IBlockUIHandler {
     }
 
     @Override
-    public BaseEditorViewHolder GetEditorViewHolder(View view) {
+    public BlockEditViewHolder GetEditHolder(View view) {
         return new EditorViewHolder(view);
     }
 
-    public void BindViewHolder(BaseEditorViewHolder viewHolder, int backgroundResourceId) {
+    @Override
+    public BlockViewHolder GetViewHolder(View view) {
+        return null;
+    }
+
+    public void BindViewHolder(BlockEditViewHolder viewHolder, int backgroundResourceId) {
         EditorViewHolder holder = (EditorViewHolder) viewHolder;
 
         holder.mBaName.setText(getBlock().getName());
@@ -85,16 +90,21 @@ public class SwitchBlockHandler extends IBlockUIHandler {
     }
 
     @Override
-    public int getViewResourceID() {
-        return R.layout.dashboard_block_switch;
+    public int getEditLayoutID() {
+        return R.layout.block_edit_switch;
     }
 
     @Override
-    public int getEditorViewResourceID() {
+    public int getViewLayoutID() {
+        return 0;
+    }
+
+    @Override
+    public int getEditorWindowLayoutID() {
         return R.layout.prop_block_switch;
     }
 
-    public class EditorViewHolder extends IBlockUIHandler.BaseEditorViewHolder {
+    public class EditorViewHolder extends BlockEditViewHolder {
         public final LinearLayout mLayout;
         public final TextView mBaName;
         public final ImageView mBaImg;

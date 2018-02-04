@@ -1,6 +1,7 @@
 package shane.pennihome.local.smartboard.thingsframework.interfaces;
 
 import android.app.Activity;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,17 +23,21 @@ public abstract class IBlockUIHandler {
         mIBlock = block;
     }
 
-    public abstract void buildBlockPropertyView(Activity activity, View view, Things things, Group group);
+    public abstract void buildEditorWindowView(Activity activity, View view, Things things, Group group);
 
-    public abstract void populateBlockFromView(View view, OnBlockSetListener onBlockSetListener);
+    public abstract void buildBlockFromEditorWindowView(View view, OnBlockSetListener onBlockSetListener);
 
-    public abstract BaseEditorViewHolder GetEditorViewHolder(View view);
+    public abstract BlockEditViewHolder GetEditHolder(View view);
 
-    public abstract void BindViewHolder(BaseEditorViewHolder viewHolder, int backgroundResourceId);
+    public abstract BlockViewHolder GetViewHolder(View view);
 
-    public abstract int getViewResourceID();
+    public abstract void BindViewHolder(BlockEditViewHolder viewHolder, int backgroundResourceId);
 
-    public abstract int getEditorViewResourceID();
+    public abstract int getEditLayoutID();
+
+    public abstract int getViewLayoutID();
+
+    public abstract int getEditorWindowLayoutID();
 
     protected IBlock getBlock() {
         return mIBlock;
@@ -48,13 +53,19 @@ public abstract class IBlockUIHandler {
         return (E) getBlock();
     }
 
-    public class BaseEditorViewHolder extends AbstractDraggableItemViewHolder {
-        public BaseEditorViewHolder(View itemView) {
+    public class BlockEditViewHolder extends AbstractDraggableItemViewHolder {
+        public BlockEditViewHolder(View itemView) {
             super(itemView);
         }
         public View getContainer()
         {
             return ((ViewGroup)itemView).getChildAt(0);
+        }
+    }
+
+    public class BlockViewHolder extends RecyclerView.ViewHolder {
+        public BlockViewHolder(View itemView) {
+            super(itemView);
         }
     }
 }

@@ -13,6 +13,7 @@ import java.util.Random;
 @SuppressWarnings("DefaultFileTemplate")
 public class Globals extends Application{
     public final static String ACTIVITY = "SmartBoard";
+    public final static int BLOCK_COLUMNS = 8;
     private static SharedPreferences mPrefs;
     private static Globals mInstance;
 
