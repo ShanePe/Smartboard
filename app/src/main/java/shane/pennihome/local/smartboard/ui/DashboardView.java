@@ -94,7 +94,7 @@ public class DashboardView extends LinearLayoutCompat {
                         public void run() {
                             Log.i("Render thread -> " + getDashboard().getName(), Globals.ACTIVITY);
                             mContainer.setVisibility(View.VISIBLE);
-                            getDashboard().renderBackgroundTo(getContext(), mContainer);
+                            getDashboard().renderBackgroundTo(mContainer);
                             AlphaAnimation animation = new AlphaAnimation(0f, 1.0f);
                             animation.setDuration(1000);
                             mContainer.startAnimation(animation);
