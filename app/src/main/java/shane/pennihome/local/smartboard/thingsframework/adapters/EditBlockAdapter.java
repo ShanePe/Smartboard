@@ -161,6 +161,4 @@ public class EditBlockAdapter extends RecyclerView.Adapter<IBlockUIHandler.Block
 
     private interface Draggable extends DraggableItemConstants {
     }
-
-
 }

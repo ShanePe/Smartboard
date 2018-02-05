@@ -127,12 +127,12 @@ public class Dashboard extends IDatabaseObject {
         return UIHelper.getImageFromFile(context, getBackgroundImage());
     }
 
-    public void createBackground(Context context, View destination) {
+    public void renderBackgroundTo(View destination) {
         Bitmap bitmap = null;
         if (!TextUtils.isEmpty(getBackgroundImage()))
             bitmap = BitmapFactory.decodeFile(getBackgroundImage());
 
-        destination.setBackground(UIHelper.generateImage(context,
+        destination.setBackground(UIHelper.generateImage(destination.getContext(),
                 getBackgroundColour(),
                 getBackgroundColourTransparency(),
                 bitmap,

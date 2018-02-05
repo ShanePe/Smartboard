@@ -176,7 +176,7 @@ public abstract class IBlock extends IDatabaseObject {
         return UIHelper.getColorWithAlpha(getBackgroundColour(), getBackgroundColourTransparency() / 100f);
     }
 
-    public void renderBackground(final View view) {
+    public void renderBackgroundTo(final View destination) {
         Handler safeRender = new Handler();
         safeRender.post(new Runnable() {
             @Override
@@ -186,19 +186,19 @@ public abstract class IBlock extends IDatabaseObject {
                     bitmap = BitmapFactory.decodeFile(mBackImage);
 
                 final Drawable drawable = UIHelper.generateImage(
-                        view.getContext(),
+                        destination.getContext(),
                         mBackColour, mBackTrans,
                         bitmap,
                         mBGImgTrans,
-                        view.getMeasuredWidth(),
-                        view.getMeasuredHeight(),
+                        destination.getMeasuredWidth(),
+                        destination.getMeasuredHeight(),
                         false,
                         mBGImageRenderType);
 
-                view.post(new Runnable() {
+                destination.post(new Runnable() {
                     @Override
                     public void run() {
-                        view.setBackground(drawable);
+                        destination.setBackground(drawable);
                     }
                 });
             }

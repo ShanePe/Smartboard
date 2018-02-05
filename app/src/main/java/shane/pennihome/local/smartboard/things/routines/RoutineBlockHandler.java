@@ -80,7 +80,7 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         @ColorInt final int bgClr = getBlock().getBackgroundColourWithAlpha();
         @ColorInt int fgClr = getBlock().getForegroundColour();
 
-        // getThing().getBlock().renderBackground(holder.mLayout);
+        // getThing().getBlock().renderBackgroundTo(holder.mLayout);
         holder.mLayout.setBackgroundColor(bgClr);
         holder.mBaName.setTextColor(fgClr);
         holder.mBaDevice.setTextColor(fgClr);
@@ -94,6 +94,7 @@ public class RoutineBlockHandler extends IBlockUIHandler {
     public void BindViewHolder(BlockViewHolder viewHolder) {
         RoutineViewHolder holder = (RoutineViewHolder) viewHolder;
 
+        //holder.mContainer.setBackground();
         holder.mTitle.setText(getBlock().getName());
     }
 
