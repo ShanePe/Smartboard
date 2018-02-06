@@ -7,11 +7,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.comms.ExecutorResult;
+import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.things.switches.OnSwitchStateChangeListener;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
 
 /**
  * Created by shane on 29/12/17.
@@ -56,7 +57,7 @@ public class DeviceViewAdapter extends ThingViewAdapter {
             @Override
             public void onClick(View v) {
                 vh.mSwitchView.setEnabled(false);
-                ExecutorResult result = vh.mItem.execute();
+                JsonExecutorResult result = vh.mItem.execute();
                 if(result.isSuccess())
                     vh.mSwitchView.setChecked(vh.mItem.isOn());
                 else
@@ -67,9 +68,15 @@ public class DeviceViewAdapter extends ThingViewAdapter {
 
         vh.mItem.setOnSwitchStateChangeListener(new OnSwitchStateChangeListener() {
             @Override
-            public void OnStateChange(boolean isOn, boolean isUnreachable) {
-                vh.mSwitchView.setEnabled(!isUnreachable);
+            public void OnStateChange(boolean isOn) {
                 vh.mSwitchView.setChecked(isOn);
+            }
+        });
+
+        vh.mItem.setOnThingActionListener(new OnThingActionListener() {
+            @Override
+            public void OnReachableStateChanged(boolean isUnReachable) {
+                vh.mSwitchView.setEnabled(!isUnReachable);
             }
         });
     }

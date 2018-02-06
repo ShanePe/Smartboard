@@ -1,7 +1,6 @@
 package shane.pennihome.local.smartboard.services.PhilipsHue;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +20,7 @@ import java.util.List;
 import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
+import shane.pennihome.local.smartboard.ui.dialogs.ProgressDialog;
 import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
 
 /**
@@ -127,11 +127,9 @@ public class HueBridgeFragment extends IRegisterServiceFragment {
 
         @Override
         protected void onPreExecute() {
-            mDialog = new ProgressDialog(mContext.get());
+            mDialog = new ProgressDialog();
             mDialog.setMessage("Scanning for Philips Hue Bridges.");
-            mDialog.setIndeterminate(false);
-            mDialog.setCancelable(true);
-            mDialog.show();
+            mDialog.show(mContext.get());
         }
 
         @Override

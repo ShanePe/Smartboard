@@ -33,4 +33,11 @@ dependencies {
     implementation project(':colourPicker')
     implementation 'com.android.support:cardview-v7:27.0.2'
     implementation project(':advrecycleview')
+    implementation project(':asymmetricgridview')
+}
+
+allprojects {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:deprecation"
+    }
 }

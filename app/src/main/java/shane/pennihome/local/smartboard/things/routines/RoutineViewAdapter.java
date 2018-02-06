@@ -11,6 +11,7 @@ import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.thingsframework.adapters.ThingViewAdapter;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
 
 /**
  * Created by shane on 30/12/17.
@@ -55,6 +56,13 @@ public class RoutineViewAdapter extends ThingViewAdapter {
             public void onClick(View v) {
                vh.mItem.execute();
                 Toast.makeText(vh.mImgView.getContext(), "Execute routine : " + vh.mItem.getName(), Toast.LENGTH_SHORT ).show();
+            }
+        });
+
+        vh.mItem.setOnThingActionListener(new OnThingActionListener() {
+            @Override
+            public void OnReachableStateChanged(boolean isUnReachable) {
+                vh.mButtonView.setEnabled(!isUnReachable);
             }
         });
     }

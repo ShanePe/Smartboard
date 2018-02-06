@@ -3,6 +3,7 @@ package shane.pennihome.local.smartboard.ui;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -50,6 +51,7 @@ import java.util.UUID;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
+import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.switches.Switch;
@@ -533,6 +535,16 @@ public class UIHelper {
         Drawable drawable = new BitmapDrawable(context.getResources(), bitmap);
         return drawable;
     }
+
+    public static @ColorInt int getDefaultForegroundColour()
+    {
+        int[] attrs = {R.attr.colorButtonNormal};
+        TypedArray ta = Globals.getContext().obtainStyledAttributes(attrs);
+        @ColorInt int color = ta.getResourceId(0, android.R.color.black);
+        ta.recycle();
+        return color;
+    }
+
 
     public enum ImageRenderTypes {Center, Stretch}
 }

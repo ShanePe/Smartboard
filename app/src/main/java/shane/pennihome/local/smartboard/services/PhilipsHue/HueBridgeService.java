@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.comms.Executor;
-import shane.pennihome.local.smartboard.comms.ExecutorRequest;
-import shane.pennihome.local.smartboard.comms.ExecutorResult;
+import shane.pennihome.local.smartboard.comms.JsonExecutor;
+import shane.pennihome.local.smartboard.comms.JsonExecutorRequest;
+import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
@@ -139,7 +139,7 @@ public class HueBridgeService extends IService {
     ArrayList<HueBridge> discover() throws Exception
     {
             ArrayList<HueBridge> bridges = new ArrayList<>();
-            ExecutorResult result = Executor.fulfil(new ExecutorRequest(new URL(PH_DISCOVER_URL), ExecutorRequest.Types.GET));
+            JsonExecutorResult result = JsonExecutor.fulfil(new JsonExecutorRequest(new URL(PH_DISCOVER_URL), JsonExecutorRequest.Types.GET));
 
             if(!result.isSuccess())
                 throw result.getError();
@@ -236,15 +236,15 @@ public class HueBridgeService extends IService {
         public Things getThings() throws Exception {
             URL url = new URL(String.format("http://%s/api", getAddress()));
             JSONObject jPost = new JSONObject(String.format("{\"devicetype\":\"%s#%s\"}",Globals.ACTIVITY, Globals.getSharedPreferences().getString("uid", "unknown")));
-            ExecutorRequest request = new ExecutorRequest(url, ExecutorRequest.Types.POST);
+            JsonExecutorRequest request = new JsonExecutorRequest(url, JsonExecutorRequest.Types.POST);
             request.setPostJson(jPost);
 
-            ExecutorResult result = Executor.fulfil(request);
+            JsonExecutorResult result = JsonExecutor.fulfil(request);
 
             if(!result.isSuccess())
                 throw result.getError();
 
-            JSONObject jObj = new JSONArray(result.getResult()).getJSONObject(0);
+            JSONObject jObj = result.getResultAsJsonObject();
             if (jObj.has("error")) {
                 JSONObject jError = jObj.getJSONObject("error");
 
@@ -260,11 +260,11 @@ public class HueBridgeService extends IService {
                     UpdateDialog("Please press the link button on the Hue Bridge.");
                     Thread.sleep(5000);
 
-                    result = Executor.fulfil(request);
+                    result = JsonExecutor.fulfil(request);
                     if(!result.isSuccess())
                         throw result.getError();
 
-                    jObj = new JSONArray(result.getResult()).getJSONObject(0);
+                    jObj = result.getResultAsJsonObject();
                     if (jObj.has("error")) {
                         jError = jObj.getJSONObject("error");
 
@@ -304,7 +304,7 @@ public class HueBridgeService extends IService {
         }
 
         @Override
-        public ExecutorResult execute(IThing thing) {
+        public JsonExecutorResult execute(IThing thing) {
             return null;
         }
     }
@@ -321,11 +321,11 @@ public class HueBridgeService extends IService {
         public Things getThings() throws Exception {
             Things things = new Things();
 
-            ExecutorResult result = Executor.fulfil(new ExecutorRequest(new URL(String.format("http://%s/api/%s/lights",getAddress(),getToken())), ExecutorRequest.Types.GET ));
+            JsonExecutorResult result = JsonExecutor.fulfil(new JsonExecutorRequest(new URL(String.format("http://%s/api/%s/lights",getAddress(),getToken())), JsonExecutorRequest.Types.GET ));
             if(!result.isSuccess())
                 throw result.getError();
 
-            JSONObject jDevices = new JSONObject(result.getResult());
+            JSONObject jDevices = result.getResultAsJsonObject();
 
             Iterator<String> iterator = jDevices.keys();
             while (iterator.hasNext()) {
@@ -364,17 +364,17 @@ public class HueBridgeService extends IService {
         }
 
         @Override
-        public ExecutorResult execute(IThing thing) {
+        public JsonExecutorResult execute(IThing thing) {
             try
             {
-                ExecutorRequest request = new ExecutorRequest(new URL(String.format("http://%s/api/%s/lights/%s/state", getAddress(), getToken(), thing.getId())), ExecutorRequest.Types.PUT);
+                JsonExecutorRequest request = new JsonExecutorRequest(new URL(String.format("http://%s/api/%s/lights/%s/state", getAddress(), getToken(), thing.getId())), JsonExecutorRequest.Types.PUT);
                 request.setPutBody(String.format("{\"on\":%s}", !((Switch) thing).isOn()));
 
-                return Executor.fulfil(request);
+                return JsonExecutor.fulfil(request);
 
             }catch (Exception e)
             {
-                return new ExecutorResult(e);
+                return new JsonExecutorResult(e);
             }
 
         }
@@ -391,17 +391,17 @@ public class HueBridgeService extends IService {
         @Override
         public Things getThings() throws Exception {
             Things things = new Things();
-            ExecutorResult groupResult = Executor.fulfil(new ExecutorRequest(new URL(String.format("http://%s/api/%s/groups",getAddress(),getToken())),ExecutorRequest.Types.GET));
+            JsonExecutorResult groupResult = JsonExecutor.fulfil(new JsonExecutorRequest(new URL(String.format("http://%s/api/%s/groups",getAddress(),getToken())), JsonExecutorRequest.Types.GET));
             if(!groupResult.isSuccess())
                 throw groupResult.getError();
 
-            ExecutorResult sceneResult = Executor.fulfil(new ExecutorRequest(new URL(String.format("http://%s/api/%s/scenes",getAddress(),getToken())),ExecutorRequest.Types.GET));
+            JsonExecutorResult sceneResult = JsonExecutor.fulfil(new JsonExecutorRequest(new URL(String.format("http://%s/api/%s/scenes",getAddress(),getToken())), JsonExecutorRequest.Types.GET));
             if(!sceneResult.isSuccess())
                 throw sceneResult.getError();
 
             final JSONArray groups = new JSONArray();
-            JSONObject jGroup = new JSONObject(groupResult.getResult());
-            JSONObject jRoutine = new JSONObject(sceneResult.getResult());
+            JSONObject jGroup = groupResult.getResultAsJsonObject();
+            JSONObject jRoutine = sceneResult.getResultAsJsonObject();
 
             Iterator<String> iterator = jGroup.keys();
 
@@ -485,17 +485,17 @@ public class HueBridgeService extends IService {
         }
 
         @Override
-        public ExecutorResult execute(IThing thing) {
+        public JsonExecutorResult execute(IThing thing) {
            try
            {
-               ExecutorRequest request = new ExecutorRequest(new URL(String.format("http://%s/api/%s/groups/0/action", getAddress(), getToken())), ExecutorRequest.Types.PUT);
+               JsonExecutorRequest request = new JsonExecutorRequest(new URL(String.format("http://%s/api/%s/groups/0/action", getAddress(), getToken())), JsonExecutorRequest.Types.PUT);
                request.setPutBody(String.format("{\"scene\":\"%s\"}", thing.getId()));
 
-               return Executor.fulfil(request);
+               return JsonExecutor.fulfil(request);
 
            }catch(Exception e)
            {
-               return new ExecutorResult(e);
+               return new JsonExecutorResult(e);
            }
         }
     }

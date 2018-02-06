@@ -6,5 +6,5 @@ package shane.pennihome.local.smartboard.things.switches;
 
 @SuppressWarnings("DefaultFileTemplate")
 public interface OnSwitchStateChangeListener {
-    void OnStateChange(boolean isOn, boolean isUnreachable);
+    void OnStateChange(boolean isOn);
 }

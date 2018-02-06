@@ -14,6 +14,7 @@ import java.util.Random;
 public class Globals extends Application{
     public final static String ACTIVITY = "SmartBoard";
     public final static int BLOCK_COLUMNS = 8;
+    public final static int BLOCK_PADDING = 2;
     private static SharedPreferences mPrefs;
     private static Globals mInstance;
 

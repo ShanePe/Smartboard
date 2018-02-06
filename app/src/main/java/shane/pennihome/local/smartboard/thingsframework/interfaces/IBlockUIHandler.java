@@ -69,5 +69,9 @@ public abstract class IBlockUIHandler {
         public BlockViewHolder(View itemView) {
             super(itemView);
         }
+        public View getContainer()
+        {
+            return ((ViewGroup)itemView).getChildAt(0);
+        }
     }
 }

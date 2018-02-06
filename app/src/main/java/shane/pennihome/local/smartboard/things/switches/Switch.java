@@ -1,6 +1,6 @@
 package shane.pennihome.local.smartboard.things.switches;
 
-import shane.pennihome.local.smartboard.comms.ExecutorResult;
+import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessageSource;
@@ -42,7 +42,7 @@ public class Switch extends IThing implements IMessageSource {
         boolean pre = mOn;
         mOn = on;
         if (pre != mOn && mOnSwitchStateChangeListener != null)
-            mOnSwitchStateChangeListener.OnStateChange(isOn(), isUnreachable());
+            mOnSwitchStateChangeListener.OnStateChange(isOn());
     }
 
     @Override
@@ -50,12 +50,12 @@ public class Switch extends IThing implements IMessageSource {
         boolean pre = unreachable;
         super.setUnreachable(unreachable);
         if (pre != isUnreachable() && mOnSwitchStateChangeListener != null)
-            mOnSwitchStateChangeListener.OnStateChange(isOn(), isUnreachable());
+            mOnSwitchStateChangeListener.OnStateChange(isOn());
     }
 
     @Override
-    public ExecutorResult execute() {
-        ExecutorResult result = super.execute();
+    public JsonExecutorResult execute() {
+        JsonExecutorResult result = super.execute();
         if(result!=null)
             if(result.isSuccess())
                 setOn(!isOn());

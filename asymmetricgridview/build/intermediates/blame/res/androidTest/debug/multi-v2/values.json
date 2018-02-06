@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Source\\SmartBoard\\asymmetricgridview\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values\\values.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\spennicott\\.gradle\\caches\\transforms-1\\files-1.1\\recyclerview-v7-24.2.1.aar\\208c5e173d57a5d284fe823e47e7d5e9\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "3,4,5,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "372,447,523,595",
+                        "endColumns": "74,75,71,65",
+                        "endOffsets": "442,518,590,656"
+                    }
+                }
+            ]
+        }
+    ]
+}

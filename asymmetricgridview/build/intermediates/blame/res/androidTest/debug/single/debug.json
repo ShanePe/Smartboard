@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "C:\\Source\\SmartBoard\\asymmetricgridview\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable_item_divider_vertical.xml.flat",
+        "source": "C:\\Source\\SmartBoard\\asymmetricgridview\\build\\intermediates\\bundles\\debug\\res\\drawable\\item_divider_vertical.xml"
+    },
+    {
+        "merged": "C:\\Source\\SmartBoard\\asymmetricgridview\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable_item_divider_horizontal.xml.flat",
+        "source": "C:\\Source\\SmartBoard\\asymmetricgridview\\build\\intermediates\\bundles\\debug\\res\\drawable\\item_divider_horizontal.xml"
+    }
+]

@@ -4,7 +4,7 @@ import android.widget.TextView;
 
 import java.lang.reflect.Type;
 
-import shane.pennihome.local.smartboard.comms.ExecutorResult;
+import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
@@ -19,5 +19,5 @@ public interface IThingsGetter {
     int getUniqueId();
     void setDescriptionTextView(TextView txtDescription);
     Type getThingType();
-    ExecutorResult execute(IThing thing);
+    JsonExecutorResult execute(IThing thing);
 }

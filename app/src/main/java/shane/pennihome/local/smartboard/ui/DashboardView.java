@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -128,9 +129,10 @@ public class DashboardView extends LinearLayoutCompat {
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
+        public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+            final View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.dashboard_view_group, parent, false);
+
             return new ViewHolder(view);
         }
 
@@ -141,6 +143,10 @@ public class DashboardView extends LinearLayoutCompat {
             holder.mGroupTitle.setVisibility(holder.mGroup.getDisplayName() ? View.VISIBLE : View.GONE);
 
             int blockSize = Resources.getSystem().getDisplayMetrics().widthPixels / Globals.BLOCK_COLUMNS;
+            StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(Globals.BLOCK_COLUMNS, StaggeredGridLayoutManager.VERTICAL);
+            staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+            staggeredGridLayoutManager.setSpanCount(3);
+            holder.mBlockView.setLayoutManager(staggeredGridLayoutManager);
             BlockViewAdapter adapter = new BlockViewAdapter(holder.mGroup, blockSize);
             holder.mBlockView.setAdapter(adapter);
         }
@@ -152,7 +158,7 @@ public class DashboardView extends LinearLayoutCompat {
 
         class ViewHolder extends RecyclerView.ViewHolder {
             final GroupTitle mGroupTitle;
-            RecyclerView mBlockView;
+            final RecyclerView mBlockView;
             Group mGroup;
 
             public ViewHolder(View itemView) {
@@ -165,8 +171,8 @@ public class DashboardView extends LinearLayoutCompat {
     }
 
     class BlockViewAdapter extends RecyclerView.Adapter<IBlockUIHandler.BlockViewHolder> {
-        int mBlockSize;
-        private Group mGroup;
+        final int mBlockSize;
+        private final Group mGroup;
 
         BlockViewAdapter(Group group, int blockSize) {
             this.mGroup = group;
@@ -183,6 +189,7 @@ public class DashboardView extends LinearLayoutCompat {
             IBlock block;
             try {
                 block = IBlock.CreateByTypeID(viewType);
+
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(block.getUIHandler().getViewLayoutID(), parent, false);
 
@@ -194,7 +201,15 @@ public class DashboardView extends LinearLayoutCompat {
 
         @Override
         public void onBindViewHolder(IBlockUIHandler.BlockViewHolder holder, int position) {
+            IBlock block = mGroup.getBlockAt(position);
+            block.loadThing();
 
+            holder.getContainer().setLayoutParams(new LinearLayoutCompat.LayoutParams(
+                    (mBlockSize * block.getWidth())-Globals.BLOCK_PADDING,
+                    (mBlockSize * block.getHeight())-Globals.BLOCK_PADDING));
+
+            IBlockUIHandler uiHandler = block.getUIHandler();
+            uiHandler.BindViewHolder(holder);
         }
 
         @Override

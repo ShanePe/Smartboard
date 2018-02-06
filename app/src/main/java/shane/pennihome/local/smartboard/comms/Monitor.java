@@ -173,15 +173,18 @@ public class Monitor {
 
     private void verifyThingState(Things currentThings) {
         for (IThing currentThing : getThings()) {
-            currentThing.setUnreachable(false);
             IThing newThing = currentThings.getbyId(currentThing.getId());
 
             if (newThing == null) {
-                currentThing.setUnreachable(true);
+                if(!currentThing.isUnreachable())
+                    currentThing.setUnreachable(true);
                 if (this instanceof IMessageSource)
                     Broadcaster.broadcastMessage(new SwitchStateChangedMessage((IMessageSource) currentThing, SwitchStateChangedMessage.SwitchStates.Unreachable));
 
             } else {
+                if(currentThing.isUnreachable() && !newThing.isUnreachable())
+                    currentThing.setUnreachable(false);
+
                 if (currentThing instanceof Switch) {
                     Switch currentSwitch = (Switch) currentThing;
                     Switch newSwitch = (Switch) newThing;

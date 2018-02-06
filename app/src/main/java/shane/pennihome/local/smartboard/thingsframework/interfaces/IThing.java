@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
-import shane.pennihome.local.smartboard.comms.ExecutorResult;
+import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage;
 import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
@@ -15,6 +15,7 @@ import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
 
 @SuppressWarnings({"DefaultFileTemplate", "unused"})
 public abstract class IThing extends IDatabaseObject {
@@ -24,10 +25,11 @@ public abstract class IThing extends IDatabaseObject {
     private transient boolean mUnreachable;
     private String mId;
     private IService.ServicesTypes mServicesTypes;
-    //    @IgnoreOnCopy
-//    private IBlock mBlock;
     @IgnoreOnCopy
     private transient BroadcastReceiver mBroadcastReceiver;
+    @IgnoreOnCopy
+    private transient OnThingActionListener mOnThingActionListener;
+
     public IThing() {
         mInstance = this.getClass().getSimpleName();
     }
@@ -35,22 +37,6 @@ public abstract class IThing extends IDatabaseObject {
     private static <V extends IThing> V fromJson(Class<V> cls, String json) {
         return JsonBuilder.get().fromJson(json, cls);
     }
-
-//    public static int GetTypeID(IThing thing) {
-//        return thing.getThingType().ordinal();
-//    }
-
-//    public static IThing CreateByTypeID(int i) throws Exception {
-//        IThing.Types enumVal = values()[i];
-//        switch (enumVal) {
-//            case Switch:
-//                return new Switch();
-//            case Routine:
-//                return new Routine();
-//            default:
-//                throw new Exception("Invalid Type to create");
-//        }
-//    }
 
     public void initialise() {
         if (this instanceof IMessageSource) {
@@ -79,14 +65,13 @@ public abstract class IThing extends IDatabaseObject {
     public void setUnreachable(boolean unreachable) {
         boolean pre = mUnreachable;
         mUnreachable = unreachable;
+        if(mOnThingActionListener != null)
+            mOnThingActionListener.OnReachableStateChanged(mUnreachable);
     }
-
-//    public abstract Class getBlockType();
-
 
     public abstract void messageReceived(IMessage<?> message);
 
-    public ExecutorResult execute()
+    public JsonExecutorResult execute()
     {
         IService service = Monitor.getMonitor().getServices().getByType(getServiceType());
         if(service!=null)
@@ -116,6 +101,14 @@ public abstract class IThing extends IDatabaseObject {
 
     public String getKey() {
         return String.format("%s%s%s%s", getId(), getName(), getServiceType(), getThingType());
+    }
+
+    public OnThingActionListener getOnThingActionListener() {
+        return mOnThingActionListener;
+    }
+
+    public void setOnThingActionListener(OnThingActionListener onthingactionlistener) {
+        this.mOnThingActionListener = onthingactionlistener;
     }
 
     @Override

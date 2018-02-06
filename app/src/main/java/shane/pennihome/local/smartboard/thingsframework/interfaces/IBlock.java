@@ -3,11 +3,12 @@ package shane.pennihome.local.smartboard.thingsframework.interfaces;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
 import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.data.Group;
@@ -59,6 +60,10 @@ public abstract class IBlock extends IDatabaseObject {
 
     public IThing getThing() {
         return mThing;
+    }
+
+    public <T extends IThing> T getThing(Class<T> c) {
+        return (T)mThing;
     }
 
     public void setThing(IThing thing) {
@@ -176,37 +181,53 @@ public abstract class IBlock extends IDatabaseObject {
         return UIHelper.getColorWithAlpha(getBackgroundColour(), getBackgroundColourTransparency() / 100f);
     }
 
-    public void renderBackgroundTo(final View destination) {
-        Handler safeRender = new Handler();
-        safeRender.post(new Runnable() {
+    public void renderForegroundColourToTextView(final TextView destination) {
+        destination.post(new Runnable() {
             @Override
             public void run() {
-                Bitmap bitmap = null;
-                if (!TextUtils.isEmpty(mBackImage))
-                    bitmap = BitmapFactory.decodeFile(mBackImage);
-
-                final Drawable drawable = UIHelper.generateImage(
-                        destination.getContext(),
-                        mBackColour, mBackTrans,
-                        bitmap,
-                        mBGImgTrans,
-                        destination.getMeasuredWidth(),
-                        destination.getMeasuredHeight(),
-                        false,
-                        mBGImageRenderType);
-
-                destination.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        destination.setBackground(drawable);
-                    }
-                });
+                destination.setTextColor(getForegroundColour());
             }
         });
     }
 
+    public void renderBackgroundTo(final View destination) {
+        destination.post(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap bitmap = null;
+                if (!TextUtils.isEmpty(getBackgroundImage()))
+                    bitmap = BitmapFactory.decodeFile(getBackgroundImage());
+
+                final Drawable drawable = UIHelper.generateImage(
+                        destination.getContext(),
+                        getBackgroundColour(),
+                        getBackgroundColourTransparency(),
+                        bitmap,
+                        getBackgroundImageTransparency(),
+                        destination.getMeasuredWidth(),
+                        destination.getMeasuredHeight(),
+                        false,
+                        getBackgroundImageRenderType());
+
+               destination.setBackground(drawable);
+            }
+        });
+    }
+
+    public void renderUnreachableBackground(final View view) {
+        if(getThing()!=null)
+             if(!getThing().isUnreachable())
+                 view.post(new Runnable() {
+                     @Override
+                     public void run() {
+                         view.getBackground().setColorFilter(UIHelper.getDefaultForegroundColour(), PorterDuff.Mode.DARKEN);
+                     }
+                 });
+
+    }
+
     public void loadThing() {
-        if (TextUtils.isEmpty(getThingKey()) || mThing != null)
+        if (TextUtils.isEmpty(getThingKey()) || mThing == null)
             mThing = Monitor.getMonitor().getThings().getByKey(getThingKey());
     }
 }

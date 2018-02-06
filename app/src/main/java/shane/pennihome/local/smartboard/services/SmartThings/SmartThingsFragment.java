@@ -1,7 +1,6 @@
 package shane.pennihome.local.smartboard.services.SmartThings;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +18,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.ui.dialogs.ProgressDialog;
 import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
 
 /**
@@ -45,38 +45,23 @@ public class SmartThingsFragment extends IRegisterServiceFragment {
                 "&scope=" + SmartThingsService.ST_OAUTH_SCOPE);
 
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        final ProgressDialog dialog = new ProgressDialog(getContext());
-        dialog.setMessage("Loading ...");
+        final ProgressDialog dialog = new ProgressDialog();
+        dialog.setMessage("Communicating with SmartThings");
         web.setWebViewClient(new WebViewClient() {
             boolean authComplete = false;
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                dialog.show();
+                dialog.show(getContext());
                 view.setVisibility(View.GONE);
                 super.onPageStarted(view, url, favicon);
             }
 
             @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                super.onReceivedError(view, request, error);
-                Toast.makeText(view.getContext(), "Could not connect to SmartThings", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-                super.onReceivedHttpError(view, request, errorResponse);
-//                dialog.dismiss();
-                Toast.makeText(view.getContext(), "Could not connect to SmartThings : " + errorResponse.getReasonPhrase(), Toast.LENGTH_LONG).show();
-                //if (getOnProcessCompleteListener() != null)
-                //    getOnProcessCompleteListener().complete(false, getService());
-            }
-
-            @Override
             public void onPageFinished(WebView view, String url) {
                 try {
-                    super.onPageFinished(view, url);
                     dialog.dismiss();
+                    super.onPageFinished(view, url);
                     view.setVisibility(View.VISIBLE);
                     if (url.contains("?code=") && !authComplete) {
                         Uri uri = Uri.parse(url);

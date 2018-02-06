@@ -9,13 +9,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
+import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
 import shane.pennihome.local.smartboard.ui.ThingProperties;
 import shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector;
 import shane.pennihome.local.smartboard.ui.ViewSwiper;
@@ -92,10 +96,42 @@ public class RoutineBlockHandler extends IBlockUIHandler {
 
     @Override
     public void BindViewHolder(BlockViewHolder viewHolder) {
-        RoutineViewHolder holder = (RoutineViewHolder) viewHolder;
+        if(getBlock().getThing()==null)
+        {
+            viewHolder.itemView.setVisibility(View.GONE);
+            return;
+        }
 
-        //holder.mContainer.setBackground();
+        final RoutineViewHolder holder = (RoutineViewHolder) viewHolder;
+
         holder.mTitle.setText(getBlock().getName());
+
+        getBlock().renderForegroundColourToTextView(holder.mTitle);
+        getBlock().renderBackgroundTo(holder.mContainer);
+        getBlock().renderUnreachableBackground(holder.itemView);
+        holder.itemView.setPadding(Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING);
+
+        holder.mContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(getBlock().getThing().isUnreachable())
+                    return;
+
+                JsonExecutorResult result = getBlock().getThing().execute();
+                if(result.isSuccess()) {
+                    Toast.makeText(holder.itemView.getContext(), "Executed :" + result.getError().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+                else
+                    Toast.makeText(holder.itemView.getContext(), "Error :" + result.getError().getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        getBlock().getThing().setOnThingActionListener(new OnThingActionListener() {
+            @Override
+            public void OnReachableStateChanged(boolean isUnReachable) {
+                getBlock().renderUnreachableBackground(holder.itemView);
+            }
+        });
     }
 
     @Override

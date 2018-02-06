@@ -17,12 +17,12 @@ import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.fragments.tabs.GroupFragment;
 import shane.pennihome.local.smartboard.fragments.tabs.SmartboardFragment;
-import shane.pennihome.local.smartboard.thingsframework.adapters.EditGroupAdapter;
+import shane.pennihome.local.smartboard.thingsframework.adapters.GroupEditAdapter;
 
 public class SmartboardActivity extends AppCompatActivity {
 
     private Dashboard mDashboard;
-    private EditGroupAdapter mEditGroupAdapter;
+    private GroupEditAdapter mGroupEditAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +40,7 @@ public class SmartboardActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        mEditGroupAdapter = new EditGroupAdapter(this);
+        mGroupEditAdapter = new GroupEditAdapter(this);
 
         Bundle extras = getIntent().getExtras();
         assert extras != null;
@@ -94,7 +94,7 @@ public class SmartboardActivity extends AppCompatActivity {
 
     public void DataChanged() {
         WriteDashboardToDatabase();
-        mEditGroupAdapter.notifyDataSetChanged();
+        mGroupEditAdapter.notifyDataSetChanged();
     }
 
     private void hideKeyboard() {
@@ -114,9 +114,9 @@ public class SmartboardActivity extends AppCompatActivity {
         return mDashboard;
     }
 
-    public EditGroupAdapter getGroupAdapter()
+    public GroupEditAdapter getGroupAdapter()
     {
-        return mEditGroupAdapter;
+        return mGroupEditAdapter;
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

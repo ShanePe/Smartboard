@@ -838,6 +838,41 @@
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.fragments.tabs.SmartboardFragment$1 void OnImageRenderTypeChanged(shane.pennihome.local.smartboard.ui.UIHelper.ImageRenderTypes imageRenderType)" />
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper.ImageRenderTypes Stretch" />
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper.ImageRenderTypes Center" />
+      <entry_point TYPE="field" FQNAME="com.felipecsl.asymmetricgridview.AsymmetricViewImpl.SavedState CREATOR" />
+      <entry_point TYPE="field" FQNAME="com.felipecsl.asymmetricgridview.AsymmetricViewImpl.SavedState loader" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter$2$1 void OnSet(shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock block)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter$2 void onClick(android.view.View v)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter mBlocks" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter mGroup" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter mSmartboardActivity" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.GroupEditAdapter.ViewHolder mContainer" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.GroupViewHandler mBlockEditAdapter" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock$4 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock$3 void run()" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing mOnThingActionListener" />
+      <entry_point TYPE="field" FQNAME="com.felipecsl.asymmetricgridview.ObjectPool CREATOR" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.RoutineViewHolder mTitle" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.RoutineViewHolder mContainer" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.RoutineEditorHolder mContainer" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.RoutineEditorHolder mBaSize" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.RoutineEditorHolder mBaDevice" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.RoutineEditorHolder mBaImg" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.RoutineEditorHolder mBaName" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.RoutineEditorHolder mLayout" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler$2 void OnReachableStateChanged(boolean isUnReachable)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler$1 void onClick(android.view.View v)" />
+      <entry_point TYPE="field" FQNAME="com.felipecsl.asymmetricgridview.RowInfo CREATOR" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.SwitchViewHolder mTitle" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.SwitchViewHolder mContainer" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.SwitchEditorHolder mContainer" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.SwitchEditorHolder mBaSize" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.SwitchEditorHolder mBaDevice" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.SwitchEditorHolder mBaImg" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.SwitchEditorHolder mBaName" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.SwitchEditorHolder mLayout" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$3 void OnReachableStateChanged(boolean isUnReachable)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$2 void OnStateChange(boolean isOn)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$1 void onClick(android.view.View v)" />
     </entry_points>
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="setOnValueChangedListener" />
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="getDimension" />
@@ -2723,6 +2758,105 @@
     <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="setBackgroundImageRenderType" />
     <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector" method="getBackgroundImageRenderType" />
     <pattern value="shane.pennihome.local.smartboard.ui.UIHelper.ImageRenderTypes" />
+    <pattern value="com.felipecsl.asymmetricgridview.AGVRecyclerViewAdapter" method="getItem" />
+    <pattern value="com.felipecsl.asymmetricgridview.AGVRecyclerViewAdapter" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricGridView" method="setDebugging" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricGridView" method="setAllowReordering" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricGridView" method="determineColumns" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricGridView" method="setRequestedHorizontalSpacing" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricGridView" method="setRequestedColumnCount" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricGridView" method="setRequestedColumnWidth" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricGridView" method="AsymmetricGridView" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricGridView" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricGridViewAdapter" method="AsymmetricGridViewAdapter" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricGridViewAdapter.GridDataSetObserver" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricGridViewAdapter" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricRecyclerView" method="setDebugging" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricRecyclerView" method="setRequestedHorizontalSpacing" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricRecyclerView" method="setRequestedColumnCount" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricRecyclerView" method="AsymmetricRecyclerView" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricRecyclerView" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricRecyclerViewAdapter" method="AsymmetricRecyclerViewAdapter" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricRecyclerViewAdapter" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricViewImpl.SavedState" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricViewImpl" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter.Draggable" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter" method="onItemDragFinished" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter" method="onItemDragStarted" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter" method="onCheckCanDrop" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter" method="onMoveItem" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter" method="onGetItemDraggableRange" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter" method="onCheckCanStartDrag" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter" method="getItemCount" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter" method="setBlocks" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter" method="getBlocks" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter" method="getItemId" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter" method="onBindViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter" method="onCreateViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter" method="getItemViewType" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter" method="reverseFindById" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter" method="BlockEditAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.BlockEditAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.data.Dashboard" method="renderBackgroundTo" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.GroupEditAdapter.ViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.GroupEditAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="renderUnreachableBackground" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="renderBackgroundTo" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="renderForegroundColourToTextView" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler.BlockViewHolder" method="getContainer" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler.BlockViewHolder" method="BlockViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler.BlockViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler.BlockEditViewHolder" method="getContainer" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler.BlockEditViewHolder" method="BlockEditViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler.BlockEditViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" method="getEditorWindowLayoutID" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" method="getViewLayoutID" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" method="getEditLayoutID" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" method="BindEditHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" method="GetViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" method="GetEditHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" method="buildBlockFromEditorWindowView" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler" method="buildEditorWindowView" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing" method="setOnThingActionListener" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing" method="getOnThingActionListener" />
+    <pattern value="shane.pennihome.local.smartboard.comms.JsonExecutorRequest" method="setOnExecutorRequestActionListener" />
+    <pattern value="shane.pennihome.local.smartboard.comms.JsonExecutorRequest" method="setUrl" />
+    <pattern value="shane.pennihome.local.smartboard.comms.JsonExecutorRequest" />
+    <pattern value="com.felipecsl.asymmetricgridview.LinearLayoutPoolObjectFactory" method="LinearLayoutPoolObjectFactory" />
+    <pattern value="com.felipecsl.asymmetricgridview.LinearLayoutPoolObjectFactory" />
+    <pattern value="com.felipecsl.asymmetricgridview.ObjectPool" method="ObjectPool" />
+    <pattern value="com.felipecsl.asymmetricgridview.ObjectPool" />
+    <pattern value="com.felipecsl.asymmetricgridview.PoolObjectFactory" method="createObject" />
+    <pattern value="com.felipecsl.asymmetricgridview.PoolObjectFactory" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.RoutineViewHolder" method="RoutineViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.RoutineViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.RoutineEditorHolder" method="toString" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.RoutineEditorHolder" method="RoutineEditorHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.RoutineEditorHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler" method="getEditorWindowLayoutID" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler" method="getViewLayoutID" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler" method="getEditLayoutID" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler" method="BindEditHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler" method="GetViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler" method="GetEditHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler" method="buildBlockFromEditorWindowView" />
+    <pattern value="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler" method="buildEditorWindowView" />
+    <pattern value="com.felipecsl.asymmetricgridview.RowInfo" method="getSpaceLeft" />
+    <pattern value="com.felipecsl.asymmetricgridview.RowInfo" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.SwitchViewHolder" method="SwitchViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.SwitchViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.SwitchEditorHolder" method="toString" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.SwitchEditorHolder" method="SwitchEditorHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.SwitchEditorHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" method="getEditorWindowLayoutID" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" method="getViewLayoutID" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" method="getEditLayoutID" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" method="BindEditHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" method="GetViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" method="GetEditHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" method="buildBlockFromEditorWindowView" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" method="buildEditorWindowView" />
+    <pattern value="shane.pennihome.local.smartboard.ui.UIHelper" method="getDefaultForegroundColour" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

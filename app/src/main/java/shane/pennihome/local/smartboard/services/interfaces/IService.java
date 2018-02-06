@@ -3,14 +3,9 @@ package shane.pennihome.local.smartboard.services.interfaces;
 
 import android.content.Context;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
 import java.util.ArrayList;
 
-import shane.pennihome.local.smartboard.comms.ExecutorResult;
+import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
@@ -106,7 +101,7 @@ public abstract class IService extends IDatabaseObject {
             onProcessCompleteListener.complete(true, null);
     }
 
-    public ExecutorResult executeThing(IThing thing)
+    public JsonExecutorResult executeThing(IThing thing)
     {
         IThingsGetter executor = null;
         if(thing instanceof Switch)
@@ -121,18 +116,6 @@ public abstract class IService extends IDatabaseObject {
 
     public boolean isValid() {
         return isRegistered() && !isAwaitingAction();
-    }
-
-    protected JSONObject buildJsonResponse(String data) throws JSONException {
-        Object json = new JSONTokener(data).nextValue();
-        if (json instanceof JSONObject)
-            return (JSONObject) json;
-        else if (json instanceof JSONArray) {
-            JSONArray array = (JSONArray) json;
-            return array.getJSONObject(0);//return the first object
-        }
-
-        throw new JSONException("Invalid JSON Response");
     }
 
     public enum ServicesTypes {SmartThings, PhilipsHue}

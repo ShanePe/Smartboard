@@ -1,7 +1,13 @@
 package shane.pennihome.local.smartboard.things.switches;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.TextView;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Group;
@@ -122,5 +128,41 @@ public class SwitchBlock extends IBlock {
     @Override
     public IBlockUIHandler getUIHandler() {
         return new SwitchBlockHandler(this);
+    }
+
+    public void renderForegroundColourToTextView(final TextView destination) {
+        destination.post(new Runnable() {
+            @Override
+            public void run() {
+                Switch s = getThing(Switch.class);
+                destination.setTextColor(s.isOn() ? getForegroundColourOn() : getForegroundColour());
+            }
+        });
+    }
+
+    public void renderBackgroundTo(final View destination) {
+        destination.post(new Runnable() {
+            @Override
+            public void run() {
+            Switch s = getThing(Switch.class);
+
+            Bitmap bitmap = null;
+            if (!TextUtils.isEmpty(s.isOn() ? getBackgroundImageOn() : getBackgroundImage()))
+                bitmap = BitmapFactory.decodeFile(s.isOn() ? getBackgroundImageOn() : getBackgroundImage());
+
+            final Drawable drawable = UIHelper.generateImage(
+                    destination.getContext(),
+                    s.isOn() ? getBackgroundColourOn() : getBackgroundColour(),
+                    s.isOn() ? getBackgroundColourTransparencyOn() : getBackgroundColourTransparency(),
+                    bitmap,
+                    s.isOn() ? getBackgroundImageTransparencyOn() : getBackgroundColourTransparency(),
+                    destination.getMeasuredWidth(),
+                    destination.getMeasuredHeight(),
+                    false,
+                    s.isOn() ? getBackgroundImageRenderTypeOn() : getBackgroundImageRenderType());
+
+            destination.setBackground(drawable);
+            }
+        });
     }
 }

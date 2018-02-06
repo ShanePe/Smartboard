@@ -1,6 +1,7 @@
 package shane.pennihome.local.smartboard.services.adapters;
 
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,7 +42,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         holder.mService = mServices.get(position);
         holder.btnService.setText(holder.mService.getName());
         holder.btnService.setBackgroundResource(holder.mService.isActive() ? R.drawable.btn_round_accent : R.drawable.btn_round);
-        Drawable drawable = holder.mView.getContext().getResources().getDrawable(holder.mService.getDrawableIconResource());
+        Drawable drawable = ResourcesCompat.getDrawable(holder.mView.getResources(), holder.mService.getDrawableIconResource(), null);
         holder.btnService.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
         holder.btnService.setOnClickListener(new View.OnClickListener() {
             @Override

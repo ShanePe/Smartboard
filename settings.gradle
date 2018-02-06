@@ -1,1 +1,1 @@
-include ':app', ':colourPicker', ':advrecycleview'
+include ':app', ':colourPicker', ':advrecycleview', ':asymmetricgridview'

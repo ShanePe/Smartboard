@@ -240,7 +240,7 @@ public class BackgroundSelector extends LinearLayoutCompat {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 setImageRenderType(UIHelper.ImageRenderTypes.valueOf((String) adapterView.getItemAtPosition(i)));
 
-                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.parseColor("#424242"));
+                ((TextView) adapterView.getChildAt(0)).setTextColor(UIHelper.getDefaultForegroundColour());
                 if (mBackgroundActionListener != null)
                     mBackgroundActionListener.OnImageRenderTypeChanged(getImageRenderType());
             }
