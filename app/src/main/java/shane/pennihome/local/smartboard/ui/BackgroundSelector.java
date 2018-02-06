@@ -151,7 +151,7 @@ public class BackgroundSelector extends LinearLayoutCompat {
     protected void onFinishInflate() {
         super.onFinishInflate();
         mPreview = this.findViewById(R.id.cbv_preview);
-        ImageButton mBtnBGImg = this.findViewById(R.id.cbv_image);
+        final ImageButton mBtnBGImg = this.findViewById(R.id.cbv_image);
         msbBGClr = this.findViewById(R.id.cbv_colour_trans);
         msbBGImg = this.findViewById(R.id.cbv_image_trans);
         mBtnBGClr = this.findViewById(R.id.cbv_colour);
@@ -231,6 +231,14 @@ public class BackgroundSelector extends LinearLayoutCompat {
             @Override
             public void onClick(View view) {
                 setInitialValues(Color.TRANSPARENT, 100, null, 100, UIHelper.ImageRenderTypes.Center);
+                if(mBackgroundActionListener != null)
+                {
+                    mBackgroundActionListener.OnColourSelected(Color.TRANSPARENT);
+                    mBackgroundActionListener.OnColourTransparencyChanged(100);
+                    mBackgroundActionListener.OnImageRenderTypeChanged(UIHelper.ImageRenderTypes.Center);
+                    mBackgroundActionListener.OnImageSelected(null);
+                    mBackgroundActionListener.OnImageTransparencyChanged(100);
+                }
             }
         });
 

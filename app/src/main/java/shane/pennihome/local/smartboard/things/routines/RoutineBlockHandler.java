@@ -111,16 +111,15 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         getBlock().renderUnreachableBackground(holder.itemView);
         holder.itemView.setPadding(Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING);
 
-        holder.mContainer.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(getBlock().getThing().isUnreachable())
                     return;
 
                 JsonExecutorResult result = getBlock().getThing().execute();
-                if(result.isSuccess()) {
-                    Toast.makeText(holder.itemView.getContext(), "Executed :" + result.getError().getMessage(), Toast.LENGTH_SHORT).show();
-                }
+                if(result.isSuccess())
+                    Toast.makeText(holder.itemView.getContext(), "Executed :" +getBlock().getName(), Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(holder.itemView.getContext(), "Error :" + result.getError().getMessage(), Toast.LENGTH_SHORT).show();
             }

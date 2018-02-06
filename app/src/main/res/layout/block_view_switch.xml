@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/bvs_container"
+<android.support.v7.widget.LinearLayoutCompat android:id="@+id/bvs_container"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <TextView
         android:id="@+id/bvs_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    </android.support.v7.widget.CardView>
-</android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v7.widget.LinearLayoutCompat>

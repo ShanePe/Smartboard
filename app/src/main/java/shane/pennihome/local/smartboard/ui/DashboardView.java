@@ -2,8 +2,11 @@ package shane.pennihome.local.smartboard.ui;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Parcel;
+import android.provider.Settings;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +18,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.felipecsl.asymmetricgridview.AGVRecyclerViewAdapter;
+import com.felipecsl.asymmetricgridview.AsymmetricItem;
+import com.felipecsl.asymmetricgridview.AsymmetricRecyclerView;
+import com.felipecsl.asymmetricgridview.AsymmetricRecyclerViewAdapter;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Dashboard;
@@ -139,16 +148,16 @@ public class DashboardView extends LinearLayoutCompat {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             holder.mGroup = mDashboard.getGroupAt(position);
-            holder.mGroupTitle.setTitle(holder.mGroup.getName());
+            holder.mGroupTitle.setText(holder.mGroup.getName());
             holder.mGroupTitle.setVisibility(holder.mGroup.getDisplayName() ? View.VISIBLE : View.GONE);
 
-            int blockSize = Resources.getSystem().getDisplayMetrics().widthPixels / Globals.BLOCK_COLUMNS;
-            StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(Globals.BLOCK_COLUMNS, StaggeredGridLayoutManager.VERTICAL);
-            staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
-            staggeredGridLayoutManager.setSpanCount(3);
-            holder.mBlockView.setLayoutManager(staggeredGridLayoutManager);
+           int blockSize = Resources.getSystem().getDisplayMetrics().widthPixels / Globals.BLOCK_COLUMNS;
             BlockViewAdapter adapter = new BlockViewAdapter(holder.mGroup, blockSize);
-            holder.mBlockView.setAdapter(adapter);
+            holder.mBlockView.setRequestedColumnCount(Globals.BLOCK_COLUMNS);
+           // holder.mBlockView.setDebugging(true);
+           // holder.mBlockView.setRequestedHorizontalSpacing(Globals.BLOCK_PADDING);
+            //holder.mBlockView.addItemDecoration(new SpacesItemDecoration(Globals.BLOCK_PADDING));
+            holder.mBlockView.setAdapter(new AsymmetricRecyclerViewAdapter<>(holder.itemView.getContext(),  holder.mBlockView, adapter));
         }
 
         @Override
@@ -157,8 +166,8 @@ public class DashboardView extends LinearLayoutCompat {
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            final GroupTitle mGroupTitle;
-            final RecyclerView mBlockView;
+            final TextView mGroupTitle;
+            final AsymmetricRecyclerView mBlockView;
             Group mGroup;
 
             public ViewHolder(View itemView) {
@@ -168,11 +177,24 @@ public class DashboardView extends LinearLayoutCompat {
                 mBlockView = itemView.findViewById(R.id.dvg_dashboard);
             }
         }
+
+        private class SpacesItemDecoration extends RecyclerView.ItemDecoration {
+            private final int padding;
+
+            public SpacesItemDecoration(int padding) {
+                this.padding = padding;
+            }
+
+            @Override public void getItemOffsets(
+                    Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                outRect.bottom = padding;
+            }
+        }
     }
 
-    class BlockViewAdapter extends RecyclerView.Adapter<IBlockUIHandler.BlockViewHolder> {
-        final int mBlockSize;
+    class BlockViewAdapter extends AGVRecyclerViewAdapter<IBlockUIHandler.BlockViewHolder> {
         private final Group mGroup;
+        private final int mBlockSize;
 
         BlockViewAdapter(Group group, int blockSize) {
             this.mGroup = group;
@@ -204,9 +226,9 @@ public class DashboardView extends LinearLayoutCompat {
             IBlock block = mGroup.getBlockAt(position);
             block.loadThing();
 
-            holder.getContainer().setLayoutParams(new LinearLayoutCompat.LayoutParams(
-                    (mBlockSize * block.getWidth())-Globals.BLOCK_PADDING,
-                    (mBlockSize * block.getHeight())-Globals.BLOCK_PADDING));
+//            holder.getContainer().setLayoutParams(new LinearLayoutCompat.LayoutParams(
+//                    (mBlockSize * block.getWidth())-Globals.BLOCK_PADDING,
+//                    (mBlockSize * block.getHeight())-Globals.BLOCK_PADDING));
 
             IBlockUIHandler uiHandler = block.getUIHandler();
             uiHandler.BindViewHolder(holder);
@@ -217,5 +239,29 @@ public class DashboardView extends LinearLayoutCompat {
             return mGroup.getBlocks().size();
         }
 
+        @Override
+        public AsymmetricItem getItem(int position) {
+            final IBlock block = mGroup.getBlockAt(position);
+            return new AsymmetricItem() {
+                @Override
+                public int getColumnSpan() {
+                    return block.getWidth();
+                }
+
+                @Override
+                public int getRowSpan() {
+                    return block.getHeight();
+                }
+
+                @Override
+                public int describeContents() {
+                    return 0;
+                }
+
+                @Override
+                public void writeToParcel(Parcel parcel, int i) {
+                }
+            };
+        }
     }
 }

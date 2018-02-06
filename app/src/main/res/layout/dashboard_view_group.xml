@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <shane.pennihome.local.smartboard.ui.GroupTitle
+    <TextView
         android:id="@+id/dvg_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/background_light"
+        android:textSize="12sp" />
 
-    <android.support.v7.widget.RecyclerView
+    <com.felipecsl.asymmetricgridview.AsymmetricRecyclerView
         android:id="@+id/dvg_dashboard"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal" />
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="3dp"
+        android:fadingEdge="none"
+        android:focusable="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 </android.support.v7.widget.LinearLayoutCompat>

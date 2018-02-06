@@ -210,6 +210,7 @@ public abstract class IBlock extends IDatabaseObject {
                         getBackgroundImageRenderType());
 
                destination.setBackground(drawable);
+               destination.invalidate();
             }
         });
     }

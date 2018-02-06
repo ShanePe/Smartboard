@@ -162,6 +162,7 @@ public class SwitchBlock extends IBlock {
                     s.isOn() ? getBackgroundImageRenderTypeOn() : getBackgroundImageRenderType());
 
             destination.setBackground(drawable);
+            destination.invalidate();
             }
         });
     }

@@ -111,7 +111,7 @@ public class SwitchBlockHandler extends IBlockUIHandler {
         getBlock().renderUnreachableBackground(holder.itemView);
         holder.itemView.setPadding(Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING);
         View test = holder.itemView;
-        holder.mContainer.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(getBlock().getThing().isUnreachable())
@@ -121,6 +121,7 @@ public class SwitchBlockHandler extends IBlockUIHandler {
                 if(result.isSuccess()) {
                     getBlock().renderForegroundColourToTextView(holder.mTitle);
                     getBlock().renderBackgroundTo(holder.itemView);
+                    //holder.test.setImageDrawable(holder.itemView.getBackground());
                     getBlock().renderUnreachableBackground(holder.itemView);
                 }
                 else
