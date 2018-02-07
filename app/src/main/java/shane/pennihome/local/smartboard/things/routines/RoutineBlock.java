@@ -12,6 +12,16 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
 @SuppressWarnings("DefaultFileTemplate")
 public class RoutineBlock extends IBlock {
+    private String mIcon;
+
+    public String getIcon() {
+        return mIcon;
+    }
+
+    public void setIcon(String icon) {
+        this.mIcon = icon;
+    }
+
     public static RoutineBlock Load(String json) {
         try {
             return IDatabaseObject.Load(RoutineBlock.class, json);

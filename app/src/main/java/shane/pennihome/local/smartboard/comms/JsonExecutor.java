@@ -45,7 +45,9 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
     private JsonExecutorResult executeRequest(JsonExecutorRequest request) {
         try {
             int tries = 0;
-            int maxAttempts = 3;
+            int maxAttempts = 5;
+            int attemptWait = 5000;
+
             while (tries <= maxAttempts) {
                 try {
                     Log.d("Url : ", (tries+1) + " of " + maxAttempts + " " + request.getUrl().toString());
@@ -70,7 +72,7 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
                     } else
                         throw new Exception("Type not supported" + request.getType().toString());
                 } catch (Exception ex) {
-                    Thread.sleep(2000);
+                    Thread.sleep(attemptWait);
                     tries++;
                     if (tries >= maxAttempts)
                         throw ex;

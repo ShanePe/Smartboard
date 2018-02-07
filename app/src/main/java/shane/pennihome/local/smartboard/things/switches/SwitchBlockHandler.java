@@ -20,6 +20,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
+import shane.pennihome.local.smartboard.ui.IconSelector;
 import shane.pennihome.local.smartboard.ui.ThingProperties;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 import shane.pennihome.local.smartboard.ui.ViewSwiper;
@@ -45,18 +46,22 @@ public class SwitchBlockHandler extends IBlockUIHandler {
 
         ThingProperties tpProps = view.findViewById(R.id.sw_properties);
         SwitchPropertiesClrSelector tpBackground = view.findViewById(R.id.sw_background);
+        IconSelector iconSelector = view.findViewById(R.id.sw_icon_selector);
 
         tpProps.initialise(things, getBlock());
         tpBackground.initialise(getBlock(SwitchBlock.class));
+        iconSelector.setIconPath(getBlock(SwitchBlock.class).getIcon());
     }
 
     @Override
     public void buildBlockFromEditorWindowView(View view, OnBlockSetListener onBlockSetListener) {
         ThingProperties tbProps = view.findViewById(R.id.sw_properties);
         SwitchPropertiesClrSelector tbBackground = view.findViewById(R.id.sw_background);
+        IconSelector iconSelector = view.findViewById(R.id.sw_icon_selector);
 
         tbProps.populate(getBlock(), null);
         tbBackground.populate(getBlock(SwitchBlock.class));
+        getBlock(SwitchBlock.class).setIcon(iconSelector.getIconPath());
 
         if (onBlockSetListener != null)
             onBlockSetListener.OnSet(getBlock());
@@ -73,6 +78,9 @@ public class SwitchBlockHandler extends IBlockUIHandler {
     }
 
     public void BindEditHolder(BlockEditViewHolder viewHolder, int backgroundResourceId) {
+        if(getBlock().getThing() == null)
+            return;
+
         SwitchEditorHolder holder = (SwitchEditorHolder) viewHolder;
 
         holder.mBaName.setText(getBlock().getName());

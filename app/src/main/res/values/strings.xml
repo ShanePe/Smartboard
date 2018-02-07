@@ -53,6 +53,9 @@
     <string name="lbl_image_opacity">Image Opacity</string>
     <string name="lbl_cancel">Cancel</string>
     <string name="mnu_hubs">Hubs</string>
+    <string name="lbl_yes">Yes</string>
+    <string name="lbl_no">No</string>
+    <string name="lbl_icon">Icon</string>
 
     <string-array name="render_options">
         <item>Center</item>

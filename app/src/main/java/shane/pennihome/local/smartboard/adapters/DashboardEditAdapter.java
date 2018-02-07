@@ -48,9 +48,8 @@ public class DashboardEditAdapter extends RecyclerView.Adapter<DashboardEditAdap
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_dashboard, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.fragment_dashboard, parent, false));
     }
 
     @Override

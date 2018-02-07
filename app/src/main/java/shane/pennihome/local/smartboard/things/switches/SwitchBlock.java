@@ -31,6 +31,15 @@ public class SwitchBlock extends IBlock {
     private String mBackgroundImageOn;
     private int mBackgroundImageTransparencyOn;
     private UIHelper.ImageRenderTypes mBackgroundImageRenderTypeOn;
+    private String mIcon;
+
+    public String getIcon() {
+        return mIcon;
+    }
+
+    public void setIcon(String icon) {
+        this.mIcon = icon;
+    }
 
     public static SwitchBlock Load(String json) {
         try {

@@ -873,6 +873,7 @@
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$3 void OnReachableStateChanged(boolean isUnReachable)" />
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$2 void OnStateChange(boolean isOn)" />
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$1 void onClick(android.view.View v)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.DashboardView.BlockViewAdapter mBlockSize" />
     </entry_points>
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="setOnValueChangedListener" />
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="getDimension" />
@@ -2857,6 +2858,23 @@
     <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" method="buildBlockFromEditorWindowView" />
     <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler" method="buildEditorWindowView" />
     <pattern value="shane.pennihome.local.smartboard.ui.UIHelper" method="getDefaultForegroundColour" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricViewImpl.SavedState" method="SavedState" />
+    <pattern value="com.felipecsl.asymmetricgridview.AsymmetricViewImpl" method="AsymmetricViewImpl" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.BlockViewAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.GroupViewAdapter.SpacesItemDecoration" method="SpacesItemDecoration" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.GroupViewAdapter.SpacesItemDecoration" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.GroupEditAdapter.ViewHolder" method="ViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.GroupEditAdapter" method="GroupEditAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.adapters.IconAdapter" method="getSelectedPosition" />
+    <pattern value="shane.pennihome.local.smartboard.adapters.IconAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.ui.dialogs.IconSelectDialog" method="getOnIconActionListener" />
+    <pattern value="shane.pennihome.local.smartboard.ui.dialogs.IconSelectDialog" />
+    <pattern value="shane.pennihome.local.smartboard.ui.IconSelector" method="IconSelector" />
+    <pattern value="shane.pennihome.local.smartboard.ui.IconSelector" method="setOnIconActionListener" />
+    <pattern value="shane.pennihome.local.smartboard.ui.IconSelector" method="getOnIconActionListener" />
+    <pattern value="shane.pennihome.local.smartboard.ui.IconSelector" />
+    <pattern value="shane.pennihome.local.smartboard.comms.JsonExecutorRequest" method="JsonExecutorRequest" />
+    <pattern value="com.felipecsl.asymmetricgridview.RowInfo" method="RowInfo" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
