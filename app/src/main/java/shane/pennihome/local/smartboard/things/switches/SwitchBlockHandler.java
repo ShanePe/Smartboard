@@ -8,11 +8,13 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.thingsframework.Things;
@@ -117,23 +119,29 @@ public class SwitchBlockHandler extends IBlockUIHandler {
         getBlock().renderForegroundColourToTextView(holder.mTitle);
         getBlock().renderBackgroundTo(holder.itemView);
         getBlock().renderUnreachableBackground(holder.itemView);
+        getBlock(SwitchBlock.class).renderIconTo(holder.mIcon);
+
         holder.itemView.setPadding(Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING);
-        View test = holder.itemView;
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getBlock().getThing().isUnreachable())
+                if(getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE)
                     return;
 
-                JsonExecutorResult result = getBlock().getThing().execute();
-                if(result.isSuccess()) {
-                    getBlock().renderForegroundColourToTextView(holder.mTitle);
-                    getBlock().renderBackgroundTo(holder.itemView);
-                    //holder.test.setImageDrawable(holder.itemView.getBackground());
-                    getBlock().renderUnreachableBackground(holder.itemView);
-                }
-                else
-                    Toast.makeText(holder.itemView.getContext(), "Error:" + result.getError().getMessage(), Toast.LENGTH_SHORT).show();
+                getBlock().execute(holder.mProgress, new OnProcessCompleteListener<String>() {
+                    @Override
+                    public void complete(boolean success, String source) {
+                        if(success) {
+                            getBlock().renderForegroundColourToTextView(holder.mTitle);
+                            getBlock().renderBackgroundTo(holder.itemView);
+                            getBlock().renderUnreachableBackground(holder.itemView);
+                            getBlock(SwitchBlock.class).renderIconTo(holder.mIcon);
+                        }
+                        else
+                            Toast.makeText(holder.itemView.getContext(), "Error:" + source, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -196,11 +204,16 @@ public class SwitchBlockHandler extends IBlockUIHandler {
     public class SwitchViewHolder extends BlockViewHolder {
         LinearLayoutCompat mContainer;
         TextView mTitle;
+        ImageView mIcon;
+        ProgressBar mProgress;
 
         public SwitchViewHolder(View itemView) {
             super(itemView);
+
             mContainer = itemView.findViewById(R.id.bvs_container);
             mTitle = itemView.findViewById(R.id.bvs_title);
+            mIcon = itemView.findViewById(R.id.bvs_icon);
+            mProgress = itemView.findViewById(R.id.bvs_progress);
         }
     }
 }

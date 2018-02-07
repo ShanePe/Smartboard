@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat android:id="@+id/bvs_container"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bvs_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:foreground="?attr/selectableItemBackground"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical">
+
     <TextView
         android:id="@+id/bvs_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    </android.support.v7.widget.LinearLayoutCompat>
+
+    <ImageView
+        android:id="@+id/bvs_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:contentDescription="@string/content_desc_img" />
+
+    <ProgressBar
+        android:id="@+id/bvs_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:indeterminateOnly="true"
+        android:visibility="invisible"/>
+</android.support.v7.widget.LinearLayoutCompat>

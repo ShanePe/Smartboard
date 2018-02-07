@@ -8,11 +8,13 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.thingsframework.Things;
@@ -116,19 +118,25 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         getBlock().renderForegroundColourToTextView(holder.mTitle);
         getBlock().renderBackgroundTo(holder.mContainer);
         getBlock().renderUnreachableBackground(holder.itemView);
+        getBlock(RoutineBlock.class).renderIconTo(holder.mIcon);
+
         holder.itemView.setPadding(Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getBlock().getThing().isUnreachable())
+                if(getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE)
                     return;
 
-                JsonExecutorResult result = getBlock().getThing().execute();
-                if(result.isSuccess())
-                    Toast.makeText(holder.itemView.getContext(), "Executed :" +getBlock().getName(), Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(holder.itemView.getContext(), "Error :" + result.getError().getMessage(), Toast.LENGTH_SHORT).show();
+                getBlock().execute(holder.mProgress, new OnProcessCompleteListener<String>() {
+                    @Override
+                    public void complete(boolean success, String source) {
+                        if(success)
+                            Toast.makeText(holder.itemView.getContext(), "Executed :" +getBlock().getName(), Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(holder.itemView.getContext(), "Error :" + source, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -183,11 +191,15 @@ public class RoutineBlockHandler extends IBlockUIHandler {
     public class RoutineViewHolder extends BlockViewHolder {
         LinearLayoutCompat mContainer;
         TextView mTitle;
+        ImageView mIcon;
+        ProgressBar mProgress;
 
         public RoutineViewHolder(View itemView) {
             super(itemView);
             mContainer = itemView.findViewById(R.id.bvr_container);
             mTitle = itemView.findViewById(R.id.bvr_title);
+            mIcon = itemView.findViewById(R.id.bvr_icon);
+            mProgress = itemView.findViewById(R.id.bvr_progress);
         }
     }
 }

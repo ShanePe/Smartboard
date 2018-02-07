@@ -26,8 +26,6 @@ public abstract class IThing extends IDatabaseObject {
     private String mId;
     private IService.ServicesTypes mServicesTypes;
     @IgnoreOnCopy
-    private transient BroadcastReceiver mBroadcastReceiver;
-    @IgnoreOnCopy
     private transient OnThingActionListener mOnThingActionListener;
 
     public IThing() {
@@ -39,22 +37,6 @@ public abstract class IThing extends IDatabaseObject {
     }
 
     public void initialise() {
-        if (this instanceof IMessageSource) {
-            final IThing me = this;
-
-            mBroadcastReceiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    IMessage<?> message = IMessage.fromIntent(intent);
-                    assert message != null;
-                    if (message.getSource() != null)
-                        if (message.getSource().getClass().isInstance(me) && me.getKey().equals(message.getSource().getKey()) && !me.equals(message.getSource()))
-                            messageReceived(message);
-                }
-            };
-
-            LocalBroadcastManager.getInstance(Globals.getContext()).registerReceiver(mBroadcastReceiver, new IntentFilter(new SwitchStateChangedMessage().getMessageType()));
-        }
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -109,13 +91,6 @@ public abstract class IThing extends IDatabaseObject {
 
     public void setOnThingActionListener(OnThingActionListener onthingactionlistener) {
         this.mOnThingActionListener = onthingactionlistener;
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        if(mBroadcastReceiver != null)
-            LocalBroadcastManager.getInstance(Globals.getContext()).unregisterReceiver(mBroadcastReceiver);
-        super.finalize();
     }
 
     public abstract Types getThingType();

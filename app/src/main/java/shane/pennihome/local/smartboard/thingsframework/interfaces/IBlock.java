@@ -5,12 +5,17 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.annotation.ColorInt;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.comms.Monitor;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
@@ -230,5 +235,48 @@ public abstract class IBlock extends IDatabaseObject {
     public void loadThing() {
         if (TextUtils.isEmpty(getThingKey()) || mThing == null)
             mThing = Monitor.getMonitor().getThings().getByKey(getThingKey());
+    }
+
+    public void execute(View indicator, OnProcessCompleteListener<String> onProcessCompleteListener)
+    {
+        BlockExecutor blockExecutor = new BlockExecutor(indicator, onProcessCompleteListener);
+        blockExecutor.execute(getThing());
+    }
+
+    private static class BlockExecutor extends AsyncTask<IThing, Void, JsonExecutorResult>
+    {
+        View mProgressIndicator;
+        OnProcessCompleteListener<String> mOnProcessCompleteListener;
+
+        public BlockExecutor(View mProgressIndicator, OnProcessCompleteListener<String> mOnProcessCompleteListener) {
+            this.mProgressIndicator = mProgressIndicator;
+            this.mOnProcessCompleteListener = mOnProcessCompleteListener;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            if(mProgressIndicator != null)
+                mProgressIndicator.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(JsonExecutorResult jsonExecutorResult) {
+            if(mProgressIndicator != null)
+                mProgressIndicator.setVisibility(View.INVISIBLE);
+
+            if(!jsonExecutorResult.isSuccess())
+                if (mProgressIndicator != null)
+                    Toast.makeText(mProgressIndicator.getContext(), "Error executing : " + jsonExecutorResult.getError().getMessage(), Toast.LENGTH_LONG).show();
+
+            if(mOnProcessCompleteListener != null)
+                mOnProcessCompleteListener.complete(jsonExecutorResult.isSuccess(), jsonExecutorResult.isSuccess() ?
+                        jsonExecutorResult.getResult() :
+                        jsonExecutorResult.getError().getMessage());
+        }
+
+        @Override
+        protected JsonExecutorResult doInBackground(IThing... iThings) {
+            return iThings[0].execute();
+        }
     }
 }

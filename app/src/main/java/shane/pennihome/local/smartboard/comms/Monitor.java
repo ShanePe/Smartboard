@@ -178,9 +178,6 @@ public class Monitor {
             if (newThing == null) {
                 if(!currentThing.isUnreachable())
                     currentThing.setUnreachable(true);
-                if (this instanceof IMessageSource)
-                    Broadcaster.broadcastMessage(new SwitchStateChangedMessage((IMessageSource) currentThing, SwitchStateChangedMessage.SwitchStates.Unreachable));
-
             } else {
                 if(currentThing.isUnreachable() && !newThing.isUnreachable())
                     currentThing.setUnreachable(false);
@@ -190,9 +187,6 @@ public class Monitor {
                     Switch newSwitch = (Switch) newThing;
                     if (currentSwitch.isOn() != newSwitch.isOn()) {
                         currentSwitch.setOn(newSwitch.isOn());
-                        Broadcaster.broadcastMessage(new SwitchStateChangedMessage(currentSwitch, currentSwitch.isOn() ?
-                                SwitchStateChangedMessage.SwitchStates.On :
-                                SwitchStateChangedMessage.SwitchStates.Off));
                     }
                 }
                 currentThings.remove(newThing);

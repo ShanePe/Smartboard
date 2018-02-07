@@ -3,17 +3,23 @@ package shane.pennihome.local.smartboard.things.switches;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IIconBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 
@@ -22,7 +28,7 @@ import shane.pennihome.local.smartboard.ui.UIHelper;
  */
 
 @SuppressWarnings("DefaultFileTemplate")
-public class SwitchBlock extends IBlock {
+public class SwitchBlock extends IIconBlock {
     private @ColorInt
     int mForeColourOn;
     private @ColorInt
@@ -31,15 +37,6 @@ public class SwitchBlock extends IBlock {
     private String mBackgroundImageOn;
     private int mBackgroundImageTransparencyOn;
     private UIHelper.ImageRenderTypes mBackgroundImageRenderTypeOn;
-    private String mIcon;
-
-    public String getIcon() {
-        return mIcon;
-    }
-
-    public void setIcon(String icon) {
-        this.mIcon = icon;
-    }
 
     public static SwitchBlock Load(String json) {
         try {
@@ -174,5 +171,10 @@ public class SwitchBlock extends IBlock {
             destination.invalidate();
             }
         });
+    }
+
+    @Override
+    public int getIconColour() {
+        return getThing(Switch.class).isOn() ? getForegroundColourOn() : getForegroundColour();
     }
 }

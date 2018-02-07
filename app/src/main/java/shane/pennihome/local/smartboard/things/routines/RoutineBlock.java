@@ -1,9 +1,19 @@
 package shane.pennihome.local.smartboard.things.routines;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.ImageView;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IIconBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
 /**
@@ -11,17 +21,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  */
 
 @SuppressWarnings("DefaultFileTemplate")
-public class RoutineBlock extends IBlock {
-    private String mIcon;
-
-    public String getIcon() {
-        return mIcon;
-    }
-
-    public void setIcon(String icon) {
-        this.mIcon = icon;
-    }
-
+public class RoutineBlock extends IIconBlock {
     public static RoutineBlock Load(String json) {
         try {
             return IDatabaseObject.Load(RoutineBlock.class, json);
@@ -48,5 +48,11 @@ public class RoutineBlock extends IBlock {
     @Override
     public IBlockUIHandler getUIHandler() {
         return new RoutineBlockHandler(this);
+    }
+
+
+    @Override
+    public int getIconColour() {
+        return getForegroundColour();
     }
 }
