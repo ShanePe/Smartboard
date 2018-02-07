@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
@@ -53,6 +52,7 @@ public class SwitchBlockHandler extends IBlockUIHandler {
         tpProps.initialise(things, getBlock());
         tpBackground.initialise(getBlock(SwitchBlock.class));
         iconSelector.setIconPath(getBlock(SwitchBlock.class).getIcon());
+        iconSelector.setIconSize(getBlock(SwitchBlock.class).getIconSize());
     }
 
     @Override
@@ -64,6 +64,7 @@ public class SwitchBlockHandler extends IBlockUIHandler {
         tbProps.populate(getBlock(), null);
         tbBackground.populate(getBlock(SwitchBlock.class));
         getBlock(SwitchBlock.class).setIcon(iconSelector.getIconPath());
+        getBlock(SwitchBlock.class).setIconSize(iconSelector.getIconSize());
 
         if (onBlockSetListener != null)
             onBlockSetListener.OnSet(getBlock());

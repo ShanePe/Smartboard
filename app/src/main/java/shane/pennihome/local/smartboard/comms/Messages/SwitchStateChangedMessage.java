@@ -9,11 +9,11 @@ import shane.pennihome.local.smartboard.comms.interfaces.IMessageSource;
 
 @SuppressWarnings("DefaultFileTemplate")
 public class SwitchStateChangedMessage extends IMessage<SwitchStateChangedMessage.SwitchStates> {
-    public SwitchStateChangedMessage() {
+    private SwitchStateChangedMessage() {
         super();
     }
 
-    public SwitchStateChangedMessage(IMessageSource source, SwitchStates value) {
+    private SwitchStateChangedMessage(IMessageSource source, SwitchStates value) {
         super(source, value);
     }
 

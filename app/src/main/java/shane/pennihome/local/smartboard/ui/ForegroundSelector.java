@@ -85,10 +85,10 @@ public class ForegroundSelector extends LinearLayoutCompat {
                     @Override
                     public void complete(boolean success, Object source) {
                         if (success) {
-                            @ColorInt int clr = (int) source;
+                            mColour = (int) source;
                             if (mOnForegroundActionListener != null)
                                 mOnForegroundActionListener.OnColourChange(mColour);
-                            setColour(clr);
+                            setColour(mColour);
                         }
                     }
                 });

@@ -1,17 +1,8 @@
 package shane.pennihome.local.smartboard.thingsframework.interfaces;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.support.v4.content.LocalBroadcastManager;
-
 import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
-import shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage;
 import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
-import shane.pennihome.local.smartboard.comms.interfaces.IMessageSource;
-import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.services.interfaces.IService;

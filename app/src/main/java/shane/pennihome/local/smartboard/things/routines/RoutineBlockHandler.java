@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
@@ -52,6 +51,7 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         tpProps.initialise(things, getBlock());
         tpBackground.initialise(getBlock());
         iconSelector.setIconPath(getBlock(RoutineBlock.class).getIcon());
+        iconSelector.setIconSize(getBlock(RoutineBlock.class).getIconSize());
     }
 
     @Override
@@ -63,6 +63,8 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         tbProps.populate(getBlock(), null);
         tbBackground.populate(getBlock());
         getBlock(RoutineBlock.class).setIcon(iconSelector.getIconPath());
+        getBlock(RoutineBlock.class).setIconSize(iconSelector.getIconSize());
+
         if (onBlockSetListener != null)
             onBlockSetListener.OnSet(getBlock());
     }

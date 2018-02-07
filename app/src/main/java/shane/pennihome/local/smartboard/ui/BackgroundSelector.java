@@ -248,14 +248,14 @@ public class BackgroundSelector extends LinearLayoutCompat {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 setImageRenderType(UIHelper.ImageRenderTypes.valueOf((String) adapterView.getItemAtPosition(i)));
 
-                ((TextView) adapterView.getChildAt(0)).setTextColor(UIHelper.getDefaultForegroundColour());
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.parseColor("#424242"));
                 if (mBackgroundActionListener != null)
                     mBackgroundActionListener.OnImageRenderTypeChanged(getImageRenderType());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                setImageRenderType(UIHelper.ImageRenderTypes.Center);
             }
         });
 
@@ -317,7 +317,6 @@ public class BackgroundSelector extends LinearLayoutCompat {
         Bitmap bitmap = null;
         if (!TextUtils.isEmpty(mImage))
             bitmap = BitmapFactory.decodeFile(mImage);
-
 
         final Drawable drawable = UIHelper.generateImage(getContext(),
                 mColour,

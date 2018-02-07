@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.support.annotation.ColorInt;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,12 +66,12 @@ public abstract class IBlock extends IDatabaseObject {
         return mThing;
     }
 
-    public <T extends IThing> T getThing(Class<T> c) {
-        return (T)mThing;
-    }
-
     public void setThing(IThing thing) {
         mThing = thing;
+    }
+
+    public <T extends IThing> T getThing(Class<T> c) {
+        return (T) mThing;
     }
 
     public String getThingKey() {

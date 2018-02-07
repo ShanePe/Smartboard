@@ -547,4 +547,6 @@ public class UIHelper {
 
 
     public enum ImageRenderTypes {Center, Stretch}
+
+    public enum IconSizes {Small, Medium, Large}
 }

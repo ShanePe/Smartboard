@@ -17,7 +17,7 @@ import shane.pennihome.local.smartboard.data.JsonBuilder;
  * Created by shane on 13/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
+@SuppressWarnings({"DefaultFileTemplate", "EmptyMethod"})
 public abstract class IDatabaseObject {
     @IgnoreOnCopy
     private String mDataId;

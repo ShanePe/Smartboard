@@ -153,8 +153,8 @@ public class DashboardView extends LinearLayoutCompat {
             BlockViewAdapter adapter = new BlockViewAdapter(holder.mGroup, blockSize);
             holder.mBlockView.setRequestedColumnCount(Globals.BLOCK_COLUMNS);
            // holder.mBlockView.setDebugging(true);
-           // holder.mBlockView.setRequestedHorizontalSpacing(Globals.BLOCK_PADDING);
-            //holder.mBlockView.addItemDecoration(new SpacesItemDecoration(Globals.BLOCK_PADDING));
+            holder.mBlockView.setRequestedHorizontalSpacing(Globals.BLOCK_PADDING);
+            holder.mBlockView.addItemDecoration(new SpacesItemDecoration(Globals.BLOCK_PADDING));
             holder.mBlockView.setAdapter(new AsymmetricRecyclerViewAdapter<>(holder.itemView.getContext(),  holder.mBlockView, adapter));
         }
 

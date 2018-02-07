@@ -62,4 +62,10 @@
         <item>Stretch</item>
     </string-array>
 
+    <string-array name="icon_size_options">
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+    </string-array>
+
 </resources>

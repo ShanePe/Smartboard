@@ -65,12 +65,13 @@ public class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final ImageView img = (ImageView)holder.itemView;
+        final int pos = holder.getAdapterPosition() == -1 ? position : holder.getAdapterPosition();
         img.post(new Runnable() {
             @Override
             public void run() {
                 try {
-                    InputStream stream = holder.itemView.getContext().getAssets().open("icons/" + mIcons[holder.getAdapterPosition()]);
-                    img.setImageDrawable(Drawable.createFromStream(stream, mIcons[holder.getAdapterPosition()]));
+                    InputStream stream = holder.itemView.getContext().getAssets().open("icons/" + mIcons[pos]);
+                    img.setImageDrawable(Drawable.createFromStream(stream, mIcons[pos]));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -80,16 +81,16 @@ public class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder>{
             @Override
             public void onClick(View view) {
                 notifyItemChanged(mSelectedPos);
-                mSelectedPos = holder.getAdapterPosition();
+                mSelectedPos = pos;
                 notifyItemChanged(mSelectedPos);
             }
         });
-        if(("icons/" + mIcons[holder.getAdapterPosition()]).equals(mSelected)) {
-            mSelectedPos = holder.getAdapterPosition();
+        if (("icons/" + mIcons[pos]).equals(mSelected)) {
+            mSelectedPos = pos;
             mRecycleView.post(new Runnable() {
                 @Override
                 public void run() {
-                    mRecycleView.getLayoutManager().scrollToPosition(holder.getAdapterPosition());
+                    mRecycleView.getLayoutManager().scrollToPosition(pos);
                 }
             });
         }

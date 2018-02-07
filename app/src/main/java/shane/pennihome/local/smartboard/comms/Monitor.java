@@ -7,8 +7,6 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage;
-import shane.pennihome.local.smartboard.comms.interfaces.IMessageSource;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.services.ServiceLoader;

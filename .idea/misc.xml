@@ -874,6 +874,25 @@
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$2 void OnStateChange(boolean isOn)" />
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$1 void onClick(android.view.View v)" />
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.DashboardView.BlockViewAdapter mBlockSize" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock.BlockExecutor mOnProcessCompleteListener" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock.BlockExecutor mProgressIndicator" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.RoutineViewHolder mProgress" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler.RoutineViewHolder mIcon" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler$3 void OnReachableStateChanged(boolean isUnReachable)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler$2$1 void complete(boolean success, java.lang.String source)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler$2 void onClick(android.view.View v)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.SwitchViewHolder mProgress" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.SwitchViewHolder mIcon" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$4 void OnReachableStateChanged(boolean isUnReachable)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$3 void OnStateChange(boolean isOn)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$2$1 void complete(boolean success, java.lang.String source)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$2 void onClick(android.view.View v)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage.SwitchStates Unreachable" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage.SwitchStates On" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage.SwitchStates Off" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper.IconSizes Large" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper.IconSizes Medium" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper.IconSizes Small" />
     </entry_points>
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="setOnValueChangedListener" />
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="getDimension" />
@@ -2875,6 +2894,24 @@
     <pattern value="shane.pennihome.local.smartboard.ui.IconSelector" />
     <pattern value="shane.pennihome.local.smartboard.comms.JsonExecutorRequest" method="JsonExecutorRequest" />
     <pattern value="com.felipecsl.asymmetricgridview.RowInfo" method="RowInfo" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.BlockViewAdapter" method="BlockViewAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock.BlockExecutor" method="doInBackground" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock.BlockExecutor" method="onPostExecute" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock.BlockExecutor" method="onPreExecute" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock.BlockExecutor" method="BlockExecutor" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock.BlockExecutor" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="execute" />
+    <pattern value="shane.pennihome.local.smartboard.comms.interfaces.IMessage" method="toJson" />
+    <pattern value="shane.pennihome.local.smartboard.comms.interfaces.IMessage" method="getMessageType" />
+    <pattern value="shane.pennihome.local.smartboard.comms.interfaces.IMessage" method="fromIntent" />
+    <pattern value="shane.pennihome.local.smartboard.comms.interfaces.IMessageSource" method="getKey" />
+    <pattern value="shane.pennihome.local.smartboard.comms.interfaces.IMessageSource" />
+    <pattern value="shane.pennihome.local.smartboard.adapters.IconAdapter" method="IconAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.ui.listeners.OnIconActionListener" method="OnIconSizeChanged" />
+    <pattern value="shane.pennihome.local.smartboard.ui.listeners.OnIconActionListener" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage.SwitchStates" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage" />
+    <pattern value="shane.pennihome.local.smartboard.ui.UIHelper.IconSizes" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

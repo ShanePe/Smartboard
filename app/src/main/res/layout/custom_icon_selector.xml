@@ -5,7 +5,7 @@
 
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/white_background_round"
         android:orientation="horizontal"
         android:padding="4dp">
@@ -15,11 +15,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="fill"
+            android:layout_weight="1"
             android:background="@drawable/custom_icon_control"
             android:contentDescription="@string/content_desc_img"
             android:padding="1dp"
             android:scaleType="center"
             app:srcCompat="@drawable/icon_tap_to_add" />
+
+        <Spinner
+            android:id="@+id/cis_icon_size"
+            style="@style/Platform.Widget.AppCompat.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="2sp"
+            android:layout_weight="1"
+            android:entries="@array/icon_size_options" />
 
     </android.support.v7.widget.LinearLayoutCompat>
 </merge>
