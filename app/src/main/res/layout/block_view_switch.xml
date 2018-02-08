@@ -23,8 +23,8 @@
         android:id="@+id/bvs_progress"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="5dp"
         android:layout_gravity="bottom"
         android:indeterminateOnly="true"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 </android.support.v7.widget.LinearLayoutCompat>

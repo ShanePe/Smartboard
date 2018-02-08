@@ -150,7 +150,12 @@ public class Monitor {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                updateThingsFromService();
+                try {
+                    mMonitorThread.sleep(1000);
+                    updateThingsFromService();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }
