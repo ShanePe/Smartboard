@@ -1,10 +1,9 @@
 package shane.pennihome.local.smartboard.things.switches;
 
+import shane.pennihome.local.smartboard.comms.Broadcaster;
 import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
-import shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage;
-import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
-import shane.pennihome.local.smartboard.comms.interfaces.IMessageSource;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
+import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
 /**
@@ -12,11 +11,11 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  */
 
 @SuppressWarnings({"ALL", "unused"})
-public class Switch extends IThing implements IMessageSource {
+public class Switch extends IThing {
     private String mType;
     private boolean mOn;
     @IgnoreOnCopy
-    private OnSwitchStateChangeListener mOnSwitchStateChangeListener;
+//    private OnSwitchStateChangeListener mOnSwitchStateChangeListener;
 
     public static Switch Load(String json) {
         try {
@@ -26,31 +25,34 @@ public class Switch extends IThing implements IMessageSource {
         }
     }
 
-    public OnSwitchStateChangeListener getOnSwitchStateChangeListener() {
-        return mOnSwitchStateChangeListener;
-    }
-
-    public void setOnSwitchStateChangeListener(OnSwitchStateChangeListener onSwitchStateChangeListener) {
-        mOnSwitchStateChangeListener = onSwitchStateChangeListener;
-    }
+//    public OnSwitchStateChangeListener getOnSwitchStateChangeListener() {
+//        return mOnSwitchStateChangeListener;
+//    }
+//
+//    public void setOnSwitchStateChangeListener(OnSwitchStateChangeListener onSwitchStateChangeListener) {
+//        mOnSwitchStateChangeListener = onSwitchStateChangeListener;
+//    }
 
     public boolean isOn() {
         return mOn;
     }
 
-    public void setOn(final boolean on) {
+    public void setOn(final boolean on, boolean fireBroadcast) {
         boolean pre = mOn;
         mOn = on;
-        if (pre != mOn && mOnSwitchStateChangeListener != null)
-            mOnSwitchStateChangeListener.OnStateChange(isOn());
+//        if (pre != mOn && mOnSwitchStateChangeListener != null)
+//            mOnSwitchStateChangeListener.OnStateChange(isOn());
+        if (pre != mOn && fireBroadcast)
+            Broadcaster.broadcastMessage(new ThingChangedMessage(getKey(), ThingChangedMessage.What.State));
     }
 
     @Override
-    public void setUnreachable(boolean unreachable) {
+    public void setUnreachable(boolean unreachable, boolean fireBroadcast) {
         boolean pre = unreachable;
-        super.setUnreachable(unreachable);
-        if (pre != isUnreachable() && mOnSwitchStateChangeListener != null)
-            mOnSwitchStateChangeListener.OnStateChange(isOn());
+        super.setUnreachable(unreachable, fireBroadcast);
+
+//        if (pre != isUnreachable() && mOnSwitchStateChangeListener != null)
+//            mOnSwitchStateChangeListener.OnStateChange(isOn());
     }
 
     @Override
@@ -58,7 +60,7 @@ public class Switch extends IThing implements IMessageSource {
         JsonExecutorResult result = super.execute();
         if(result!=null)
             if(result.isSuccess())
-                setOn(!isOn());
+                setOn(!isOn(), true);
         return result;
     }
 
@@ -73,16 +75,6 @@ public class Switch extends IThing implements IMessageSource {
     @Override
     public Types getThingType() {
         return Types.Switch;
-    }
-
-    @Override
-    public void messageReceived(IMessage<?> message) {
-        if (message instanceof SwitchStateChangedMessage)
-            if (message.getSource() != null) {
-                Switch src = (Switch) message.getSource();
-                setUnreachable(src.isUnreachable());
-                setOn(src.isOn());
-            }
     }
 
     @Override

@@ -1,5 +1,10 @@
 package shane.pennihome.local.smartboard.thingsframework.adapters;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,9 +13,10 @@ import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
+import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
-import shane.pennihome.local.smartboard.things.switches.OnSwitchStateChangeListener;
 import shane.pennihome.local.smartboard.things.switches.Switch;
+import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
 
@@ -20,6 +26,7 @@ import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionL
 
 @SuppressWarnings("DefaultFileTemplate")
 public class DeviceViewAdapter extends ThingViewAdapter {
+    BroadcastReceiver mBroadcastReceiver;
     public DeviceViewAdapter(final IThings items) {
         super(items);
     }
@@ -35,6 +42,12 @@ public class DeviceViewAdapter extends ThingViewAdapter {
     }
 
     @Override
+    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        ((ViewHolder) holder).stopListening();
+        super.onViewRecycled(holder);
+    }
+
+    @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final ViewHolder vh = (ViewHolder) holder;
         Switch d = (Switch) mValues.get(position);
@@ -44,6 +57,7 @@ public class DeviceViewAdapter extends ThingViewAdapter {
         vh.mSwitchView.setChecked(d.isOn());
         vh.mSwitchView.setEnabled(!d.isUnreachable());
         vh.mTypeView.setText(d.getType());
+        vh.startListening();
 
         if (vh.mItem.getServiceType() == IService.ServicesTypes.SmartThings) {
             vh.mImgView.setImageResource(R.drawable.icon_switch);
@@ -58,27 +72,38 @@ public class DeviceViewAdapter extends ThingViewAdapter {
             public void onClick(View v) {
                 vh.mSwitchView.setEnabled(false);
                 JsonExecutorResult result = vh.mItem.execute();
-                if(result.isSuccess())
-                    vh.mSwitchView.setChecked(vh.mItem.isOn());
-                else
+                if (!result.isSuccess())
                     Toast.makeText(vh.mSwitchView.getContext(), "Error:" + result.getError().getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        vh.setOnThingActionListener(new OnThingActionListener() {
+            @Override
+            public void OnReachableStateChanged(boolean isUnReachable) {
+                vh.mSwitchView.setChecked(!isUnReachable);
+            }
+
+            @Override
+            public void OnStateChanged() {
+                vh.mSwitchView.setChecked(vh.mItem.isOn());
                 vh.mSwitchView.setEnabled(true);
             }
         });
 
-        vh.mItem.setOnSwitchStateChangeListener(new OnSwitchStateChangeListener() {
-            @Override
-            public void OnStateChange(boolean isOn) {
-                vh.mSwitchView.setChecked(isOn);
-            }
-        });
+//
+//        vh.mItem.setOnSwitchStateChangeListener(new OnSwitchStateChangeListener() {
+//            @Override
+//            public void OnStateChange(boolean isOn) {
+//                vh.mSwitchView.setChecked(isOn);
+//            }
+//        });
 
-        vh.mItem.setOnThingActionListener(new OnThingActionListener() {
-            @Override
-            public void OnReachableStateChanged(boolean isUnReachable) {
-                vh.mSwitchView.setEnabled(!isUnReachable);
-            }
-        });
+//        vh.mItem.setOnThingActionListener(new OnThingActionListener() {
+//            @Override
+//            public void OnReachableStateChanged(boolean isUnReachable) {
+//                vh.mSwitchView.setEnabled(!isUnReachable);
+//            }
+//        });
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -87,7 +112,9 @@ public class DeviceViewAdapter extends ThingViewAdapter {
         final TextView mNameView;
         final TextView mTypeView;
         final TextView mSourceView;
+        BroadcastReceiver mBroadcastReceiver;
         Switch mItem;
+        OnThingActionListener mOnThingActionListener;
 
         ViewHolder(View view) {
             super(view);
@@ -97,6 +124,51 @@ public class DeviceViewAdapter extends ThingViewAdapter {
             mTypeView = view.findViewById(R.id.device_type);
             mSwitchView = view.findViewById(R.id.device_switch);
             mSourceView = view.findViewById(R.id.device_source);
+        }
+
+        public OnThingActionListener getOnThingActionListener() {
+            return mOnThingActionListener;
+        }
+
+        void setOnThingActionListener(OnThingActionListener onThingActionListener) {
+            mOnThingActionListener = onThingActionListener;
+        }
+
+        void startListening() {
+            if (mBroadcastReceiver == null && itemView != null) {
+                mBroadcastReceiver = new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        if (mItem != null && mOnThingActionListener != null) {
+                            IMessage<?> message = IMessage.fromIntent(intent);
+                            if (message instanceof ThingChangedMessage) {
+                                ThingChangedMessage thingChangedMessage = (ThingChangedMessage) message;
+                                if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.State)
+                                    mOnThingActionListener.OnStateChanged();
+                                else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Unreachable)
+                                    mOnThingActionListener.OnReachableStateChanged(mItem.isUnreachable());
+                            }
+                        }
+                    }
+                };
+
+                LocalBroadcastManager.getInstance(itemView.getContext()).registerReceiver(mBroadcastReceiver,
+                        new IntentFilter(new ThingChangedMessage().getMessageType()));
+
+            }
+        }
+
+        void stopListening() {
+            if (mBroadcastReceiver != null && itemView != null) {
+                LocalBroadcastManager.getInstance(itemView.getContext()).unregisterReceiver(mBroadcastReceiver);
+                mBroadcastReceiver = null;
+            }
+        }
+
+        @Override
+        protected void finalize() throws Throwable {
+            stopListening();
+            super.finalize();
         }
 
         @Override

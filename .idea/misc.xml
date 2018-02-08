@@ -893,6 +893,18 @@
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper.IconSizes Large" />
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper.IconSizes Medium" />
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper.IconSizes Small" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.adapters.DeviceViewAdapter mBroadcastReceiver" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock$5 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock$1 void onReceive(android.content.Context context, android.content.Intent intent)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock mBroadcastReceiver" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock mOnThingActionListener" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$8 com.google.gson.JsonElement serialize(shane.pennihome.local.smartboard.services.interfaces.IService src, java.lang.reflect.Type typeOfSrc, com.google.gson.JsonSerializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$7 com.google.gson.JsonElement serialize(shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock src, java.lang.reflect.Type typeOfSrc, com.google.gson.JsonSerializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$6 com.google.gson.JsonElement serialize(shane.pennihome.local.smartboard.thingsframework.interfaces.IThing src, java.lang.reflect.Type typeOfSrc, com.google.gson.JsonSerializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$5 com.google.gson.JsonElement serialize(shane.pennihome.local.smartboard.comms.interfaces.IMessage&lt;?&gt; src, java.lang.reflect.Type typeOfSrc, com.google.gson.JsonSerializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.comms.Monitor$6 void complete(boolean success, shane.pennihome.local.smartboard.services.ServiceLoader.ServiceLoaderResult source)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.comms.Monitor$5 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$3 void OnStateChanged()" />
     </entry_points>
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="setOnValueChangedListener" />
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="getDimension" />
@@ -2912,6 +2924,19 @@
     <pattern value="shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage.SwitchStates" />
     <pattern value="shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage" />
     <pattern value="shane.pennihome.local.smartboard.ui.UIHelper.IconSizes" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Broadcaster" method="broadcastMessage" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Broadcaster" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.DeviceViewAdapter.ViewHolder" method="getOnThingActionListener" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.DeviceViewAdapter.ViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.DeviceViewAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="finalize" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="setOnThingActionListener" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="getOnThingActionListener" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="stopListeningForChanges" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="startListeningForChanges" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="verifyThings" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.OnSwitchStateChangeListener" method="OnStateChange" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.OnSwitchStateChangeListener" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

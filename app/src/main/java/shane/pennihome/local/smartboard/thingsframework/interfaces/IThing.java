@@ -1,12 +1,12 @@
 package shane.pennihome.local.smartboard.thingsframework.interfaces;
 
+import shane.pennihome.local.smartboard.comms.Broadcaster;
 import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.comms.Monitor;
-import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
-import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
+import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
 
 @SuppressWarnings({"DefaultFileTemplate", "unused"})
 public abstract class IThing extends IDatabaseObject {
@@ -16,8 +16,8 @@ public abstract class IThing extends IDatabaseObject {
     private transient boolean mUnreachable;
     private String mId;
     private IService.ServicesTypes mServicesTypes;
-    @IgnoreOnCopy
-    private transient OnThingActionListener mOnThingActionListener;
+    //@IgnoreOnCopy
+    //private transient OnThingActionListener mOnThingActionListener;
 
     public IThing() {
         mInstance = this.getClass().getSimpleName();
@@ -35,14 +35,15 @@ public abstract class IThing extends IDatabaseObject {
         return mUnreachable;
     }
 
-    public void setUnreachable(boolean unreachable) {
+    public void setUnreachable(boolean unreachable, boolean fireBroadcast) {
         boolean pre = mUnreachable;
         mUnreachable = unreachable;
-        if(mOnThingActionListener != null)
-            mOnThingActionListener.OnReachableStateChanged(mUnreachable);
-    }
 
-    public abstract void messageReceived(IMessage<?> message);
+        if (pre != mUnreachable && fireBroadcast)
+            Broadcaster.broadcastMessage(new ThingChangedMessage(getKey(), ThingChangedMessage.What.Unreachable));
+//        if(mOnThingActionListener != null)
+//            mOnThingActionListener.OnReachableStateChanged(mUnreachable);
+    }
 
     public JsonExecutorResult execute()
     {
@@ -76,13 +77,13 @@ public abstract class IThing extends IDatabaseObject {
         return String.format("%s%s%s%s", getId(), getName(), getServiceType(), getThingType());
     }
 
-    public OnThingActionListener getOnThingActionListener() {
-        return mOnThingActionListener;
-    }
-
-    public void setOnThingActionListener(OnThingActionListener onthingactionlistener) {
-        this.mOnThingActionListener = onthingactionlistener;
-    }
+//    public OnThingActionListener getOnThingActionListener() {
+//        return mOnThingActionListener;
+//    }
+//
+//    public void setOnThingActionListener(OnThingActionListener onthingactionlistener) {
+//        this.mOnThingActionListener = onthingactionlistener;
+//    }
 
     public abstract Types getThingType();
     /**

@@ -42,6 +42,14 @@ public class HueBridgeService extends IService {
     private String mAddress;
     private String mToken;
 
+    public static HueBridgeService Load(String json) {
+        try {
+            return IService.fromJson(HueBridgeService.class, json);
+        } catch (Exception e) {
+            return new HueBridgeService();
+        }
+    }
+
     private String getAddress() {
         return mAddress;
     }
@@ -58,13 +66,13 @@ public class HueBridgeService extends IService {
         return mToken;
     }
 
+    private void setToken(String token) {
+        this.mToken = token;
+    }
+
     @Override
     public String getName() {
         return "Philips Hue";
-    }
-
-    private void setToken(String token) {
-        this.mToken = token;
     }
 
     @Override
@@ -90,14 +98,6 @@ public class HueBridgeService extends IService {
         });
         handler.execute();
 
-    }
-
-    public static HueBridgeService Load(String json) {
-        try {
-            return IService.fromJson(HueBridgeService.class, json);
-        } catch (Exception e) {
-            return new HueBridgeService();
-        }
     }
 
     @Override
@@ -207,8 +207,9 @@ public class HueBridgeService extends IService {
 
     public class Connector implements IThingsGetter
     {
-        private boolean mCancel;
         TextView mTextDesc;
+        private boolean mCancel;
+
         @Override
         public String getLoadMessage() {
             return "Connecting to Philips Hue Bridge";
@@ -336,8 +337,8 @@ public class HueBridgeService extends IService {
                 Switch d = new Switch();
                 d.setId(k);
                 d.setName(jDev.getString("name"));
-                d.setUnreachable(!jState.getBoolean("reachable"));
-                d.setOn(jState.getBoolean("on"));
+                d.setUnreachable(!jState.getBoolean("reachable"), false);
+                d.setOn(jState.getBoolean("on"), false);
                 d.setType(jDev.getString("type"));
                 d.setService(ServicesTypes.PhilipsHue);
                 d.initialise();

@@ -226,7 +226,7 @@ public class SmartThingsService extends IService {
                 Switch d = new Switch();
                 d.setId(jDev.getString("id"));
                 d.setName(jDev.getString("name"));
-                d.setOn(jDev.getString("value").equals("on"));
+                d.setOn(jDev.getString("value").equals("on"), false);
                 d.setType(jDev.getString("type"));
                 d.setService(ServicesTypes.SmartThings);
                 d.initialise();

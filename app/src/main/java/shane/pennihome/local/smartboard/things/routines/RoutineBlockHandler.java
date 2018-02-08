@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
@@ -20,7 +21,6 @@ import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
-import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
 import shane.pennihome.local.smartboard.ui.IconSelector;
 import shane.pennihome.local.smartboard.ui.ThingProperties;
 import shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector;
@@ -133,19 +133,14 @@ public class RoutineBlockHandler extends IBlockUIHandler {
                 getBlock().execute(holder.mProgress, new OnProcessCompleteListener<String>() {
                     @Override
                     public void complete(boolean success, String source) {
-                        if(success)
-                            Toast.makeText(holder.itemView.getContext(), "Executed :" +getBlock().getName(), Toast.LENGTH_SHORT).show();
+                        if (success) {
+                            Toast.makeText(holder.itemView.getContext(), "Executed :" + getBlock().getName(), Toast.LENGTH_SHORT).show();
+                            Monitor.getMonitor().verifyThings();
+                        }
                         else
                             Toast.makeText(holder.itemView.getContext(), "Error :" + source, Toast.LENGTH_SHORT).show();
                     }
                 });
-            }
-        });
-
-        getBlock().getThing().setOnThingActionListener(new OnThingActionListener() {
-            @Override
-            public void OnReachableStateChanged(boolean isUnReachable) {
-                getBlock().renderUnreachableBackground(holder.itemView);
             }
         });
     }

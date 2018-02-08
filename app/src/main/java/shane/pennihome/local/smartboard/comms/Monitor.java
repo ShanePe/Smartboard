@@ -146,9 +146,18 @@ public class Monitor {
         mMonitorThread.start();
     }
 
+    public void verifyThings() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                updateThingsFromService();
+            }
+        }).start();
+    }
+
     public void removeService(IService service) {
         for (IThing t : getThings().getForService(service))
-            t.setUnreachable(true);
+            t.setUnreachable(true, true);
         getServices().remove(service);
     }
 
@@ -175,16 +184,16 @@ public class Monitor {
 
             if (newThing == null) {
                 if(!currentThing.isUnreachable())
-                    currentThing.setUnreachable(true);
+                    currentThing.setUnreachable(true, true);
             } else {
                 if(currentThing.isUnreachable() && !newThing.isUnreachable())
-                    currentThing.setUnreachable(false);
+                    currentThing.setUnreachable(false, true);
 
                 if (currentThing instanceof Switch) {
                     Switch currentSwitch = (Switch) currentThing;
                     Switch newSwitch = (Switch) newThing;
                     if (currentSwitch.isOn() != newSwitch.isOn()) {
-                        currentSwitch.setOn(newSwitch.isOn());
+                        currentSwitch.setOn(newSwitch.isOn(), true);
                     }
                 }
                 currentThings.remove(newThing);

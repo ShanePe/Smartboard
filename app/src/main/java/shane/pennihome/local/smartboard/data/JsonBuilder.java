@@ -12,9 +12,7 @@ import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
 
-import shane.pennihome.local.smartboard.comms.Messages.SwitchStateChangedMessage;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
-import shane.pennihome.local.smartboard.comms.interfaces.IMessageSource;
 import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeService;
 import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
@@ -22,6 +20,7 @@ import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.things.switches.SwitchBlock;
+import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
@@ -88,53 +87,19 @@ public class JsonBuilder {
                 JsonObject jMessage = json.getAsJsonObject();
 
                 switch (jMessage.get("mInstance").getAsString().toLowerCase()) {
-                    case "switchstatechangedmessage":
-                        return SwitchStateChangedMessage.Load(jMessage.toString());
+                    case "thingchangedmessage":
+                        return ThingChangedMessage.Load(jMessage.toString());
                     default:
                         throw new JsonParseException("Invalid type of message : " + jMessage.get("mInstance").getAsString());
                 }
             }
         });
 
-        builder.registerTypeAdapter(IMessageSource.class, new JsonDeserializer<IMessageSource>() {
-            @Override
-            public IMessageSource deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                JsonObject jMessageSrc = json.getAsJsonObject();
-
-                switch (jMessageSrc.get("mInstance").getAsString().toLowerCase()) {
-                    case "switch":
-                        return Switch.Load(jMessageSrc.toString());
-                    default:
-                        throw new JsonParseException("Invalid type of message source : " + jMessageSrc.get("mInstance").getAsString());
-                }
-            }
-        });
-
         builder.registerTypeAdapter(IMessage.class, new JsonSerializer<IMessage<?>>() {
             @Override
             public JsonElement serialize(IMessage<?> src, Type typeOfSrc, JsonSerializationContext context) {
-                if (src instanceof SwitchStateChangedMessage)
-                    return context.serialize((SwitchStateChangedMessage) src);
-                else
-                    throw new JsonParseException("Invalid type of message : " + src.toString());
-            }
-        });
-
-        builder.registerTypeAdapter(IMessageSource.class, new JsonSerializer<IMessageSource>() {
-            @Override
-            public JsonElement serialize(IMessageSource src, Type typeOfSrc, JsonSerializationContext context) {
-                if (src instanceof Switch)
-                    return context.serialize((Switch) src);
-                else
-                    throw new JsonParseException("Invalid type of message source : " + src.toString());
-            }
-        });
-
-        builder.registerTypeAdapter(IMessage.class, new JsonSerializer<IMessage<?>>() {
-            @Override
-            public JsonElement serialize(IMessage<?> src, Type typeOfSrc, JsonSerializationContext context) {
-                if (src instanceof SwitchStateChangedMessage)
-                    return context.serialize((SwitchStateChangedMessage) src);
+                if (src instanceof ThingChangedMessage)
+                    return context.serialize((ThingChangedMessage) src);
                 else
                     throw new JsonParseException("Invalid type of message : " + src.toString());
             }

@@ -121,6 +121,7 @@ public class SwitchBlockHandler extends IBlockUIHandler {
         getBlock().renderBackgroundTo(holder.itemView);
         getBlock().renderUnreachableBackground(holder.itemView);
         getBlock(SwitchBlock.class).renderIconTo(holder.mIcon);
+        getBlock().startListeningForChanges();
 
         holder.itemView.setPadding(Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING);
 
@@ -133,31 +134,23 @@ public class SwitchBlockHandler extends IBlockUIHandler {
                 getBlock().execute(holder.mProgress, new OnProcessCompleteListener<String>() {
                     @Override
                     public void complete(boolean success, String source) {
-                        if(success) {
-                            getBlock().renderForegroundColourToTextView(holder.mTitle);
-                            getBlock().renderBackgroundTo(holder.itemView);
-                            getBlock().renderUnreachableBackground(holder.itemView);
-                            getBlock(SwitchBlock.class).renderIconTo(holder.mIcon);
-                        }
-                        else
+                        if (!success)
                             Toast.makeText(holder.itemView.getContext(), "Error:" + source, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         });
 
-        getBlock().getThing(Switch.class).setOnSwitchStateChangeListener(new OnSwitchStateChangeListener() {
-            @Override
-            public void OnStateChange(boolean isOn) {
-            getBlock().renderForegroundColourToTextView(holder.mTitle);
-            getBlock().renderBackgroundTo(holder.itemView);
-            getBlock().renderUnreachableBackground(holder.itemView);
-            }
-        });
-
-        getBlock().getThing().setOnThingActionListener(new OnThingActionListener() {
+        getBlock().setOnThingActionListener(new OnThingActionListener() {
             @Override
             public void OnReachableStateChanged(boolean isUnReachable) {
+                getBlock().renderUnreachableBackground(holder.itemView);
+            }
+
+            @Override
+            public void OnStateChanged() {
+                getBlock().renderForegroundColourToTextView(holder.mTitle);
+                getBlock().renderBackgroundTo(holder.itemView);
                 getBlock().renderUnreachableBackground(holder.itemView);
             }
         });

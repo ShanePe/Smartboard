@@ -13,20 +13,13 @@ public abstract class IMessage<T> {
     @SuppressWarnings("unused")
     private final String mInstance;
     private T mValue;
-    private IMessageSource mSource;
 
     public IMessage() {
         mInstance = this.getClass().getSimpleName();
     }
 
-    public IMessage(IMessageSource source) {
-        this.mSource = source;
-        mInstance = this.getClass().getSimpleName();
-    }
-
-    public IMessage(IMessageSource source, T value) {
+    public IMessage(T value) {
         this.mValue = value;
-        this.mSource = source;
         mInstance = this.getClass().getSimpleName();
     }
 
@@ -39,10 +32,6 @@ public abstract class IMessage<T> {
             return null;
 
         return fromJson(IMessage.class, intent.getStringExtra("message"));
-    }
-
-    public IMessageSource getSource() {
-        return mSource;
     }
 
     public T getValue()

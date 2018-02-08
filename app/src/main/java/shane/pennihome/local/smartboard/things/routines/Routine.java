@@ -1,6 +1,5 @@
 package shane.pennihome.local.smartboard.things.routines;
 
-import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
@@ -23,10 +22,10 @@ public class Routine extends IThing {
         return Types.Routine;
     }
 
-    @Override
-    public void messageReceived(IMessage<?> message) {
-
-    }
+//    @Override
+//    public void messageReceived(IMessage<?> message) {
+//
+//    }
 
     @Override
     public IDatabaseObject.Types getDatabaseType() {

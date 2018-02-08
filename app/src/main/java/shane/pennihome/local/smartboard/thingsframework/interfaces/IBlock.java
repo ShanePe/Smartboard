@@ -1,5 +1,9 @@
 package shane.pennihome.local.smartboard.thingsframework.interfaces;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -7,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.annotation.ColorInt;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -14,11 +19,15 @@ import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.comms.Monitor;
+import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
+import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
 import shane.pennihome.local.smartboard.things.switches.SwitchBlock;
+import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 
 /**
@@ -41,6 +50,8 @@ public abstract class IBlock extends IDatabaseObject {
     private String mThingKey;
     private transient IThing mThing;
     private UIHelper.ImageRenderTypes mBGImageRenderType;
+    private OnThingActionListener mOnThingActionListener;
+    private BroadcastReceiver mBroadcastReceiver;
 
     public IBlock() {
         mInstance = this.getClass().getSimpleName();
@@ -59,6 +70,37 @@ public abstract class IBlock extends IDatabaseObject {
                 return new RoutineBlock();
             default:
                 throw new Exception("Invalid Type to create");
+        }
+    }
+
+    public void startListeningForChanges() {
+        if (mBroadcastReceiver == null) {
+            mBroadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (mThing != null && mOnThingActionListener != null) {
+                        IMessage<?> message = IMessage.fromIntent(intent);
+                        if (message instanceof ThingChangedMessage) {
+                            ThingChangedMessage thingChangedMessage = (ThingChangedMessage) message;
+                            if (thingChangedMessage.getValue().equals(getThingKey())) {
+                                if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.State)
+                                    mOnThingActionListener.OnStateChanged();
+                                else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Unreachable)
+                                    mOnThingActionListener.OnReachableStateChanged(getThing().isUnreachable());
+                            }
+                        }
+                    }
+                }
+            };
+            LocalBroadcastManager.getInstance(Globals.getContext()).registerReceiver(mBroadcastReceiver,
+                    new IntentFilter(new ThingChangedMessage().getMessageType()));
+        }
+    }
+
+    public void stopListeningForChanges() {
+        if (mBroadcastReceiver != null) {
+            LocalBroadcastManager.getInstance(Globals.getContext()).unregisterReceiver(mBroadcastReceiver);
+            mBroadcastReceiver = null;
         }
     }
 
@@ -85,6 +127,14 @@ public abstract class IBlock extends IDatabaseObject {
     public abstract int getDefaultIconResource();
 
     public abstract String getFriendlyName();
+
+    public OnThingActionListener getOnThingActionListener() {
+        return mOnThingActionListener;
+    }
+
+    public void setOnThingActionListener(OnThingActionListener onThingActionListener) {
+        mOnThingActionListener = onThingActionListener;
+    }
 
     public void setBlockDefaults(Group group) {
         setWidth(1);
@@ -240,6 +290,12 @@ public abstract class IBlock extends IDatabaseObject {
     {
         BlockExecutor blockExecutor = new BlockExecutor(indicator, onProcessCompleteListener);
         blockExecutor.execute(getThing());
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        stopListeningForChanges();
+        super.finalize();
     }
 
     private static class BlockExecutor extends AsyncTask<IThing, Void, JsonExecutorResult>
