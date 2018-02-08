@@ -36,8 +36,6 @@ public class ThingProperties extends LinearLayoutCompat {
     private NumberPicker mNpWidth;
     private NumberPicker mNpHeight;
 
-    private Thread mTextWatcherThread;
-
     public ThingProperties(Context context) {
         super(context);
         initializeViews(context);
@@ -155,24 +153,7 @@ public class ThingProperties extends LinearLayoutCompat {
 
             @Override
             public void afterTextChanged(final Editable editable) {
-                if (mTextWatcherThread != null) {
-                    mTextWatcherThread.interrupt();
-                    mTextWatcherThread = null;
-                }
-
-                mTextWatcherThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(3000);
-                            mName = editable.toString();
-
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                mTextWatcherThread.start();
+                mName = editable.toString();
             }
         });
 

@@ -6,26 +6,29 @@
     android:foreground="?attr/selectableItemBackground"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/bvr_title"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/bvr_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:contentDescription="@string/content_desc_img" />
+        <TextView
+            android:id="@+id/bvr_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <ProgressBar
-        android:id="@+id/bvr_progress"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_gravity="bottom"
-        android:indeterminateOnly="true"
-        android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/bvr_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/content_desc_img" />
 
+        <ProgressBar
+            android:id="@+id/bvr_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_gravity="bottom"
+            android:indeterminateOnly="true"
+            android:visibility="invisible" />
+    </FrameLayout>
 </android.support.v7.widget.LinearLayoutCompat>

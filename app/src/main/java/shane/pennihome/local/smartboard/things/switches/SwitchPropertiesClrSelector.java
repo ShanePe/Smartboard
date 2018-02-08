@@ -244,7 +244,7 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
             }
         });
 
-        mForgroundSelectorOff.setOnForegroundActionListener(new OnForegroundActionListener() {
+        mForgroundSelectorOn.setOnForegroundActionListener(new OnForegroundActionListener() {
             @Override
             public void OnColourChange(int colour) {
                 mForegroundColourOn = colour;

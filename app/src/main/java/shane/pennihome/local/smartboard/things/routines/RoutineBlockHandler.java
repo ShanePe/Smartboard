@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -95,14 +94,13 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         @ColorInt final int bgClr = getBlock().getBackgroundColourWithAlpha();
         @ColorInt int fgClr = getBlock().getForegroundColour();
 
-        // getThing().getBlock().renderBackgroundTo(holder.mLayout);
         holder.mLayout.setBackgroundColor(bgClr);
         holder.mBaName.setTextColor(fgClr);
         holder.mBaDevice.setTextColor(fgClr);
         holder.mBaSize.setTextColor(fgClr);
 
-        if (backgroundResourceId != 0)
-            holder.mContainer.setBackgroundResource(backgroundResourceId);
+//        if (backgroundResourceId != 0)
+//            holder.mContainer.setBackgroundResource(backgroundResourceId);
     }
 
     @Override
@@ -162,16 +160,16 @@ public class RoutineBlockHandler extends IBlockUIHandler {
 
 
     public class RoutineEditorHolder extends BlockEditViewHolder {
-        public final LinearLayout mLayout;
+        public final FrameLayout mLayout;
         public final TextView mBaName;
         public final ImageView mBaImg;
         public final TextView mBaDevice;
         public final TextView mBaSize;
-        public final FrameLayout mContainer;
+        //      public final FrameLayout mContainer;
 
         public RoutineEditorHolder(View view) {
             super(view);
-            mContainer = view.findViewById(R.id.rt_cv_dashboard_block);
+//            mContainer = view.findViewById(R.id.rt_cv_dashboard_block);
             mLayout = view.findViewById(R.id.rt_block_area);
             mBaName = view.findViewById(R.id.rt_ba_name);
             mBaImg = view.findViewById(R.id.rt_ba_image);

@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -101,8 +100,8 @@ public class SwitchBlockHandler extends IBlockUIHandler {
         holder.mBaDevice.setTextColor(fgClr);
         holder.mBaSize.setTextColor(fgClr);
 
-        if (backgroundResourceId != 0)
-            holder.mContainer.setBackgroundResource(backgroundResourceId);
+//        if (backgroundResourceId != 0)
+//            holder.mContainer.setBackgroundResource(backgroundResourceId);
     }
 
     @Override
@@ -172,16 +171,16 @@ public class SwitchBlockHandler extends IBlockUIHandler {
     }
 
     public class SwitchEditorHolder extends BlockEditViewHolder {
-        public final LinearLayout mLayout;
+        public final FrameLayout mLayout;
         public final TextView mBaName;
         public final ImageView mBaImg;
         public final TextView mBaDevice;
         public final TextView mBaSize;
-        public final FrameLayout mContainer;
+        //      public final FrameLayout mContainer;
 
         public SwitchEditorHolder(View view) {
             super(view);
-            mContainer = view.findViewById(R.id.sw_dashboard_block);
+//            mContainer = view.findViewById(R.id.sw_dashboard_block);
             mLayout = view.findViewById(R.id.sw_block_area);
             mBaName = view.findViewById(R.id.sw_ba_name);
             mBaImg = view.findViewById(R.id.sw_ba_image);
