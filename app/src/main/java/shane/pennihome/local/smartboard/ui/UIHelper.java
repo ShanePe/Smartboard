@@ -116,6 +116,24 @@ public class UIHelper {
         });
     }
 
+    public static void showBlockTemplateWindow(final AppCompatActivity activity, final IBlock block,  final OnBlockSetListener onBlockSetListener) {
+        if (block == null)
+            return;
+
+        showPropertyWindow(activity, "Create Block template", block.getUIHandler().getEditorWindowLayoutID(), new OnPropertyWindowListener() {
+            @Override
+            public void onWindowShown(View view) {
+                block.getUIHandler().buildEditorWindowView(activity, view, null, null);
+            }
+
+            @Override
+            public void onOkSelected(View view) {
+                block.getUIHandler().buildBlockFromEditorWindowView(view, onBlockSetListener);
+            }
+        });
+    }
+
+
     public static String saveBitmap(Context context, Bitmap imageSave) {
         String fileName = "Smartboard_" + UUID.randomUUID().toString() + ".png";
         File fileToWrite = new File(context.getFilesDir(), fileName);

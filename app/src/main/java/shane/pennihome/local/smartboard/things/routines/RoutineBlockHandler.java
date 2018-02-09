@@ -55,17 +55,23 @@ public class RoutineBlockHandler extends IBlockUIHandler {
 
     @Override
     public void buildBlockFromEditorWindowView(View view, OnBlockSetListener onBlockSetListener) {
-        ThingProperties tbProps = view.findViewById(R.id.rt_properties);
-        ThingPropertiesClrSelector tbBackground = view.findViewById(R.id.rt_background);
-        IconSelector iconSelector = view.findViewById(R.id.rt_icon_selector);
+        try {
+            ThingProperties tbProps = view.findViewById(R.id.rt_properties);
+            ThingPropertiesClrSelector tbBackground = view.findViewById(R.id.rt_background);
+            IconSelector iconSelector = view.findViewById(R.id.rt_icon_selector);
 
-        tbProps.populate(getBlock(), null);
-        tbBackground.populate(getBlock());
-        getBlock(RoutineBlock.class).setIcon(iconSelector.getIconPath());
-        getBlock(RoutineBlock.class).setIconSize(iconSelector.getIconSize());
+            tbProps.populate(getBlock(), null);
+            tbBackground.populate(getBlock());
+            getBlock(RoutineBlock.class).setIcon(iconSelector.getIconPath());
+            getBlock(RoutineBlock.class).setIconSize(iconSelector.getIconSize());
 
-        if (onBlockSetListener != null)
-            onBlockSetListener.OnSet(getBlock());
+            if (onBlockSetListener != null)
+                onBlockSetListener.OnSet(getBlock());
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(view.getContext(), "Error : " + ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

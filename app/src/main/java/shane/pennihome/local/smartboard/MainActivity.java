@@ -27,6 +27,7 @@ import shane.pennihome.local.smartboard.fragments.DashboardFragment;
 import shane.pennihome.local.smartboard.fragments.DeviceFragment;
 import shane.pennihome.local.smartboard.fragments.RoutineFragment;
 import shane.pennihome.local.smartboard.fragments.ServicesFragment;
+import shane.pennihome.local.smartboard.fragments.TemplateFragment;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
 import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment;
 import shane.pennihome.local.smartboard.services.ServiceManager;
@@ -144,6 +145,8 @@ public class MainActivity extends AppCompatActivity
             routineList();
         else if (id == R.id.mnu_dashboard)
             dashboardList();
+        else if (id == R.id.mnu_template)
+            templateList();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -194,13 +197,21 @@ public class MainActivity extends AppCompatActivity
         ft.commit();
     }
 
-    private void hueBridgeConnect() {
-        final HueBridgeFragment fragment = new HueBridgeFragment();
+    private void templateList() {
+        final TemplateFragment fragment = new TemplateFragment();
         //noinspection unchecked
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("huebridgeConnect");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("templateList");
         ft.replace(R.id.content_main, fragment);
         ft.commit();
     }
+
+//    private void hueBridgeConnect() {
+//        final HueBridgeFragment fragment = new HueBridgeFragment();
+//        //noinspection unchecked
+//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("huebridgeConnect");
+//        ft.replace(R.id.content_main, fragment);
+//        ft.commit();
+//    }
 
     public void backToMainActivity() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

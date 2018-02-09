@@ -17,6 +17,7 @@ import shane.pennihome.local.smartboard.R;
 public class GroupTitle extends LinearLayoutCompat {
     private TextView mTitleTextView;
     private String mTitle;
+    private LinearLayoutCompat mContainer;
 
     public GroupTitle(Context context) {
         super(context);
@@ -65,5 +66,12 @@ public class GroupTitle extends LinearLayoutCompat {
         mTitleTextView = this.findViewById(R.id.txt_group_heading);
         if (mTitle != null)
             mTitleTextView.setText(mTitle);
+        mContainer = this.findViewById(R.id.txt_group_container);
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        mContainer.setVisibility(visibility);
     }
 }

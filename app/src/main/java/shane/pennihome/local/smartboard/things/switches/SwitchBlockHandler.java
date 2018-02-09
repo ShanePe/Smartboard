@@ -56,18 +56,23 @@ public class SwitchBlockHandler extends IBlockUIHandler {
 
     @Override
     public void buildBlockFromEditorWindowView(View view, OnBlockSetListener onBlockSetListener) {
-        ThingProperties tbProps = view.findViewById(R.id.sw_properties);
-        SwitchPropertiesClrSelector tbBackground = view.findViewById(R.id.sw_background);
-        IconSelector iconSelector = view.findViewById(R.id.sw_icon_selector);
+        try {
+            ThingProperties tbProps = view.findViewById(R.id.sw_properties);
+            SwitchPropertiesClrSelector tbBackground = view.findViewById(R.id.sw_background);
+            IconSelector iconSelector = view.findViewById(R.id.sw_icon_selector);
 
-        tbProps.populate(getBlock(), null);
-        tbBackground.populate(getBlock(SwitchBlock.class));
-        getBlock(SwitchBlock.class).setIcon(iconSelector.getIconPath());
-        getBlock(SwitchBlock.class).setIconSize(iconSelector.getIconSize());
+            tbProps.populate(getBlock(), null);
+            tbBackground.populate(getBlock(SwitchBlock.class));
+            getBlock(SwitchBlock.class).setIcon(iconSelector.getIconPath());
+            getBlock(SwitchBlock.class).setIconSize(iconSelector.getIconSize());
 
-        if (onBlockSetListener != null)
-            onBlockSetListener.OnSet(getBlock());
+            if (onBlockSetListener != null)
+                onBlockSetListener.OnSet(getBlock());
+        } catch (Exception ex) {
+            Toast.makeText(view.getContext(), "Error : " + ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
+
 
     @Override
     public BlockEditViewHolder GetEditHolder(View view) {
@@ -80,7 +85,7 @@ public class SwitchBlockHandler extends IBlockUIHandler {
     }
 
     public void BindEditHolder(BlockEditViewHolder viewHolder, int backgroundResourceId) {
-        if(getBlock().getThing() == null)
+        if (getBlock().getThing() == null)
             return;
 
         SwitchEditorHolder holder = (SwitchEditorHolder) viewHolder;
@@ -106,8 +111,7 @@ public class SwitchBlockHandler extends IBlockUIHandler {
 
     @Override
     public void BindViewHolder(BlockViewHolder viewHolder) {
-        if(getBlock().getThing()==null)
-        {
+        if (getBlock().getThing() == null) {
             viewHolder.itemView.setVisibility(View.GONE);
             return;
         }
@@ -122,12 +126,12 @@ public class SwitchBlockHandler extends IBlockUIHandler {
         getBlock(SwitchBlock.class).renderIconTo(holder.mIcon);
         getBlock().startListeningForChanges();
 
-        holder.itemView.setPadding(Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING);
+        holder.itemView.setPadding(Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE)
+                if (getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE)
                     return;
 
                 getBlock().execute(holder.mProgress, new OnProcessCompleteListener<String>() {

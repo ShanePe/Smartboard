@@ -8,6 +8,7 @@
         android:orientation="vertical">
 
         <shane.pennihome.local.smartboard.ui.GroupTitle
+            android:id="@+id/prop_group_device"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="@string/lbl_device" />

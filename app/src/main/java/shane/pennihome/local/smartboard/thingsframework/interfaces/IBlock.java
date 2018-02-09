@@ -151,7 +151,6 @@ public abstract class IBlock extends IDatabaseObject {
         setBackgroundColourTransparency(100);
         setBackgroundImage(null);
         setBackgroundImageTransparency(100);
-
     }
 
     @Override

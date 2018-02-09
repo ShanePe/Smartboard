@@ -23,5 +23,9 @@
             android:id="@+id/mnu_routine"
             android:icon="@drawable/icon_routine"
             android:title="@string/mnu_routine" />
+        <item
+            android:id="@+id/mnu_template"
+            android:icon="@drawable/icon_template"
+            android:title="@string/lbl_templates" />
     </group>
 </menu>

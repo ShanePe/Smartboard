@@ -35,6 +35,7 @@ public class ThingProperties extends LinearLayoutCompat {
     private LabelTextbox mTxtName;
     private NumberPicker mNpWidth;
     private NumberPicker mNpHeight;
+    private GroupTitle mDeviceGroupTitle;
 
     public ThingProperties(Context context) {
         super(context);
@@ -112,6 +113,7 @@ public class ThingProperties extends LinearLayoutCompat {
         mTxtName = this.findViewById(R.id.prop_txt_blk_name);
         mNpWidth = this.findViewById(R.id.prop_txt_blk_width);
         mNpHeight = this.findViewById(R.id.prop_txt_blk_height);
+        mDeviceGroupTitle = this.findViewById(R.id.prop_group_device);
 
         mNpWidth.setMaxValue(4);
         mNpWidth.setMinValue(1);
@@ -177,9 +179,14 @@ public class ThingProperties extends LinearLayoutCompat {
 
     private void doSpinnerThings() {
         if (mSpThing != null && mThings != null) {
+            mSpThing.setVisibility(View.VISIBLE);
+            mDeviceGroupTitle.setVisibility(View.VISIBLE);
             SpinnerThingAdapter aptr = new SpinnerThingAdapter(getContext());
             aptr.setThings(mThings);
             mSpThing.setAdapter(aptr);
+        } else if (mSpThing != null && mThings == null) {
+            mSpThing.setVisibility(View.GONE);
+            mDeviceGroupTitle.setVisibility(View.GONE);
         }
     }
 
@@ -206,12 +213,16 @@ public class ThingProperties extends LinearLayoutCompat {
         doPropertyChange();
     }
 
-    public void populate(IBlock block, @SuppressWarnings("SameParameterValue") OnBlockSetListener onBlockSetListener) {
+    public void populate(IBlock block, @SuppressWarnings("SameParameterValue") OnBlockSetListener onBlockSetListener) throws Exception {
+        if (TextUtils.isEmpty(mName))
+            throw new Exception("Name required.");
         block.setName(mName);
         block.setWidth(mBlockWidth);
         block.setHeight(mBlockHeight);
-        block.setThing(mThing);
-        block.setThingKey(mThing.getKey());
+        if (mThing != null) {
+            block.setThing(mThing);
+            block.setThingKey(mThing.getKey());
+        }
         if (onBlockSetListener != null)
             onBlockSetListener.OnSet(block);
     }
