@@ -22,11 +22,6 @@ public class Routine extends IThing {
         return Types.Routine;
     }
 
-//    @Override
-//    public void messageReceived(IMessage<?> message) {
-//
-//    }
-
     @Override
     public IDatabaseObject.Types getDatabaseType() {
         return IDatabaseObject.Types.Thing;

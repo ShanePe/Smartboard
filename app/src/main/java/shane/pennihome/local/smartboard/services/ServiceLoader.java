@@ -31,6 +31,16 @@ public class ServiceLoader extends AsyncTask<IThingsGetter, IThingsGetter, Servi
             mServiceLoadDialog = new ServiceLoadDialog(context);
     }
 
+    public void dismissDialog()
+    {
+        if (mServiceLoadDialog != null) {
+            if (mServiceLoadDialog.isShowing())
+                mServiceLoadDialog.dismiss();
+
+            mServiceLoadDialog = null;
+        }
+    }
+
     public OnProcessCompleteListener<ServiceLoaderResult> getOnProcessCompleteListener() {
         return mOnProcessCompleteListener;
     }
@@ -58,8 +68,10 @@ public class ServiceLoader extends AsyncTask<IThingsGetter, IThingsGetter, Servi
                 ArrayList<IThingsGetter> getters = s.getThingGetters();
                 for (IThingsGetter g : getters) {
                     try {
-                        serviceLoaderResult.getResult().addAll(g.getThings());
-                        onProgressUpdate(g);
+                        if(!isCancelled()) {
+                            serviceLoaderResult.getResult().addAll(g.getThings());
+                            onProgressUpdate(g);
+                        }
                     } catch (Exception e) {
                         serviceLoaderResult.getErrors().put(e.getMessage(), g);
                     }
@@ -89,9 +101,7 @@ public class ServiceLoader extends AsyncTask<IThingsGetter, IThingsGetter, Servi
         if (mOnProcessCompleteListener != null)
             mOnProcessCompleteListener.complete(serviceLoaderResult.getErrors().size() == 0, serviceLoaderResult);
 
-        if (mServiceLoadDialog != null)
-            mServiceLoadDialog.dismiss();
-
+        dismissDialog();
     }
 
     @Override
@@ -120,5 +130,13 @@ public class ServiceLoader extends AsyncTask<IThingsGetter, IThingsGetter, Servi
                 mResult = new Things();
             return mResult;
         }
+    }
+
+
+
+    @Override
+    protected void onCancelled() {
+       dismissDialog();
+        super.onCancelled();
     }
 }

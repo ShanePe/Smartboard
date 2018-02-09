@@ -80,16 +80,20 @@ public class MainActivity extends AppCompatActivity
     private void init(Bundle savedInstanceState) {
         //DBEngine db = new DBEngine(this);
         //db.cleanDataStore();
-
         if (savedInstanceState != null) {
             String monitor = savedInstanceState.getString("monitor");
-            if (monitor != null)
+            if (monitor != null) {
                 try {
                     Monitor.Create(monitor);
+                    populateDashbboards();
                 } catch (Exception ignored) {
+                    Monitor.reset();
                 }
-            populateDashbboards();
+            }
+            else
+                Monitor.reset();
         }
+
         if (!Monitor.IsInstaniated())
             Monitor.Create(this, new OnProcessCompleteListener<Void>() {
                 @Override
@@ -244,8 +248,11 @@ public class MainActivity extends AppCompatActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         try {
-            if (Monitor.IsInstaniated())
-                outState.putString("monitor", Monitor.getMonitor().toJson());
+            if (Monitor.IsInstaniated()) {
+                Monitor.getMonitor().stop();
+                if (Monitor.getMonitor().isLoaded())
+                    outState.putString("monitor", Monitor.getMonitor().toJson());
+            }
         } catch (Exception ignored) {
         }
     }

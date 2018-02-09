@@ -2,12 +2,14 @@ package shane.pennihome.local.smartboard.comms;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
+import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.services.ServiceLoader;
 import shane.pennihome.local.smartboard.services.ServiceManager;
@@ -29,6 +31,8 @@ public class Monitor {
     private Things mThings;
     private Services mServices = null;
     private Thread mMonitorThread = null;
+    private boolean mLoaded;
+    private ServiceLoader mLoader;
 
     private Monitor() {
     }
@@ -41,6 +45,13 @@ public class Monitor {
 
     public static boolean IsInstaniated() {
         return (mMonitor != null);
+    }
+
+    public static void reset() {
+        if (mMonitor != null) {
+            mMonitor.stop();
+            mMonitor = null;
+        }
     }
 
     public static Monitor Create(String json) throws JSONException {
@@ -61,9 +72,15 @@ public class Monitor {
                         Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG).show();
                 if (onProcessCompleteListener != null)
                     onProcessCompleteListener.complete(true, null);
+                getMonitor().mLoaded = true;
+
             }
         });
         return getMonitor();
+    }
+
+    public boolean isLoaded() {
+        return mLoaded;
     }
 
     public Services getServices() {
@@ -98,16 +115,22 @@ public class Monitor {
         getThingsFromService(context, getServices(), onProcessCompleteListener);
     }
 
-    private void getThingsFromService(final Context context, Services services, OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult> onProcessCompleteListener) {
-        ServiceLoader loader = new ServiceLoader(context);
+    private void getThingsFromService(final Context context, Services services, final OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult> onProcessCompleteListener) {
+        mLoader = new ServiceLoader(context);
         for (IService s : services)
             if (s.isValid())
-                loader.getServices().add(s);
+                mLoader.getServices().add(s);
             else if (s.isAwaitingAction() && context != null)
                 Toast.makeText(context, String.format("Service %s is awaiting an action.", s.getName()), Toast.LENGTH_LONG);
         try {
-            loader.setOnProcessCompleteListener(onProcessCompleteListener);
-            loader.execute();
+            mLoader.setOnProcessCompleteListener(new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
+                @Override
+                public void complete(boolean success, ServiceLoader.ServiceLoaderResult source) {
+                    onProcessCompleteListener.complete(success, source);
+                    mLoader = null;
+                }
+            });
+            mLoader.execute();
 
         } catch (Exception e) {
             if (context != null)
@@ -127,8 +150,10 @@ public class Monitor {
     }
 
     public void start() {
-        stop();
+        if (mMonitorThread != null)
+            stop();
 
+        Log.i("Starting Montor,", Globals.ACTIVITY);
         mMonitorThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -136,9 +161,10 @@ public class Monitor {
                     try {
                         Thread.sleep(1000 * Monitor.SECOND_CHECK);
                         updateThingsFromService();
+                    } catch (InterruptedException ieu) {
+                        break;
                     } catch (Exception ex) {
                     }
-
                 }
             }
         });
@@ -151,7 +177,7 @@ public class Monitor {
             @Override
             public void run() {
                 try {
-                    mMonitorThread.sleep(1000);
+                    Thread.sleep(1000);
                     updateThingsFromService();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -161,26 +187,36 @@ public class Monitor {
     }
 
     public void removeService(IService service) {
-        for (IThing t : getThings().getForService(service))
-            t.setUnreachable(true, true);
-        getServices().remove(service);
+        stop();
+        try {
+            for (IThing t : getThings().getForService(service))
+                t.setUnreachable(true, true);
+            getServices().remove(service);
+        } finally {
+            start();
+        }
     }
 
     public void AddService(final Context context, IService service) {
-        getServices().remove(service.getServiceType());
-        getThings().remove(service);
+        stop();
+        try {
+            getServices().remove(service.getServiceType());
+            getThings().remove(service);
 
-        Services services = new Services();
-        services.add(service);
-        getServices().add(service);
-        getThingsFromService(context, services, new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
-            @Override
-            public void complete(boolean success, ServiceLoader.ServiceLoaderResult source) {
-                getMonitor().getThings().addAll(source.getResult());
-                for (String e : source.getErrors().keySet())
-                    Toast.makeText(context, String.format("Error getting things : %s", e), Toast.LENGTH_LONG);
-            }
-        });
+            Services services = new Services();
+            services.add(service);
+            getServices().add(service);
+            getThingsFromService(context, services, new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
+                @Override
+                public void complete(boolean success, ServiceLoader.ServiceLoaderResult source) {
+                    getMonitor().getThings().addAll(source.getResult());
+                    for (String e : source.getErrors().keySet())
+                        Toast.makeText(context, String.format("Error getting things : %s", e), Toast.LENGTH_LONG);
+                }
+            });
+        } finally {
+            start();
+        }
     }
 
     private void verifyThingState(Things currentThings) {
@@ -188,10 +224,10 @@ public class Monitor {
             IThing newThing = currentThings.getbyId(currentThing.getId());
 
             if (newThing == null) {
-                if(!currentThing.isUnreachable())
+                if (!currentThing.isUnreachable())
                     currentThing.setUnreachable(true, true);
             } else {
-                if(currentThing.isUnreachable() && !newThing.isUnreachable())
+                if (currentThing.isUnreachable() && !newThing.isUnreachable())
                     currentThing.setUnreachable(false, true);
 
                 if (currentThing instanceof Switch) {
@@ -210,11 +246,25 @@ public class Monitor {
     }
 
 
-    private void stop() {
+    public void stop() {
+        Log.i("Stopping Montor,", Globals.ACTIVITY);
         if (mMonitorThread != null) {
             mMonitorThread.interrupt();
             mMonitorThread = null;
         }
+
+        if (mLoader != null) {
+            mLoader.dismissDialog();
+            mLoader.cancel(true);
+            mLoader = null;
+        }
+
+        while (mMonitorThread != null)
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
     }
 
     public String toJson() throws JSONException {
@@ -229,6 +279,12 @@ public class Monitor {
         JsonBuilder builder = new JsonBuilder();
         JSONObject item = new JSONObject(json);
         getMonitor().setThings(builder.get().fromJson(item.getString("things"), Things.class));
-        getMonitor().setServices(builder.get().fromJson(item.getString("things"), Services.class));
+        getMonitor().setServices(builder.get().fromJson(item.getString("services"), Services.class));
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        stop();
+        super.finalize();
     }
 }

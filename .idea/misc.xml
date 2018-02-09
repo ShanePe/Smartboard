@@ -905,6 +905,12 @@
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.comms.Monitor$6 void complete(boolean success, shane.pennihome.local.smartboard.services.ServiceLoader.ServiceLoaderResult source)" />
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.comms.Monitor$5 void run()" />
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$3 void OnStateChanged()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.comms.Monitor$7 void complete(boolean success, shane.pennihome.local.smartboard.services.ServiceLoader.ServiceLoaderResult source)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.comms.Monitor$6 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.comms.Monitor$4 void complete(boolean success, shane.pennihome.local.smartboard.services.ServiceLoader.ServiceLoaderResult source)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.comms.Monitor mLoader" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.comms.Monitor mLoaded" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.data.Template mInstance" />
     </entry_points>
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="setOnValueChangedListener" />
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="getDimension" />
@@ -2937,6 +2943,18 @@
     <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="verifyThings" />
     <pattern value="shane.pennihome.local.smartboard.things.switches.OnSwitchStateChangeListener" method="OnStateChange" />
     <pattern value="shane.pennihome.local.smartboard.things.switches.OnSwitchStateChangeListener" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.DeviceViewAdapter.ViewHolder" method="ViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.adapters.DeviceViewAdapter" method="DeviceViewAdapter" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="finalize" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="isLoaded" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="reset" />
+    <pattern value="shane.pennihome.local.smartboard.data.Template" method="getDatabaseType" />
+    <pattern value="shane.pennihome.local.smartboard.data.Template" method="Template" />
+    <pattern value="shane.pennihome.local.smartboard.data.Template" method="setBlock" />
+    <pattern value="shane.pennihome.local.smartboard.data.Template" method="getBlock" />
+    <pattern value="shane.pennihome.local.smartboard.data.Template" />
+    <pattern value="shane.pennihome.local.smartboard.fragments.TemplateFragment" method="onOptionsItemSelected" />
+    <pattern value="shane.pennihome.local.smartboard.fragments.TemplateFragment" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
