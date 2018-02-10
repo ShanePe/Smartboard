@@ -911,6 +911,24 @@
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.comms.Monitor mLoader" />
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.comms.Monitor mLoaded" />
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.data.Template mInstance" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.GroupTitle mContainer" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock$7 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock$6 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler$3$1 void complete(boolean success, java.lang.String source)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler$3 void onClick(android.view.View v)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.routines.RoutineBlockHandler$1 void OnTemplateSelected(shane.pennihome.local.smartboard.data.Template template)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$4 void OnStateChanged()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$3$1 void complete(boolean success, java.lang.String source)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$3 void onClick(android.view.View v)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$1 void OnTemplateSelected(shane.pennihome.local.smartboard.data.Template template)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper$15 void onCancel(android.content.DialogInterface dialog)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper$14 void onClick(android.content.DialogInterface dialog, int which)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper$10 void onShow(android.content.DialogInterface dialog)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper$9 void onClick(android.content.DialogInterface dialog, int which)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper$6 void onClick(android.content.DialogInterface dialog, int selectedColor, java.lang.Integer[] allColors)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper$5 void onColorSelected(int selectedColor)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper$4 void onOkSelected(android.view.View view)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper$4 void onWindowShown(android.view.View view)" />
     </entry_points>
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="setOnValueChangedListener" />
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="getDimension" />
@@ -2955,6 +2973,22 @@
     <pattern value="shane.pennihome.local.smartboard.data.Template" />
     <pattern value="shane.pennihome.local.smartboard.fragments.TemplateFragment" method="onOptionsItemSelected" />
     <pattern value="shane.pennihome.local.smartboard.fragments.TemplateFragment" />
+    <pattern value="shane.pennihome.local.smartboard.ui.GroupTitle" method="setVisibility" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="renderTemplateBackgroundTo" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="renderTemplateBlip" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="getBackgroundDrawable" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IThings" method="getIndex" />
+    <pattern value="shane.pennihome.local.smartboard.MainActivity" method="templateList" />
+    <pattern value="shane.pennihome.local.smartboard.ui.TemplateProperties" method="TemplateProperties" />
+    <pattern value="shane.pennihome.local.smartboard.ui.TemplateProperties" method="setTemplate" />
+    <pattern value="shane.pennihome.local.smartboard.ui.TemplateProperties" method="getTemplate" />
+    <pattern value="shane.pennihome.local.smartboard.ui.TemplateProperties" method="getTemplates" />
+    <pattern value="shane.pennihome.local.smartboard.ui.TemplateProperties" />
+    <pattern value="shane.pennihome.local.smartboard.data.Templates" method="getIndex" />
+    <pattern value="shane.pennihome.local.smartboard.data.Templates" />
+    <pattern value="shane.pennihome.local.smartboard.ui.UIHelper" method="combineDrawables" />
+    <pattern value="shane.pennihome.local.smartboard.ui.UIHelper" method="createColourBlocks" />
+    <pattern value="shane.pennihome.local.smartboard.ui.UIHelper" method="showBlockTemplateWindow" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

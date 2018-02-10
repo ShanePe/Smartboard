@@ -1,5 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:layout_width=""
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/btn_round_dark"
+    android:layout_margin="4dp"
+    android:foreground="?attr/selectableItemBackground"
+    android:focusable="true"
+    android:clickable="true"
+    >
 
-</FrameLayout>
+    <FrameLayout
+        android:id="@+id/tmp_container"
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+        <TextView
+            android:id="@+id/tmp_name"
+            style="@style/blockItemStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:shadowColor="?attr/colorBackgroundFloating"
+            android:shadowRadius="1.5"
+            android:shadowDx="1"
+            android:shadowDy="1"/>
+
+        <ImageView
+            android:id="@+id/tmp_icon"
+            style="@style/blockItemStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/content_desc_img" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tmp_thing"
+                style="@style/blockItemStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:shadowColor="?attr/colorBackgroundFloating"
+                android:shadowRadius="1.5"
+                android:shadowDx="1"
+                android:shadowDy="1"/>
+
+            <TextView
+                android:id="@+id/tmp_size"
+                style="@style/blockItemStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:shadowColor="?attr/colorBackgroundFloating"
+                android:shadowRadius="1.5"
+                android:shadowDx="1"
+                android:shadowDy="1"/>
+        </android.support.v7.widget.LinearLayoutCompat>
+    </FrameLayout>
+</android.support.v7.widget.LinearLayoutCompat>

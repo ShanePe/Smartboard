@@ -13,6 +13,7 @@ import android.widget.NumberPicker;
 import android.widget.Spinner;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.data.Template;
 import shane.pennihome.local.smartboard.thingsframework.SpinnerThingAdapter;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
@@ -139,6 +140,8 @@ public class ThingProperties extends LinearLayoutCompat {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+                mThing = null;
+                doPropertyChange();
             }
         });
 
@@ -184,7 +187,8 @@ public class ThingProperties extends LinearLayoutCompat {
             SpinnerThingAdapter aptr = new SpinnerThingAdapter(getContext());
             aptr.setThings(mThings);
             mSpThing.setAdapter(aptr);
-        } else if (mSpThing != null && mThings == null) {
+        } else //noinspection ConstantConditions
+            if (mSpThing != null && mThings == null) {
             mSpThing.setVisibility(View.GONE);
             mDeviceGroupTitle.setVisibility(View.GONE);
         }
@@ -192,7 +196,7 @@ public class ThingProperties extends LinearLayoutCompat {
 
     private void doPropertyChange() {
         if (mThing != null)
-            mSpThing.setSelection(mThings.GetIndex(mThing));
+            mSpThing.setSelection(mThings.getIndex(mThing));
 
         mTxtName.setText(mName);
         mNpWidth.setValue(mBlockWidth);
@@ -211,6 +215,12 @@ public class ThingProperties extends LinearLayoutCompat {
 
         doSpinnerThings();
         doPropertyChange();
+    }
+
+    public void applyTemplate(Template template)
+    {
+        mBlockWidth = template.getBlock().getWidth();
+        mBlockHeight = template.getBlock().getHeight();
     }
 
     public void populate(IBlock block, @SuppressWarnings("SameParameterValue") OnBlockSetListener onBlockSetListener) throws Exception {

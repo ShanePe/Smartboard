@@ -15,12 +15,16 @@ import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
+import shane.pennihome.local.smartboard.data.Template;
+import shane.pennihome.local.smartboard.data.Templates;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
 import shane.pennihome.local.smartboard.ui.IconSelector;
+import shane.pennihome.local.smartboard.ui.TemplateProperties;
 import shane.pennihome.local.smartboard.ui.ThingProperties;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 import shane.pennihome.local.smartboard.ui.ViewSwiper;
@@ -37,16 +41,29 @@ public class SwitchBlockHandler extends IBlockUIHandler {
     }
 
     @Override
-    public void buildEditorWindowView(final Activity activity, View view, Things things, final Group group) {
+    public void buildEditorWindowView(final Activity activity, View view, final Things things, final Group group) {
         ViewSwiper viewSwiper = view.findViewById(R.id.sw_swiper);
         TabLayout tabLayout = view.findViewById(R.id.sw_tabs);
-        viewSwiper.setTabLayout(tabLayout);
-        viewSwiper.getViewAdapter().addView("Properties", R.id.sw_tab_properties);
-        viewSwiper.getViewAdapter().addView("Colours", R.id.sw_tab_background);
 
-        ThingProperties tpProps = view.findViewById(R.id.sw_properties);
-        SwitchPropertiesClrSelector tpBackground = view.findViewById(R.id.sw_background);
-        IconSelector iconSelector = view.findViewById(R.id.sw_icon_selector);
+        viewSwiper.setTabLayout(tabLayout);
+        viewSwiper.addView("Properties", R.id.sw_tab_properties);
+        viewSwiper.addView("Colours", R.id.sw_tab_background);
+        viewSwiper.addView("Template", R.id.sw_tab_template);
+
+        final ThingProperties tpProps = view.findViewById(R.id.sw_properties);
+        final SwitchPropertiesClrSelector tpBackground = view.findViewById(R.id.sw_background);
+        final IconSelector iconSelector = view.findViewById(R.id.sw_icon_selector);
+        TemplateProperties tempProps = view.findViewById(R.id.sw_template);
+
+        tempProps.setTemplates(Templates.Load(view.getContext()).getForType(IThing.Types.Switch));
+        tempProps.setOnTemplateActionListener(new TemplateProperties.OnTemplateActionListener() {
+            @Override
+            public void OnTemplateSelected(Template template) {
+               tpProps.applyTemplate(template);
+               tpBackground.applyTemplate(template);
+               iconSelector.applyTemplate(template);
+            }
+        });
 
         tpProps.initialise(things, getBlock());
         tpBackground.initialise(getBlock(SwitchBlock.class));
@@ -57,14 +74,19 @@ public class SwitchBlockHandler extends IBlockUIHandler {
     @Override
     public void buildBlockFromEditorWindowView(View view, OnBlockSetListener onBlockSetListener) {
         try {
-            ThingProperties tbProps = view.findViewById(R.id.sw_properties);
-            SwitchPropertiesClrSelector tbBackground = view.findViewById(R.id.sw_background);
-            IconSelector iconSelector = view.findViewById(R.id.sw_icon_selector);
+            ViewSwiper viewSwiper = view.findViewById(R.id.sw_swiper);
+            ThingProperties tbProps = (ThingProperties)viewSwiper.getView(R.id.sw_properties);
+            SwitchPropertiesClrSelector tbBackground = (SwitchPropertiesClrSelector) viewSwiper.getView(R.id.sw_background);
+            IconSelector iconSelector = (IconSelector)viewSwiper.getView(R.id.sw_icon_selector);
+            TemplateProperties tempProps = (TemplateProperties)viewSwiper.getView(R.id.sw_template);
 
             tbProps.populate(getBlock(), null);
             tbBackground.populate(getBlock(SwitchBlock.class));
             getBlock(SwitchBlock.class).setIcon(iconSelector.getIconPath());
             getBlock(SwitchBlock.class).setIconSize(iconSelector.getIconSize());
+
+            if(tempProps.isSaveAsTemplate())
+                tempProps.createTemplate(view.getContext(), getBlock());
 
             if (onBlockSetListener != null)
                 onBlockSetListener.OnSet(getBlock());
@@ -72,7 +94,6 @@ public class SwitchBlockHandler extends IBlockUIHandler {
             Toast.makeText(view.getContext(), "Error : " + ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
-
 
     @Override
     public BlockEditViewHolder GetEditHolder(View view) {

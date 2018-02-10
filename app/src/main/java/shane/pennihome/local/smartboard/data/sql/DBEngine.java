@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.data.Dashboard;
+import shane.pennihome.local.smartboard.data.Template;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 
@@ -48,6 +49,7 @@ public class DBEngine extends SQLiteOpenHelper {
 
     public IDatabaseObject readFromDatabase(String Id) {
         List<IDatabaseObject> items = getDataObjects(Queries.getDatastore(Id));
+        assert items != null;
         return items.size() == 0 ? null : items.get(0);
     }
 
@@ -93,13 +95,19 @@ public class DBEngine extends SQLiteOpenHelper {
             db = this.getReadableDatabase();
             Cursor c = db.rawQuery(query, null);
             while (c.moveToNext()) {
-                IDatabaseObject dbO = null;
+                IDatabaseObject dbO;
                 switch (IDatabaseObject.Types.valueOf(c.getString(1))) {
                     case Dashboard:
                         dbO = Dashboard.Load(c.getString(3));
                         break;
                     case Service:
                         dbO = IService.fromJson(IService.class, c.getString(3));
+                        break;
+                    case Template:
+                        dbO = Template.Load(Template.class, c.getString(3));
+                        break;
+                    default:
+                        throw new Exception("Invalid Database Type : " + c.getString(1));
                 }
                 if(dbO != null) {
                     dbO.setPosition(c.getInt(2));
@@ -109,6 +117,9 @@ public class DBEngine extends SQLiteOpenHelper {
             c.close();
             return items;
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         } finally {
             if (db != null)
                 db.close();

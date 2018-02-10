@@ -61,7 +61,7 @@ public abstract class IThings<T extends IThing> extends ArrayList<T> {
         });
     }
 
-    public int GetIndex(IThing t) {
+    public int getIndex(IThing t) {
         for (int i = 0; i < size(); i++) {
             if(get(i).getKey().equals(t.getKey()))
               return i;

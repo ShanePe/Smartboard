@@ -19,6 +19,8 @@ import java.io.InputStream;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Globals;
+import shane.pennihome.local.smartboard.data.Template;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IIconBlock;
 import shane.pennihome.local.smartboard.ui.dialogs.IconSelectDialog;
 import shane.pennihome.local.smartboard.ui.listeners.OnIconActionListener;
 
@@ -147,8 +149,18 @@ public class IconSelector extends LinearLayoutCompat {
 
             mIconSizeSpinner.setSelection(mIconSize == null ? 1 : mIconSize.ordinal());
 
+            invalidate();
+            requestLayout();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void applyTemplate(Template template)
+    {
+        mIconPath = template.getBlock(IIconBlock.class).getIcon();
+        mIconSize = template.getBlock(IIconBlock.class).getIconSize();
+        doPropertyChange();
     }
 }

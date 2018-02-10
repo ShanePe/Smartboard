@@ -29,7 +29,6 @@ import shane.pennihome.local.smartboard.fragments.RoutineFragment;
 import shane.pennihome.local.smartboard.fragments.ServicesFragment;
 import shane.pennihome.local.smartboard.fragments.TemplateFragment;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
-import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment;
 import shane.pennihome.local.smartboard.services.ServiceManager;
 import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 import shane.pennihome.local.smartboard.ui.DashboardLayout;

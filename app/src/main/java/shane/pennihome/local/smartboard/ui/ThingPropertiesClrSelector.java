@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.data.Template;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.ui.listeners.OnBackgroundActionListener;
 import shane.pennihome.local.smartboard.ui.listeners.OnForegroundActionListener;
@@ -180,5 +181,9 @@ public class ThingPropertiesClrSelector extends LinearLayoutCompat {
         block.setBackgroundImageRenderType(mBackgroundImageRenderType);
 
         block.setForegroundColour(mForegroundColour);
+    }
+
+    public void applyTemplate(Template template) {
+        initialise(template.getBlock());
     }
 }

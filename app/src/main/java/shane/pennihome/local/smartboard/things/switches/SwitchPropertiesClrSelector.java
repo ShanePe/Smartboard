@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.data.Template;
 import shane.pennihome.local.smartboard.ui.BackgroundSelector;
 import shane.pennihome.local.smartboard.ui.ForegroundSelector;
 import shane.pennihome.local.smartboard.ui.UIHelper;
@@ -171,10 +172,10 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
         TabLayout mTablayout = this.findViewById(R.id.prop_sw_bg_tabs);
         mSwiper.setTabLayout(mTablayout);
 
-        mSwiper.getViewAdapter().addView("Background Off", R.id.prop_sw_bg_tab_bgclr_off);
-        mSwiper.getViewAdapter().addView("Foreground Off", R.id.prop_bg_sw_tab_fgclr_off);
-        mSwiper.getViewAdapter().addView("Background On", R.id.prop_bg_sw_tab_bgclr_on);
-        mSwiper.getViewAdapter().addView("Foreground On", R.id.prop_bg_sw_tab_fgclr_on);
+        mSwiper.addView("Background Off", R.id.prop_sw_bg_tab_bgclr_off);
+        mSwiper.addView("Foreground Off", R.id.prop_bg_sw_tab_fgclr_off);
+        mSwiper.addView("Background On", R.id.prop_bg_sw_tab_bgclr_on);
+        mSwiper.addView("Foreground On", R.id.prop_bg_sw_tab_fgclr_on);
 
         mBackgroundSelectorOff = this.findViewById(R.id.prop_sw_bg_clr_off);
         mForgroundSelectorOff = this.findViewById(R.id.prop_sw_fg_clr_off);
@@ -280,6 +281,11 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
         mForegroundColourOn = block.getForegroundColourOn();
 
         doPropertyChange();
+    }
+
+    public void applyTemplate(Template template)
+    {
+        initialise(template.getBlock(SwitchBlock.class));
     }
 
     public void populate(SwitchBlock block) {

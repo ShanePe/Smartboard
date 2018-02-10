@@ -14,8 +14,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 public class Switch extends IThing {
     private String mType;
     private boolean mOn;
-    @IgnoreOnCopy
-//    private OnSwitchStateChangeListener mOnSwitchStateChangeListener;
 
     public static Switch Load(String json) {
         try {
@@ -25,14 +23,6 @@ public class Switch extends IThing {
         }
     }
 
-//    public OnSwitchStateChangeListener getOnSwitchStateChangeListener() {
-//        return mOnSwitchStateChangeListener;
-//    }
-//
-//    public void setOnSwitchStateChangeListener(OnSwitchStateChangeListener onSwitchStateChangeListener) {
-//        mOnSwitchStateChangeListener = onSwitchStateChangeListener;
-//    }
-
     public boolean isOn() {
         return mOn;
     }
@@ -40,8 +30,7 @@ public class Switch extends IThing {
     public void setOn(final boolean on, boolean fireBroadcast) {
         boolean pre = mOn;
         mOn = on;
-//        if (pre != mOn && mOnSwitchStateChangeListener != null)
-//            mOnSwitchStateChangeListener.OnStateChange(isOn());
+
         if (pre != mOn && fireBroadcast)
             Broadcaster.broadcastMessage(new ThingChangedMessage(getKey(), ThingChangedMessage.What.State));
     }
@@ -50,9 +39,6 @@ public class Switch extends IThing {
     public void setUnreachable(boolean unreachable, boolean fireBroadcast) {
         boolean pre = unreachable;
         super.setUnreachable(unreachable, fireBroadcast);
-
-//        if (pre != isUnreachable() && mOnSwitchStateChangeListener != null)
-//            mOnSwitchStateChangeListener.OnStateChange(isOn());
     }
 
     @Override

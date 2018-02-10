@@ -19,7 +19,10 @@ public class Template extends IDatabaseObject{
     public IBlock getBlock() {
         return mBlock;
     }
-
+    public <E extends IBlock> E getBlock(Class<E> cls) {
+        //noinspection unchecked
+        return (E) getBlock();
+    }
     public void setBlock(IBlock block) {
         this.mBlock = block;
     }
@@ -28,7 +31,7 @@ public class Template extends IDatabaseObject{
         return mThingType;
     }
 
-    public void setThingType(IThing.Types thingtype) {
+    private void setThingType(IThing.Types thingtype) {
         this.mThingType = thingtype;
     }
 
@@ -36,7 +39,13 @@ public class Template extends IDatabaseObject{
         mInstance = this.getClass().getSimpleName();
     }
 
-
+    public Template(IBlock block)
+    {
+        mInstance = this.getClass().getSimpleName();
+        setBlock(block);
+        setThingType(block.getThingType());
+        setName(block.getName());
+    }
 
     @Override
     public Types getDatabaseType() {

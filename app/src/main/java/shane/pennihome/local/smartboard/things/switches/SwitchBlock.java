@@ -2,11 +2,16 @@ package shane.pennihome.local.smartboard.things.switches;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import shane.pennihome.local.smartboard.R;
@@ -83,8 +88,7 @@ public class SwitchBlock extends IIconBlock {
     }
 
     @ColorInt
-    int getBackgroundColourWithAlphaOn()
-    {
+    int getBackgroundColourWithAlphaOn() {
         return UIHelper.getColorWithAlpha(getBackgroundColourOn(), getBackgroundColourTransparencyOn() / 100f);
     }
 
@@ -144,31 +148,98 @@ public class SwitchBlock extends IIconBlock {
         destination.post(new Runnable() {
             @Override
             public void run() {
-            Switch s = getThing(Switch.class);
+                Switch s = getThing(Switch.class);
 
-            Bitmap bitmap = null;
-            if (!TextUtils.isEmpty(s.isOn() ? getBackgroundImageOn() : getBackgroundImage()))
-                bitmap = BitmapFactory.decodeFile(s.isOn() ? getBackgroundImageOn() : getBackgroundImage());
+                Bitmap bitmap = null;
+                if (!TextUtils.isEmpty(s.isOn() ? getBackgroundImageOn() : getBackgroundImage()))
+                    bitmap = BitmapFactory.decodeFile(s.isOn() ? getBackgroundImageOn() : getBackgroundImage());
 
-            final Drawable drawable = UIHelper.generateImage(
-                    destination.getContext(),
-                    s.isOn() ? getBackgroundColourOn() : getBackgroundColour(),
-                    s.isOn() ? getBackgroundColourTransparencyOn() : getBackgroundColourTransparency(),
-                    bitmap,
-                    s.isOn() ? getBackgroundImageTransparencyOn() : getBackgroundColourTransparency(),
-                    destination.getMeasuredWidth(),
-                    destination.getMeasuredHeight(),
-                    false,
-                    s.isOn() ? getBackgroundImageRenderTypeOn() : getBackgroundImageRenderType());
+                final Drawable drawable = UIHelper.generateImage(
+                        destination.getContext(),
+                        s.isOn() ? getBackgroundColourOn() : getBackgroundColour(),
+                        s.isOn() ? getBackgroundColourTransparencyOn() : getBackgroundColourTransparency(),
+                        bitmap,
+                        s.isOn() ? getBackgroundImageTransparencyOn() : getBackgroundColourTransparency(),
+                        destination.getMeasuredWidth(),
+                        destination.getMeasuredHeight(),
+                        false,
+                        s.isOn() ? getBackgroundImageRenderTypeOn() : getBackgroundImageRenderType());
 
-            destination.setBackground(drawable);
-            destination.invalidate();
+                destination.setBackground(drawable);
+                destination.invalidate();
+            }
+        });
+    }
+
+    public void renderTemplateBackgroundTo(final View destination) {
+        destination.post(new Runnable() {
+            @Override
+            public void run() {
+
+                Bitmap bitmap1 = null;
+                Bitmap bitmap2 = null;
+
+                if (!TextUtils.isEmpty(getBackgroundImage()))
+                    bitmap1 = BitmapFactory.decodeFile(getBackgroundImage());
+
+                if (!TextUtils.isEmpty(getBackgroundImageOn()))
+                    bitmap2 = BitmapFactory.decodeFile(getBackgroundImageOn());
+
+                Drawable drawable1 = UIHelper.generateImage(
+                        destination.getContext(),
+                        getBackgroundColour(),
+                        getBackgroundColourTransparency(),
+                        bitmap1,
+                        getBackgroundColourTransparency(),
+                        destination.getMeasuredWidth(),
+                        destination.getMeasuredHeight(),
+                        false,
+                        getBackgroundImageRenderType());
+
+                Drawable drawable2 = UIHelper.generateImage(
+                        destination.getContext(),
+                        getBackgroundColourOn(),
+                        getBackgroundColourTransparencyOn(),
+                        bitmap2,
+                        getBackgroundImageTransparencyOn(),
+                        destination.getMeasuredWidth(),
+                        destination.getMeasuredHeight(),
+                        false,
+                        getBackgroundImageRenderTypeOn());
+
+                Drawable background = UIHelper.combineDrawables(destination.getContext(), drawable1, drawable2, destination.getMeasuredWidth(), destination.getMeasuredHeight());
+
+                Bitmap bitmap = ((BitmapDrawable)background).getBitmap();
+                Canvas canvas = new Canvas(bitmap);
+                Paint paint = new Paint();
+                paint.setColor(getForegroundColour());
+                canvas.drawRect(new Rect(bitmap.getWidth()-20,(bitmap.getHeight()/2)-20,bitmap.getWidth()-10,(bitmap.getHeight()/2)-10 ), paint);
+                paint.setColor(getForegroundColourOn());
+                canvas.drawRect(new Rect(bitmap.getWidth()-20,bitmap.getHeight()-20,bitmap.getWidth()-10,bitmap.getHeight()-10 ), paint);
+
+                destination.setBackground(new BitmapDrawable(destination.getResources(), bitmap));
+                destination.invalidate();
+            }
+        });
+    }
+
+    public void renderTemplateBlip(final ImageView destination)
+    {
+        destination.post(new Runnable() {
+            @Override
+            public void run() {
+                destination.setImageDrawable(UIHelper.createColourBlocks(destination.getContext(),
+                        new int[]{getBackgroundColourWithAlpha(), getForegroundColour(), getBackgroundColourWithAlphaOn(), getForegroundColourOn()},20,20));
+                destination.invalidate();
             }
         });
     }
 
     @Override
     public int getIconColour() {
-        return getThing(Switch.class).isOn() ? getForegroundColourOn() : getForegroundColour();
+        if(getThing() == null)
+            return getForegroundColour();
+        else
+            return getThing(Switch.class).isOn() ? getForegroundColourOn() : getForegroundColour();
     }
 }

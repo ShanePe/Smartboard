@@ -57,6 +57,10 @@
     <string name="lbl_no">No</string>
     <string name="lbl_icon">Icon</string>
     <string name="lbl_templates">Templates</string>
+    <string name="lbl_template">Template</string>
+    <string name="lbl_preview">Preview</string>
+    <string name="lbl_save_as_template">Save as template</string>
+    <string name="lbl_select_a_template">Select a template …</string>
 
     <string-array name="render_options">
         <item>Center</item>

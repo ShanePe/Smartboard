@@ -39,6 +39,20 @@ public class ViewSwiper extends ViewPager {
         super(context, attrs);
     }
 
+    public View getView(int id)
+    {
+        return getViewAdapter().getView(id);
+    }
+
+    public void addView(String name, int ResId) {
+        getViewAdapter().addView(name, ResId);
+    }
+
+    public void removeView(@SuppressWarnings("SameParameterValue") String name)
+    {
+        getViewAdapter().removeView(name);
+    }
+
     public boolean isAutoHideTabs() {
         return mAutoHideTabs;
     }
@@ -47,13 +61,6 @@ public class ViewSwiper extends ViewPager {
         mAutoHideTabs = autoHideTabs;
         if (autoHideTabs) {
             mTabLayout.setVisibility(View.GONE);
-            //float fromXDelta, float toXDelta, float fromYDelta, float toYDelta
-//            mSlideUpAnim = new TranslateAnimation(1.0f,1.0f,0.0f,1.0f );
-//            mSlideDnAnim = new TranslateAnimation(1.0f,1.0f,1.0f,0.0f );
-//            mSlideUpAnim.setDuration(3000);
-//            mSlideDnAnim.setDuration(3000);
-//            mSlideUpAnim.setInterpolator(new AccelerateInterpolator());
-//            mSlideDnAnim.setInterpolator(new AccelerateInterpolator());
 
             mSlideUpAnim = AnimationUtils.loadAnimation(mTabLayout.getContext(), R.anim.tab_up);
             mSlideDnAnim = AnimationUtils.loadAnimation(mTabLayout.getContext(), R.anim.tab_down);
@@ -157,8 +164,6 @@ public class ViewSwiper extends ViewPager {
         createAdapter();
     }
 
-
-
     public class ViewAdapter extends PagerAdapter {
         final ArrayList<Pair<String, Integer>> mTabs;
         final SparseArray<View> mViewCache;
@@ -168,7 +173,7 @@ public class ViewSwiper extends ViewPager {
             mViewCache = new SparseArray<>();
         }
 
-        public void addView(String name, int ResId) {
+        void addView(String name, int ResId) {
             mTabs.add(new Pair<>(name, ResId));
             notifyDataSetChanged();
         }
@@ -178,6 +183,31 @@ public class ViewSwiper extends ViewPager {
             mTabs.add(new Pair<>(name, pos));
             mViewCache.put(pos, view);
         }
+
+        void removeView(String name)
+        {
+            for(int i=0;i<mTabs.size();i++)
+                if(mTabs.get(i).first.toLowerCase().equals(name.toLowerCase()))
+                {
+                    mTabs.remove(i);
+                    mViewCache.remove(i);
+                    notifyDataSetChanged();
+                    break;
+                }
+        }
+
+        View getView(int id)
+        {
+            for(int i = 0;i<mViewCache.size();i++) {
+                if (mViewCache.get(i).getId() == id)
+                    return mViewCache.get(i);
+                View internal = mViewCache.get(i).findViewById(id);
+                if(internal != null)
+                    return internal;
+            }
+            return findViewById(id);
+        }
+
 
         @Override
         public int getCount() {

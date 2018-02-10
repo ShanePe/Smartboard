@@ -6,14 +6,19 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.annotation.ColorInt;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +41,7 @@ import shane.pennihome.local.smartboard.ui.UIHelper;
 
 @SuppressWarnings("ALL")
 @IDatabaseObject.IgnoreOnCopy
-public abstract class IBlock extends IDatabaseObject {
+public abstract class IBlock extends IDatabaseObject implements Cloneable {
     private int mHeight;
     private int mWidth;
     private @ColorInt
@@ -47,10 +52,14 @@ public abstract class IBlock extends IDatabaseObject {
     private int mBackTrans;
     private String mBackImage;
     private int mBGImgTrans;
-    private String mThingKey;
-    private transient IThing mThing;
     private UIHelper.ImageRenderTypes mBGImageRenderType;
+    @IgnoreOnCopy
+    private String mThingKey;
+    @IgnoreOnCopy
+    private transient IThing mThing;
+    @IgnoreOnCopy
     private OnThingActionListener mOnThingActionListener;
+    @IgnoreOnCopy
     private BroadcastReceiver mBroadcastReceiver;
 
     public IBlock() {
@@ -247,23 +256,56 @@ public abstract class IBlock extends IDatabaseObject {
         destination.post(new Runnable() {
             @Override
             public void run() {
-                Bitmap bitmap = null;
-                if (!TextUtils.isEmpty(getBackgroundImage()))
-                    bitmap = BitmapFactory.decodeFile(getBackgroundImage());
+            destination.setBackground(getBackgroundDrawable(destination));
+            destination.invalidate();
+            }
+        });
+    }
 
-                final Drawable drawable = UIHelper.generateImage(
-                        destination.getContext(),
-                        getBackgroundColour(),
-                        getBackgroundColourTransparency(),
-                        bitmap,
-                        getBackgroundImageTransparency(),
-                        destination.getMeasuredWidth(),
-                        destination.getMeasuredHeight(),
-                        false,
-                        getBackgroundImageRenderType());
+    private Drawable getBackgroundDrawable(View destination)
+    {
+        Bitmap bitmap = null;
+        if (!TextUtils.isEmpty(getBackgroundImage()))
+            bitmap = BitmapFactory.decodeFile(getBackgroundImage());
 
-               destination.setBackground(drawable);
-               destination.invalidate();
+       return UIHelper.generateImage(
+                destination.getContext(),
+                getBackgroundColour(),
+                getBackgroundColourTransparency(),
+                bitmap,
+                getBackgroundImageTransparency(),
+                destination.getMeasuredWidth(),
+                destination.getMeasuredHeight(),
+                false,
+                getBackgroundImageRenderType());
+    }
+
+    public void renderTemplateBlip(final ImageView destination)
+    {
+        destination.post(new Runnable() {
+            @Override
+            public void run() {
+                destination.setImageDrawable(UIHelper.createColourBlocks(destination.getContext(),
+                        new int[]{getBackgroundColourWithAlpha(), getForegroundColour()},20,20));
+                destination.invalidate();
+            }
+        });
+    }
+
+    public void renderTemplateBackgroundTo(final View destination)
+    {
+        destination.post(new Runnable() {
+            @Override
+            public void run() {
+
+                Drawable background = getBackgroundDrawable(destination);
+                Bitmap bitmap = ((BitmapDrawable)background).getBitmap();
+                Canvas canvas = new Canvas(bitmap);
+                Paint paint = new Paint();
+                paint.setColor(getForegroundColour());
+                canvas.drawRect(new Rect(bitmap.getWidth()-20,bitmap.getHeight()-20,bitmap.getWidth()-10,bitmap.getHeight()-10 ), paint);
+                destination.setBackground(new BitmapDrawable(destination.getResources(), bitmap));
+                destination.invalidate();
             }
         });
     }
@@ -285,8 +327,7 @@ public abstract class IBlock extends IDatabaseObject {
             mThing = Monitor.getMonitor().getThings().getByKey(getThingKey());
     }
 
-    public void execute(View indicator, OnProcessCompleteListener<String> onProcessCompleteListener)
-    {
+    public void execute(View indicator, OnProcessCompleteListener<String> onProcessCompleteListener) {
         BlockExecutor blockExecutor = new BlockExecutor(indicator, onProcessCompleteListener);
         blockExecutor.execute(getThing());
     }

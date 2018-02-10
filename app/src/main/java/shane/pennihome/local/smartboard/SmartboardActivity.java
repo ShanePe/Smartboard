@@ -142,4 +142,10 @@ public class SmartboardActivity extends AppCompatActivity {
             return 2;
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        WriteDashboardToDatabaseInstant();
+    }
 }

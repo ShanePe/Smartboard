@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="match_parent" android:layout_height="40dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/listItemStyle">
+
+    <TextView
+        android:id="@+id/temp_sp_templates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|start"
+        android:padding="8dp" />
+
+    <ImageView
+        android:id="@+id/temp_blip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginEnd="20dp"
+        android:contentDescription="@string/content_desc_img" />
+</FrameLayout>

@@ -31,6 +31,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -124,6 +125,13 @@ public class UIHelper {
             @Override
             public void onWindowShown(View view) {
                 block.getUIHandler().buildEditorWindowView(activity, view, null, null);
+                ViewGroup group = (ViewGroup)view;
+                for(int i = 0;i<group.getChildCount();i++)
+                    if(group.getChildAt(i) instanceof ViewSwiper)
+                    {
+                        ((ViewSwiper)group.getChildAt(i)).removeView("Template");
+                        break;
+                    }
             }
 
             @Override
@@ -370,6 +378,48 @@ public class UIHelper {
         } else {
             return image;
         }
+    }
+
+    public static Drawable createColourBlocks(Context context, @ColorInt int colours[], int width, int height)
+    {
+        if (width == 0 || height == 0)
+            return null;
+
+        Bitmap bitmap = Bitmap.createBitmap(width * colours.length, height, Bitmap.Config.ARGB_8888);
+        Paint paint = new Paint();
+        Canvas canvas = new Canvas(bitmap);
+        for(int i = 0; i< colours.length;i++)
+        {
+            paint.setColor(colours[i]);
+            Rect rect = new Rect(i * width, 0,(i * width) + width, height );
+            canvas.drawRect(rect, paint);
+        }
+        return new BitmapDrawable(context.getResources(), bitmap);
+    }
+
+    public static Drawable combineDrawables(Context context, Drawable draw1, Drawable draw2, int width, int height )
+    {
+        if (width == 0 || height == 0) {
+            DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+            width = metrics.widthPixels;
+            height = metrics.heightPixels;
+        }
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap1 = ((BitmapDrawable)draw1).getBitmap();
+        Bitmap bitmap2 = ((BitmapDrawable)draw2).getBitmap();
+
+        Rect src1 = new Rect(0, 0, bitmap1.getWidth(), bitmap1.getHeight());
+        Rect src2 = new Rect(0, 0, bitmap2.getWidth(), bitmap2.getHeight());
+
+        Rect rect1 = new Rect(0,0, width, height/2);
+        Rect rect2 = new Rect(0, height/2, width, height);
+
+        Paint paint = new Paint();
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawBitmap(bitmap1, src1, rect1, paint);
+        canvas.drawBitmap(bitmap2, src2, rect2, paint);
+
+        return new BitmapDrawable(context.getResources(), bitmap);
     }
 
     public static Drawable generateImage(Context context, @ColorInt int backClr, int backClrAlphaPerc, Bitmap image, int imageAlphaPerc, int width, int height, boolean roundCrns, ImageRenderTypes imageRenderType) {
