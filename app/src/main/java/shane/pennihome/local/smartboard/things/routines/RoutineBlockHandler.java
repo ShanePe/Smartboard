@@ -128,8 +128,6 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         holder.mBaDevice.setTextColor(fgClr);
         holder.mBaSize.setTextColor(fgClr);
 
-//        if (backgroundResourceId != 0)
-//            holder.mContainer.setBackgroundResource(backgroundResourceId);
     }
 
     @Override
@@ -184,7 +182,7 @@ public class RoutineBlockHandler extends IBlockUIHandler {
 
     @Override
     public int getEditorWindowLayoutID() {
-        return R.layout.prop_block_routine;
+        return R.layout.prop_routine;
     }
 
 

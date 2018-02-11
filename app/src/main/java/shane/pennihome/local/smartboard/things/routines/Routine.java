@@ -18,6 +18,9 @@ public class Routine extends IThing {
     }
 
     @Override
+    public void verifyState(IThing compare) {}
+
+    @Override
     public Types getThingType() {
         return Types.Routine;
     }

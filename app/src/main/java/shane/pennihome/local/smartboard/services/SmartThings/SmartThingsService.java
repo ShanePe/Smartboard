@@ -28,6 +28,7 @@ import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.switches.Switch;
+import shane.pennihome.local.smartboard.things.temperature.Temperature;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
@@ -135,6 +136,7 @@ public class SmartThingsService extends IService {
             thingsGetters.add(new Connector());
         thingsGetters.add(new SwitchGetter());
         thingsGetters.add(new RoutineGetter());
+        thingsGetters.add(new TemperatureGetter());
         return thingsGetters;
     }
 
@@ -333,6 +335,65 @@ public class SmartThingsService extends IService {
             } catch (Exception e) {
                 return new JsonExecutorResult(e);
             }
+        }
+    }
+
+    protected class TemperatureGetter implements IThingsGetter{
+
+        @Override
+        public String getLoadMessage() {
+            return "Getting SmartThings Temperature Gauges";
+        }
+
+        @Override
+        public Things getThings() throws Exception {
+            Things things = new Things();
+            JsonExecutorResult result = JsonExecutor.fulfil(new JsonExecutorRequest(
+                    new URL(mRequestUrl + "/temperatures"),
+                    JsonExecutorRequest.Types.GET,
+                    new OnExecutorRequestActionListener() {
+                        @Override
+                        public void OnPreExecute(HttpURLConnection connection) {
+                            connection.setRequestProperty("Authorization", "Bearer " + mToken);
+                        }
+                    }));
+
+            if (!result.isSuccess())
+                throw result.getError();
+
+            JSONArray jObjURI = new JSONArray(result.getResult());
+            for (int i = 0; i < jObjURI.length(); i++) {
+                JSONObject jDev = jObjURI.getJSONObject(i);
+                Temperature t = new Temperature();
+                t.setId(jDev.getString("id"));
+                t.setName(jDev.getString("name"));
+                t.setTemperature(jDev.getInt("value"), false);
+                t.setService(ServicesTypes.SmartThings);
+                t.initialise();
+                things.add(t);
+            }
+
+            return things;
+        }
+
+        @Override
+        public int getUniqueId() {
+            return 7;
+        }
+
+        @Override
+        public void setDescriptionTextView(TextView txtDescription) {
+
+        }
+
+        @Override
+        public Type getThingType() {
+            return Temperature.class;
+        }
+
+        @Override
+        public JsonExecutorResult execute(IThing thing) {
+            return null;
         }
     }
 }

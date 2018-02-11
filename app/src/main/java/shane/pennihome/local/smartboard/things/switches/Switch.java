@@ -36,6 +36,13 @@ public class Switch extends IThing {
     }
 
     @Override
+    public void verifyState(IThing compare) {
+        Switch newSwitch = (Switch) compare;
+        if (isOn() != newSwitch.isOn())
+            setOn(newSwitch.isOn(), true);
+    }
+
+    @Override
     public void setUnreachable(boolean unreachable, boolean fireBroadcast) {
         boolean pre = unreachable;
         super.setUnreachable(unreachable, fireBroadcast);

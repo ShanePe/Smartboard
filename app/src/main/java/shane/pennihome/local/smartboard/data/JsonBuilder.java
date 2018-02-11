@@ -20,6 +20,8 @@ import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.things.switches.SwitchBlock;
+import shane.pennihome.local.smartboard.things.temperature.Temperature;
+import shane.pennihome.local.smartboard.things.temperature.TemperatureBlock;
 import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
@@ -42,9 +44,24 @@ public class JsonBuilder {
                         return Switch.Load(jThing.toString());
                     case "routine":
                         return Routine.Load(jThing.toString());
+                    case "temperature":
+                        return Temperature.Load(jThing.toString());
                     default:
                         throw new JsonParseException("Invalid type of thing : " + jThing.get("mInstance").getAsString());
                 }
+            }
+        });
+
+        builder.registerTypeAdapter(IThing.class, new JsonSerializer<IThing>() {
+            public JsonElement serialize(IThing src, Type typeOfSrc, JsonSerializationContext context) {
+                if (src instanceof Switch)
+                    return context.serialize((Switch) src);
+                else if (src instanceof Routine)
+                    return context.serialize((Routine) src);
+                else if (src instanceof  Temperature)
+                    return context.serialize((Temperature) src);
+                else
+                    throw new JsonParseException("Invalid type of thing : " + src.toString());
             }
         });
 
@@ -58,12 +75,40 @@ public class JsonBuilder {
                         return SwitchBlock.Load(jBlock.toString());
                     case "routineblock":
                         return RoutineBlock.Load(jBlock.toString());
+                    case "temperatureblock":
+                        return TemperatureBlock.Load(jBlock.toString());
                     default:
                         throw new JsonParseException("Invalid type of block : " + jBlock.get("mInstance").getAsString());
                 }
             }
         });
 
+        builder.registerTypeAdapter(IBlock.class, new JsonSerializer<IBlock>() {
+            @Override
+            public JsonElement serialize(IBlock src, Type typeOfSrc, JsonSerializationContext context) {
+                if (src instanceof SwitchBlock)
+                    return context.serialize((SwitchBlock) src);
+                else if (src instanceof RoutineBlock)
+                    return context.serialize((RoutineBlock) src);
+                else if (src instanceof TemperatureBlock)
+                    return context.serialize((TemperatureBlock) src);
+                else
+                    throw new JsonParseException("Invalid type of block : " + src.toString());
+            }
+        });
+
+
+        builder.registerTypeAdapter(IService.class, new JsonSerializer<IService>() {
+            @Override
+            public JsonElement serialize(IService src, Type typeOfSrc, JsonSerializationContext context) {
+                if (src instanceof SmartThingsService)
+                    return context.serialize((SmartThingsService) src);
+                if(src instanceof HueBridgeService)
+                    return context.serialize((HueBridgeService) src);
+                else
+                    throw new JsonParseException("Invalid type of service : " + src.toString());
+            }
+        });
 
         builder.registerTypeAdapter(IService.class, new JsonDeserializer<IService>() {
             @Override
@@ -102,42 +147,6 @@ public class JsonBuilder {
                     return context.serialize((ThingChangedMessage) src);
                 else
                     throw new JsonParseException("Invalid type of message : " + src.toString());
-            }
-        });
-
-        builder.registerTypeAdapter(IThing.class, new JsonSerializer<IThing>() {
-            @Override
-            public JsonElement serialize(IThing src, Type typeOfSrc, JsonSerializationContext context) {
-                if (src instanceof Switch)
-                    return context.serialize((Switch) src);
-                else if (src instanceof Routine)
-                    return context.serialize((Routine) src);
-                else
-                    throw new JsonParseException("Invalid type of thing : " + src.toString());
-            }
-        });
-
-        builder.registerTypeAdapter(IBlock.class, new JsonSerializer<IBlock>() {
-            @Override
-            public JsonElement serialize(IBlock src, Type typeOfSrc, JsonSerializationContext context) {
-                if (src instanceof SwitchBlock)
-                    return context.serialize((SwitchBlock) src);
-                else if (src instanceof RoutineBlock)
-                    return context.serialize((RoutineBlock) src);
-                else
-                    throw new JsonParseException("Invalid type of block : " + src.toString());
-            }
-        });
-
-        builder.registerTypeAdapter(IService.class, new JsonSerializer<IService>() {
-            @Override
-            public JsonElement serialize(IService src, Type typeOfSrc, JsonSerializationContext context) {
-                if (src instanceof SmartThingsService)
-                    return context.serialize((SmartThingsService) src);
-                if(src instanceof HueBridgeService)
-                    return context.serialize((HueBridgeService) src);
-                else
-                    throw new JsonParseException("Invalid type of service : " + src.toString());
             }
         });
 

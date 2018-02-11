@@ -192,7 +192,7 @@ public class SwitchBlockHandler extends IBlockUIHandler {
 
     @Override
     public int getEditorWindowLayoutID() {
-        return R.layout.prop_block_switch;
+        return R.layout.prop_switch;
     }
 
     public class SwitchEditorHolder extends BlockEditViewHolder {

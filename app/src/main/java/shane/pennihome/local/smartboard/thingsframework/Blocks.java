@@ -8,6 +8,8 @@ import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.things.switches.SwitchBlock;
+import shane.pennihome.local.smartboard.things.temperature.Temperature;
+import shane.pennihome.local.smartboard.things.temperature.TemperatureBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 
 /**
@@ -22,6 +24,8 @@ public class Blocks extends ArrayList<IBlock> {
             blocks.add(new SwitchBlock());
         if (Monitor.getMonitor().getThings().containsType(Routine.class))
             blocks.add(new RoutineBlock());
+        if(Monitor.getMonitor().getThings().containsType(Temperature.class))
+            blocks.add((new TemperatureBlock()));
         return blocks;
     }
 

@@ -89,21 +89,6 @@ public class DeviceViewAdapter extends ThingViewAdapter {
                 vh.mSwitchView.setEnabled(true);
             }
         });
-
-//
-//        vh.mItem.setOnSwitchStateChangeListener(new OnSwitchStateChangeListener() {
-//            @Override
-//            public void OnStateChange(boolean isOn) {
-//                vh.mSwitchView.setChecked(isOn);
-//            }
-//        });
-
-//        vh.mItem.setOnThingActionListener(new OnThingActionListener() {
-//            @Override
-//            public void OnReachableStateChanged(boolean isUnReachable) {
-//                vh.mSwitchView.setEnabled(!isUnReachable);
-//            }
-//        });
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

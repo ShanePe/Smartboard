@@ -19,6 +19,7 @@ public abstract class IThing extends IDatabaseObject {
     //@IgnoreOnCopy
     //private transient OnThingActionListener mOnThingActionListener;
 
+    public abstract void verifyState(IThing compare);
     public IThing() {
         mInstance = this.getClass().getSimpleName();
     }
@@ -77,20 +78,12 @@ public abstract class IThing extends IDatabaseObject {
         return String.format("%s%s%s%s", getId(), getName(), getServiceType(), getThingType());
     }
 
-//    public OnThingActionListener getOnThingActionListener() {
-//        return mOnThingActionListener;
-//    }
-//
-//    public void setOnThingActionListener(OnThingActionListener onthingactionlistener) {
-//        this.mOnThingActionListener = onthingactionlistener;
-//    }
-
     public abstract Types getThingType();
     /**
      * Created by shane on 29/12/17.
      */
 
     public enum Types {
-        Switch, Routine
+        Switch, Routine, Temperature
     }
 }

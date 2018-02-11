@@ -15,7 +15,6 @@ import shane.pennihome.local.smartboard.services.ServiceLoader;
 import shane.pennihome.local.smartboard.services.ServiceManager;
 import shane.pennihome.local.smartboard.services.Services;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
-import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
@@ -229,15 +228,10 @@ public class Monitor {
             } else {
                 if (currentThing.isUnreachable() && !newThing.isUnreachable())
                     currentThing.setUnreachable(false, true);
+               else
+                   currentThing.verifyState(newThing);
 
-                if (currentThing instanceof Switch) {
-                    Switch currentSwitch = (Switch) currentThing;
-                    Switch newSwitch = (Switch) newThing;
-                    if (currentSwitch.isOn() != newSwitch.isOn()) {
-                        currentSwitch.setOn(newSwitch.isOn(), true);
-                    }
-                }
-                currentThings.remove(newThing);
+               currentThings.remove(newThing);
             }
         }
 

@@ -31,6 +31,7 @@ import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
 import shane.pennihome.local.smartboard.things.switches.SwitchBlock;
+import shane.pennihome.local.smartboard.things.temperature.TemperatureBlock;
 import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
 import shane.pennihome.local.smartboard.ui.UIHelper;
@@ -77,6 +78,8 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
                 return new SwitchBlock();
             case Routine:
                 return new RoutineBlock();
+            case Temperature:
+                return new TemperatureBlock();
             default:
                 throw new Exception("Invalid Type to create");
         }
