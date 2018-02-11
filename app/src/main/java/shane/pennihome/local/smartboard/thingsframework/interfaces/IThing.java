@@ -70,6 +70,7 @@ public abstract class IThing extends IDatabaseObject {
         return mServicesTypes;
     }
 
+
     public void setService(IService.ServicesTypes servicesTypes) {
         this.mServicesTypes = servicesTypes;
     }

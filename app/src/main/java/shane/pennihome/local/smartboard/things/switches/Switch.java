@@ -3,7 +3,6 @@ package shane.pennihome.local.smartboard.things.switches;
 import shane.pennihome.local.smartboard.comms.Broadcaster;
 import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
-import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IExecutor;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
@@ -63,6 +62,9 @@ public class Switch extends IThing {
         Switch newSwitch = (Switch) compare;
         if (isOn() != newSwitch.isOn())
             setOn(newSwitch.isOn(), true);
+        if (isDimmer())
+            if (getDimmerLevel() != newSwitch.getDimmerLevel())
+                setDimmerLevel(newSwitch.getDimmerLevel(), true);
     }
 
     @Override
@@ -72,12 +74,12 @@ public class Switch extends IThing {
     }
 
     @Override
-    public JsonExecutorResult execute(IExecutor<?> executor) {
+    public JsonExecutorResult execute(IExecutor executor) {
         JsonExecutorResult result = super.execute(executor);
         if(result!=null)
             if (result.isSuccess()) {
-                if (executor instanceof SmartThingsService.SwitchGetter.LevelExecutor)
-                    setDimmerLevel(((SmartThingsService.SwitchGetter.LevelExecutor) executor).getValue(), true);
+                if (executor.getId().equals("level"))
+                    setDimmerLevel((int) executor.getValue(), true);
                 else
                     setOn(!isOn(), true);
             }

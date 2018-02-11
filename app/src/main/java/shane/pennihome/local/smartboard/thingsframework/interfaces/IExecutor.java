@@ -10,6 +10,10 @@ import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 public abstract class IExecutor<T> {
     private T mValue;
 
+    public String getId() {
+        return "";
+    }
+
     public T getValue() {
         return mValue;
     }

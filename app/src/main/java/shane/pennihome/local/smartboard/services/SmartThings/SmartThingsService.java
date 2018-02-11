@@ -206,7 +206,7 @@ public class SmartThingsService extends IService {
         }
     }
 
-    public class SwitchGetter implements IThingsGetter {
+    class SwitchGetter implements IThingsGetter {
         public String getLoadMessage() {
             return "Getting SmartThings switches";
         }
@@ -286,7 +286,11 @@ public class SmartThingsService extends IService {
             };
         }
 
-        public class LevelExecutor extends IExecutor<Integer> {
+        class LevelExecutor extends IExecutor<Integer> {
+            @Override
+            public String getId() {
+                return "level";
+            }
 
             @Override
             protected JsonExecutorResult execute(IThing thing) {
