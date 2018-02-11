@@ -82,7 +82,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:requiresFadingEdge="horizontal|vertical"
-                app:srcCompat="@drawable/icon_add" />
+                android:scaleType="fitCenter"
+                app:srcCompat="@mipmap/icon_add_mm_fg" />
         </LinearLayout>
     </LinearLayout>
 
@@ -92,10 +93,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="0dp"
-        android:padding="4dp"
         android:background="@drawable/expanded_block_area"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:groupIndicator="@android:color/transparent" />
+        android:groupIndicator="@android:color/transparent"
+        android:padding="4dp" />
 
 </android.support.v7.widget.LinearLayoutCompat>

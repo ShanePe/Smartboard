@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/mnu_dash_add"
-        android:icon="@drawable/icon_add"
+        android:icon="@mipmap/icon_add_mm_fg"
         android:title="@string/lbl_add_dashboard"
         app:showAsAction="always" />
 </menu>
