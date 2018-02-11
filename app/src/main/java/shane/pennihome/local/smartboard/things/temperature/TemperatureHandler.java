@@ -142,14 +142,19 @@ public class TemperatureHandler extends IBlockUIHandler {
 
         getBlock().setOnThingActionListener(new OnThingActionListener() {
             @Override
-            public void OnReachableStateChanged(boolean isUnReachable) {
+            public void OnReachableStateChanged(IThing thing) {
                 getBlock().renderUnreachableBackground(holder.itemView);
             }
 
             @Override
-            public void OnStateChanged() {
+            public void OnStateChanged(IThing thing) {
                 if(getBlock().getThing() != null)
                     holder.mValue.setText(String.format("%s°",getBlock().getThing(Temperature.class).getTemperature()));
+            }
+
+            @Override
+            public void OnDimmerLevelChanged(IThing thing) {
+
             }
         });
     }

@@ -4,9 +4,8 @@ import android.widget.TextView;
 
 import java.lang.reflect.Type;
 
-import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.thingsframework.Things;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IExecutor;
 
 /**
  * Created by SPennicott on 30/01/2018.
@@ -19,5 +18,7 @@ public interface IThingsGetter {
     int getUniqueId();
     void setDescriptionTextView(TextView txtDescription);
     Type getThingType();
-    JsonExecutorResult execute(IThing thing);
+
+    //JsonExecutorResult execute(IThing thing);
+    IExecutor<?> getExecutor(String Id);
 }

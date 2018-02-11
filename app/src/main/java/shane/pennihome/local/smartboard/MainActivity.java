@@ -47,9 +47,13 @@ public class MainActivity extends AppCompatActivity
             actionBar.hide();
 
         if (Monitor.IsInstaniated())
-            if (Monitor.getMonitor().isLoaded())
+            if (Monitor.getMonitor().isLoaded()) {
                 if (!Monitor.getMonitor().isRunning())
                     Monitor.getMonitor().start();
+
+                if (mDashboards == null)
+                    populateDashbboards();
+            }
         super.onPostResume();
     }
 

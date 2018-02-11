@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import shane.pennihome.local.smartboard.data.Templates;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IExecutor;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
@@ -147,12 +149,16 @@ public class SwitchBlockHandler extends IBlockUIHandler {
         getBlock(SwitchBlock.class).renderIconTo(holder.mIcon);
         getBlock().startListeningForChanges();
 
+        holder.mDimmer.setVisibility(getBlock().getThing(Switch.class).isDimmer() ? View.VISIBLE : View.GONE);
+        holder.mDimmer.setProgress(getBlock().getThing(Switch.class).getDimmerLevel());
+        holder.mDimmer.setEnabled(getBlock().getThing(Switch.class).isOn());
+
         holder.itemView.setPadding(Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE)
+                if (getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE || v == holder.mDimmer)
                     return;
 
                 getBlock().execute(holder.mProgress, new OnProcessCompleteListener<String>() {
@@ -165,17 +171,49 @@ public class SwitchBlockHandler extends IBlockUIHandler {
             }
         });
 
+        holder.mDimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                IExecutor<Integer> executor = (IExecutor<Integer>) getBlock().getExecutor("level");
+                executor.setValue(holder.mDimmer.getProgress());
+                ;
+                getBlock().execute(holder.mProgress, executor, new OnProcessCompleteListener<String>() {
+                    @Override
+                    public void complete(boolean success, String source) {
+                        if (!success)
+                            Toast.makeText(holder.itemView.getContext(), "Error:" + source, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
         getBlock().setOnThingActionListener(new OnThingActionListener() {
             @Override
-            public void OnReachableStateChanged(boolean isUnReachable) {
+            public void OnReachableStateChanged(IThing thing) {
                 getBlock().renderUnreachableBackground(holder.itemView);
             }
 
             @Override
-            public void OnStateChanged() {
+            public void OnStateChanged(IThing thing) {
                 getBlock().renderForegroundColourToTextView(holder.mTitle);
                 getBlock().renderBackgroundTo(holder.itemView);
                 getBlock().renderUnreachableBackground(holder.itemView);
+                holder.mDimmer.setEnabled(getBlock().getThing(Switch.class).isOn());
+            }
+
+            @Override
+            public void OnDimmerLevelChanged(IThing thing) {
+                holder.mDimmer.setProgress(getBlock().getThing(Switch.class).getDimmerLevel());
             }
         });
     }
@@ -224,7 +262,7 @@ public class SwitchBlockHandler extends IBlockUIHandler {
         TextView mTitle;
         ImageView mIcon;
         ProgressBar mProgress;
-
+        SeekBar mDimmer;
         public SwitchViewHolder(View itemView) {
             super(itemView);
 
@@ -232,6 +270,7 @@ public class SwitchBlockHandler extends IBlockUIHandler {
             mTitle = itemView.findViewById(R.id.bvs_title);
             mIcon = itemView.findViewById(R.id.bvs_icon);
             mProgress = itemView.findViewById(R.id.bvs_progress);
+            mDimmer = itemView.findViewById(R.id.bvs_dimmer);
         }
     }
 }

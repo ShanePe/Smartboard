@@ -17,6 +17,7 @@ import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
 
@@ -79,14 +80,19 @@ public class DeviceViewAdapter extends ThingViewAdapter {
 
         vh.setOnThingActionListener(new OnThingActionListener() {
             @Override
-            public void OnReachableStateChanged(boolean isUnReachable) {
-                vh.mSwitchView.setChecked(!isUnReachable);
+            public void OnReachableStateChanged(IThing thing) {
+                vh.mSwitchView.setChecked(!vh.mItem.isUnreachable());
             }
 
             @Override
-            public void OnStateChanged() {
+            public void OnStateChanged(IThing thing) {
                 vh.mSwitchView.setChecked(vh.mItem.isOn());
                 vh.mSwitchView.setEnabled(true);
+            }
+
+            @Override
+            public void OnDimmerLevelChanged(IThing thing) {
+
             }
         });
     }
@@ -129,9 +135,11 @@ public class DeviceViewAdapter extends ThingViewAdapter {
                             if (message instanceof ThingChangedMessage) {
                                 ThingChangedMessage thingChangedMessage = (ThingChangedMessage) message;
                                 if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.State)
-                                    mOnThingActionListener.OnStateChanged();
+                                    mOnThingActionListener.OnStateChanged(mItem);
                                 else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Unreachable)
-                                    mOnThingActionListener.OnReachableStateChanged(mItem.isUnreachable());
+                                    mOnThingActionListener.OnReachableStateChanged(mItem);
+                                else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Level)
+                                    mOnThingActionListener.OnDimmerLevelChanged(mItem);
                             }
                         }
                     }

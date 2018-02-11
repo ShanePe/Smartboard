@@ -197,9 +197,6 @@ public class BackgroundSelector extends LinearLayoutCompat {
         msbBGImg.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                if (mBackgroundActionListener != null)
-                    mBackgroundActionListener.OnImageTransparencyChanged(i);
-                setImageTransparency(i);
             }
 
             @Override
@@ -208,6 +205,9 @@ public class BackgroundSelector extends LinearLayoutCompat {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                if (mBackgroundActionListener != null)
+                    mBackgroundActionListener.OnImageTransparencyChanged(msbBGImg.getProgress());
+                setImageTransparency(msbBGImg.getProgress());
             }
         });
 

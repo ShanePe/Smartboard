@@ -2989,6 +2989,10 @@
     <pattern value="shane.pennihome.local.smartboard.ui.UIHelper" method="combineDrawables" />
     <pattern value="shane.pennihome.local.smartboard.ui.UIHelper" method="createColourBlocks" />
     <pattern value="shane.pennihome.local.smartboard.ui.UIHelper" method="showBlockTemplateWindow" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener" method="OnDimmerLevelChanged" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener" method="OnStateChanged" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener" method="OnReachableStateChanged" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

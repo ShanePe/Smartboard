@@ -30,6 +30,7 @@ import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.things.temperature.Temperature;
 import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IExecutor;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
 /**
@@ -194,15 +195,18 @@ public class SmartThingsService extends IService {
             return IThing.class;
         }
 
+//        @Override
+//        public JsonExecutorResult execute(IThing thing) {
+//            return null;
+//        }
+
         @Override
-        public JsonExecutorResult execute(IThing thing) {
+        public IExecutor<?> getExecutor(String Id) {
             return null;
         }
-
-
     }
 
-    protected class SwitchGetter implements IThingsGetter {
+    public class SwitchGetter implements IThingsGetter {
         public String getLoadMessage() {
             return "Getting SmartThings switches";
         }
@@ -230,6 +234,10 @@ public class SmartThingsService extends IService {
                 d.setName(jDev.getString("name"));
                 d.setOn(jDev.getString("value").equals("on"), false);
                 d.setType(jDev.getString("type"));
+                if (!jDev.getString("level").toLowerCase().equals("null")) {
+                    d.setIsDimmer(true);
+                    d.setDimmerLevel(jDev.getInt("level"), false);
+                }
                 d.setService(ServicesTypes.SmartThings);
                 d.initialise();
                 things.add(d);
@@ -254,18 +262,46 @@ public class SmartThingsService extends IService {
         }
 
         @Override
-        public JsonExecutorResult execute(IThing thing) {
-            try {
-                String url = mRequestUrl + "/switches/" + URLEncoder.encode(thing.getId(), "UTF-8") + "/" +(((Switch) thing).isOn() ? "off" : "on");
-                return JsonExecutor.fulfil(new JsonExecutorRequest(new URL(url), JsonExecutorRequest.Types.PUT, new OnExecutorRequestActionListener() {
-                    @Override
-                    public void OnPreExecute(HttpURLConnection connection) {
-                        connection.setRequestProperty("Authorization", "Bearer " + mToken);
-                    }
-                }));
+        public IExecutor<?> getExecutor(String Id) {
+            if (Id.toLowerCase().equals("level"))
+                return new LevelExecutor();
 
-            } catch (Exception e) {
-               return new JsonExecutorResult(e);
+            return new IExecutor<Void>() {
+
+                @Override
+                protected JsonExecutorResult execute(IThing thing) {
+                    try {
+                        String url = String.format("%s/switches/%s/%s", mRequestUrl, URLEncoder.encode(thing.getId(), "UTF-8"), ((Switch) thing).isOn() ? "off" : "on");
+                        return JsonExecutor.fulfil(new JsonExecutorRequest(new URL(url), JsonExecutorRequest.Types.PUT, new OnExecutorRequestActionListener() {
+                            @Override
+                            public void OnPreExecute(HttpURLConnection connection) {
+                                connection.setRequestProperty("Authorization", "Bearer " + mToken);
+                            }
+                        }));
+
+                    } catch (Exception e) {
+                        return new JsonExecutorResult(e);
+                    }
+                }
+            };
+        }
+
+        public class LevelExecutor extends IExecutor<Integer> {
+
+            @Override
+            protected JsonExecutorResult execute(IThing thing) {
+                try {
+                    String url = String.format("%s/switches_level/%s/%s", mRequestUrl, URLEncoder.encode(thing.getId(), "UTF-8"), getValue());
+                    return JsonExecutor.fulfil(new JsonExecutorRequest(new URL(url), JsonExecutorRequest.Types.PUT, new OnExecutorRequestActionListener() {
+                        @Override
+                        public void OnPreExecute(HttpURLConnection connection) {
+                            connection.setRequestProperty("Authorization", "Bearer " + mToken);
+                        }
+                    }));
+
+                } catch (Exception e) {
+                    return new JsonExecutorResult(e);
+                }
             }
         }
     }
@@ -322,19 +358,24 @@ public class SmartThingsService extends IService {
         }
 
         @Override
-        public JsonExecutorResult execute(IThing thing) {
-            try {
-                String url = mRequestUrl + "/routines/" + URLEncoder.encode(thing.getId(), "UTF-8");
-                return JsonExecutor.fulfil(new JsonExecutorRequest(new URL(url), JsonExecutorRequest.Types.PUT,new OnExecutorRequestActionListener() {
-                    @Override
-                    public void OnPreExecute(HttpURLConnection connection) {
-                        connection.setRequestProperty("Authorization", "Bearer " + mToken);
-                    }
-                }));
+        public IExecutor<?> getExecutor(String Id) {
+            return new IExecutor<Void>() {
+                @Override
+                protected JsonExecutorResult execute(IThing thing) {
+                    try {
+                        String url = mRequestUrl + "/routines/" + URLEncoder.encode(thing.getId(), "UTF-8");
+                        return JsonExecutor.fulfil(new JsonExecutorRequest(new URL(url), JsonExecutorRequest.Types.PUT, new OnExecutorRequestActionListener() {
+                            @Override
+                            public void OnPreExecute(HttpURLConnection connection) {
+                                connection.setRequestProperty("Authorization", "Bearer " + mToken);
+                            }
+                        }));
 
-            } catch (Exception e) {
-                return new JsonExecutorResult(e);
-            }
+                    } catch (Exception e) {
+                        return new JsonExecutorResult(e);
+                    }
+                }
+            };
         }
     }
 
@@ -390,9 +431,14 @@ public class SmartThingsService extends IService {
         public Type getThingType() {
             return Temperature.class;
         }
+//
+//        @Override
+//        public JsonExecutorResult execute(IThing thing) {
+//            return null;
+//        }
 
         @Override
-        public JsonExecutorResult execute(IThing thing) {
+        public IExecutor<?> getExecutor(String Id) {
             return null;
         }
     }

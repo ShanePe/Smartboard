@@ -30,6 +30,7 @@ import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IExecutor;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
 /**
@@ -305,9 +306,10 @@ public class HueBridgeService extends IService {
         }
 
         @Override
-        public JsonExecutorResult execute(IThing thing) {
+        public IExecutor<?> getExecutor(String Id) {
             return null;
         }
+
     }
 
     public class SwitchGetter implements IThingsGetter
@@ -365,20 +367,24 @@ public class HueBridgeService extends IService {
         }
 
         @Override
-        public JsonExecutorResult execute(IThing thing) {
-            try
-            {
-                JsonExecutorRequest request = new JsonExecutorRequest(new URL(String.format("http://%s/api/%s/lights/%s/state", getAddress(), getToken(), thing.getId())), JsonExecutorRequest.Types.PUT);
-                request.setPutBody(String.format("{\"on\":%s}", !((Switch) thing).isOn()));
+        public IExecutor<?> getExecutor(String Id) {
+            return new IExecutor<Void>() {
 
-                return JsonExecutor.fulfil(request);
+                @Override
+                protected JsonExecutorResult execute(IThing thing) {
+                    try {
+                        JsonExecutorRequest request = new JsonExecutorRequest(new URL(String.format("http://%s/api/%s/lights/%s/state", getAddress(), getToken(), thing.getId())), JsonExecutorRequest.Types.PUT);
+                        request.setPutBody(String.format("{\"on\":%s}", !((Switch) thing).isOn()));
 
-            }catch (Exception e)
-            {
-                return new JsonExecutorResult(e);
-            }
+                        return JsonExecutor.fulfil(request);
 
+                    } catch (Exception e) {
+                        return new JsonExecutorResult(e);
+                    }
+                }
+            };
         }
+
     }
 
     public class RoutineGetter implements IThingsGetter
@@ -486,18 +492,22 @@ public class HueBridgeService extends IService {
         }
 
         @Override
-        public JsonExecutorResult execute(IThing thing) {
-           try
-           {
-               JsonExecutorRequest request = new JsonExecutorRequest(new URL(String.format("http://%s/api/%s/groups/0/action", getAddress(), getToken())), JsonExecutorRequest.Types.PUT);
-               request.setPutBody(String.format("{\"scene\":\"%s\"}", thing.getId()));
+        public IExecutor<?> getExecutor(String Id) {
+            return new IExecutor<Void>() {
 
-               return JsonExecutor.fulfil(request);
+                @Override
+                protected JsonExecutorResult execute(IThing thing) {
+                    try {
+                        JsonExecutorRequest request = new JsonExecutorRequest(new URL(String.format("http://%s/api/%s/groups/0/action", getAddress(), getToken())), JsonExecutorRequest.Types.PUT);
+                        request.setPutBody(String.format("{\"scene\":\"%s\"}", thing.getId()));
 
-           }catch(Exception e)
-           {
-               return new JsonExecutorResult(e);
-           }
+                        return JsonExecutor.fulfil(request);
+
+                    } catch (Exception e) {
+                        return new JsonExecutorResult(e);
+                    }
+                }
+            };
         }
     }
 }

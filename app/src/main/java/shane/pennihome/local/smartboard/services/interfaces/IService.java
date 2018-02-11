@@ -5,7 +5,6 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
-import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
@@ -14,6 +13,7 @@ import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IExecutor;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
 /**
@@ -101,18 +101,31 @@ public abstract class IService extends IDatabaseObject {
             onProcessCompleteListener.complete(true, null);
     }
 
-    public JsonExecutorResult executeThing(IThing thing)
+    public IExecutor<?> getExecutor(IThing thing, String id)
     {
-        IThingsGetter executor = null;
+        IThingsGetter getter = null;
         if(thing instanceof Switch)
-            executor = getThingExecutor(Switch.class);
+            getter = getThingExecutor(Switch.class);
         else if(thing instanceof Routine)
-            executor = getThingExecutor(Routine.class);
+            getter = getThingExecutor(Routine.class);
 
-        if(executor!=null)
-            return executor.execute(thing);
+        if (getter != null)
+            return getter.getExecutor(id);
         return null;
     }
+
+//    public JsonExecutorResult executeThing<T>(IThing thing)
+//    {
+//        IThingsGetter executor = null;
+//        if(thing instanceof Switch)
+//            executor = getThingExecutor(Switch.class);
+//        else if(thing instanceof Routine)
+//            executor = getThingExecutor(Routine.class);
+//
+//        if(executor!=null)
+//            return executor.execute(thing);
+//        return null;
+//    }
 
     public boolean isValid() {
         return isRegistered() && !isAwaitingAction();

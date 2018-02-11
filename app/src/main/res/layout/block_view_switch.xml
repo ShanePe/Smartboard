@@ -22,13 +22,22 @@
             android:layout_gravity="center"
             android:contentDescription="@string/content_desc_img" />
 
+
+        <SeekBar
+            android:id="@+id/bvs_dimmer"
+            style="@style/Widget.AppCompat.SeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" />
+
         <ProgressBar
             android:id="@+id/bvs_progress"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_gravity="bottom"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:indeterminateOnly="true"
             android:visibility="invisible" />
+
     </FrameLayout>
 </android.support.v7.widget.LinearLayoutCompat>

@@ -96,9 +96,11 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
                             ThingChangedMessage thingChangedMessage = (ThingChangedMessage) message;
                             if (thingChangedMessage.getValue().equals(getThingKey())) {
                                 if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.State)
-                                    mOnThingActionListener.OnStateChanged();
+                                    mOnThingActionListener.OnStateChanged(getThing());
                                 else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Unreachable)
-                                    mOnThingActionListener.OnReachableStateChanged(getThing().isUnreachable());
+                                    mOnThingActionListener.OnReachableStateChanged(getThing());
+                                else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Level)
+                                    mOnThingActionListener.OnDimmerLevelChanged(getThing());
                             }
                         }
                     }
@@ -331,8 +333,20 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
     }
 
     public void execute(View indicator, OnProcessCompleteListener<String> onProcessCompleteListener) {
-        BlockExecutor blockExecutor = new BlockExecutor(indicator, onProcessCompleteListener);
+        execute(indicator, getExecutor(), onProcessCompleteListener);
+    }
+
+    public void execute(View indicator, IExecutor<?> executor, OnProcessCompleteListener<String> onProcessCompleteListener) {
+        BlockExecutor blockExecutor = new BlockExecutor(indicator, executor, onProcessCompleteListener);
         blockExecutor.execute(getThing());
+    }
+
+    public IExecutor<?> getExecutor() {
+        return getExecutor("");
+    }
+
+    public IExecutor<?> getExecutor(String id) {
+        return getThing().getExecutor(id);
     }
 
     @Override
@@ -345,10 +359,12 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
     {
         View mProgressIndicator;
         OnProcessCompleteListener<String> mOnProcessCompleteListener;
+        IExecutor<?> mExecutor;
 
-        public BlockExecutor(View mProgressIndicator, OnProcessCompleteListener<String> mOnProcessCompleteListener) {
-            this.mProgressIndicator = mProgressIndicator;
-            this.mOnProcessCompleteListener = mOnProcessCompleteListener;
+        public BlockExecutor(View progressindicator, IExecutor<?> executor, OnProcessCompleteListener<String> onProcessCompleteListener) {
+            this.mProgressIndicator = progressindicator;
+            this.mOnProcessCompleteListener = onProcessCompleteListener;
+            this.mExecutor = executor;
         }
 
         @Override
@@ -374,7 +390,7 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
 
         @Override
         protected JsonExecutorResult doInBackground(IThing... iThings) {
-            return iThings[0].execute();
+            return iThings[0].execute(mExecutor);
         }
     }
 }

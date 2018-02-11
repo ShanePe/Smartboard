@@ -19,7 +19,6 @@ public abstract class IThing extends IDatabaseObject {
     //@IgnoreOnCopy
     //private transient OnThingActionListener mOnThingActionListener;
 
-    public abstract void verifyState(IThing compare);
     public IThing() {
         mInstance = this.getClass().getSimpleName();
     }
@@ -27,6 +26,8 @@ public abstract class IThing extends IDatabaseObject {
     private static <V extends IThing> V fromJson(Class<V> cls, String json) {
         return JsonBuilder.get().fromJson(json, cls);
     }
+
+    public abstract void verifyState(IThing compare);
 
     public void initialise() {
     }
@@ -46,11 +47,22 @@ public abstract class IThing extends IDatabaseObject {
 //            mOnThingActionListener.OnReachableStateChanged(mUnreachable);
     }
 
-    public JsonExecutorResult execute()
-    {
+    public JsonExecutorResult execute() {
+        return execute(getExecutor());
+    }
+
+    public JsonExecutorResult execute(IExecutor<?> executor) {
+        return executor.execute(this);
+    }
+
+    private IExecutor<?> getExecutor() {
+        return getExecutor("");
+    }
+
+    IExecutor<?> getExecutor(String id) {
         IService service = Monitor.getMonitor().getServices().getByType(getServiceType());
         if(service!=null)
-            return service.executeThing(this);
+            return service.getExecutor(this, id);
         return null;
     }
 
