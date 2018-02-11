@@ -80,8 +80,9 @@ public class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder>{
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                notifyItemChanged(mSelectedPos);
                 mSelectedPos = pos;
-                holder.itemView.setSelected(true);
+                mSelected = mIcons[pos];
                 notifyItemChanged(mSelectedPos);
             }
         });
@@ -94,6 +95,7 @@ public class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder>{
                 }
             });
         }
+
         holder.itemView.setSelected(position == mSelectedPos);
     }
 
