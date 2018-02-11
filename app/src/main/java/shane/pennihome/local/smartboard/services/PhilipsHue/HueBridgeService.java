@@ -386,7 +386,7 @@ public class HueBridgeService extends IService {
 
         @Override
         public String getLoadMessage() {
-            return "Getting SmartThings Routines";
+            return "Getting Philips Hue Routines";
         }
 
         @Override

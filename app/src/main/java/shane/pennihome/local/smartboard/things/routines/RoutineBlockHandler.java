@@ -73,7 +73,7 @@ public class RoutineBlockHandler extends IBlockUIHandler {
     @Override
     public void buildBlockFromEditorWindowView(View view, OnBlockSetListener onBlockSetListener) {
         try {
-            ViewSwiper viewSwiper = view.findViewById(R.id.sw_swiper);
+            ViewSwiper viewSwiper = view.findViewById(R.id.rt_swiper);
 
             ThingProperties tbProps = (ThingProperties)viewSwiper.getView(R.id.rt_properties);
             ThingPropertiesClrSelector tbBackground = (ThingPropertiesClrSelector) viewSwiper.getView(R.id.rt_background);

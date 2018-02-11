@@ -82,6 +82,10 @@ public class Monitor {
         return mLoaded;
     }
 
+    public boolean isRunning() {
+        return mMonitorThread != null;
+    }
+
     public Services getServices() {
         return mServices;
     }
@@ -149,10 +153,10 @@ public class Monitor {
     }
 
     public void start() {
-        if (mMonitorThread != null)
-            stop();
+        if (isRunning())
+            return;
 
-        Log.i("Starting Montor,", Globals.ACTIVITY);
+        Log.i("Starting Monitor,", Globals.ACTIVITY);
         mMonitorThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -241,6 +245,9 @@ public class Monitor {
 
 
     public void stop() {
+        if (!isRunning())
+            return;
+
         Log.i("Stopping Montor,", Globals.ACTIVITY);
         if (mMonitorThread != null) {
             mMonitorThread.interrupt();

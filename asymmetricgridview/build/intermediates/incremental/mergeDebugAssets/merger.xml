@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="C:\Source\SmartBoard\asymmetricgridview\src\main\assets"/><source path="C:\Source\SmartBoard\asymmetricgridview\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="C:\Source\SmartBoard\asymmetricgridview\src\debug\assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/home/shane/AndroidStudioProjects/Smartboard/asymmetricgridview/src/main/assets"/><source path="/home/shane/AndroidStudioProjects/Smartboard/asymmetricgridview/build/generated/assets/shaders/debug"/></dataSet><dataSet config="debug"><source path="/home/shane/AndroidStudioProjects/Smartboard/asymmetricgridview/src/debug/assets"/></dataSet></merger>
