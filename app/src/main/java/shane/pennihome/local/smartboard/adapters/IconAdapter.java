@@ -80,8 +80,8 @@ public class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder>{
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                notifyItemChanged(mSelectedPos);
                 mSelectedPos = pos;
+                holder.itemView.setSelected(true);
                 notifyItemChanged(mSelectedPos);
             }
         });

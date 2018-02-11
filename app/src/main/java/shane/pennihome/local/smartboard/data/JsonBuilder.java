@@ -18,6 +18,8 @@ import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
+import shane.pennihome.local.smartboard.things.stmodes.SmartThingMode;
+import shane.pennihome.local.smartboard.things.stmodes.SmartThingModeBlock;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.things.switches.SwitchBlock;
 import shane.pennihome.local.smartboard.things.temperature.Temperature;
@@ -46,6 +48,8 @@ public class JsonBuilder {
                         return Routine.Load(jThing.toString());
                     case "temperature":
                         return Temperature.Load(jThing.toString());
+                    case "smartthingmode":
+                        return SmartThingMode.Load(jThing.toString());
                     default:
                         throw new JsonParseException("Invalid type of thing : " + jThing.get("mInstance").getAsString());
                 }
@@ -60,6 +64,8 @@ public class JsonBuilder {
                     return context.serialize((Routine) src);
                 else if (src instanceof  Temperature)
                     return context.serialize((Temperature) src);
+                else if (src instanceof SmartThingMode)
+                    return context.serialize((SmartThingMode) src);
                 else
                     throw new JsonParseException("Invalid type of thing : " + src.toString());
             }
@@ -77,6 +83,8 @@ public class JsonBuilder {
                         return RoutineBlock.Load(jBlock.toString());
                     case "temperatureblock":
                         return TemperatureBlock.Load(jBlock.toString());
+                    case "smartthingmodeblock":
+                        return SmartThingModeBlock.Load(jBlock.toString());
                     default:
                         throw new JsonParseException("Invalid type of block : " + jBlock.get("mInstance").getAsString());
                 }
@@ -92,6 +100,8 @@ public class JsonBuilder {
                     return context.serialize((RoutineBlock) src);
                 else if (src instanceof TemperatureBlock)
                     return context.serialize((TemperatureBlock) src);
+                else if (src instanceof SmartThingModeBlock)
+                    return context.serialize((SmartThingModeBlock) src);
                 else
                     throw new JsonParseException("Invalid type of block : " + src.toString());
             }

@@ -43,8 +43,6 @@ public abstract class IThing extends IDatabaseObject {
 
         if (pre != mUnreachable && fireBroadcast)
             Broadcaster.broadcastMessage(new ThingChangedMessage(getKey(), ThingChangedMessage.What.Unreachable));
-//        if(mOnThingActionListener != null)
-//            mOnThingActionListener.OnReachableStateChanged(mUnreachable);
     }
 
     public JsonExecutorResult execute() {
@@ -97,6 +95,6 @@ public abstract class IThing extends IDatabaseObject {
      */
 
     public enum Types {
-        Switch, Routine, Temperature
+        Switch, Routine, Temperature, SmartThingMode
     }
 }

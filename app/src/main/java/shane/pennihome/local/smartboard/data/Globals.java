@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 
 import java.util.Random;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
+
 /**
  * Created by shane on 27/12/17.
  */
@@ -13,7 +16,7 @@ import java.util.Random;
 @SuppressWarnings("DefaultFileTemplate")
 public class Globals extends Application{
     public final static String ACTIVITY = "SmartBoard";
-    public final static int BLOCK_COLUMNS = 8;
+    //public final static int BLOCK_COLUMNS = 8;
     public final static int BLOCK_PADDING = 2;
     private static SharedPreferences mPrefs;
     private static Globals mInstance;
@@ -57,6 +60,14 @@ public class Globals extends Application{
     public static Context getContext()
     {
         return getInstance().getApplicationContext();
+    }
+
+    public static int getColumnCount() {
+        if (getContext().getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE)
+            return 8;
+        else if (getContext().getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT)
+            return 4;
+        return 8;
     }
 
     @Override

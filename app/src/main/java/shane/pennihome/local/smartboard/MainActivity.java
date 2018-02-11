@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity
 
         if (Monitor.IsInstaniated())
             if (Monitor.getMonitor().isLoaded()) {
+                Monitor.getMonitor().verifyThings();
                 if (!Monitor.getMonitor().isRunning())
                     Monitor.getMonitor().start();
 

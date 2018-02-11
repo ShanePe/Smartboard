@@ -929,6 +929,24 @@
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper$5 void onColorSelected(int selectedColor)" />
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper$4 void onOkSelected(android.view.View view)" />
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.ui.UIHelper$4 void onWindowShown(android.view.View view)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock.BlockExecutor mExecutor" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing.Types SmartThingMode" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing.Types Temperature" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$7 shane.pennihome.local.smartboard.comms.interfaces.IMessage&lt;?&gt; deserialize(com.google.gson.JsonElement json, java.lang.reflect.Type typeOfT, com.google.gson.JsonDeserializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$6 shane.pennihome.local.smartboard.services.interfaces.IService deserialize(com.google.gson.JsonElement json, java.lang.reflect.Type typeOfT, com.google.gson.JsonDeserializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$5 com.google.gson.JsonElement serialize(shane.pennihome.local.smartboard.services.interfaces.IService src, java.lang.reflect.Type typeOfSrc, com.google.gson.JsonSerializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$3 shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock deserialize(com.google.gson.JsonElement json, java.lang.reflect.Type typeOfT, com.google.gson.JsonDeserializationContext context)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.data.JsonBuilder$2 com.google.gson.JsonElement serialize(shane.pennihome.local.smartboard.thingsframework.interfaces.IThing src, java.lang.reflect.Type typeOfSrc, com.google.gson.JsonSerializationContext context)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.Switch mDimmerLevel" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.Switch mIsDimmer" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler.SwitchViewHolder mDimmer" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$6 void OnDimmerLevelChanged(shane.pennihome.local.smartboard.thingsframework.interfaces.IThing thing)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$6 void OnStateChanged(shane.pennihome.local.smartboard.thingsframework.interfaces.IThing thing)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$6 void OnReachableStateChanged(shane.pennihome.local.smartboard.thingsframework.interfaces.IThing thing)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$5$1 void complete(boolean success, java.lang.String source)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$5 void onStopTrackingTouch(android.widget.SeekBar seekBar)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$5 void onStartTrackingTouch(android.widget.SeekBar seekBar)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$5 void onProgressChanged(android.widget.SeekBar seekBar, int i, boolean b)" />
     </entry_points>
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="setOnValueChangedListener" />
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="getDimension" />
@@ -2993,6 +3011,18 @@
     <pattern value="shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener" method="OnStateChanged" />
     <pattern value="shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener" method="OnReachableStateChanged" />
     <pattern value="shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="getExecutor" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing" method="getExecutor" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing" method="verifyState" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="isRunning" />
+    <pattern value="shane.pennihome.local.smartboard.things.stmodes.SmartThingMode" method="setModes" />
+    <pattern value="shane.pennihome.local.smartboard.things.stmodes.SmartThingMode" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.Switch" method="verifyState" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.Switch" method="setDimmerLevel" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.Switch" method="getDimmerLevel" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.Switch" method="setIsDimmer" />
+    <pattern value="shane.pennihome.local.smartboard.things.switches.Switch" method="isDimmer" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.Things" method="get" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

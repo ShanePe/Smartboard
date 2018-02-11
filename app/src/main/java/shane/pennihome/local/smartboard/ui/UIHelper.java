@@ -286,9 +286,9 @@ public class UIHelper {
         showPropertyWindow(context, title, resource, true, null, 0, onPropertyWindowListener, null);
     }
 
-    private static void showPropertyWindow(Context context, String title, int resource, boolean showButtons, RecyclerView.Adapter adapter,
-                                           int columnCount, final OnPropertyWindowListener onPropertyWindowListener,
-                                           final DialogInterface.OnShowListener onShowListener) {
+    public static void showPropertyWindow(Context context, String title, int resource, boolean showButtons, RecyclerView.Adapter adapter,
+                                          int columnCount, final OnPropertyWindowListener onPropertyWindowListener,
+                                          final DialogInterface.OnShowListener onShowListener) {
 
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
         builder.setTitle(title);

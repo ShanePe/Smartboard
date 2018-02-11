@@ -64,15 +64,14 @@ public class Monitor {
         getMonitor().getThingsFromService(activity, new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
             @Override
             public void complete(boolean success, final ServiceLoader.ServiceLoaderResult source) {
-                if (success)
+                if (source.getResult() != null)
                     getMonitor().setThings(source.getResult());
-                else
+                if (source.getErrors() != null)
                     for (String e : source.getErrors().keySet())
                         Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG).show();
                 if (onProcessCompleteListener != null)
                     onProcessCompleteListener.complete(true, null);
                 getMonitor().mLoaded = true;
-
             }
         });
         return getMonitor();

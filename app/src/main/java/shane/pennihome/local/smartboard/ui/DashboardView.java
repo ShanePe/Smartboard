@@ -149,9 +149,9 @@ public class DashboardView extends LinearLayoutCompat {
             holder.mGroupTitle.setText(holder.mGroup.getName());
             holder.mGroupTitle.setVisibility(holder.mGroup.getDisplayName() ? View.VISIBLE : View.GONE);
 
-           int blockSize = Resources.getSystem().getDisplayMetrics().widthPixels / Globals.BLOCK_COLUMNS;
+            int blockSize = Resources.getSystem().getDisplayMetrics().widthPixels / Globals.getColumnCount();
             BlockViewAdapter adapter = new BlockViewAdapter(holder.mGroup, blockSize);
-            holder.mBlockView.setRequestedColumnCount(Globals.BLOCK_COLUMNS);
+            holder.mBlockView.setRequestedColumnCount(Globals.getColumnCount());
            // holder.mBlockView.setDebugging(true);
             holder.mBlockView.setRequestedHorizontalSpacing(Globals.BLOCK_PADDING);
             holder.mBlockView.addItemDecoration(new SpacesItemDecoration(Globals.BLOCK_PADDING));

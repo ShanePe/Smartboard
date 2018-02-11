@@ -174,19 +174,17 @@ public class SwitchBlockHandler extends IBlockUIHandler {
         holder.mDimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 IExecutor<Integer> executor = (IExecutor<Integer>) getBlock().getExecutor("level");
                 executor.setValue(holder.mDimmer.getProgress());
-                ;
+
                 getBlock().execute(holder.mProgress, executor, new OnProcessCompleteListener<String>() {
                     @Override
                     public void complete(boolean success, String source) {

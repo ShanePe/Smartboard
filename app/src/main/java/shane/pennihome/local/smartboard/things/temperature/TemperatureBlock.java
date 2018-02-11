@@ -36,6 +36,6 @@ public class TemperatureBlock extends IBlock {
 
     @Override
     public IBlockUIHandler getUIHandler() {
-        return new TemperatureHandler(this);
+        return new TemperatureUIHandler(this);
     }
 }

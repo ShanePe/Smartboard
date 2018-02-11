@@ -27,6 +27,7 @@ import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFrag
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
 import shane.pennihome.local.smartboard.things.routines.Routine;
+import shane.pennihome.local.smartboard.things.stmodes.SmartThingMode;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.things.temperature.Temperature;
 import shane.pennihome.local.smartboard.thingsframework.Things;
@@ -138,6 +139,7 @@ public class SmartThingsService extends IService {
         thingsGetters.add(new SwitchGetter());
         thingsGetters.add(new RoutineGetter());
         thingsGetters.add(new TemperatureGetter());
+        thingsGetters.add(new ModesGetter());
         return thingsGetters;
     }
 
@@ -435,15 +437,86 @@ public class SmartThingsService extends IService {
         public Type getThingType() {
             return Temperature.class;
         }
-//
-//        @Override
-//        public JsonExecutorResult execute(IThing thing) {
-//            return null;
-//        }
 
         @Override
         public IExecutor<?> getExecutor(String Id) {
             return null;
+        }
+    }
+
+    protected class ModesGetter implements IThingsGetter {
+
+        @Override
+        public String getLoadMessage() {
+            return "Getting SmartThings Modes";
+        }
+
+        @Override
+        public Things getThings() throws Exception {
+            Things things = new Things();
+            JsonExecutorResult result = JsonExecutor.fulfil(new JsonExecutorRequest(
+                    new URL(mRequestUrl + "/modes"),
+                    JsonExecutorRequest.Types.GET,
+                    new OnExecutorRequestActionListener() {
+                        @Override
+                        public void OnPreExecute(HttpURLConnection connection) {
+                            connection.setRequestProperty("Authorization", "Bearer " + mToken);
+                        }
+                    }));
+
+            if (!result.isSuccess())
+                throw result.getError();
+
+            JSONArray jObjURI = new JSONArray(result.getResult());
+            SmartThingMode smartThingMode = new SmartThingMode();
+            smartThingMode.setName("SmartThings Modes");
+            smartThingMode.setService(ServicesTypes.SmartThings);
+
+            for (int i = 0; i < jObjURI.length(); i++) {
+                JSONObject jMode = jObjURI.getJSONObject(i);
+                smartThingMode.addMode(jMode.getString("name"), jMode.getBoolean("active"));
+            }
+
+            smartThingMode.initialise();
+            things.add(smartThingMode);
+
+            return things;
+        }
+
+        @Override
+        public int getUniqueId() {
+            return 8;
+        }
+
+        @Override
+        public void setDescriptionTextView(TextView txtDescription) {
+
+        }
+
+        @Override
+        public Type getThingType() {
+            return SmartThingMode.class;
+        }
+
+        @Override
+        public IExecutor<?> getExecutor(String Id) {
+            return new IExecutor<String>() {
+                @Override
+                protected JsonExecutorResult execute(IThing thing) {
+                    try {
+                        String url = String.format("%s/modes/%s", mRequestUrl, getValue());
+                        return JsonExecutor.fulfil(new JsonExecutorRequest(new URL(url), JsonExecutorRequest.Types.PUT, new OnExecutorRequestActionListener() {
+                            @Override
+                            public void OnPreExecute(HttpURLConnection connection) {
+                                connection.setRequestProperty("Authorization", "Bearer " + mToken);
+                            }
+                        }));
+
+                    } catch (Exception e) {
+                        return new JsonExecutorResult(e);
+                    }
+                }
+            };
         }
     }
 }

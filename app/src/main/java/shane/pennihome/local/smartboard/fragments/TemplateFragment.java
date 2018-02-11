@@ -79,7 +79,7 @@ public class TemplateFragment extends IFragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), Globals.BLOCK_COLUMNS));
+            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), Globals.getColumnCount()));
 
             mAdapter = new TemplateAdapter(Templates.Load(getContext()));
             mAdapter.setOnInteractionListener(new TemplateAdapter.OnInteractionListener() {

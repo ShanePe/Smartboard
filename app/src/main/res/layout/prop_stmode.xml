@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/stm_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.design.widget.TabLayout>
+
+    <shane.pennihome.local.smartboard.ui.ViewSwiper
+        android:id="@+id/stm_swiper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/stm_tab_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
+
+            <shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector
+                android:id="@+id/stm_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/stm_tab_template"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <shane.pennihome.local.smartboard.ui.TemplateProperties
+                android:id="@+id/stm_template"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+    </shane.pennihome.local.smartboard.ui.ViewSwiper>
+</android.support.v7.widget.LinearLayoutCompat>

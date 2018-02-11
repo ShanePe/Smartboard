@@ -42,6 +42,17 @@ public abstract class IIconBlock extends IBlock {
     protected abstract @ColorInt
     int getIconColour();
 
+    public void setIconColour(final ImageView destination) {
+        destination.post(new Runnable() {
+            @Override
+            public void run() {
+                Drawable img = destination.getDrawable();
+                img.setColorFilter(getIconColour(), PorterDuff.Mode.SRC_ATOP);
+                destination.setImageDrawable(img);
+            }
+        });
+    }
+
     public void renderIconTo(final ImageView destination)
     {
         if(TextUtils.isEmpty(getIcon())) {

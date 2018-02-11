@@ -31,8 +31,8 @@ import shane.pennihome.local.smartboard.ui.ViewSwiper;
  */
 
 @SuppressWarnings("DefaultFileTemplate")
-public class TemperatureHandler extends IBlockUIHandler {
-    TemperatureHandler(IBlock block) {
+public class TemperatureUIHandler extends IBlockUIHandler {
+    TemperatureUIHandler(IBlock block) {
         super(block);
     }
 
@@ -118,7 +118,6 @@ public class TemperatureHandler extends IBlockUIHandler {
         holder.mBaName.setTextColor(fgClr);
         holder.mBaDevice.setTextColor(fgClr);
         holder.mBaSize.setTextColor(fgClr);
-
     }
 
     @Override

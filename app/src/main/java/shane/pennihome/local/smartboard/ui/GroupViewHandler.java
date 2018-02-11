@@ -45,7 +45,7 @@ public class GroupViewHandler {
     private void handle(SmartboardActivity smartboardActivity, final ViewGroup parent, final View view, final Group group, RecyclerView recyclerView)
     {
         mSmartboardActivity = smartboardActivity;
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(smartboardActivity, Globals.BLOCK_COLUMNS);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(smartboardActivity, Globals.getColumnCount());
 
         RecyclerViewDragDropManager dragDropManager = new RecyclerViewDragDropManager();
         dragDropManager.setDraggingItemShadowDrawable(

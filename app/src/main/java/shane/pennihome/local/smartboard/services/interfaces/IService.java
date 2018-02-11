@@ -11,6 +11,7 @@ import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.things.routines.Routine;
+import shane.pennihome.local.smartboard.things.stmodes.SmartThingMode;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IExecutor;
@@ -108,6 +109,8 @@ public abstract class IService extends IDatabaseObject {
             getter = getThingExecutor(Switch.class);
         else if(thing instanceof Routine)
             getter = getThingExecutor(Routine.class);
+        else if (thing instanceof SmartThingMode)
+            getter = getThingExecutor(SmartThingMode.class);
 
         if (getter != null)
             return getter.getExecutor(id);
