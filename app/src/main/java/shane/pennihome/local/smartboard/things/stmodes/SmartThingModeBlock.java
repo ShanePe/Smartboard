@@ -22,7 +22,7 @@ public class SmartThingModeBlock extends IIconBlock {
 
     @Override
     public int getDefaultIconResource() {
-        return R.drawable.icon_def_stmode;
+        return R.mipmap.icon_def_stmode_mm_fg;
     }
 
     @Override

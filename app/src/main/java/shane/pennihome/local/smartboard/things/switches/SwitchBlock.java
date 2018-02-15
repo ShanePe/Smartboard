@@ -102,7 +102,7 @@ public class SwitchBlock extends IIconBlock {
 
     @Override
     public int getDefaultIconResource() {
-        return R.drawable.icon_def_switch;
+        return R.mipmap.icon_def_switch_mm_fg;
     }
 
     @Override

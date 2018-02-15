@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dashboard_list_block"
@@ -11,13 +11,20 @@
     android:foreground="?attr/selectableItemBackground"
     tools:ignore="UselessParent">
 
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/content_desc_img"
+        android:scaleType="centerCrop"
+        app:srcCompat="@mipmap/icon_dashboard_mm_fg" />
+
     <TextView
         android:id="@+id/dash_list_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
-        android:drawablePadding="@dimen/activity_horizontal_margin"
-        android:drawableStart="@drawable/icon_dashboard"
+        android:layout_margin="4dp"
+        android:layout_weight="1"
         android:gravity="start|fill"
         android:textAppearance="?attr/textAppearanceListItem" />
 
@@ -32,4 +39,4 @@
         android:focusable="true"
         android:requiresFadingEdge="horizontal|vertical"
         app:srcCompat="@drawable/icon_delete" />
-</FrameLayout>
+</android.support.v7.widget.LinearLayoutCompat>

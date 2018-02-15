@@ -22,7 +22,7 @@ public class RoutineBlock extends IIconBlock {
 
     @Override
     public int getDefaultIconResource() {
-        return R.drawable.icon_def_routine;
+        return R.mipmap.icon_def_routine_mm_fg;
     }
 
     @Override

@@ -1,10 +1,10 @@
 package shane.pennihome.local.smartboard.adapters;
 
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -150,7 +150,7 @@ public class DashboardEditAdapter extends RecyclerView.Adapter<DashboardEditAdap
     public class ViewHolder extends AbstractDraggableItemViewHolder {
         final View mView;
         final TextView mNameView;
-        final FrameLayout mContainer;
+        final LinearLayoutCompat mContainer;
         final ImageButton mDelBtn;
         Dashboard mItem;
 

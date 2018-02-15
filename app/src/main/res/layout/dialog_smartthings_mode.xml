@@ -23,5 +23,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:contentDescription="@string/content_desc_img"
-        app:srcCompat="@drawable/icon_def_stmode" />
+        app:srcCompat="@mipmap/icon_def_stmode_mm_fg" />
 </android.support.v7.widget.LinearLayoutCompat>

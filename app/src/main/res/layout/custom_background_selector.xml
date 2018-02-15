@@ -29,17 +29,14 @@
 
             <ImageButton
                 android:id="@+id/cbv_colour"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
                 android:layout_gravity="fill"
-                android:layout_marginBottom="4dp"
-                android:layout_marginTop="4dp"
+                android:adjustViewBounds="true"
                 android:background="@drawable/btn_round_dark"
                 android:contentDescription="@string/content_desc_img"
-                android:padding="8dp"
-                android:paddingEnd="32dp"
-                android:paddingStart="32dp"
-                app:srcCompat="@drawable/icon_colour_picker" />
+                android:scaleType="fitCenter"
+                app:srcCompat="@mipmap/icon_colour_picker_mm_fg" />
 
             <SeekBar
                 android:id="@+id/cbv_colour_trans"
@@ -51,16 +48,11 @@
 
             <ImageButton
                 android:id="@+id/cbv_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
                 android:layout_gravity="fill"
-                android:layout_marginBottom="4dp"
-                android:layout_marginTop="4dp"
                 android:background="@drawable/btn_round_dark"
                 android:contentDescription="@string/content_desc_img"
-                android:padding="8dp"
-                android:paddingEnd="32dp"
-                android:paddingStart="32dp"
                 app:srcCompat="@drawable/icon_gallery_32" />
 
             <SeekBar
@@ -74,16 +66,11 @@
 
             <ImageButton
                 android:id="@+id/cbv_reset"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
                 android:layout_gravity="fill"
-                android:layout_marginBottom="4dp"
-                android:layout_marginTop="4dp"
                 android:background="@drawable/btn_round_dark"
                 android:contentDescription="@string/content_desc_img"
-                android:padding="8dp"
-                android:paddingEnd="32dp"
-                android:paddingStart="32dp"
                 app:srcCompat="@drawable/icon_delete" />
 
             <Spinner

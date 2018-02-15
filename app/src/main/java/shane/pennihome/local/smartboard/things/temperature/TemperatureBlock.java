@@ -21,7 +21,7 @@ public class TemperatureBlock extends IBlock {
     }
     @Override
     public int getDefaultIconResource() {
-        return R.drawable.icon_def_temperature;
+        return R.mipmap.icon_def_temperature_mm_fg;
     }
 
     @Override
