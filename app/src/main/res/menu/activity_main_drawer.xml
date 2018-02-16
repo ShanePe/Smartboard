@@ -21,7 +21,7 @@
             android:title="@string/mnu_devices" />
         <item
             android:id="@+id/mnu_routine"
-            android:icon="@drawable/icon_routine"
+            android:icon="@mipmap/icon_routine_mm_fg"
             android:title="@string/mnu_routine" />
         <item
             android:id="@+id/mnu_template"

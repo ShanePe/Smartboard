@@ -85,7 +85,7 @@ public class HueBridgeService extends IService {
 
     @Override
     public int getDrawableIconResource() {
-        return R.drawable.icon_phlogo_large;
+        return R.mipmap.icon_phlogo_large_mm_fg;
     }
 
     @Override
