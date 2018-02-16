@@ -18,9 +18,9 @@
             android:layout_weight="1"
             android:background="@drawable/custom_icon_control"
             android:contentDescription="@string/content_desc_img"
-            android:padding="1dp"
+            android:padding="2dp"
             android:scaleType="center"
-            app:srcCompat="@drawable/icon_tap_to_add" />
+            app:srcCompat="@mipmap/icon_tap_to_add_mm_fg" />
 
         <Spinner
             android:id="@+id/cis_icon_size"

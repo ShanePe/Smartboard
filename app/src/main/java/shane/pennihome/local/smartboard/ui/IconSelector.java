@@ -141,7 +141,7 @@ public class IconSelector extends LinearLayoutCompat {
 
         try {
             if (TextUtils.isEmpty(mIconPath)) {
-                mIconPreview.setImageResource(R.drawable.icon_tap_to_add);
+                mIconPreview.setImageResource(R.mipmap.icon_tap_to_add_mm_fg);
             } else {
                 InputStream stream = getContext().getAssets().open(getIconPath());
                 mIconPreview.setImageDrawable(Drawable.createFromStream(stream, getIconPath()));
