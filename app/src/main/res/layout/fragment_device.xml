@@ -13,7 +13,7 @@
         android:layout_gravity="center"
         android:contentDescription="@string/img_cnt_device"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/icon_switch" />
+        app:srcCompat="@mipmap/icon_switch_mm_fg" />
 
     <TextView
         android:id="@+id/device_name"

@@ -17,7 +17,7 @@
     <group android:id="@+id/mnu_item_grp">
         <item
             android:id="@+id/mnu_device"
-            android:icon="@drawable/icon_switch"
+            android:icon="@mipmap/icon_switch_mm_fg"
             android:title="@string/mnu_devices" />
         <item
             android:id="@+id/mnu_routine"

@@ -61,7 +61,7 @@ public class DeviceViewAdapter extends ThingViewAdapter {
         vh.startListening();
 
         if (vh.mItem.getServiceType() == IService.ServicesTypes.SmartThings) {
-            vh.mImgView.setImageResource(R.drawable.icon_switch);
+            vh.mImgView.setImageResource(R.mipmap.icon_switch_mm_fg);
             vh.mSourceView.setText(R.string.device_st_label);
         } else if (vh.mItem.getServiceType() == IService.ServicesTypes.PhilipsHue) {
             vh.mImgView.setImageResource(R.mipmap.icon_phlogo_mm_fg);

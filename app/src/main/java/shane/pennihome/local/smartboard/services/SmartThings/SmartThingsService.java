@@ -75,7 +75,7 @@ public class SmartThingsService extends IService {
 
     @Override
     public int getDrawableIconResource() {
-        return R.drawable.icon_st_logo_large;
+        return R.mipmap.icon_st_logo_large_mm_fg;
     }
 
     @Override

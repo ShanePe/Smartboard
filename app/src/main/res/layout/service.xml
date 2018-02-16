@@ -6,5 +6,5 @@
     android:layout_margin="4dp"
     android:background="@drawable/btn_round"
     android:drawablePadding="20dp"
-    android:drawableTop="@drawable/icon_st_logo_large"
+    android:drawableTop="@mipmap/icon_st_logo_large_mm_fg"
     android:padding="20dp" />

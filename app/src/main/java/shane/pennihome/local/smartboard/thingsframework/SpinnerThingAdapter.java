@@ -58,7 +58,7 @@ public class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
         TextView txtSrc = (TextView) convertView.findViewById(R.id.txt_spin_source);
 
         if (thing.getServiceType() == IService.ServicesTypes.SmartThings) {
-            img.setImageResource(R.drawable.icon_switch);
+            img.setImageResource(R.mipmap.icon_switch_mm_fg);
             txtSrc.setText(R.string.device_st_label);
         } else if (thing.getServiceType() == IService.ServicesTypes.PhilipsHue) {
             img.setImageResource(R.mipmap.icon_phlogo_mm_fg);
