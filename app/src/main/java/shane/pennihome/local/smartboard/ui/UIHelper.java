@@ -423,8 +423,9 @@ public class UIHelper {
     }
 
     public static Drawable generateImage(Context context, @ColorInt int backClr, int backClrAlphaPerc, Bitmap image, int imageAlphaPerc, int width, int height, boolean roundCrns, ImageRenderTypes imageRenderType) {
-        if (width == 0 || height == 0) {
-            DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+
+        if (width == 0 || height == 0 || width > metrics.widthPixels || height > metrics.heightPixels) {
             width = metrics.widthPixels;
             height = metrics.heightPixels;
         }
