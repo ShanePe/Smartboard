@@ -20,7 +20,7 @@
             android:layout_weight="1"
             android:contentDescription="@string/content_desc_img"
             android:scaleType="center"
-            app:srcCompat="@drawable/icon_wait" />
+            app:srcCompat="@mipmap/icon_wait_mm_fg" />
 
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
@@ -29,7 +29,7 @@
 
             <ImageButton
                 android:id="@+id/cbv_colour"
-                android:layout_width="80dp"
+                android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:layout_gravity="fill"
                 android:adjustViewBounds="true"
@@ -48,7 +48,7 @@
 
             <ImageButton
                 android:id="@+id/cbv_image"
-                android:layout_width="80dp"
+                android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:layout_gravity="fill"
                 android:background="@drawable/btn_round_dark"
@@ -67,7 +67,7 @@
 
             <ImageButton
                 android:id="@+id/cbv_reset"
-                android:layout_width="80dp"
+                android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:layout_gravity="fill"
                 android:background="@drawable/btn_round_dark"
