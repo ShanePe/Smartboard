@@ -71,7 +71,8 @@
                 android:layout_gravity="fill"
                 android:background="@drawable/btn_round_dark"
                 android:contentDescription="@string/content_desc_img"
-                app:srcCompat="@drawable/icon_delete" />
+                android:scaleType="fitCenter"
+                app:srcCompat="@mipmap/icon_delete_mm_fg" />
 
             <Spinner
                 android:id="@+id/cbv_render_style"

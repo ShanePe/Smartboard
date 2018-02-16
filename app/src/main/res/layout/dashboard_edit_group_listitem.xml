@@ -58,7 +58,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:requiresFadingEdge="horizontal|vertical"
-                app:srcCompat="@drawable/icon_delete" />
+                android:scaleType="fitCenter"
+                app:srcCompat="@mipmap/icon_delete_mm_fg" />
 
             <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/btn_add_prop"

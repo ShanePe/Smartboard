@@ -17,7 +17,7 @@
     <TextView
         android:id="@+id/routine_name"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_columnWeight="1"
         android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
         android:gravity="start|fill"
@@ -26,7 +26,7 @@
     <TextView
         android:id="@+id/routine_source"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_columnWeight="1"
         android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
         android:gravity="start|fill"
@@ -39,6 +39,7 @@
         android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
         android:background="@drawable/btn_round_dark"
         android:foreground="?attr/selectableItemBackground"
-        app:srcCompat="@drawable/icon_execute" />
+        android:scaleType="fitCenter"
+        app:srcCompat="@mipmap/icon_execute_mm_fg" />
 
 </GridLayout>
