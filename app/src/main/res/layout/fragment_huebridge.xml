@@ -17,7 +17,7 @@
         android:padding="10dp"
         android:paddingEnd="30dp"
         android:paddingStart="30dp"
-        app:srcCompat="@drawable/icon_hue_hub_64" />
+        app:srcCompat="@mipmap/icon_hue_hub_mm_fg" />
 
     <TextView
         android:id="@+id/hue_ip"
