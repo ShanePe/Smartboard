@@ -13,7 +13,7 @@
         android:layout_gravity="center"
         android:paddingEnd="100dp"
         android:paddingStart="100dp"
-        app:srcCompat="@drawable/ph_link_button" />
+        app:srcCompat="@mipmap/ph_link_button_mm_fg" />
 
     <TextView
         android:id="@+id/ph_link_desc"
