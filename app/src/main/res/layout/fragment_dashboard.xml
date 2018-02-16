@@ -12,7 +12,7 @@
     tools:ignore="UselessParent">
 
     <ImageView
-        android:layout_width="40dp"
+        style="@style/listItemIcon"
         android:layout_height="match_parent"
         android:contentDescription="@string/content_desc_img"
         android:scaleType="centerCrop"

@@ -61,7 +61,7 @@ public class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
             img.setImageResource(R.drawable.icon_switch);
             txtSrc.setText(R.string.device_st_label);
         } else if (thing.getServiceType() == IService.ServicesTypes.PhilipsHue) {
-            img.setImageResource(R.drawable.icon_phlogo);
+            img.setImageResource(R.mipmap.icon_phlogo_mm_fg);
             txtSrc.setText(R.string.device_ph_label);
         }
 

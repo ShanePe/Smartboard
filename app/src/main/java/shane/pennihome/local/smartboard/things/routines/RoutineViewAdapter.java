@@ -44,7 +44,7 @@ public class RoutineViewAdapter extends ThingViewAdapter {
             vh.mImgView.setImageResource(R.drawable.icon_switch);
             vh.mSourceView.setText(R.string.device_st_label);
         } else if (vh.mItem.getServiceType() == IService.ServicesTypes.PhilipsHue) {
-            vh.mImgView.setImageResource(R.drawable.icon_phlogo);
+            vh.mImgView.setImageResource(R.mipmap.icon_phlogo_mm_fg);
             vh.mSourceView.setText(R.string.device_ph_label);
         }
 

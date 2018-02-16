@@ -8,16 +8,17 @@
     <ImageView
         android:id="@+id/device_img"
         style="@style/listItemIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_gravity="center"
         android:contentDescription="@string/img_cnt_device"
+        android:scaleType="fitCenter"
         app:srcCompat="@drawable/icon_switch" />
 
     <TextView
         android:id="@+id/device_name"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_columnWeight="1"
         android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
         android:gravity="start|fill"
@@ -26,7 +27,7 @@
     <TextView
         android:id="@+id/device_type"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_columnWeight="1"
         android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
         android:gravity="start|fill"
@@ -35,7 +36,7 @@
     <TextView
         android:id="@+id/device_source"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_columnWeight="1"
         android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
         android:gravity="start|fill"

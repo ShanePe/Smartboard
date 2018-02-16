@@ -8,10 +8,11 @@
     <ImageView
         android:id="@+id/routine_img"
         style="@style/listItemIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_gravity="center"
         android:contentDescription="@string/img_cnt_device"
+        android:scaleType="fitCenter"
         app:srcCompat="@drawable/icon_routine" />
 
     <TextView
