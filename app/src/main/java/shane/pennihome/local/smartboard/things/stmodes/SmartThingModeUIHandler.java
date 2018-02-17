@@ -140,6 +140,7 @@ public class SmartThingModeUIHandler extends IBlockUIHandler {
         if (getBlock().getThing() != null)
             holder.mValue.setText(getBlock().getThing(SmartThingMode.class).getSelectedText());
         getBlock().renderForegroundColourToTextView(holder.mTitle);
+        getBlock().renderForegroundColourToTextView(holder.mValue);
         getBlock().renderBackgroundTo(holder.mContainer);
         getBlock().renderUnreachableBackground(holder.itemView);
         getBlock().startListeningForChanges();

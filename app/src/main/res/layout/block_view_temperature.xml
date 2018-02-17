@@ -15,11 +15,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <TextView
+        <shane.pennihome.local.smartboard.ui.AutoResizeTextView
             android:id="@+id/bvt_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_margin="30dp"
+            android:textAlignment="center"
             android:textSize="36sp" />
 
     </FrameLayout>

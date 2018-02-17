@@ -21,6 +21,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandl
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
+import shane.pennihome.local.smartboard.ui.AutoResizeTextView;
 import shane.pennihome.local.smartboard.ui.TemplateProperties;
 import shane.pennihome.local.smartboard.ui.ThingProperties;
 import shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector;
@@ -134,10 +135,10 @@ public class TemperatureUIHandler extends IBlockUIHandler {
         if(getBlock().getThing() != null)
             holder.mValue.setText(String.format("%s°",getBlock().getThing(Temperature.class).getTemperature()));
         getBlock().renderForegroundColourToTextView(holder.mTitle);
+        getBlock().renderForegroundColourToTextView(holder.mValue);
         getBlock().renderBackgroundTo(holder.mContainer);
         getBlock().renderUnreachableBackground(holder.itemView);
-
-        holder.itemView.setPadding(Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING);
+        holder.itemView.setPadding(Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING);
 
         getBlock().setOnThingActionListener(new OnThingActionListener() {
             @Override
@@ -199,7 +200,7 @@ public class TemperatureUIHandler extends IBlockUIHandler {
     public class TemperatureViewHolder extends BlockViewHolder {
         final LinearLayoutCompat mContainer;
         final TextView mTitle;
-        final TextView mValue;
+        final AutoResizeTextView mValue;
 
         TemperatureViewHolder(View itemView) {
             super(itemView);

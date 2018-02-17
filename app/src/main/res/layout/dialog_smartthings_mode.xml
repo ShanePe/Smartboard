@@ -19,9 +19,10 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_gravity="center"
         android:contentDescription="@string/content_desc_img"
+        android:scaleType="center"
         app:srcCompat="@mipmap/icon_def_stmode_mm_fg" />
 </android.support.v7.widget.LinearLayoutCompat>
