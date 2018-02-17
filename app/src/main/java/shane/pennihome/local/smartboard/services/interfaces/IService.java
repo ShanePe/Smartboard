@@ -63,7 +63,7 @@ public abstract class IService extends IDatabaseObject {
     public void register(Context context, OnProcessCompleteListener<IService> onProcessCompleteListener)
     {
         new DBEngine(context).writeToDatabase(this);
-        Monitor.getMonitor().AddService(context, this);
+        Monitor.getMonitor().addService(context, this);
         if(onProcessCompleteListener!=null)
             onProcessCompleteListener.complete(true, this);
     }

@@ -6,9 +6,14 @@ import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
+import shane.pennihome.local.smartboard.things.routines.Routine;
+import shane.pennihome.local.smartboard.things.stmodes.SmartThingMode;
+import shane.pennihome.local.smartboard.things.switches.Switch;
+import shane.pennihome.local.smartboard.things.temperature.Temperature;
+import shane.pennihome.local.smartboard.things.time.Time;
 import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
 
-@SuppressWarnings({"DefaultFileTemplate", "unused"})
+@SuppressWarnings({"DefaultFileTemplate", "unused", "unchecked"})
 public abstract class IThing extends IDatabaseObject {
     @SuppressWarnings("FieldCanBeLocal")
     private final String mInstance;
@@ -16,8 +21,6 @@ public abstract class IThing extends IDatabaseObject {
     private transient boolean mUnreachable;
     private String mId;
     private IService.ServicesTypes mServicesTypes;
-    //@IgnoreOnCopy
-    //private transient OnThingActionListener mOnThingActionListener;
 
     public IThing() {
         mInstance = this.getClass().getSimpleName();
@@ -25,6 +28,23 @@ public abstract class IThing extends IDatabaseObject {
 
     private static <V extends IThing> V fromJson(Class<V> cls, String json) {
         return JsonBuilder.get().fromJson(json, cls);
+    }
+
+    static <T extends IThing> T CreateFromType(Types type) throws Exception {
+        switch (type) {
+            case Switch:
+                return (T) new Switch();
+            case Routine:
+                return (T) new Routine();
+            case Temperature:
+                return (T) new Temperature();
+            case SmartThingMode:
+                return (T) new SmartThingMode();
+            case Time:
+                return (T) new Time();
+            default:
+                throw new Exception("Invalid Type to create");
+        }
     }
 
     public abstract void verifyState(IThing compare);
@@ -68,7 +88,6 @@ public abstract class IThing extends IDatabaseObject {
         return mServicesTypes;
     }
 
-
     public void setService(IService.ServicesTypes servicesTypes) {
         this.mServicesTypes = servicesTypes;
     }
@@ -88,13 +107,9 @@ public abstract class IThing extends IDatabaseObject {
     public String getKey() {
         return String.format("%s%s%s%s", getId(), getName(), getServiceType(), getThingType());
     }
-
     public abstract Types getThingType();
-    /**
-     * Created by shane on 29/12/17.
-     */
 
     public enum Types {
-        Switch, Routine, Temperature, SmartThingMode
+        Switch, Routine, Temperature, SmartThingMode, Time
     }
 }

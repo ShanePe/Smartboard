@@ -199,7 +199,7 @@ public class Monitor {
         }
     }
 
-    public void AddService(final Context context, IService service) {
+    public void addService(final Context context, IService service) {
         stop();
         try {
             getServices().remove(service.getServiceType());

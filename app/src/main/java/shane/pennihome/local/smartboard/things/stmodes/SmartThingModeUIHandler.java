@@ -124,7 +124,6 @@ public class SmartThingModeUIHandler extends IBlockUIHandler {
         holder.mBaName.setTextColor(fgClr);
         holder.mBaDevice.setTextColor(fgClr);
         holder.mBaSize.setTextColor(fgClr);
-
     }
 
     @Override

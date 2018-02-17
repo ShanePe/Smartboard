@@ -33,6 +33,7 @@ import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
 import shane.pennihome.local.smartboard.things.stmodes.SmartThingModeBlock;
 import shane.pennihome.local.smartboard.things.switches.SwitchBlock;
 import shane.pennihome.local.smartboard.things.temperature.TemperatureBlock;
+import shane.pennihome.local.smartboard.things.time.TimeBlock;
 import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
 import shane.pennihome.local.smartboard.ui.UIHelper;
@@ -83,6 +84,8 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
                 return new TemperatureBlock();
             case SmartThingMode:
                 return new SmartThingModeBlock();
+            case Time:
+                return new TimeBlock();
             default:
                 throw new Exception("Invalid Type to create");
         }
@@ -330,9 +333,19 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
 
     }
 
+    public boolean IsServiceLess() {
+        return false;
+    }
+
     public void loadThing() {
-        if (TextUtils.isEmpty(getThingKey()) || mThing == null)
+        if ((TextUtils.isEmpty(getThingKey()) || mThing == null) && !IsServiceLess())
             mThing = Monitor.getMonitor().getThings().getByKey(getThingKey());
+        else if (mThing == null && IsServiceLess())
+            try {
+                mThing = IThing.CreateFromType(getThingType());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
 
     public void execute(View indicator, OnProcessCompleteListener<String> onProcessCompleteListener) {

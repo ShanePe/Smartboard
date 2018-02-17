@@ -12,6 +12,7 @@ import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.things.switches.SwitchBlock;
 import shane.pennihome.local.smartboard.things.temperature.Temperature;
 import shane.pennihome.local.smartboard.things.temperature.TemperatureBlock;
+import shane.pennihome.local.smartboard.things.time.TimeBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 
 /**
@@ -30,6 +31,7 @@ public class Blocks extends ArrayList<IBlock> {
             blocks.add((new TemperatureBlock()));
         if (Monitor.getMonitor().getThings().containsType(SmartThingMode.class))
             blocks.add(new SmartThingModeBlock());
+        blocks.add(new TimeBlock());
         return blocks;
     }
 
