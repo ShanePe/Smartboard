@@ -2,7 +2,6 @@
 <android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <android.support.design.widget.TabLayout
@@ -26,26 +25,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <android.support.v7.widget.LinearLayoutCompat
+                <shane.pennihome.local.smartboard.ui.ThingPropertiesIcon
+                    android:id="@+id/sw_properties"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content" />
 
-                    <shane.pennihome.local.smartboard.ui.ThingProperties
-                        android:id="@+id/sw_properties"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <shane.pennihome.local.smartboard.ui.GroupTitle
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:title="@string/lbl_icon" />
-
-                    <shane.pennihome.local.smartboard.ui.IconSelector
-                        android:id="@+id/sw_icon_selector"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </android.support.v7.widget.LinearLayoutCompat>
 
             </ScrollView>
         </android.support.v7.widget.LinearLayoutCompat>
@@ -70,9 +54,9 @@
             android:layout_height="wrap_content">
 
             <shane.pennihome.local.smartboard.ui.TemplateProperties
+                android:id="@+id/sw_template"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/sw_template"/>
+                android:layout_height="wrap_content" />
 
         </android.support.v7.widget.LinearLayoutCompat>
     </shane.pennihome.local.smartboard.ui.ViewSwiper>

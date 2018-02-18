@@ -31,5 +31,8 @@ public class Time extends IThing {
         return IDatabaseObject.Types.Thing;
     }
 
-
+    @Override
+    public String getName() {
+        return "Time";
+    }
 }

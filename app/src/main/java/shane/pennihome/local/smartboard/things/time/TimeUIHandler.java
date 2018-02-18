@@ -26,6 +26,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
+import shane.pennihome.local.smartboard.ui.SizeSelector;
 import shane.pennihome.local.smartboard.ui.TemplateProperties;
 import shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector;
 import shane.pennihome.local.smartboard.ui.ViewSwiper;
@@ -46,18 +47,22 @@ class TimeUIHandler extends IBlockUIHandler {
         TabLayout tabLayout = view.findViewById(R.id.tm_tabs);
         viewSwiper.setTabLayout(tabLayout);
 
+        viewSwiper.addView("Properties", R.id.tm_tab_props);
         viewSwiper.addView("Colours", R.id.tm_tab_background);
         viewSwiper.addView("Template", R.id.tm_tab_template);
 
         final ThingPropertiesClrSelector tpBackground = view.findViewById(R.id.tm_background);
         TemplateProperties tempProps = view.findViewById(R.id.tm_template);
+        final SizeSelector sizeSelector = view.findViewById(R.id.tm_size);
 
+        sizeSelector.initialise(getBlock());
         tpBackground.initialise(getBlock());
 
         tempProps.setTemplates(Templates.Load(view.getContext()).getForType(IThing.Types.Time));
         tempProps.setOnTemplateActionListener(new TemplateProperties.OnTemplateActionListener() {
             @Override
             public void OnTemplateSelected(Template template) {
+                sizeSelector.applyTemplate(template);
                 tpBackground.applyTemplate(template);
             }
         });
@@ -70,11 +75,13 @@ class TimeUIHandler extends IBlockUIHandler {
 
             ThingPropertiesClrSelector tbBackground = (ThingPropertiesClrSelector) viewSwiper.getView(R.id.tm_background);
             TemplateProperties tempProps = (TemplateProperties) viewSwiper.getView(R.id.tm_template);
+            SizeSelector sizeSelector = (SizeSelector) viewSwiper.getView(R.id.tm_size);
 
             Time thing = new Time();
             getBlock().setThingKey(thing.getKey());
             getBlock().setName(thing.getName());
             tbBackground.populate(getBlock());
+            sizeSelector.populate(getBlock());
 
             if (tempProps.isSaveAsTemplate())
                 tempProps.createTemplate(view.getContext(), getBlock());

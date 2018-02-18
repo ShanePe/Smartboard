@@ -24,8 +24,6 @@ public class SmartboardFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private SmartboardActivity mSbAct;
     private BackgroundSelector mBGSelector;
-//    private Button mBtnBGImg;
-//    private SeekBar msbBGImg;
 
     public SmartboardFragment() {
     }
@@ -51,7 +49,6 @@ public class SmartboardFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.tab_smartboard_dash, container, false);
         LabelTextbox editText = rootView.findViewById(R.id.txt_db_name);
         mBGSelector = rootView.findViewById(R.id.dash_bgselector);
-        //mBGSelector.setImageCallbackFragment(this);
         mBGSelector.setInitialValues(mSbAct.getDashboard().getBackgroundColour(),
                 mSbAct.getDashboard().getBackgroundColourTransparency(),
                 mSbAct.getDashboard().getBackgroundImage(),
@@ -101,6 +98,10 @@ public class SmartboardFragment extends Fragment {
                 mSbAct.getDashboard().setName(s.toString());
             }
         });
+
+
         return rootView;
     }
+
+
 }

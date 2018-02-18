@@ -21,12 +21,12 @@ import shane.pennihome.local.smartboard.data.Templates;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IIconBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
-import shane.pennihome.local.smartboard.ui.IconSelector;
 import shane.pennihome.local.smartboard.ui.TemplateProperties;
-import shane.pennihome.local.smartboard.ui.ThingProperties;
 import shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector;
+import shane.pennihome.local.smartboard.ui.ThingPropertiesIcon;
 import shane.pennihome.local.smartboard.ui.ViewSwiper;
 
 /**
@@ -49,15 +49,12 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         viewSwiper.addView("Colours", R.id.rt_tab_background);
         viewSwiper.addView("Template", R.id.rt_tab_template);
 
-        final ThingProperties tpProps = view.findViewById(R.id.rt_properties);
+        final ThingPropertiesIcon tpProps = view.findViewById(R.id.rt_properties);
         final ThingPropertiesClrSelector tpBackground = view.findViewById(R.id.rt_background);
-        final IconSelector iconSelector = view.findViewById(R.id.rt_icon_selector);
         TemplateProperties tempProps = view.findViewById(R.id.rt_template);
 
-        tpProps.initialise(things, getBlock());
+        tpProps.initialise(things, (IIconBlock) getBlock());
         tpBackground.initialise(getBlock());
-        iconSelector.setIconPath(getBlock(RoutineBlock.class).getIcon());
-        iconSelector.setIconSize(getBlock(RoutineBlock.class).getIconSize());
 
         tempProps.setTemplates(Templates.Load(view.getContext()).getForType(IThing.Types.Routine));
         tempProps.setOnTemplateActionListener(new TemplateProperties.OnTemplateActionListener() {
@@ -65,7 +62,6 @@ public class RoutineBlockHandler extends IBlockUIHandler {
             public void OnTemplateSelected(Template template) {
                 tpProps.applyTemplate(template);
                 tpBackground.applyTemplate(template);
-                iconSelector.applyTemplate(template);
             }
         });
     }
@@ -75,15 +71,12 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         try {
             ViewSwiper viewSwiper = view.findViewById(R.id.rt_swiper);
 
-            ThingProperties tbProps = (ThingProperties)viewSwiper.getView(R.id.rt_properties);
+            ThingPropertiesIcon tbProps = (ThingPropertiesIcon) viewSwiper.getView(R.id.rt_properties);
             ThingPropertiesClrSelector tbBackground = (ThingPropertiesClrSelector) viewSwiper.getView(R.id.rt_background);
-            IconSelector iconSelector = (IconSelector)viewSwiper.getView(R.id.rt_icon_selector);
             TemplateProperties tempProps = (TemplateProperties)viewSwiper.getView(R.id.rt_template);
 
-            tbProps.populate(getBlock(), null);
+            tbProps.populate((IIconBlock) getBlock(), null);
             tbBackground.populate(getBlock());
-            getBlock(RoutineBlock.class).setIcon(iconSelector.getIconPath());
-            getBlock(RoutineBlock.class).setIconSize(iconSelector.getIconSize());
 
             if(tempProps.isSaveAsTemplate())
                 tempProps.createTemplate(view.getContext(), getBlock());

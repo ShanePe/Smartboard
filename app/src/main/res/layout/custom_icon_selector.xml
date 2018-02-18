@@ -5,9 +5,9 @@
 
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="match_parent"
         android:background="@drawable/white_background_round"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="4dp">
 
         <ImageView

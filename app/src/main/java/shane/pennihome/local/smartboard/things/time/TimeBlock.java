@@ -44,4 +44,9 @@ public class TimeBlock extends IBlock {
     public boolean IsServiceLess() {
         return true;
     }
+
+    @Override
+    public String getName() {
+        return "Time";
+    }
 }

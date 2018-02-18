@@ -53,20 +53,26 @@ public class IconSelector extends LinearLayoutCompat {
         initialiseView(context);
     }
 
-    public String getIconPath() {
+    private String getIconPath() {
         return mIconPath;
     }
 
-    public void setIconPath(String iconpath) {
+    private void setIconPath(String iconpath) {
         this.mIconPath = iconpath;
         doPropertyChange();
     }
 
-    public UIHelper.IconSizes getIconSize() {
+    private UIHelper.IconSizes getIconSize() {
         return mIconSize;
     }
 
-    public void setIconSize(UIHelper.IconSizes iconSize) {
+    private void setIconSize(UIHelper.IconSizes iconSize) {
+        mIconSize = iconSize;
+        doPropertyChange();
+    }
+
+    public void setIcon(String iconPath, UIHelper.IconSizes iconSize) {
+        mIconPath = iconPath;
         mIconSize = iconSize;
         doPropertyChange();
     }
@@ -163,4 +169,6 @@ public class IconSelector extends LinearLayoutCompat {
         mIconSize = template.getBlock(IIconBlock.class).getIconSize();
         doPropertyChange();
     }
+
+
 }

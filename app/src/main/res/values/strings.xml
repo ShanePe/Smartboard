@@ -61,6 +61,7 @@
     <string name="lbl_select_a_template">Select a template …</string>
     <string name="app_name">Smartboard</string>
     <string name="app_contact">shane.pennicott@gmail.com</string>
+    <string name="lbl_size">Size</string>
 
     <string-array name="render_options">
         <item>Center</item>

@@ -947,6 +947,8 @@
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$5 void onStopTrackingTouch(android.widget.SeekBar seekBar)" />
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$5 void onStartTrackingTouch(android.widget.SeekBar seekBar)" />
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.switches.SwitchBlockHandler$5 void onProgressChanged(android.widget.SeekBar seekBar, int i, boolean b)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.ThingProperties mNpHeight" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.ThingProperties mNpWidth" />
     </entry_points>
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="setOnValueChangedListener" />
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="getDimension" />
@@ -3023,6 +3025,32 @@
     <pattern value="shane.pennihome.local.smartboard.things.switches.Switch" method="setIsDimmer" />
     <pattern value="shane.pennihome.local.smartboard.things.switches.Switch" method="isDimmer" />
     <pattern value="shane.pennihome.local.smartboard.thingsframework.Things" method="get" />
+    <pattern value="shane.pennihome.local.smartboard.ui.IconSelector" method="applyTemplate" />
+    <pattern value="shane.pennihome.local.smartboard.ui.SizeSelector" method="initialise" />
+    <pattern value="shane.pennihome.local.smartboard.ui.SizeSelector" method="SizeSelector" />
+    <pattern value="shane.pennihome.local.smartboard.ui.SizeSelector" method="setBlockHeight" />
+    <pattern value="shane.pennihome.local.smartboard.ui.SizeSelector" method="setBlockWidth" />
+    <pattern value="shane.pennihome.local.smartboard.ui.SizeSelector" method="getOnSizeActionListener" />
+    <pattern value="shane.pennihome.local.smartboard.ui.SizeSelector" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingProperties" method="populate" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingProperties" method="applyTemplate" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingProperties" method="initialise" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesIcon" method="setThings" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesIcon" method="getThings" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesIcon" method="setIconSize" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesIcon" method="getIconSize" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesIcon" method="setIconPath" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesIcon" method="getIconPath" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesIcon" method="setBlockHeight" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesIcon" method="getBlockHeight" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesIcon" method="setBlockWidth" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesIcon" method="getBlockWidth" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesIcon" method="setName" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesIcon" method="getName" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesIcon" method="setThing" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesIcon" method="getThing" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesIcon" method="ThingPropertiesIcon" />
+    <pattern value="shane.pennihome.local.smartboard.ui.ThingPropertiesIcon" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

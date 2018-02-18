@@ -9,46 +9,49 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Template;
 import shane.pennihome.local.smartboard.thingsframework.SpinnerThingAdapter;
 import shane.pennihome.local.smartboard.thingsframework.Things;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IIconBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
+import shane.pennihome.local.smartboard.ui.listeners.OnIconActionListener;
+import shane.pennihome.local.smartboard.ui.listeners.OnSizeActionListener;
 
 /**
  * Created by shane on 27/01/18.
  */
 
 @SuppressWarnings("DefaultFileTemplate")
-public class ThingProperties extends LinearLayoutCompat {
+public class ThingPropertiesIcon extends LinearLayoutCompat {
     private IThing mThing;
     private String mName;
     private int mBlockWidth;
     private int mBlockHeight;
     private Things mThings;
+    private String mIconPath;
+    private UIHelper.IconSizes mIconSize;
 
     private Spinner mSpThing;
     private LabelTextbox mTxtName;
-    private NumberPicker mNpWidth;
-    private NumberPicker mNpHeight;
+    private SizeSelector mSizeSelector;
+    private IconSelector mIconSelector;
     private GroupTitle mDeviceGroupTitle;
 
-    public ThingProperties(Context context) {
+    public ThingPropertiesIcon(Context context) {
         super(context);
         initializeViews(context);
     }
 
-    public ThingProperties(Context context, AttributeSet attrs) {
+    public ThingPropertiesIcon(Context context, AttributeSet attrs) {
         super(context, attrs);
         initializeViews(context);
     }
 
-    public ThingProperties(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ThingPropertiesIcon(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initializeViews(context);
     }
@@ -89,6 +92,22 @@ public class ThingProperties extends LinearLayoutCompat {
         doPropertyChange();
     }
 
+    public String getIconPath() {
+        return mIconPath;
+    }
+
+    public void setIconPath(String iconPath) {
+        mIconPath = iconPath;
+    }
+
+    public UIHelper.IconSizes getIconSize() {
+        return mIconSize;
+    }
+
+    public void setIconSize(UIHelper.IconSizes iconSize) {
+        mIconSize = iconSize;
+    }
+
     public Things getThings() {
         return mThings;
     }
@@ -103,25 +122,18 @@ public class ThingProperties extends LinearLayoutCompat {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
-        inflater.inflate(R.layout.custom_thing_properties, this);
+        inflater.inflate(R.layout.custom_thing_properties_icon, this);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mSpThing = this.findViewById(R.id.prop_sp_thing);
-        mTxtName = this.findViewById(R.id.prop_txt_blk_name);
-        //mNpWidth = this.findViewById(R.id.prop_txt_blk_width);
-        //mNpHeight = this.findViewById(R.id.prop_txt_blk_height);
-        mDeviceGroupTitle = this.findViewById(R.id.prop_group_device);
-
-        mNpWidth.setMaxValue(4);
-        mNpWidth.setMinValue(1);
-        mNpHeight.setMaxValue(4);
-        mNpHeight.setMinValue(1);
-        mNpWidth.setWrapSelectorWheel(true);
-        mNpHeight.setWrapSelectorWheel(true);
+        mSpThing = this.findViewById(R.id.prop_sp_thing_icon);
+        mTxtName = this.findViewById(R.id.prop_txt_blk_name_icon);
+        mSizeSelector = this.findViewById(R.id.prop_size_selector_icon);
+        mDeviceGroupTitle = this.findViewById(R.id.prop_group_device_icon);
+        mIconSelector = this.findViewById(R.id.prop_icon_icon);
 
         mSpThing.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -162,17 +174,27 @@ public class ThingProperties extends LinearLayoutCompat {
             }
         });
 
-        mNpWidth.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        mIconSelector.setOnIconActionListener(new OnIconActionListener() {
             @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                mBlockWidth = i1;
+            public void OnIconSelected(String iconPath) {
+                mIconPath = iconPath;
+            }
+
+            @Override
+            public void OnIconSizeChanged(UIHelper.IconSizes iconSize) {
+                mIconSize = iconSize;
             }
         });
 
-        mNpHeight.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        mSizeSelector.setOnSizeActionListener(new OnSizeActionListener() {
             @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                mBlockHeight = i1;
+            public void onWidthChanged(int width) {
+                mBlockWidth = width;
+            }
+
+            @Override
+            public void onHeightChanged(int height) {
+                mBlockHeight = height;
             }
         });
 
@@ -189,9 +211,9 @@ public class ThingProperties extends LinearLayoutCompat {
             mSpThing.setAdapter(aptr);
         } else //noinspection ConstantConditions
             if (mSpThing != null && mThings == null) {
-            mSpThing.setVisibility(View.GONE);
-            mDeviceGroupTitle.setVisibility(View.GONE);
-        }
+                mSpThing.setVisibility(View.GONE);
+                mDeviceGroupTitle.setVisibility(View.GONE);
+            }
     }
 
     private void doPropertyChange() {
@@ -199,36 +221,42 @@ public class ThingProperties extends LinearLayoutCompat {
             mSpThing.setSelection(mThings.getIndex(mThing));
 
         mTxtName.setText(mName);
-        mNpWidth.setValue(mBlockWidth);
-        mNpHeight.setValue(mBlockHeight);
+        mSizeSelector.setSize(mBlockWidth, mBlockHeight);
+        mIconSelector.setIcon(mIconPath, mIconSize);
 
         invalidate();
         requestLayout();
     }
 
-    public void initialise(Things things, IBlock block) {
+    public void initialise(Things things, IIconBlock block) {
         mThings = things;
         mThing = block.getThing();
         mName = block.getName();
         mBlockWidth = block.getWidth();
         mBlockHeight = block.getHeight();
+        mIconPath = block.getIcon();
+        mIconSize = block.getIconSize();
 
         doSpinnerThings();
         doPropertyChange();
     }
 
-    public void applyTemplate(Template template)
-    {
+    public void applyTemplate(Template template) {
         mBlockWidth = template.getBlock().getWidth();
         mBlockHeight = template.getBlock().getHeight();
+        mIconPath = template.getBlock(IIconBlock.class).getIcon();
+        mIconSize = template.getBlock(IIconBlock.class).getIconSize();
     }
 
-    public void populate(IBlock block, @SuppressWarnings("SameParameterValue") OnBlockSetListener onBlockSetListener) throws Exception {
+    public void populate(IIconBlock block, @SuppressWarnings("SameParameterValue") OnBlockSetListener onBlockSetListener) throws Exception {
         if (TextUtils.isEmpty(mName))
             throw new Exception("Name required.");
         block.setName(mName);
         block.setWidth(mBlockWidth);
         block.setHeight(mBlockHeight);
+        block.setIcon(mIconPath);
+        block.setIconSize(mIconSize);
+
         if (mThing != null) {
             block.setThing(mThing);
             block.setThingKey(mThing.getKey());

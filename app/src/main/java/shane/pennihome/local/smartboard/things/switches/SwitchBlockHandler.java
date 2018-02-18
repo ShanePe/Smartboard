@@ -22,12 +22,12 @@ import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IExecutor;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IIconBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
-import shane.pennihome.local.smartboard.ui.IconSelector;
 import shane.pennihome.local.smartboard.ui.TemplateProperties;
-import shane.pennihome.local.smartboard.ui.ThingProperties;
+import shane.pennihome.local.smartboard.ui.ThingPropertiesIcon;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 import shane.pennihome.local.smartboard.ui.ViewSwiper;
 
@@ -52,9 +52,8 @@ public class SwitchBlockHandler extends IBlockUIHandler {
         viewSwiper.addView("Colours", R.id.sw_tab_background);
         viewSwiper.addView("Template", R.id.sw_tab_template);
 
-        final ThingProperties tpProps = view.findViewById(R.id.sw_properties);
+        final ThingPropertiesIcon tpProps = view.findViewById(R.id.sw_properties);
         final SwitchPropertiesClrSelector tpBackground = view.findViewById(R.id.sw_background);
-        final IconSelector iconSelector = view.findViewById(R.id.sw_icon_selector);
         TemplateProperties tempProps = view.findViewById(R.id.sw_template);
 
         tempProps.setTemplates(Templates.Load(view.getContext()).getForType(IThing.Types.Switch));
@@ -63,29 +62,23 @@ public class SwitchBlockHandler extends IBlockUIHandler {
             public void OnTemplateSelected(Template template) {
                tpProps.applyTemplate(template);
                tpBackground.applyTemplate(template);
-               iconSelector.applyTemplate(template);
             }
         });
 
-        tpProps.initialise(things, getBlock());
+        tpProps.initialise(things, (IIconBlock) getBlock());
         tpBackground.initialise(getBlock(SwitchBlock.class));
-        iconSelector.setIconPath(getBlock(SwitchBlock.class).getIcon());
-        iconSelector.setIconSize(getBlock(SwitchBlock.class).getIconSize());
     }
 
     @Override
     public void buildBlockFromEditorWindowView(View view, OnBlockSetListener onBlockSetListener) {
         try {
             ViewSwiper viewSwiper = view.findViewById(R.id.sw_swiper);
-            ThingProperties tbProps = (ThingProperties)viewSwiper.getView(R.id.sw_properties);
+            ThingPropertiesIcon tbProps = (ThingPropertiesIcon) viewSwiper.getView(R.id.sw_properties);
             SwitchPropertiesClrSelector tbBackground = (SwitchPropertiesClrSelector) viewSwiper.getView(R.id.sw_background);
-            IconSelector iconSelector = (IconSelector)viewSwiper.getView(R.id.sw_icon_selector);
             TemplateProperties tempProps = (TemplateProperties)viewSwiper.getView(R.id.sw_template);
 
-            tbProps.populate(getBlock(), null);
+            tbProps.populate((IIconBlock) getBlock(), null);
             tbBackground.populate(getBlock(SwitchBlock.class));
-            getBlock(SwitchBlock.class).setIcon(iconSelector.getIconPath());
-            getBlock(SwitchBlock.class).setIconSize(iconSelector.getIconSize());
 
             if(tempProps.isSaveAsTemplate())
                 tempProps.createTemplate(view.getContext(), getBlock());

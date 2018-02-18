@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <shane.pennihome.local.smartboard.ui.GroupTitle
+            android:id="@+id/prop_group_device_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/lbl_device" />
+
+        <Spinner
+            android:id="@+id/prop_sp_thing_icon"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
+            android:focusable="auto"
+            android:foreground="?attr/selectableItemBackground" />
+
+        <shane.pennihome.local.smartboard.ui.LabelTextbox
+            android:id="@+id/prop_txt_blk_name_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:label="@string/lbl_name" />
+
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:orientation="vertical">
+
+                <shane.pennihome.local.smartboard.ui.GroupTitle
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    app:title="@string/lbl_size" />
+
+                <shane.pennihome.local.smartboard.ui.SizeSelector
+                    android:id="@+id/prop_size_selector_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_weight="50" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:orientation="vertical">
+
+                <shane.pennihome.local.smartboard.ui.GroupTitle
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    app:title="@string/lbl_icon" />
+
+                <shane.pennihome.local.smartboard.ui.IconSelector
+                    android:id="@+id/prop_icon_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_weight="50" />
+            </android.support.v7.widget.LinearLayoutCompat>
+        </android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v7.widget.LinearLayoutCompat>
+</merge>

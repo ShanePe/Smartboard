@@ -7,9 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -30,6 +32,11 @@ public class SmartboardActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar_sb);
         setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         ViewPager mViewPager = findViewById(R.id.container);
@@ -50,8 +57,7 @@ public class SmartboardActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if(tab.getPosition()==1)
-                    hideKeyboard();
+                hideKeyboard();
             }
 
             @Override
@@ -66,19 +72,19 @@ public class SmartboardActivity extends AppCompatActivity {
         });
     }
 
-    private void WriteDashboardToDatabase() {
+    private void writeDashboardToDatabase() {
         if (mDashboard == null)
             return;
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                WriteDashboardToDatabaseInstant();
+                writeDashboardToDatabaseInstant();
             }
         }).start();
     }
 
-    private void WriteDashboardToDatabaseInstant() {
+    private void writeDashboardToDatabaseInstant() {
         if (TextUtils.isEmpty(mDashboard.getName()))
             mDashboard.setName("My Dashboard");
 
@@ -88,12 +94,12 @@ public class SmartboardActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        WriteDashboardToDatabaseInstant();
+        writeDashboardToDatabaseInstant();
         super.onBackPressed();
     }
 
     public void DataChanged() {
-        WriteDashboardToDatabase();
+        writeDashboardToDatabase();
         mGroupEditAdapter.notifyDataSetChanged();
     }
 
@@ -119,6 +125,23 @@ public class SmartboardActivity extends AppCompatActivity {
         return mGroupEditAdapter;
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        writeDashboardToDatabaseInstant();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            writeDashboardToDatabaseInstant();
+            finish();
+            return true;
+        } else
+            return super.onOptionsItemSelected(item);
+
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -130,7 +153,6 @@ public class SmartboardActivity extends AppCompatActivity {
                 case 0:
                     return SmartboardFragment.newInstance(1);
                 case 1:
-
                     return GroupFragment.newInstance(2);
                 default:
                     return null;
@@ -141,11 +163,5 @@ public class SmartboardActivity extends AppCompatActivity {
         public int getCount() {
             return 2;
         }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        WriteDashboardToDatabaseInstant();
     }
 }

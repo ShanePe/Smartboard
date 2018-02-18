@@ -34,39 +34,17 @@
             app:title="@string/lbl_layout" />
 
         <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
             android:layout_marginStart="4dp"
             android:gravity="center_vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:labelFor="@+id/prop_txt_blk_width"
-                android:padding="4dp"
-                android:text="@string/lbl_width" />
-
-            <NumberPicker
-                android:id="@+id/prop_txt_blk_width"
-                android:layout_width="40dp"
-                android:layout_height="50dp"
-                android:background="@drawable/number_picker" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:labelFor="@+id/prop_txt_blk_height"
-                android:padding="4dp"
-                android:text="@string/lbl_height" />
-
-            <NumberPicker
-                android:id="@+id/prop_txt_blk_height"
-                android:layout_width="40dp"
-                android:layout_height="50dp"
-                android:background="@drawable/number_picker" />
+            <shane.pennihome.local.smartboard.ui.SizeSelector
+                android:id="@+id/prop_size_selector"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_weight="50" />
 
         </android.support.v7.widget.LinearLayoutCompat>
     </android.support.v7.widget.LinearLayoutCompat>

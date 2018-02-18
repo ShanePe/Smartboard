@@ -36,6 +36,7 @@ public class GroupFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.mnu_dash_add) {
@@ -87,7 +88,6 @@ public class GroupFragment extends Fragment {
 
             dragMgr.attachRecyclerView(recyclerView);
         }
-
 
         setHasOptionsMenu(true);
         return rootView;
