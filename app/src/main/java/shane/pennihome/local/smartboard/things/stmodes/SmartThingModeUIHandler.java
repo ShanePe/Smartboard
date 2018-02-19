@@ -28,6 +28,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
+import shane.pennihome.local.smartboard.ui.SizeSelector;
 import shane.pennihome.local.smartboard.ui.TemplateProperties;
 import shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector;
 import shane.pennihome.local.smartboard.ui.UIHelper;
@@ -50,11 +51,15 @@ public class SmartThingModeUIHandler extends IBlockUIHandler {
         TabLayout tabLayout = view.findViewById(R.id.stm_tabs);
         viewSwiper.setTabLayout(tabLayout);
 
+        viewSwiper.addView("Properties", R.id.stm_tab_props);
         viewSwiper.addView("Colours", R.id.stm_tab_background);
         viewSwiper.addView("Template", R.id.stm_tab_template);
 
         final ThingPropertiesClrSelector tpBackground = view.findViewById(R.id.stm_background);
         TemplateProperties tempProps = view.findViewById(R.id.stm_template);
+        final SizeSelector sizeSelector = view.findViewById(R.id.stm_size);
+
+        sizeSelector.initialise(getBlock());
 
         tpBackground.initialise(getBlock());
 
@@ -63,6 +68,7 @@ public class SmartThingModeUIHandler extends IBlockUIHandler {
             @Override
             public void OnTemplateSelected(Template template) {
                 tpBackground.applyTemplate(template);
+                sizeSelector.applyTemplate(template);
             }
         });
     }
@@ -74,14 +80,17 @@ public class SmartThingModeUIHandler extends IBlockUIHandler {
 
             ThingPropertiesClrSelector tbBackground = (ThingPropertiesClrSelector) viewSwiper.getView(R.id.stm_background);
             TemplateProperties tempProps = (TemplateProperties) viewSwiper.getView(R.id.stm_template);
+            SizeSelector sizeSelector = (SizeSelector) viewSwiper.getView(R.id.stm_size);
 
             IThings<SmartThingMode> things = Monitor.getMonitor().getThings(SmartThingMode.class);
             if (things.size() == 0)
                 throw new Exception("SmartThings mode is not found");
+
             SmartThingMode thing = things.get(0);
             getBlock().setThingKey(thing.getKey());
             getBlock().setName(thing.getName());
             tbBackground.populate(getBlock());
+            sizeSelector.populate(getBlock());
 
             if (tempProps.isSaveAsTemplate())
                 tempProps.createTemplate(view.getContext(), getBlock());

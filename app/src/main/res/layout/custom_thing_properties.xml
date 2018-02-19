@@ -31,7 +31,7 @@
         <shane.pennihome.local.smartboard.ui.GroupTitle
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="@string/lbl_layout" />
+            app:title="@string/lbl_size" />
 
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"

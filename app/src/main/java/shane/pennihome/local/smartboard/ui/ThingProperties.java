@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 
 import shane.pennihome.local.smartboard.R;
@@ -19,6 +18,7 @@ import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
+import shane.pennihome.local.smartboard.ui.listeners.OnSizeActionListener;
 
 /**
  * Created by shane on 27/01/18.
@@ -34,9 +34,8 @@ public class ThingProperties extends LinearLayoutCompat {
 
     private Spinner mSpThing;
     private LabelTextbox mTxtName;
-    private NumberPicker mNpWidth;
-    private NumberPicker mNpHeight;
     private GroupTitle mDeviceGroupTitle;
+    private SizeSelector mSizeSelector;
 
     public ThingProperties(Context context) {
         super(context);
@@ -112,16 +111,8 @@ public class ThingProperties extends LinearLayoutCompat {
 
         mSpThing = this.findViewById(R.id.prop_sp_thing);
         mTxtName = this.findViewById(R.id.prop_txt_blk_name);
-        //mNpWidth = this.findViewById(R.id.prop_txt_blk_width);
-        //mNpHeight = this.findViewById(R.id.prop_txt_blk_height);
         mDeviceGroupTitle = this.findViewById(R.id.prop_group_device);
-
-        mNpWidth.setMaxValue(4);
-        mNpWidth.setMinValue(1);
-        mNpHeight.setMaxValue(4);
-        mNpHeight.setMinValue(1);
-        mNpWidth.setWrapSelectorWheel(true);
-        mNpHeight.setWrapSelectorWheel(true);
+        mSizeSelector = this.findViewById(R.id.prop_size_selector);
 
         mSpThing.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -162,17 +153,15 @@ public class ThingProperties extends LinearLayoutCompat {
             }
         });
 
-        mNpWidth.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        mSizeSelector.setOnSizeActionListener(new OnSizeActionListener() {
             @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                mBlockWidth = i1;
+            public void onWidthChanged(int width) {
+                mBlockWidth = width;
             }
-        });
 
-        mNpHeight.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                mBlockHeight = i1;
+            public void onHeightChanged(int height) {
+                mBlockHeight = height;
             }
         });
 
@@ -199,8 +188,7 @@ public class ThingProperties extends LinearLayoutCompat {
             mSpThing.setSelection(mThings.getIndex(mThing));
 
         mTxtName.setText(mName);
-        mNpWidth.setValue(mBlockWidth);
-        mNpHeight.setValue(mBlockHeight);
+        mSizeSelector.setSize(mBlockWidth, mBlockHeight);
 
         invalidate();
         requestLayout();
