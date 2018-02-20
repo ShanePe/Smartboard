@@ -46,7 +46,7 @@ public class SwitchBlock extends IIconBlock {
     }
 
     @ColorInt
-    int getForegroundColourOn() {
+    public int getForegroundColourOn() {
         return mForeColourOn;
     }
 
@@ -88,7 +88,7 @@ public class SwitchBlock extends IIconBlock {
     }
 
     @ColorInt
-    int getBackgroundColourWithAlphaOn() {
+    public int getBackgroundColourWithAlphaOn() {
         return UIHelper.getColorWithAlpha(getBackgroundColourOn(), getBackgroundColourTransparencyOn() / 100f);
     }
 

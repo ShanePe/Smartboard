@@ -62,6 +62,7 @@
     <string name="app_name">Smartboard</string>
     <string name="app_contact">shane.pennicott@gmail.com</string>
     <string name="lbl_size">Size</string>
+    <string name="lbl_devices">Devices</string>
 
     <string-array name="render_options">
         <item>Center</item>

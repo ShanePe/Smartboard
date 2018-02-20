@@ -18,4 +18,8 @@
     <declare-styleable name="ForegroundSelector">
         <attr name="blockheight" />
     </declare-styleable>
+
+    <declare-styleable name="ThingPropertiesIcon">
+        <attr name="hide_device" format="boolean" />
+    </declare-styleable>
 </resources>

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 
 import java.util.ArrayList;
 
@@ -157,11 +158,20 @@ public class ViewSwiper extends ViewPager {
             });
 
             mTimer.start();
+            hideKeyboard();
         }
     }
 
     void clear() {
         createAdapter();
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager)
+                getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        assert inputManager != null;
+        inputManager.hideSoftInputFromWindow(getWindowToken(), 0);
     }
 
     public class ViewAdapter extends PagerAdapter {

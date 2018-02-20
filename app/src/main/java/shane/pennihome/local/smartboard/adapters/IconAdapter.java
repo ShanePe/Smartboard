@@ -56,7 +56,7 @@ public class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder>{
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mRecycleView = (RecyclerView)parent ;
+        mRecycleView = (RecyclerView) parent;
 
         return new ViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.dialog_icon, parent, false));

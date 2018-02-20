@@ -18,11 +18,11 @@
 
         <ImageView
             android:id="@+id/bvstm_icon"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center"
             android:contentDescription="@string/content_desc_img"
-            android:scaleType="center"
+            android:scaleType="fitCenter"
             app:srcCompat="@mipmap/icon_def_stmode_mm_fg" />
 
         <TextView

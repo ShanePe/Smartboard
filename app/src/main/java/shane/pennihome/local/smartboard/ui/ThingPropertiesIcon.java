@@ -1,6 +1,7 @@
 package shane.pennihome.local.smartboard.ui;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -41,6 +42,8 @@ public class ThingPropertiesIcon extends LinearLayoutCompat {
     private IconSelector mIconSelector;
     private GroupTitle mDeviceGroupTitle;
 
+    private boolean mHideDevice;
+
     public ThingPropertiesIcon(Context context) {
         super(context);
         initializeViews(context);
@@ -49,11 +52,21 @@ public class ThingPropertiesIcon extends LinearLayoutCompat {
     public ThingPropertiesIcon(Context context, AttributeSet attrs) {
         super(context, attrs);
         initializeViews(context);
+        handleAttrs(context, attrs);
     }
 
     public ThingPropertiesIcon(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initializeViews(context);
+        handleAttrs(context, attrs);
+    }
+
+    public boolean isHideDevice() {
+        return mHideDevice;
+    }
+
+    public void setHideDevice(boolean hideDevice) {
+        mHideDevice = hideDevice;
     }
 
     private IThing getThing() {
@@ -203,6 +216,9 @@ public class ThingPropertiesIcon extends LinearLayoutCompat {
     }
 
     private void doSpinnerThings() {
+        if (mHideDevice)
+            return;
+
         if (mSpThing != null && mThings != null) {
             mSpThing.setVisibility(View.VISIBLE);
             mDeviceGroupTitle.setVisibility(View.VISIBLE);
@@ -217,8 +233,14 @@ public class ThingPropertiesIcon extends LinearLayoutCompat {
     }
 
     private void doPropertyChange() {
-        if (mThing != null)
+        if (mHideDevice) {
+            if (mSpThing != null)
+                mSpThing.setVisibility(View.GONE);
+            if (mDeviceGroupTitle != null)
+                mDeviceGroupTitle.setVisibility(View.GONE);
+        } else if (mThing != null)
             mSpThing.setSelection(mThings.getIndex(mThing));
+
 
         mTxtName.setText(mName);
         mSizeSelector.setSize(mBlockWidth, mBlockHeight);
@@ -263,5 +285,17 @@ public class ThingPropertiesIcon extends LinearLayoutCompat {
         }
         if (onBlockSetListener != null)
             onBlockSetListener.OnSet(block);
+    }
+
+    private void handleAttrs(Context context, AttributeSet attrs) {
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ThingPropertiesIcon, 0, 0);
+        mHideDevice = a.getBoolean(R.styleable.ThingPropertiesIcon_hide_device, false);
+        if (mHideDevice) {
+            if (mSpThing != null)
+                mSpThing.setVisibility(View.GONE);
+            if (mDeviceGroupTitle != null)
+                mDeviceGroupTitle.setVisibility(View.GONE);
+        }
+        a.recycle();
     }
 }

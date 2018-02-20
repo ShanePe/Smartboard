@@ -1,8 +1,6 @@
 package shane.pennihome.local.smartboard.thingsframework.interfaces;
 
-import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.text.TextUtils;
@@ -67,17 +65,20 @@ public abstract class IIconBlock extends IBlock {
                     InputStream stream = destination.getContext().getAssets().open(getIcon());
                     Drawable img = Drawable.createFromStream(stream, getIcon());
 
-                    if (getIconSize() != null)
-                        if (getIconSize() != UIHelper.IconSizes.Medium) {
-                            int s = 50;
-                            if (getIconSize() == UIHelper.IconSizes.Small)
-                                s = 30;
-                            else if (getIconSize() == UIHelper.IconSizes.Large)
-                                s = 90;
+                    if (getIconSize() != null) {
+                        int s = 40;
+                        if (getIconSize() == UIHelper.IconSizes.Small)
+                            s = 40;
+                        else if (getIconSize() == UIHelper.IconSizes.Medium)
+                            s = 80;
+                        else if (getIconSize() == UIHelper.IconSizes.Large)
+                            s = 160;
 
-                            Bitmap b = ((BitmapDrawable) img).getBitmap();
-                            img = new BitmapDrawable(destination.getResources(), Bitmap.createScaledBitmap(b, s, s, false));
-                        }
+                        if (destination.getLayoutParams().height != s)
+                            destination.getLayoutParams().height = s;
+                        if (destination.getLayoutParams().width != s)
+                            destination.getLayoutParams().width = s;
+                    }
 
                     img.setColorFilter(getIconColour(),  PorterDuff.Mode.SRC_ATOP);
                     destination.setImageDrawable(img);
