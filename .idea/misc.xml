@@ -977,6 +977,8 @@
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.thingsframework.Things$6$1 boolean hasNext()" />
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.Things$6$1 iter" />
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.thingsframework.Things$6 java.util.Iterator&lt;T&gt; iterator()" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroup mLastOnState" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupUIHandler.DimmerGroupViewHolder mContainer" />
     </entry_points>
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="setOnValueChangedListener" />
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="getDimension" />
@@ -3118,6 +3120,17 @@
     <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockUIHandler" method="SwitchBlockUIHandler" />
     <pattern value="shane.pennihome.local.smartboard.things.switches.SwitchBlockUIHandler" />
     <pattern value="shane.pennihome.local.smartboard.thingsframework.Things" method="cast" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.Blocks" method="swapItem" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.Blocks" method="moveItem" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.Blocks" method="getAvailableTypes" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.Blocks" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="handleThingChangeMessage" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="getThingChangeMessage" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IGroup" method="setChildThings" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IGroup" method="getChildThings" />
+    <pattern value="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroup" />
+    <pattern value="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupUIHandler.DimmerGroupViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupUIHandler" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

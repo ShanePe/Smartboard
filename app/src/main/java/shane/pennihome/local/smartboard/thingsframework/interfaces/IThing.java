@@ -6,10 +6,10 @@ import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
-import shane.pennihome.local.smartboard.things.dimmergroup.DimmerGroup;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.stmodes.SmartThingMode;
 import shane.pennihome.local.smartboard.things.switches.Switch;
+import shane.pennihome.local.smartboard.things.switchgroup.SwitchGroup;
 import shane.pennihome.local.smartboard.things.temperature.Temperature;
 import shane.pennihome.local.smartboard.things.time.Time;
 import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
@@ -44,7 +44,7 @@ public abstract class IThing extends IDatabaseObject {
             case Time:
                 return (T) new Time();
             case DimmerGroup:
-                return (T) new DimmerGroup();
+                return (T) new SwitchGroup();
             default:
                 throw new Exception("Invalid Type to create");
         }

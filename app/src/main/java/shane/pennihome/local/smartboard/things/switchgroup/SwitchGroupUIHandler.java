@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.things.dimmergroup;
+package shane.pennihome.local.smartboard.things.switchgroup;
 
 import android.app.Activity;
 import android.support.annotation.ColorInt;
@@ -27,7 +27,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IIconBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
 import shane.pennihome.local.smartboard.ui.MultiThingSelector;
@@ -41,8 +40,8 @@ import shane.pennihome.local.smartboard.ui.ViewSwiper;
  */
 
 @SuppressWarnings("DefaultFileTemplate")
-class DimmerGroupUIHandler extends IBlockUIHandler {
-    DimmerGroupUIHandler(IBlock block) {
+class SwitchGroupUIHandler extends IBlockUIHandler {
+    SwitchGroupUIHandler(IBlock block) {
         super(block);
     }
 
@@ -61,22 +60,17 @@ class DimmerGroupUIHandler extends IBlockUIHandler {
         final SwitchPropertiesClrSelector tpBackground = view.findViewById(R.id.dg_background);
         MultiThingSelector multiThingSelector = view.findViewById(R.id.dg_things);
 
+        Things selectable = new Things();
+        selectable.addAll(Monitor.getMonitor().getThings(Switch.class));
+
         TemplateProperties tempProps = view.findViewById(R.id.dg_template);
-
-        IThings<Switch> iThings = Monitor.getMonitor().getThings(Switch.class);
-        Things dimmable = new Things();
-        for (Switch s : iThings)
-            if (s.isDimmer())
-                dimmable.add(s);
-
         tpProps.initialise(null, (IIconBlock) getBlock());
         tpBackground.initialise(getBlock(SwitchBlock.class));
-        multiThingSelector.setThings(dimmable);
+        multiThingSelector.setThings(selectable);
 
-        getBlock(DimmerGroupBlock.class).loadThing();
-        getBlock(DimmerGroupBlock.class).loadChildThings();
+        getBlock(SwitchGroupBlock.class).loadThing();
 
-        multiThingSelector.setSelectedThings(getBlock().getThing(DimmerGroup.class).getThings());
+        multiThingSelector.setSelectedThings(getBlock().getThing(SwitchGroup.class).getChildThings());
         tempProps.setTemplates(Templates.Load(view.getContext()).getForType(IThing.Types.DimmerGroup));
         tempProps.setOnTemplateActionListener(new TemplateProperties.OnTemplateActionListener() {
             @Override
@@ -97,16 +91,16 @@ class DimmerGroupUIHandler extends IBlockUIHandler {
             MultiThingSelector multiThingSelector = (MultiThingSelector) viewSwiper.getView(R.id.dg_things);
 
             if (getBlock().getThing() == null)
-                getBlock().setThing(new DimmerGroup());
+                getBlock().setThing(new SwitchGroup());
 
             tbProps.populate((IIconBlock) getBlock(), null);
             tbBackground.populate(getBlock(SwitchBlock.class));
 
-            getBlock(DimmerGroupBlock.class).getThingKeys().clear();
+            getBlock(SwitchGroupBlock.class).getThingKeys().clear();
             for (IThing t : multiThingSelector.getSelectedThings())
-                getBlock(DimmerGroupBlock.class).getThingKeys().add(t.getKey());
+                getBlock(SwitchGroupBlock.class).getThingKeys().add(t.getKey());
 
-            getBlock().getThing(DimmerGroup.class).getThings().clear();
+            getBlock().getThing(SwitchGroup.class).getChildThings().clear();
 
             if (tempProps.isSaveAsTemplate())
                 tempProps.createTemplate(view.getContext(), getBlock());
@@ -120,12 +114,12 @@ class DimmerGroupUIHandler extends IBlockUIHandler {
 
     @Override
     public BlockEditViewHolder GetEditHolder(View view) {
-        return new DimmerGroupEditorHolder(view);
+        return new SwitchGroupEditorHolder(view);
     }
 
     @Override
     public BlockViewHolder GetViewHolder(View view) {
-        return new DimmerGroupViewHolder(view);
+        return new SwitchGroupViewHolder(view);
     }
 
     @Override
@@ -133,13 +127,13 @@ class DimmerGroupUIHandler extends IBlockUIHandler {
         if (getBlock().getThing() == null)
             return;
 
-        DimmerGroupEditorHolder holder = (DimmerGroupEditorHolder) viewHolder;
+        SwitchGroupEditorHolder holder = (SwitchGroupEditorHolder) viewHolder;
 
         holder.mBaName.setText(getBlock().getName());
         holder.mBaImg.setImageResource(getBlock().getDefaultIconResource());
 
         if (getBlock().getThing() != null)
-            holder.mBaDevice.setText(String.format("%s Device(s)", getBlock(DimmerGroupBlock.class).getThingKeys().size()));
+            holder.mBaDevice.setText(String.format("%s Device(s)", getBlock(SwitchGroupBlock.class).getThingKeys().size()));
 
         holder.mBaSize.setText(String.format("%s x %s", getBlock().getWidth(), getBlock().getHeight()));
 
@@ -163,18 +157,19 @@ class DimmerGroupUIHandler extends IBlockUIHandler {
             return;
         }
 
-        final DimmerGroupViewHolder holder = (DimmerGroupViewHolder) viewHolder;
+        final SwitchGroupViewHolder holder = (SwitchGroupViewHolder) viewHolder;
 
         holder.mTitle.setText(getBlock().getName());
 
         getBlock().renderForegroundColourToTextView(holder.mTitle);
         getBlock().renderBackgroundTo(holder.itemView);
         getBlock().renderUnreachableBackground(holder.itemView);
-        getBlock(DimmerGroupBlock.class).renderIconTo(holder.mIcon);
+        getBlock(SwitchGroupBlock.class).renderIconTo(holder.mIcon);
         getBlock().startListeningForChanges();
 
-        holder.mDimmer.setProgress(getBlock().getThing(DimmerGroup.class).getDimmerLevel());
-        holder.mDimmer.setEnabled(getBlock().getThing(DimmerGroup.class).isOn());
+        holder.mDimmer.setVisibility(getBlock().getThing(Switch.class).isDimmer() ? View.VISIBLE : View.GONE);
+        holder.mDimmer.setProgress(getBlock().getThing(SwitchGroup.class).getDimmerLevel());
+        holder.mDimmer.setEnabled(getBlock().getThing(SwitchGroup.class).isOn());
 
         holder.itemView.setPadding(Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING);
 
@@ -205,7 +200,7 @@ class DimmerGroupUIHandler extends IBlockUIHandler {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                getBlock(DimmerGroupBlock.class).execute(holder.mProgress, "level", holder.mDimmer.getProgress(),
+                getBlock(SwitchGroupBlock.class).execute(holder.mProgress, "level", holder.mDimmer.getProgress(),
                         new OnProcessCompleteListener<String>() {
                             @Override
                             public void complete(boolean success, String source) {
@@ -227,12 +222,12 @@ class DimmerGroupUIHandler extends IBlockUIHandler {
                 getBlock().renderForegroundColourToTextView(holder.mTitle);
                 getBlock().renderBackgroundTo(holder.itemView);
                 getBlock().renderUnreachableBackground(holder.itemView);
-                holder.mDimmer.setEnabled(getBlock().getThing(DimmerGroup.class).isOn());
+                holder.mDimmer.setEnabled(getBlock().getThing(SwitchGroup.class).isOn());
             }
 
             @Override
             public void OnDimmerLevelChanged(IThing thing) {
-                holder.mDimmer.setProgress(getBlock().getThing(DimmerGroup.class).getDimmerLevel());
+                holder.mDimmer.setProgress(getBlock().getThing(SwitchGroup.class).getDimmerLevel());
             }
         });
     }
@@ -252,7 +247,7 @@ class DimmerGroupUIHandler extends IBlockUIHandler {
         return R.layout.prop_dimmergroup;
     }
 
-    public class DimmerGroupEditorHolder extends BlockEditViewHolder {
+    public class SwitchGroupEditorHolder extends BlockEditViewHolder {
         final FrameLayout mLayout;
         final TextView mBaName;
         final ImageView mBaImg;
@@ -260,7 +255,7 @@ class DimmerGroupUIHandler extends IBlockUIHandler {
         final TextView mBaSize;
         //      public final FrameLayout mContainer;
 
-        DimmerGroupEditorHolder(View view) {
+        SwitchGroupEditorHolder(View view) {
             super(view);
 //            mContainer = view.findViewById(R.id.sw_dashboard_block);
             mLayout = view.findViewById(R.id.dg_block_area);
@@ -276,14 +271,14 @@ class DimmerGroupUIHandler extends IBlockUIHandler {
         }
     }
 
-    public class DimmerGroupViewHolder extends BlockViewHolder {
+    public class SwitchGroupViewHolder extends BlockViewHolder {
         final LinearLayoutCompat mContainer;
         final TextView mTitle;
         final ImageView mIcon;
         final ProgressBar mProgress;
         final SeekBar mDimmer;
 
-        DimmerGroupViewHolder(View itemView) {
+        SwitchGroupViewHolder(View itemView) {
             super(itemView);
 
             mContainer = itemView.findViewById(R.id.bvdg_container);

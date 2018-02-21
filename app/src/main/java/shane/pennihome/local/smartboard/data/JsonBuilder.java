@@ -16,14 +16,14 @@ import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeService;
 import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
-import shane.pennihome.local.smartboard.things.dimmergroup.DimmerGroup;
-import shane.pennihome.local.smartboard.things.dimmergroup.DimmerGroupBlock;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
 import shane.pennihome.local.smartboard.things.stmodes.SmartThingMode;
 import shane.pennihome.local.smartboard.things.stmodes.SmartThingModeBlock;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.things.switches.SwitchBlock;
+import shane.pennihome.local.smartboard.things.switchgroup.SwitchGroup;
+import shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupBlock;
 import shane.pennihome.local.smartboard.things.temperature.Temperature;
 import shane.pennihome.local.smartboard.things.temperature.TemperatureBlock;
 import shane.pennihome.local.smartboard.things.time.Time;
@@ -57,7 +57,7 @@ public class JsonBuilder {
                     case "time":
                         return Time.Load(jThing.toString());
                     case "dimmergroup":
-                        return DimmerGroup.Load(jThing.toString());
+                        return SwitchGroup.Load(jThing.toString());
                     default:
                         throw new JsonParseException("Invalid type of thing : " + jThing.get("mInstance").getAsString());
                 }
@@ -74,8 +74,8 @@ public class JsonBuilder {
                     return context.serialize((SmartThingMode) src);
                 else if (src instanceof Time)
                     return context.serialize((Time) src);
-                else if (src instanceof DimmerGroup)
-                    return context.serialize((DimmerGroup) src);
+                else if (src instanceof SwitchGroup)
+                    return context.serialize((SwitchGroup) src);
                 else if (src instanceof Switch)
                     return context.serialize((Switch) src);
                 else
@@ -99,8 +99,8 @@ public class JsonBuilder {
                         return SmartThingModeBlock.Load(jBlock.toString());
                     case "timeblock":
                         return TimeBlock.Load(jBlock.toString());
-                    case "dimmergroupblock":
-                        return DimmerGroupBlock.Load(jBlock.toString());
+                    case "switchgroupblock":
+                        return SwitchGroupBlock.Load(jBlock.toString());
                     default:
                         throw new JsonParseException("Invalid type of block : " + jBlock.get("mInstance").getAsString());
                 }
@@ -118,8 +118,8 @@ public class JsonBuilder {
                     return context.serialize((SmartThingModeBlock) src);
                 else if (src instanceof TimeBlock)
                     return context.serialize((TimeBlock) src);
-                else if (src instanceof DimmerGroupBlock)
-                    return context.serialize((DimmerGroupBlock) src);
+                else if (src instanceof SwitchGroupBlock)
+                    return context.serialize((SwitchGroupBlock) src);
                 else if (src instanceof SwitchBlock)
                     return context.serialize((SwitchBlock) src);
                 else

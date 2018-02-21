@@ -29,10 +29,10 @@ import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListen
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
-import shane.pennihome.local.smartboard.things.dimmergroup.DimmerGroupBlock;
 import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
 import shane.pennihome.local.smartboard.things.stmodes.SmartThingModeBlock;
 import shane.pennihome.local.smartboard.things.switches.SwitchBlock;
+import shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupBlock;
 import shane.pennihome.local.smartboard.things.temperature.TemperatureBlock;
 import shane.pennihome.local.smartboard.things.time.TimeBlock;
 import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
@@ -46,6 +46,8 @@ import shane.pennihome.local.smartboard.ui.UIHelper;
 @SuppressWarnings("ALL")
 @IDatabaseObject.IgnoreOnCopy
 public abstract class IBlock extends IDatabaseObject implements Cloneable {
+    @IgnoreOnCopy
+    protected BroadcastReceiver mBroadcastReceiver;
     private int mHeight;
     private int mWidth;
     private @ColorInt
@@ -63,8 +65,6 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
     private transient IThing mThing;
     @IgnoreOnCopy
     private OnThingActionListener mOnThingActionListener;
-    @IgnoreOnCopy
-    private BroadcastReceiver mBroadcastReceiver;
 
     public IBlock() {
         mInstance = this.getClass().getSimpleName();
@@ -88,10 +88,41 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
             case Time:
                 return new TimeBlock();
             case DimmerGroup:
-                return new DimmerGroupBlock();
+                return new SwitchGroupBlock();
             default:
                 throw new Exception("Invalid Type to create");
         }
+    }
+
+    protected ThingChangedMessage getThingChangeMessage(Intent intent) {
+        ThingChangedMessage thingChangedMessage = null;
+
+        if (mThing != null && mOnThingActionListener != null) {
+            IMessage<?> message = IMessage.fromIntent(intent);
+            if (message instanceof ThingChangedMessage)
+                thingChangedMessage = (ThingChangedMessage) message;
+        }
+
+        return thingChangedMessage;
+    }
+
+    protected boolean handleThingChangeMessage(ThingChangedMessage thingChangedMessage, String thingKey) {
+        if (thingChangedMessage == null || TextUtils.isEmpty(thingKey))
+            return false;
+
+        if (thingChangedMessage.getValue().equals(thingKey)) {
+            if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.State) {
+                mOnThingActionListener.OnStateChanged(getThing());
+                return true;
+            } else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Unreachable) {
+                mOnThingActionListener.OnReachableStateChanged(getThing());
+                return true;
+            } else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Level) {
+                mOnThingActionListener.OnDimmerLevelChanged(getThing());
+                return true;
+            }
+        }
+        return false;
     }
 
     public void startListeningForChanges() {
@@ -99,20 +130,7 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
             mBroadcastReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    if (mThing != null && mOnThingActionListener != null) {
-                        IMessage<?> message = IMessage.fromIntent(intent);
-                        if (message instanceof ThingChangedMessage) {
-                            ThingChangedMessage thingChangedMessage = (ThingChangedMessage) message;
-                            if (thingChangedMessage.getValue().equals(getThingKey())) {
-                                if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.State)
-                                    mOnThingActionListener.OnStateChanged(getThing());
-                                else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Unreachable)
-                                    mOnThingActionListener.OnReachableStateChanged(getThing());
-                                else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Level)
-                                    mOnThingActionListener.OnDimmerLevelChanged(getThing());
-                            }
-                        }
-                    }
+                    handleThingChangeMessage(getThingChangeMessage(intent), getThingKey());
                 }
             };
             LocalBroadcastManager.getInstance(Globals.getContext()).registerReceiver(mBroadcastReceiver,

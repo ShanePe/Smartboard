@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import shane.pennihome.local.smartboard.comms.Monitor;
-import shane.pennihome.local.smartboard.things.dimmergroup.DimmerGroupBlock;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
 import shane.pennihome.local.smartboard.things.stmodes.SmartThingMode;
 import shane.pennihome.local.smartboard.things.stmodes.SmartThingModeBlock;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.things.switches.SwitchBlock;
+import shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupBlock;
 import shane.pennihome.local.smartboard.things.temperature.Temperature;
 import shane.pennihome.local.smartboard.things.temperature.TemperatureBlock;
 import shane.pennihome.local.smartboard.things.time.TimeBlock;
@@ -26,7 +26,7 @@ public class Blocks extends ArrayList<IBlock> {
         Blocks blocks = new Blocks();
         if (Monitor.getMonitor().getThings().containsType(Switch.class)) {
             blocks.add(new SwitchBlock());
-            blocks.add(new DimmerGroupBlock());
+            blocks.add(new SwitchGroupBlock());
         }
         if (Monitor.getMonitor().getThings().containsType(Routine.class))
             blocks.add(new RoutineBlock());

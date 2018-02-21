@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:padding="4dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+        android:textAppearance="@style/TextAppearance.AppCompat" />
 
     <ImageView
         android:id="@+id/things_select_img"
@@ -24,5 +24,5 @@
         android:layout_height="60dp"
         android:layout_gravity="bottom|center_horizontal"
         android:contentDescription="@string/content_desc_img"
-        app:srcCompat="@mipmap/icon_def_routine_mm" />
+        app:srcCompat="@mipmap/icon_def_time_mm_fg" />
 </FrameLayout>

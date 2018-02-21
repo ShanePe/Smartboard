@@ -8,7 +8,7 @@ import shane.pennihome.local.smartboard.thingsframework.Things;
 
 @SuppressWarnings("DefaultFileTemplate")
 public interface IGroup {
-    Things getThings();
+    Things getChildThings();
 
-    void setThings(Things things);
+    void setChildThings(Things things);
 }

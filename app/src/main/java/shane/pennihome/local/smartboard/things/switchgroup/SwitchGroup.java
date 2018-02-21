@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.things.dimmergroup;
+package shane.pennihome.local.smartboard.things.switchgroup;
 
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
@@ -10,16 +10,16 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  */
 
 @SuppressWarnings("DefaultFileTemplate")
-public class DimmerGroup extends Switch implements IGroup {
+public class SwitchGroup extends Switch implements IGroup {
     private Things mThings = null;
     @SuppressWarnings("FieldCanBeLocal")
     private boolean mLastOnState;
 
-    public static DimmerGroup Load(String json) {
+    public static SwitchGroup Load(String json) {
         try {
-            return IThing.Load(DimmerGroup.class, json);
+            return IThing.Load(SwitchGroup.class, json);
         } catch (Exception e) {
-            return new DimmerGroup();
+            return new SwitchGroup();
         }
     }
 
@@ -30,19 +30,27 @@ public class DimmerGroup extends Switch implements IGroup {
 
     @Override
     public void verifyState(IThing compare) {
-        for (Switch s : getThings().cast(Switch.class))
+        for (Switch s : getChildThings().cast(Switch.class))
             s.verifyState(compare);
     }
 
     @Override
     public void setDimmerLevel(int dimmerLevel, boolean fireBroadcast) {
-        for (Switch s : getThings().cast(Switch.class))
+        for (Switch s : getChildThings().cast(Switch.class))
             s.setDimmerLevel(dimmerLevel, fireBroadcast);
     }
 
     @Override
+    public boolean isDimmer() {
+        for (Switch s : getChildThings().cast(Switch.class))
+            if (!s.isDimmer())
+                return false;
+        return true;
+    }
+
+    @Override
     public void setOn(boolean on, boolean fireBroadcast) {
-        for (Switch s : getThings().cast(Switch.class))
+        for (Switch s : getChildThings().cast(Switch.class))
             if (s.isOn() != on)
                 s.setOn(on, fireBroadcast);
     }
@@ -50,7 +58,7 @@ public class DimmerGroup extends Switch implements IGroup {
     @Override
     public boolean isOn() {
         boolean state = true;
-        for (Switch s : getThings().cast(Switch.class))
+        for (Switch s : getChildThings().cast(Switch.class))
             if (!s.isOn()) {
                 state = false;
                 break;
@@ -62,7 +70,7 @@ public class DimmerGroup extends Switch implements IGroup {
 
     @Override
     public boolean isUnreachable() {
-        for (Switch s : getThings().cast(Switch.class))
+        for (Switch s : getChildThings().cast(Switch.class))
             if (s.isUnreachable())
                 return true;
         return false;
@@ -71,21 +79,21 @@ public class DimmerGroup extends Switch implements IGroup {
     @Override
     public int getDimmerLevel() {
         int level = 0;
-        for (Switch s : getThings().cast(Switch.class))
+        for (Switch s : getChildThings().cast(Switch.class))
             level += s.getDimmerLevel();
 
-        return Math.round(level / getThings().size());
+        return Math.round(level / getChildThings().size());
     }
 
     @Override
-    public Things getThings() {
+    public Things getChildThings() {
         if (mThings == null)
             mThings = new Things();
         return mThings;
     }
 
     @Override
-    public void setThings(Things things) {
+    public void setChildThings(Things things) {
         mThings = things;
     }
 
