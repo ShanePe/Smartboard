@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.Monitor;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
+import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.Template;
 import shane.pennihome.local.smartboard.data.Templates;
@@ -27,6 +29,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IIconBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
 import shane.pennihome.local.smartboard.ui.MultiThingSelector;
 import shane.pennihome.local.smartboard.ui.TemplateProperties;
 import shane.pennihome.local.smartboard.ui.ThingPropertiesIcon;
@@ -37,8 +40,9 @@ import shane.pennihome.local.smartboard.ui.ViewSwiper;
  * Created by shane on 19/02/18.
  */
 
-public class DimmerGroupUIHandler extends IBlockUIHandler {
-    protected DimmerGroupUIHandler(IBlock block) {
+@SuppressWarnings("DefaultFileTemplate")
+class DimmerGroupUIHandler extends IBlockUIHandler {
+    DimmerGroupUIHandler(IBlock block) {
         super(block);
     }
 
@@ -69,13 +73,10 @@ public class DimmerGroupUIHandler extends IBlockUIHandler {
         tpBackground.initialise(getBlock(SwitchBlock.class));
         multiThingSelector.setThings(dimmable);
 
-        if (getBlock().getThing() != null)
-            for (String key : getBlock(DimmerGroupBlock.class).getThingKeys())
-                if (getBlock(DimmerGroupBlock.class).getThings().getByKey(key) == null)
-                    getBlock(DimmerGroupBlock.class).getThings()
-                            .add(Monitor.getMonitor().getThings().getByKey(key));
+        getBlock(DimmerGroupBlock.class).loadThing();
+        getBlock(DimmerGroupBlock.class).loadChildThings();
 
-        multiThingSelector.setSelectedThings(getBlock(DimmerGroupBlock.class).getThings());
+        multiThingSelector.setSelectedThings(getBlock().getThing(DimmerGroup.class).getThings());
         tempProps.setTemplates(Templates.Load(view.getContext()).getForType(IThing.Types.DimmerGroup));
         tempProps.setOnTemplateActionListener(new TemplateProperties.OnTemplateActionListener() {
             @Override
@@ -95,15 +96,17 @@ public class DimmerGroupUIHandler extends IBlockUIHandler {
             TemplateProperties tempProps = (TemplateProperties) viewSwiper.getView(R.id.dg_template);
             MultiThingSelector multiThingSelector = (MultiThingSelector) viewSwiper.getView(R.id.dg_things);
 
-            getBlock().setThing(new DimmerGroup());
+            if (getBlock().getThing() == null)
+                getBlock().setThing(new DimmerGroup());
+
             tbProps.populate((IIconBlock) getBlock(), null);
             tbBackground.populate(getBlock(SwitchBlock.class));
 
             getBlock(DimmerGroupBlock.class).getThingKeys().clear();
-            getBlock(DimmerGroupBlock.class).getThings().clear();
-
             for (IThing t : multiThingSelector.getSelectedThings())
                 getBlock(DimmerGroupBlock.class).getThingKeys().add(t.getKey());
+
+            getBlock().getThing(DimmerGroup.class).getThings().clear();
 
             if (tempProps.isSaveAsTemplate())
                 tempProps.createTemplate(view.getContext(), getBlock());
@@ -155,7 +158,83 @@ public class DimmerGroupUIHandler extends IBlockUIHandler {
 
     @Override
     public void BindViewHolder(BlockViewHolder viewHolder) {
+        if (getBlock().getThing() == null) {
+            viewHolder.itemView.setVisibility(View.GONE);
+            return;
+        }
 
+        final DimmerGroupViewHolder holder = (DimmerGroupViewHolder) viewHolder;
+
+        holder.mTitle.setText(getBlock().getName());
+
+        getBlock().renderForegroundColourToTextView(holder.mTitle);
+        getBlock().renderBackgroundTo(holder.itemView);
+        getBlock().renderUnreachableBackground(holder.itemView);
+        getBlock(DimmerGroupBlock.class).renderIconTo(holder.mIcon);
+        getBlock().startListeningForChanges();
+
+        holder.mDimmer.setProgress(getBlock().getThing(DimmerGroup.class).getDimmerLevel());
+        holder.mDimmer.setEnabled(getBlock().getThing(DimmerGroup.class).isOn());
+
+        holder.itemView.setPadding(Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE || v == holder.mDimmer)
+                    return;
+
+                getBlock().execute(holder.mProgress, new OnProcessCompleteListener<String>() {
+                    @Override
+                    public void complete(boolean success, String source) {
+                        if (!success)
+                            Toast.makeText(holder.itemView.getContext(), "Error:" + source, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        holder.mDimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                getBlock(DimmerGroupBlock.class).execute(holder.mProgress, "level", holder.mDimmer.getProgress(),
+                        new OnProcessCompleteListener<String>() {
+                            @Override
+                            public void complete(boolean success, String source) {
+                                if (!success)
+                                    Toast.makeText(holder.itemView.getContext(), "Error:" + source, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
+
+        getBlock().setOnThingActionListener(new OnThingActionListener() {
+            @Override
+            public void OnReachableStateChanged(IThing thing) {
+                getBlock().renderUnreachableBackground(holder.itemView);
+            }
+
+            @Override
+            public void OnStateChanged(IThing thing) {
+                getBlock().renderForegroundColourToTextView(holder.mTitle);
+                getBlock().renderBackgroundTo(holder.itemView);
+                getBlock().renderUnreachableBackground(holder.itemView);
+                holder.mDimmer.setEnabled(getBlock().getThing(DimmerGroup.class).isOn());
+            }
+
+            @Override
+            public void OnDimmerLevelChanged(IThing thing) {
+                holder.mDimmer.setProgress(getBlock().getThing(DimmerGroup.class).getDimmerLevel());
+            }
+        });
     }
 
     @Override
@@ -174,14 +253,14 @@ public class DimmerGroupUIHandler extends IBlockUIHandler {
     }
 
     public class DimmerGroupEditorHolder extends BlockEditViewHolder {
-        public final FrameLayout mLayout;
-        public final TextView mBaName;
-        public final ImageView mBaImg;
-        public final TextView mBaDevice;
-        public final TextView mBaSize;
+        final FrameLayout mLayout;
+        final TextView mBaName;
+        final ImageView mBaImg;
+        final TextView mBaDevice;
+        final TextView mBaSize;
         //      public final FrameLayout mContainer;
 
-        public DimmerGroupEditorHolder(View view) {
+        DimmerGroupEditorHolder(View view) {
             super(view);
 //            mContainer = view.findViewById(R.id.sw_dashboard_block);
             mLayout = view.findViewById(R.id.dg_block_area);
@@ -198,20 +277,20 @@ public class DimmerGroupUIHandler extends IBlockUIHandler {
     }
 
     public class DimmerGroupViewHolder extends BlockViewHolder {
-        LinearLayoutCompat mContainer;
-        TextView mTitle;
-        ImageView mIcon;
-        ProgressBar mProgress;
-        SeekBar mDimmer;
+        final LinearLayoutCompat mContainer;
+        final TextView mTitle;
+        final ImageView mIcon;
+        final ProgressBar mProgress;
+        final SeekBar mDimmer;
 
-        public DimmerGroupViewHolder(View itemView) {
+        DimmerGroupViewHolder(View itemView) {
             super(itemView);
 
-            mContainer = itemView.findViewById(R.id.bvs_container);
-            mTitle = itemView.findViewById(R.id.bvs_title);
-            mIcon = itemView.findViewById(R.id.bvs_icon);
-            mProgress = itemView.findViewById(R.id.bvs_progress);
-            mDimmer = itemView.findViewById(R.id.bvs_dimmer);
+            mContainer = itemView.findViewById(R.id.bvdg_container);
+            mTitle = itemView.findViewById(R.id.bvdg_title);
+            mIcon = itemView.findViewById(R.id.bvdg_icon);
+            mProgress = itemView.findViewById(R.id.bvdg_progress);
+            mDimmer = itemView.findViewById(R.id.bvdg_dimmer);
         }
     }
 }

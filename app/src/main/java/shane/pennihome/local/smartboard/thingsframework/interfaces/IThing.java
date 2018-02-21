@@ -76,11 +76,11 @@ public abstract class IThing extends IDatabaseObject {
         return executor.execute(this);
     }
 
-    private IExecutor<?> getExecutor() {
+    public IExecutor<?> getExecutor() {
         return getExecutor("");
     }
 
-    IExecutor<?> getExecutor(String id) {
+    public IExecutor<?> getExecutor(String id) {
         IService service = Monitor.getMonitor().getServices().getByType(getServiceType());
         if(service!=null)
             return service.getExecutor(this, id);

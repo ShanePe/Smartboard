@@ -36,9 +36,9 @@ import shane.pennihome.local.smartboard.ui.ViewSwiper;
  */
 
 @SuppressWarnings("ALL")
-public class SwitchBlockHandler extends IBlockUIHandler {
+public class SwitchBlockUIHandler extends IBlockUIHandler {
 
-    public SwitchBlockHandler(IBlock block) {
+    public SwitchBlockUIHandler(IBlock block) {
         super(block);
     }
 

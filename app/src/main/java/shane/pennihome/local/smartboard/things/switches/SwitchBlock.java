@@ -131,7 +131,7 @@ public class SwitchBlock extends IIconBlock {
 
     @Override
     public IBlockUIHandler getUIHandler() {
-        return new SwitchBlockHandler(this);
+        return new SwitchBlockUIHandler(this);
     }
 
     public void renderForegroundColourToTextView(final TextView destination) {

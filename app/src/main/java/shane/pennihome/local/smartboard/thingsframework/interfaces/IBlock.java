@@ -343,12 +343,15 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
     public void loadThing() {
         if ((TextUtils.isEmpty(getThingKey()) || mThing == null) && !IsServiceLess())
             mThing = Monitor.getMonitor().getThings().getByKey(getThingKey());
-        else if (mThing == null && IsServiceLess())
+        else if (mThing == null && IsServiceLess()) {
             try {
                 mThing = IThing.CreateFromType(getThingType());
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        if (this instanceof IGroupBlock)
+            ((IGroupBlock) this).loadChildThings();
     }
 
     public void execute(View indicator, OnProcessCompleteListener<String> onProcessCompleteListener) {
