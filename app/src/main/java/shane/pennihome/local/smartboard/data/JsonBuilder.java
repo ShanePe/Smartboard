@@ -16,6 +16,8 @@ import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeService;
 import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
+import shane.pennihome.local.smartboard.things.routinegroup.RoutineGroup;
+import shane.pennihome.local.smartboard.things.routinegroup.RoutineGroupBlock;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
 import shane.pennihome.local.smartboard.things.stmodes.SmartThingMode;
@@ -56,8 +58,10 @@ public class JsonBuilder {
                         return SmartThingMode.Load(jThing.toString());
                     case "time":
                         return Time.Load(jThing.toString());
-                    case "dimmergroup":
+                    case "switchgroup":
                         return SwitchGroup.Load(jThing.toString());
+                    case "routinegroup":
+                        return RoutineGroup.Load(jThing.toString());
                     default:
                         throw new JsonParseException("Invalid type of thing : " + jThing.get("mInstance").getAsString());
                 }
@@ -66,7 +70,9 @@ public class JsonBuilder {
 
         builder.registerTypeAdapter(IThing.class, new JsonSerializer<IThing>() {
             public JsonElement serialize(IThing src, Type typeOfSrc, JsonSerializationContext context) {
-                if (src instanceof Routine)
+                if (src instanceof RoutineGroup)
+                    return context.serialize((RoutineGroup) src);
+                else if (src instanceof Routine)
                     return context.serialize((Routine) src);
                 else if (src instanceof  Temperature)
                     return context.serialize((Temperature) src);
@@ -101,6 +107,8 @@ public class JsonBuilder {
                         return TimeBlock.Load(jBlock.toString());
                     case "switchgroupblock":
                         return SwitchGroupBlock.Load(jBlock.toString());
+                    case "routinegroupblock":
+                        return RoutineGroupBlock.Load(jBlock.toString());
                     default:
                         throw new JsonParseException("Invalid type of block : " + jBlock.get("mInstance").getAsString());
                 }
@@ -110,7 +118,9 @@ public class JsonBuilder {
         builder.registerTypeAdapter(IBlock.class, new JsonSerializer<IBlock>() {
             @Override
             public JsonElement serialize(IBlock src, Type typeOfSrc, JsonSerializationContext context) {
-                if (src instanceof RoutineBlock)
+                if (src instanceof RoutineGroupBlock)
+                    return context.serialize((RoutineBlock) src);
+                else if (src instanceof RoutineBlock)
                     return context.serialize((RoutineBlock) src);
                 else if (src instanceof TemperatureBlock)
                     return context.serialize((TemperatureBlock) src);

@@ -12,8 +12,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 @SuppressWarnings("DefaultFileTemplate")
 public class SwitchGroup extends Switch implements IGroup {
     private Things mThings = null;
-    @SuppressWarnings("FieldCanBeLocal")
-    private boolean mLastOnState;
 
     public static SwitchGroup Load(String json) {
         try {
@@ -25,7 +23,7 @@ public class SwitchGroup extends Switch implements IGroup {
 
     @Override
     public IThing.Types getThingType() {
-        return IThing.Types.DimmerGroup;
+        return IThing.Types.SwitchGroup;
     }
 
     @Override
@@ -64,7 +62,6 @@ public class SwitchGroup extends Switch implements IGroup {
                 break;
             }
 
-        mLastOnState = state;
         return state;
     }
 

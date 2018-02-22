@@ -29,6 +29,7 @@ import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListen
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
+import shane.pennihome.local.smartboard.things.routinegroup.RoutineGroupBlock;
 import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
 import shane.pennihome.local.smartboard.things.stmodes.SmartThingModeBlock;
 import shane.pennihome.local.smartboard.things.switches.SwitchBlock;
@@ -87,8 +88,10 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
                 return new SmartThingModeBlock();
             case Time:
                 return new TimeBlock();
-            case DimmerGroup:
+            case SwitchGroup:
                 return new SwitchGroupBlock();
+            case RoutineGroup:
+                return new RoutineGroupBlock();
             default:
                 throw new Exception("Invalid Type to create");
         }

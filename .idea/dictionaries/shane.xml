@@ -13,6 +13,8 @@
       <w>bgselector</w>
       <w>blockheight</w>
       <w>brid</w>
+      <w>bvdg</w>
+      <w>bvrg</w>
       <w>bvtm</w>
       <w>cardview</w>
       <w>ccvh</w>
@@ -68,6 +70,7 @@
       <w>recycleview</w>
       <w>retrier</w>
       <w>routineblock</w>
+      <w>rtgroup</w>
       <w>samsung</w>
       <w>seekbar</w>
       <w>serveur</w>

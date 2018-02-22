@@ -59,12 +59,12 @@ public class SwitchGroupBlock extends SwitchBlock implements IGroupBlock {
 
     @Override
     public String getFriendlyName() {
-        return "Dimmer Group";
+        return "Switch Group";
     }
 
     @Override
     public IThing.Types getThingType() {
-        return IThing.Types.DimmerGroup;
+        return IThing.Types.SwitchGroup;
     }
 
     @Override

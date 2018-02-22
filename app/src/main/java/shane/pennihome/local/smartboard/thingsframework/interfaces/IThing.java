@@ -6,6 +6,7 @@ import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
+import shane.pennihome.local.smartboard.things.routinegroup.RoutineGroup;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.stmodes.SmartThingMode;
 import shane.pennihome.local.smartboard.things.switches.Switch;
@@ -43,8 +44,10 @@ public abstract class IThing extends IDatabaseObject {
                 return (T) new SmartThingMode();
             case Time:
                 return (T) new Time();
-            case DimmerGroup:
+            case SwitchGroup:
                 return (T) new SwitchGroup();
+            case RoutineGroup:
+                return (T) new RoutineGroup();
             default:
                 throw new Exception("Invalid Type to create");
         }
@@ -113,6 +116,6 @@ public abstract class IThing extends IDatabaseObject {
     public abstract Types getThingType();
 
     public enum Types {
-        Switch, Routine, Temperature, SmartThingMode, Time, DimmerGroup
+        Switch, Routine, Temperature, SmartThingMode, Time, SwitchGroup, RoutineGroup
     }
 }

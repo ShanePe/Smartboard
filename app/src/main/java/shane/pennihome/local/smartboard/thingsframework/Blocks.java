@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import shane.pennihome.local.smartboard.comms.Monitor;
+import shane.pennihome.local.smartboard.things.routinegroup.RoutineGroupBlock;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
 import shane.pennihome.local.smartboard.things.stmodes.SmartThingMode;
@@ -28,8 +29,10 @@ public class Blocks extends ArrayList<IBlock> {
             blocks.add(new SwitchBlock());
             blocks.add(new SwitchGroupBlock());
         }
-        if (Monitor.getMonitor().getThings().containsType(Routine.class))
+        if (Monitor.getMonitor().getThings().containsType(Routine.class)) {
             blocks.add(new RoutineBlock());
+            blocks.add((new RoutineGroupBlock()));
+        }
         if(Monitor.getMonitor().getThings().containsType(Temperature.class))
             blocks.add((new TemperatureBlock()));
         if (Monitor.getMonitor().getThings().containsType(SmartThingMode.class))

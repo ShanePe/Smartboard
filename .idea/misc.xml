@@ -979,6 +979,22 @@
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.thingsframework.Things$6 java.util.Iterator&lt;T&gt; iterator()" />
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroup mLastOnState" />
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupUIHandler.DimmerGroupViewHolder mContainer" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing.Types RoutineGroup" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IThing.Types SwitchGroup" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.routinegroup.RoutineGroupUIHandler.RoutineGroupViewHolder mContainer" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupUIHandler.SwitchGroupViewHolder mContainer" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.time.TimeUIHandler.TimeViewHolder mTimerThread" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.time.TimeUIHandler.TimeViewHolder mBgImg" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.time.TimeUIHandler.TimeViewHolder mValue" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.time.TimeUIHandler.TimeViewHolder mContainer" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.time.TimeUIHandler.TimeEditorHolder mBaSize" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.time.TimeUIHandler.TimeEditorHolder mBaImg" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.time.TimeUIHandler.TimeEditorHolder mBaName" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.things.time.TimeUIHandler.TimeEditorHolder mLayout" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.time.TimeUIHandler$4$1 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.time.TimeUIHandler$4 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.time.TimeUIHandler$2 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.time.TimeUIHandler$1 void OnTemplateSelected(shane.pennihome.local.smartboard.data.Template template)" />
     </entry_points>
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="setOnValueChangedListener" />
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="getDimension" />
@@ -3131,6 +3147,26 @@
     <pattern value="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroup" />
     <pattern value="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupUIHandler.DimmerGroupViewHolder" />
     <pattern value="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupUIHandler" />
+    <pattern value="shane.pennihome.local.smartboard.things.routinegroup.RoutineGroupUIHandler.RoutineGroupViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.routinegroup.RoutineGroupUIHandler" />
+    <pattern value="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupUIHandler.SwitchGroupViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupUIHandler" method="SwitchGroupUIHandler" />
+    <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler.TimeViewHolder" method="TimeViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler.TimeViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler.TimeEditorHolder" method="toString" />
+    <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler.TimeEditorHolder" method="TimeEditorHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler.TimeEditorHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler" method="getEditorWindowLayoutID" />
+    <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler" method="getViewLayoutID" />
+    <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler" method="getEditLayoutID" />
+    <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler" method="BindViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler" method="BindEditHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler" method="GetViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler" method="GetEditHolder" />
+    <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler" method="buildBlockFromEditorWindowView" />
+    <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler" method="buildEditorWindowView" />
+    <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler" method="TimeUIHandler" />
+    <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

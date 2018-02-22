@@ -139,7 +139,7 @@ class TimeUIHandler extends IBlockUIHandler {
         holder.mBgImg.post(new Runnable() {
             @Override
             public void run() {
-                Drawable drawable = holder.mBgImg.getResources().getDrawable(R.mipmap.icon_def_time_mm_fg, null);
+                Drawable drawable = holder.mBgImg.getResources().getDrawable(R.mipmap.icon_time_mm_fg, null);
                 drawable.setAlpha(50);
                 drawable.setColorFilter(getBlock().getForegroundColour(), PorterDuff.Mode.SRC_ATOP);
                 holder.mBgImg.setImageDrawable(drawable);

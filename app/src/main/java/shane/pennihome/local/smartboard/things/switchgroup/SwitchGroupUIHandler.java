@@ -71,7 +71,7 @@ class SwitchGroupUIHandler extends IBlockUIHandler {
         getBlock(SwitchGroupBlock.class).loadThing();
 
         multiThingSelector.setSelectedThings(getBlock().getThing(SwitchGroup.class).getChildThings());
-        tempProps.setTemplates(Templates.Load(view.getContext()).getForType(IThing.Types.DimmerGroup));
+        tempProps.setTemplates(Templates.Load(view.getContext()).getForType(IThing.Types.SwitchGroup));
         tempProps.setOnTemplateActionListener(new TemplateProperties.OnTemplateActionListener() {
             @Override
             public void OnTemplateSelected(Template template) {
@@ -234,17 +234,17 @@ class SwitchGroupUIHandler extends IBlockUIHandler {
 
     @Override
     public int getEditLayoutID() {
-        return R.layout.block_edit_dimmergroup;
+        return R.layout.block_edit_switchgroup;
     }
 
     @Override
     public int getViewLayoutID() {
-        return R.layout.block_view_dimmergroup;
+        return R.layout.block_view_switchgroup;
     }
 
     @Override
     public int getEditorWindowLayoutID() {
-        return R.layout.prop_dimmergroup;
+        return R.layout.prop_switchgroup;
     }
 
     public class SwitchGroupEditorHolder extends BlockEditViewHolder {
@@ -253,11 +253,10 @@ class SwitchGroupUIHandler extends IBlockUIHandler {
         final ImageView mBaImg;
         final TextView mBaDevice;
         final TextView mBaSize;
-        //      public final FrameLayout mContainer;
 
         SwitchGroupEditorHolder(View view) {
             super(view);
-//            mContainer = view.findViewById(R.id.sw_dashboard_block);
+
             mLayout = view.findViewById(R.id.dg_block_area);
             mBaName = view.findViewById(R.id.dg_ba_name);
             mBaImg = view.findViewById(R.id.dg_ba_image);
