@@ -10,6 +10,14 @@
     tools:context="shane.pennihome.local.smartboard.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <ProgressBar
+        android:id="@+id/db_load_progress"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
     <shane.pennihome.local.smartboard.ui.DashboardLayout
         android:id="@+id/dl_main"
         android:layout_width="match_parent"

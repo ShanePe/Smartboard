@@ -29,6 +29,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -423,61 +424,75 @@ public class UIHelper {
     }
 
     public static Drawable generateImage(Context context, @ColorInt int backClr, int backClrAlphaPerc, Bitmap image, int imageAlphaPerc, int width, int height, boolean roundCrns, ImageRenderTypes imageRenderType) {
-        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+        Bitmap bitmap = null;
+        Canvas canvas = null;
+        Bitmap scaled = null;
 
-        if (width == 0 || height == 0 || width > metrics.widthPixels || height > metrics.heightPixels) {
-            width = metrics.widthPixels;
-            height = metrics.heightPixels;
-        }
+        try {
+            DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
 
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
+            if (width == 0 || height == 0 || width > metrics.widthPixels || height > metrics.heightPixels) {
+                width = metrics.widthPixels;
+                height = metrics.heightPixels;
+            }
+            Log.i(Globals.ACTIVITY, String.format("Generating image : %s x %s", width, height));
+            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            canvas = new Canvas(bitmap);
 
-        if (backClr != 0 && image == null) {
-            Paint paint = new Paint();
-            paint.setColor(getColorWithAlpha(backClr, backClrAlphaPerc / 100f));
-            paint.setStyle(Paint.Style.FILL);
-            canvas.drawPaint(paint);
-        } else if (image != null) {
-            if (imageRenderType == null)
-                imageRenderType = ImageRenderTypes.Center;
-
-            Bitmap scaled = scaleDownBitmap(image, width, height, imageRenderType == ImageRenderTypes.Center);
-            if (roundCrns)
-                scaled = getRoundedCornerBitmap(scaled, 4);
-
-            Rect src = new Rect(0, 0, scaled.getWidth(), scaled.getHeight());
-            Rect dest = null;
-
-            if (imageRenderType == ImageRenderTypes.Center) {
-                int destLeft = (width - scaled.getWidth()) / 2;
-                int destTop = (height - scaled.getHeight()) / 2;
-
-                dest = new Rect(destLeft, destTop, scaled.getWidth() + destLeft, scaled.getHeight() + destTop);
-            } else if (imageRenderType == ImageRenderTypes.Stretch)
-                dest = new Rect(0, 0, width, height);
-
-            Paint paint = new Paint();
-            //canvas.clipRect(dest);
-            if (backClr != 0) {
+            if (backClr != 0 && image == null) {
+                Paint paint = new Paint();
                 paint.setColor(getColorWithAlpha(backClr, backClrAlphaPerc / 100f));
                 paint.setStyle(Paint.Style.FILL);
-                if (roundCrns) {
-                    RectF rectF = new RectF(dest);
-                    canvas.drawRoundRect(rectF, 4, 4, paint);
-                } else
-                    canvas.drawPaint(paint);
+                canvas.drawPaint(paint);
+            } else if (image != null) {
+                if (imageRenderType == null)
+                    imageRenderType = ImageRenderTypes.Center;
+
+                scaled = scaleDownBitmap(image, width, height, imageRenderType == ImageRenderTypes.Center);
+                if (roundCrns)
+                    scaled = getRoundedCornerBitmap(scaled, 4);
+
+                Rect src = new Rect(0, 0, scaled.getWidth(), scaled.getHeight());
+                Rect dest = null;
+
+                if (imageRenderType == ImageRenderTypes.Center) {
+                    int destLeft = (width - scaled.getWidth()) / 2;
+                    int destTop = (height - scaled.getHeight()) / 2;
+
+                    dest = new Rect(destLeft, destTop, scaled.getWidth() + destLeft, scaled.getHeight() + destTop);
+                } else if (imageRenderType == ImageRenderTypes.Stretch)
+                    dest = new Rect(0, 0, width, height);
+
+                Paint paint = new Paint();
+                //canvas.clipRect(dest);
+                if (backClr != 0) {
+                    paint.setColor(getColorWithAlpha(backClr, backClrAlphaPerc / 100f));
+                    paint.setStyle(Paint.Style.FILL);
+                    if (roundCrns) {
+                        RectF rectF = new RectF(dest);
+                        canvas.drawRoundRect(rectF, 4, 4, paint);
+                    } else
+                        canvas.drawPaint(paint);
+                }
+                if (imageAlphaPerc > 0)
+                    paint.setAlpha(255 / 100 * imageAlphaPerc);
+
+                canvas.drawBitmap(scaled, src, dest, paint);
             }
-            if (imageAlphaPerc > 0)
-                paint.setAlpha(255 / 100 * imageAlphaPerc);
 
-            canvas.drawBitmap(scaled, src, dest, paint);
+            if (roundCrns && image == null)
+                return new BitmapDrawable(context.getResources(), getRoundedCornerBitmap(bitmap, 4));
+            else
+                return new BitmapDrawable(context.getResources(), bitmap);
+        } finally {
+            Log.i(Globals.ACTIVITY, "generateImage: Disposing");
+            if (bitmap != null)
+                bitmap = null;
+            if (canvas != null)
+                canvas = null;
+            if (scaled != null)
+                scaled = null;
         }
-
-        if (roundCrns && image == null)
-            return new BitmapDrawable(context.getResources(), getRoundedCornerBitmap(bitmap, 4));
-        else
-            return new BitmapDrawable(context.getResources(), bitmap);
     }
 
 //    public static Bitmap scaleDownBitmap(Bitmap realImage, float maxImageSize,

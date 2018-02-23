@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -12,7 +13,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.CookieManager;
+import android.widget.ProgressBar;
 
 import java.util.List;
 
@@ -35,10 +38,12 @@ import shane.pennihome.local.smartboard.ui.DashboardLayout;
 
 @SuppressWarnings("unused")
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private Dashboards mDashboards;
     private DashboardLayout mDashboardLayout;
+    private ProgressBar mDashboardLoader;
+    private Thread mDashboardRender;
 
     @Override
     protected void onPostResume() {
@@ -51,9 +56,6 @@ public class MainActivity extends AppCompatActivity
                 Monitor.getMonitor().verifyThings();
                 if (!Monitor.getMonitor().isRunning())
                     Monitor.getMonitor().start();
-
-                if (mDashboards == null)
-                    populateDashbboards();
             }
         super.onPostResume();
     }
@@ -82,13 +84,12 @@ public class MainActivity extends AppCompatActivity
         CookieManager.getInstance().setAcceptCookie(true);
 
         mDashboardLayout = findViewById(R.id.dl_main);
+        mDashboardLoader = findViewById(R.id.db_load_progress);
 
         init(savedInstanceState);
     }
 
     private void init(Bundle savedInstanceState) {
-        //DBEngine db = new DBEngine(this);
-        //db.cleanDataStore();
         if (savedInstanceState != null) {
             String monitor = savedInstanceState.getString("monitor");
             if (monitor != null) {
@@ -98,8 +99,7 @@ public class MainActivity extends AppCompatActivity
                 } catch (Exception ignored) {
                     Monitor.reset();
                 }
-            }
-            else
+            } else
                 Monitor.reset();
         }
 
@@ -161,8 +161,55 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        mDashboardLayout.setVisibility(View.GONE);
+        mDashboardLayout.reset();
+
+        if (mDashboardRender != null) {
+            mDashboardRender.interrupt();
+            mDashboardRender = null;
+        }
+
+        mDashboardRender = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                    populateDashbboards();
+                } catch (Exception ignored) {
+                } finally {
+                    mDashboardRender = null;
+                }
+            }
+        });
+        mDashboardRender.start();
+        super.onConfigurationChanged(newConfig);
+    }
+
     public void populateDashbboards() {
-        DBEngine db = new DBEngine(this);
+        final DBEngine db = new DBEngine(this);
+
+        mDashboardLoader.post(new Runnable() {
+            @Override
+            public void run() {
+                mDashboardLoader.setVisibility(View.VISIBLE);
+            }
+        });
+
+        final OnProcessCompleteListener progComplete = new OnProcessCompleteListener() {
+            @Override
+            public void complete(boolean success, Object source) {
+                mDashboardLoader.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDashboardLoader.setVisibility(View.GONE);
+                        mDashboardLayout.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        };
+
         if (mDashboards == null)
             mDashboards = new Dashboards();
         else
@@ -177,8 +224,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void run() {
                 mDashboardLayout.setDashboards(mDashboards);
+                System.gc();
+                progComplete.complete(true, null);
             }
         });
+
     }
 
     private void smartThingsConnect() {
@@ -188,8 +238,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
-        //populateDashbboards();
-
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
             actionBar.hide();
@@ -212,14 +260,6 @@ public class MainActivity extends AppCompatActivity
         ft.replace(R.id.content_main, fragment);
         ft.commit();
     }
-
-//    private void hueBridgeConnect() {
-//        final HueBridgeFragment fragment = new HueBridgeFragment();
-//        //noinspection unchecked
-//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("huebridgeConnect");
-//        ft.replace(R.id.content_main, fragment);
-//        ft.commit();
-//    }
 
     public void backToMainActivity() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

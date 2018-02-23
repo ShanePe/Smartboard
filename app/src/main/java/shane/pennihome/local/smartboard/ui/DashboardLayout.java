@@ -64,6 +64,15 @@ public class DashboardLayout extends LinearLayoutCompat {
 
     }
 
+    public void reset() {
+        if (mViewSwiper != null)
+            if (mViewSwiper.getViewAdapter() != null) {
+                mViewSwiper.getViewAdapter().mViewCache.clear();
+                mViewSwiper.getViewAdapter().mTabs.clear();
+                mViewSwiper.getViewAdapter().notifyDataSetChanged();
+            }
+    }
+
     private void doPropertyChange() {
         if (getDashboards() != null) {
             mViewSwiper.clear();
