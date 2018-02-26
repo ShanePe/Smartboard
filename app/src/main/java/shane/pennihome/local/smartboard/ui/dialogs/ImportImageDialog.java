@@ -1,8 +1,10 @@
 package shane.pennihome.local.smartboard.ui.dialogs;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -39,17 +41,40 @@ public class ImportImageDialog extends DialogFragment {
         return frag;
     }
 
-    private static String getFileFromIntent(Context context, Intent data, int code) {
-        String result = "";
-        if (code == IMAGE_RESULT) {
-            result = UIHelper.saveImage(context, data.getData());
-        } else if (code == CAMERA_RESULT) {
-            Bundle extras = data.getExtras();
-            assert extras != null;
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            result = UIHelper.saveBitmap(context, imageBitmap);
-        }
-        return result;
+    @SuppressLint("StaticFieldLeak")
+    private static void getFileFromIntent(final Context context, final Intent data, final int code, final OnProcessCompleteListener<String> onProcessCompleteListener) {
+        new AsyncTask<Void, Void, String>() {
+            ProgressDialog dialog;
+
+            @Override
+            protected String doInBackground(Void... voids) {
+                String result = "";
+                if (code == IMAGE_RESULT) {
+                    result = UIHelper.saveImage(context, data.getData());
+                } else if (code == CAMERA_RESULT) {
+                    Bundle extras = data.getExtras();
+                    assert extras != null;
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    result = UIHelper.saveBitmap(context, imageBitmap);
+                }
+                return result;
+            }
+
+            @Override
+            protected void onPreExecute() {
+                dialog = new ProgressDialog();
+                dialog.setMessage("Loading image ...");
+                dialog.show(context);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (onProcessCompleteListener != null)
+                    onProcessCompleteListener.complete(true, s);
+                if (dialog != null)
+                    dialog.dismiss();
+            }
+        }.execute();
     }
 
     private void setOnProcessCompleteListener(OnProcessCompleteListener<String> onProcessCompleteListener) {
@@ -88,15 +113,21 @@ public class ImportImageDialog extends DialogFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (mOnProcessCompleteListener != null && resultCode == RESULT_OK)
-            mOnProcessCompleteListener.complete(true, getFileFromIntent(getActivity(), data, requestCode));
-
-        Handler dismisser = new Handler();
-        dismisser.post(new Runnable() {
-            @Override
-            public void run() {
-                getDialog().dismiss();
-            }
-        });
+        if (mOnProcessCompleteListener != null && resultCode == RESULT_OK) {
+            getFileFromIntent(getActivity(), data, requestCode, new OnProcessCompleteListener<String>() {
+                @Override
+                public void complete(boolean success, String source) {
+                    if (success)
+                        mOnProcessCompleteListener.complete(true, source);
+                    Handler dismisser = new Handler();
+                    dismisser.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            getDialog().dismiss();
+                        }
+                    });
+                }
+            });
+        }
     }
 }

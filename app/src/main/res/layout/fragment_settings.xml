@@ -1,0 +1,22 @@
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/repeaterListStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="shane.pennihome.local.smartboard.fragments.SettingsFragment">
+
+    <shane.pennihome.local.smartboard.ui.GroupTitle
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/lbl_data" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_set_clr_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_round_dark"
+        android:padding="4dp"
+        android:text="@string/lbl_clear_data_store" />
+</android.support.v7.widget.LinearLayoutCompat>

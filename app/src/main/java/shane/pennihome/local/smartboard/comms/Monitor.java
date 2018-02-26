@@ -175,12 +175,18 @@ public class Monitor {
     }
 
     public void verifyThings() {
+        verifyThings(null);
+    }
+
+    public void verifyThings(final OnProcessCompleteListener onProcessCompleteListener) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     Thread.sleep(1000);
                     updateThingsFromService();
+                    if (onProcessCompleteListener != null)
+                        onProcessCompleteListener.complete(true, null);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

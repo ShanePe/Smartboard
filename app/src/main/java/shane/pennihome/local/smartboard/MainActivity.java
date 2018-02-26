@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import java.util.List;
@@ -30,6 +32,7 @@ import shane.pennihome.local.smartboard.fragments.DashboardFragment;
 import shane.pennihome.local.smartboard.fragments.DeviceFragment;
 import shane.pennihome.local.smartboard.fragments.RoutineFragment;
 import shane.pennihome.local.smartboard.fragments.ServicesFragment;
+import shane.pennihome.local.smartboard.fragments.SettingsFragment;
 import shane.pennihome.local.smartboard.fragments.TemplateFragment;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
 import shane.pennihome.local.smartboard.services.ServiceManager;
@@ -71,7 +74,7 @@ public class MainActivity extends AppCompatActivity
         if (actionBar != null)
             actionBar.hide();
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -86,7 +89,55 @@ public class MainActivity extends AppCompatActivity
         mDashboardLayout = findViewById(R.id.dl_main);
         mDashboardLoader = findViewById(R.id.db_load_progress);
 
+        View headerView = navigationView.getHeaderView(0);
+        ImageButton btnHome = headerView.findViewById(R.id.mnu_btn_home);
+        ImageButton btnRefresh = headerView.findViewById(R.id.mnu_btn_refresh);
+        ImageButton btnSettings = headerView.findViewById(R.id.mnu_btn_opts);
+
+        btnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goHome();
+            }
+        });
+
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goHome();
+                mDashboardLoader.setVisibility(View.VISIBLE);
+                Monitor.getMonitor().verifyThings(new OnProcessCompleteListener() {
+                    @Override
+                    public void complete(boolean success, Object source) {
+                        populateDashbboards();
+                    }
+                });
+            }
+        });
+
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSettings();
+                drawer.closeDrawers();
+            }
+        });
+
         init(savedInstanceState);
+    }
+
+    private void goHome() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+        FragmentManager fm = getSupportFragmentManager();
+        for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
+        }
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
+            actionBar.hide();
+
+        drawer.closeDrawers();
     }
 
     private void init(Bundle savedInstanceState) {
@@ -129,7 +180,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (!handled) {
-
             DrawerLayout drawer = findViewById(R.id.drawer_layout);
             if (drawer.isDrawerOpen(GravityCompat.START)) {
                 drawer.closeDrawer(GravityCompat.START);
@@ -189,7 +239,7 @@ public class MainActivity extends AppCompatActivity
 
     public void populateDashbboards() {
         final DBEngine db = new DBEngine(this);
-
+        //db.cleanDataStore();
         mDashboardLoader.post(new Runnable() {
             @Override
             public void run() {
@@ -243,6 +293,14 @@ public class MainActivity extends AppCompatActivity
             actionBar.hide();
 
         super.onResume();
+    }
+
+    private void showSettings() {
+        final SettingsFragment fragment = new SettingsFragment();
+        //noinspection unchecked
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("settings");
+        ft.replace(R.id.content_main, fragment);
+        ft.commit();
     }
 
     private void serviceList() {

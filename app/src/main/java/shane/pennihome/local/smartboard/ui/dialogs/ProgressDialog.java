@@ -1,6 +1,7 @@
 package shane.pennihome.local.smartboard.ui.dialogs;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import shane.pennihome.local.smartboard.R;
@@ -39,6 +41,7 @@ public class ProgressDialog extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setCancelable(false);
+
     }
 
     @Nullable
@@ -57,5 +60,13 @@ public class ProgressDialog extends DialogFragment {
             FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
             this.show(fragmentManager, Globals.ACTIVITY);
         }
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog d = super.onCreateDialog(savedInstanceState);
+        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        return d;
     }
 }

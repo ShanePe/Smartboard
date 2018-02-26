@@ -38,6 +38,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
 }
 
+
 allprojects {
     tasks.withType(JavaCompile) {
         options.compilerArgs << "-Xlint:deprecation"

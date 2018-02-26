@@ -596,7 +596,7 @@ public class UIHelper {
         });
 
         //builder.setCancelable(false);
-        builder.setIcon(R.mipmap.icon_add_mm_fg);
+        builder.setIcon(R.mipmap.icon_mnu_def_settings_fg);
         builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
