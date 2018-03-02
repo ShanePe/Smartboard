@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -38,6 +39,7 @@ import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
 import shane.pennihome.local.smartboard.services.ServiceManager;
 import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 import shane.pennihome.local.smartboard.ui.DashboardLayout;
+import shane.pennihome.local.smartboard.ui.dialogs.ProgressDialog;
 
 @SuppressWarnings("unused")
 public class MainActivity extends AppCompatActivity
@@ -56,9 +58,25 @@ public class MainActivity extends AppCompatActivity
 
         if (Monitor.IsInstaniated())
             if (Monitor.getMonitor().isLoaded()) {
-                Monitor.getMonitor().verifyThings();
-                if (!Monitor.getMonitor().isRunning())
-                    Monitor.getMonitor().start();
+                final ProgressDialog progressDialog = new ProgressDialog();
+                progressDialog.setMessage("Refreshing...");
+                progressDialog.show(this);
+
+                Monitor.getMonitor().verifyThings(new OnProcessCompleteListener() {
+                    @Override
+                    public void complete(boolean success, Object source) {
+                        if (!Monitor.getMonitor().isRunning())
+                            Monitor.getMonitor().start();
+
+                        progressDialog.dismiss();
+
+                        if (mDashboards == null)
+                            renderDashboards();
+                        else if (mDashboards.size() == 0)
+                            renderDashboards();
+                    }
+                });
+
             }
         super.onPostResume();
     }
@@ -109,7 +127,7 @@ public class MainActivity extends AppCompatActivity
                 Monitor.getMonitor().verifyThings(new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
-                        populateDashbboards();
+                        renderDashboards();
                     }
                 });
             }
@@ -126,7 +144,7 @@ public class MainActivity extends AppCompatActivity
         init(savedInstanceState);
     }
 
-    private void goHome() {
+    public void goHome() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         FragmentManager fm = getSupportFragmentManager();
@@ -146,7 +164,7 @@ public class MainActivity extends AppCompatActivity
             if (monitor != null) {
                 try {
                     Monitor.Create(monitor);
-                    populateDashbboards();
+                    renderDashboards();
                 } catch (Exception ignored) {
                     Monitor.reset();
                 }
@@ -158,7 +176,7 @@ public class MainActivity extends AppCompatActivity
             Monitor.Create(this, new OnProcessCompleteListener<Void>() {
                 @Override
                 public void complete(boolean success, Void source) {
-                    populateDashbboards();
+                    renderDashboards();
                 }
             });
 
@@ -213,28 +231,38 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        mDashboardLayout.setVisibility(View.GONE);
-        mDashboardLayout.reset();
+        super.onConfigurationChanged(newConfig);
+        renderDashboards();
+    }
 
-        if (mDashboardRender != null) {
-            mDashboardRender.interrupt();
-            mDashboardRender = null;
-        }
-
-        mDashboardRender = new Thread(new Runnable() {
+    private void renderDashboards() {
+        mDashboardLayout.post(new Runnable() {
             @Override
             public void run() {
-                try {
-                    Thread.sleep(1000);
-                    populateDashbboards();
-                } catch (Exception ignored) {
-                } finally {
+
+                mDashboardLayout.setVisibility(View.GONE);
+                mDashboardLayout.reset();
+
+                if (mDashboardRender != null) {
+                    mDashboardRender.interrupt();
                     mDashboardRender = null;
                 }
+
+                mDashboardRender = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1000);
+                            populateDashbboards();
+                        } catch (Exception ignored) {
+                        } finally {
+                            mDashboardRender = null;
+                        }
+                    }
+                });
+                mDashboardRender.start();
             }
         });
-        mDashboardRender.start();
-        super.onConfigurationChanged(newConfig);
     }
 
     public void populateDashbboards() {
@@ -276,9 +304,12 @@ public class MainActivity extends AppCompatActivity
                 mDashboardLayout.setDashboards(mDashboards);
                 System.gc();
                 progComplete.complete(true, null);
+                if (mDashboards.size() == 0) {
+                    DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                    drawer.openDrawer(Gravity.NO_GRAVITY);
+                }
             }
         });
-
     }
 
     private void smartThingsConnect() {
@@ -317,16 +348,6 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("templateList");
         ft.replace(R.id.content_main, fragment);
         ft.commit();
-    }
-
-    public void backToMainActivity() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.remove(getSupportFragmentManager().findFragmentById(R.id.content_main));
-        ft.commit();
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
-            actionBar.hide();
     }
 
     private void deviceList() {
@@ -371,6 +392,20 @@ public class MainActivity extends AppCompatActivity
                     outState.putString("monitor", Monitor.getMonitor().toJson());
             }
         } catch (Exception ignored) {
+        }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            mDashboardLayout.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
     }
 }

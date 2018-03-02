@@ -70,12 +70,16 @@ public class SwitchGroup extends Switch implements IGroup {
         for (Switch s : getChildThings().cast(Switch.class))
             if (s.isUnreachable())
                 return true;
-        return false;
+
+        return getChildThings().size() == 0;
     }
 
     @Override
     public int getDimmerLevel() {
         int level = 0;
+        if (getChildThings().size() == 0)
+            return 0;
+
         for (Switch s : getChildThings().cast(Switch.class))
             level += s.getDimmerLevel();
 
@@ -86,6 +90,10 @@ public class SwitchGroup extends Switch implements IGroup {
     public Things getChildThings() {
         if (mThings == null)
             mThings = new Things();
+
+        for (int i = mThings.size() - 1; i >= 0; i--)
+            if (mThings.get(i) == null)
+                mThings.remove(i);
         return mThings;
     }
 

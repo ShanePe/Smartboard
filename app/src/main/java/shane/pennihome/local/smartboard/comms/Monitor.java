@@ -82,7 +82,9 @@ public class Monitor {
     }
 
     public boolean isRunning() {
-        return mMonitorThread != null;
+        if (mMonitorThread == null)
+            return false;
+        return mMonitorThread.getState() != Thread.State.TERMINATED;
     }
 
     public Services getServices() {
@@ -159,14 +161,18 @@ public class Monitor {
         mMonitorThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(1000 * Monitor.SECOND_CHECK);
-                        updateThingsFromService();
-                    } catch (InterruptedException ieu) {
-                        break;
-                    } catch (Exception ex) {
+                try {
+                    while (true) {
+                        try {
+                            Thread.sleep(1000 * Monitor.SECOND_CHECK);
+                            updateThingsFromService();
+                        } catch (InterruptedException ieu) {
+                            break;
+                        } catch (Exception ex) {
+                        }
                     }
+                } finally {
+                    mMonitorThread = null;
                 }
             }
         });

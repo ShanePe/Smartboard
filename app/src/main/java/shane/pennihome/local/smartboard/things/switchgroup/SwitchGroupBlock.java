@@ -83,8 +83,11 @@ public class SwitchGroupBlock extends SwitchBlock implements IGroupBlock {
 
         SwitchGroup group = (SwitchGroup) getThing();
         group.getChildThings().clear();
-        for (String key : getThingKeys())
-            group.getChildThings().add(Monitor.getMonitor().getThings().getByKey(key));
+        for (String key : getThingKeys()) {
+            IThing thing = Monitor.getMonitor().getThings().getByKey(key);
+            if (thing != null)
+                group.getChildThings().add(thing);
+        }
     }
 
     @SuppressLint("StaticFieldLeak")

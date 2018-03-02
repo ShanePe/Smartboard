@@ -273,8 +273,7 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
     public abstract IBlockUIHandler getUIHandler();
 
     @ColorInt
-    public int getBackgroundColourWithAlpha()
-    {
+    public int getBackgroundColourWithAlpha() {
         return UIHelper.getColorWithAlpha(getBackgroundColour(), getBackgroundColourTransparency() / 100f);
     }
 
@@ -291,19 +290,18 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
         destination.post(new Runnable() {
             @Override
             public void run() {
-            destination.setBackground(getBackgroundDrawable(destination));
-            destination.invalidate();
+                destination.setBackground(getBackgroundDrawable(destination));
+                destination.invalidate();
             }
         });
     }
 
-    private Drawable getBackgroundDrawable(View destination)
-    {
+    private Drawable getBackgroundDrawable(View destination) {
         Bitmap bitmap = null;
         if (!TextUtils.isEmpty(getBackgroundImage()))
             bitmap = BitmapFactory.decodeFile(getBackgroundImage());
 
-       return UIHelper.generateImage(
+        return UIHelper.generateImage(
                 destination.getContext(),
                 getBackgroundColour(),
                 getBackgroundColourTransparency(),
@@ -315,46 +313,58 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
                 getBackgroundImageRenderType());
     }
 
-    public void renderTemplateBlip(final ImageView destination)
-    {
+    public void renderTemplateBlip(final ImageView destination) {
         destination.post(new Runnable() {
             @Override
             public void run() {
                 destination.setImageDrawable(UIHelper.createColourBlocks(destination.getContext(),
-                        new int[]{getBackgroundColourWithAlpha(), getForegroundColour()},20,20));
+                        new int[]{getBackgroundColourWithAlpha(), getForegroundColour()}, 20, 20));
                 destination.invalidate();
             }
         });
     }
 
-    public void renderTemplateBackgroundTo(final View destination)
-    {
+    public void renderTemplateBackgroundTo(final View destination) {
         destination.post(new Runnable() {
             @Override
             public void run() {
 
                 Drawable background = getBackgroundDrawable(destination);
-                Bitmap bitmap = ((BitmapDrawable)background).getBitmap();
+                Bitmap bitmap = ((BitmapDrawable) background).getBitmap();
                 Canvas canvas = new Canvas(bitmap);
                 Paint paint = new Paint();
                 paint.setColor(getForegroundColour());
-                canvas.drawRect(new Rect(bitmap.getWidth()-20,bitmap.getHeight()-20,bitmap.getWidth()-10,bitmap.getHeight()-10 ), paint);
+                canvas.drawRect(new Rect(bitmap.getWidth() - 20, bitmap.getHeight() - 20, bitmap.getWidth() - 10, bitmap.getHeight() - 10), paint);
                 destination.setBackground(new BitmapDrawable(destination.getResources(), bitmap));
                 destination.invalidate();
             }
         });
     }
 
-    public void renderUnreachableBackground(final View view) {
-        if(getThing()!=null)
-             if(!getThing().isUnreachable())
-                 view.post(new Runnable() {
-                     @Override
-                     public void run() {
-                         view.getBackground().setColorFilter(UIHelper.getDefaultForegroundColour(), PorterDuff.Mode.DARKEN);
-                     }
-                 });
+    private void doUnreachable(final View view) {
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                view.setEnabled(false);
+                view.setBackgroundColor(Color.parseColor("#424242"));
+            }
+        });
+    }
 
+    public void renderUnreachableBackground(final View view) {
+        if (getThing() != null) {
+            if (!getThing().isUnreachable()) {
+                view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.setEnabled(true);
+                        view.getBackground().setColorFilter(UIHelper.getDefaultForegroundColour(), PorterDuff.Mode.DARKEN);
+                    }
+                });
+            } else
+                doUnreachable(view);
+        } else
+            doUnreachable(view);
     }
 
     public boolean IsServiceLess() {
@@ -398,8 +408,7 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
         super.finalize();
     }
 
-    private static class BlockExecutor extends AsyncTask<IThing, Void, JsonExecutorResult>
-    {
+    private static class BlockExecutor extends AsyncTask<IThing, Void, JsonExecutorResult> {
         View mProgressIndicator;
         OnProcessCompleteListener<String> mOnProcessCompleteListener;
         IExecutor<?> mExecutor;
@@ -412,20 +421,20 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
 
         @Override
         protected void onPreExecute() {
-            if(mProgressIndicator != null)
+            if (mProgressIndicator != null)
                 mProgressIndicator.setVisibility(View.VISIBLE);
         }
 
         @Override
         protected void onPostExecute(JsonExecutorResult jsonExecutorResult) {
-            if(mProgressIndicator != null)
+            if (mProgressIndicator != null)
                 mProgressIndicator.setVisibility(View.INVISIBLE);
 
-            if(!jsonExecutorResult.isSuccess())
+            if (!jsonExecutorResult.isSuccess())
                 if (mProgressIndicator != null)
                     Toast.makeText(mProgressIndicator.getContext(), "Error executing : " + jsonExecutorResult.getError().getMessage(), Toast.LENGTH_LONG).show();
 
-            if(mOnProcessCompleteListener != null)
+            if (mOnProcessCompleteListener != null)
                 mOnProcessCompleteListener.complete(jsonExecutorResult.isSuccess(), jsonExecutorResult.isSuccess() ?
                         jsonExecutorResult.getResult() :
                         jsonExecutorResult.getError().getMessage());

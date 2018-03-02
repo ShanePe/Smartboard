@@ -58,7 +58,8 @@ public class ProgressDialog extends DialogFragment {
     {
         if(!isAdded()) {
             FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-            this.show(fragmentManager, Globals.ACTIVITY);
+            if (fragmentManager != null)
+                this.show(fragmentManager, Globals.ACTIVITY);
         }
     }
 

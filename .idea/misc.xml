@@ -995,6 +995,21 @@
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.time.TimeUIHandler$4 void run()" />
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.time.TimeUIHandler$2 void run()" />
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.things.time.TimeUIHandler$1 void OnTemplateSelected(shane.pennihome.local.smartboard.data.Template template)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock$8 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.MainActivity$12 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.MainActivity$11$1 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.MainActivity$11 void complete(boolean success, java.lang.Object source)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.MainActivity$9 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.MainActivity$8$1 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.MainActivity$8 void run()" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.MainActivity$6 void complete(boolean success, java.lang.Void source)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.MainActivity$5 void onClick(android.view.View view)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.MainActivity$4$1 void complete(boolean success, java.lang.Object source)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.MainActivity$4 void onClick(android.view.View view)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.MainActivity$2 void onClick(android.view.View view)" />
+      <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.MainActivity$1 void complete(boolean success, java.lang.Object source)" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.MainActivity mDashboardRender" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.MainActivity mDashboardLoader" />
     </entry_points>
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="setOnValueChangedListener" />
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="getDimension" />
@@ -3167,6 +3182,21 @@
     <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler" method="buildEditorWindowView" />
     <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler" method="TimeUIHandler" />
     <pattern value="shane.pennihome.local.smartboard.things.time.TimeUIHandler" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView" method="setDashboard" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock" method="doUnreachable" />
+    <pattern value="shane.pennihome.local.smartboard.MainActivity" method="onWindowFocusChanged" />
+    <pattern value="shane.pennihome.local.smartboard.MainActivity" method="showSettings" />
+    <pattern value="shane.pennihome.local.smartboard.MainActivity" method="renderDashboards" />
+    <pattern value="shane.pennihome.local.smartboard.MainActivity" method="onConfigurationChanged" />
+    <pattern value="shane.pennihome.local.smartboard.MainActivity" method="goHome" />
+    <pattern value="shane.pennihome.local.smartboard.comms.Monitor" method="addService" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.listeners.OnMultiThingActionListener" method="onThingUnSelected" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.listeners.OnMultiThingActionListener" method="onThingsSelected" />
+    <pattern value="shane.pennihome.local.smartboard.thingsframework.listeners.OnMultiThingActionListener" />
+    <pattern value="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroup" method="Load" />
+    <pattern value="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupBlock" method="Load" />
+    <pattern value="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupBlock" />
+    <pattern value="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupUIHandler.SwitchGroupViewHolder" method="SwitchGroupViewHolder" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

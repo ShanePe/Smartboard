@@ -91,7 +91,7 @@ public class AsymmetricRecyclerView extends RecyclerView implements AsymmetricVi
 
     @Override
     public int getDividerHeight() {
-        return 0;
+        return 5;
     }
 
     @Override

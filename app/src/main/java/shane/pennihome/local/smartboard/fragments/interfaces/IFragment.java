@@ -25,7 +25,7 @@ public abstract class IFragment extends Fragment {
 
     @SuppressWarnings("SameReturnValue")
     public boolean onBackPressed(MainActivity activity) {
-        activity.backToMainActivity();
+        activity.goHome();
         return true;
     }
 }

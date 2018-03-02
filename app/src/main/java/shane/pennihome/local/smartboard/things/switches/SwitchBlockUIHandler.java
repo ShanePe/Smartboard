@@ -127,11 +127,6 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
 
     @Override
     public void BindViewHolder(BlockViewHolder viewHolder) {
-        if (getBlock().getThing() == null) {
-            viewHolder.itemView.setVisibility(View.GONE);
-            return;
-        }
-
         final SwitchViewHolder holder = (SwitchViewHolder) viewHolder;
 
         holder.mTitle.setText(getBlock().getName());
@@ -142,9 +137,12 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
         getBlock(SwitchBlock.class).renderIconTo(holder.mIcon);
         getBlock().startListeningForChanges();
 
-        holder.mDimmer.setVisibility(getBlock().getThing(Switch.class).isDimmer() ? View.VISIBLE : View.GONE);
-        holder.mDimmer.setProgress(getBlock().getThing(Switch.class).getDimmerLevel());
-        holder.mDimmer.setEnabled(getBlock().getThing(Switch.class).isOn());
+        if (getBlock().getThing() != null) {
+            holder.mDimmer.setVisibility(getBlock().getThing(Switch.class).isDimmer() ? View.VISIBLE : View.GONE);
+            holder.mDimmer.setProgress(getBlock().getThing(Switch.class).getDimmerLevel());
+            holder.mDimmer.setEnabled(getBlock().getThing(Switch.class).isOn());
+        } else
+            holder.mDimmer.setEnabled(false);
 
         holder.itemView.setPadding(Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING);
 

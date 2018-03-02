@@ -139,7 +139,10 @@ public class SwitchBlock extends IIconBlock {
             @Override
             public void run() {
                 Switch s = getThing(Switch.class);
-                destination.setTextColor(s.isOn() ? getForegroundColourOn() : getForegroundColour());
+                boolean isOn = false;
+                if (s != null)
+                    isOn = s.isOn();
+                destination.setTextColor(isOn ? getForegroundColourOn() : getForegroundColour());
             }
         });
     }
@@ -149,21 +152,24 @@ public class SwitchBlock extends IIconBlock {
             @Override
             public void run() {
                 Switch s = getThing(Switch.class);
+                boolean isOn = false;
+                if (s != null)
+                    isOn = s.isOn();
 
                 Bitmap bitmap = null;
-                if (!TextUtils.isEmpty(s.isOn() ? getBackgroundImageOn() : getBackgroundImage()))
-                    bitmap = BitmapFactory.decodeFile(s.isOn() ? getBackgroundImageOn() : getBackgroundImage());
+                if (!TextUtils.isEmpty(isOn ? getBackgroundImageOn() : getBackgroundImage()))
+                    bitmap = BitmapFactory.decodeFile(isOn ? getBackgroundImageOn() : getBackgroundImage());
 
                 final Drawable drawable = UIHelper.generateImage(
                         destination.getContext(),
-                        s.isOn() ? getBackgroundColourOn() : getBackgroundColour(),
-                        s.isOn() ? getBackgroundColourTransparencyOn() : getBackgroundColourTransparency(),
+                        isOn ? getBackgroundColourOn() : getBackgroundColour(),
+                        isOn ? getBackgroundColourTransparencyOn() : getBackgroundColourTransparency(),
                         bitmap,
-                        s.isOn() ? getBackgroundImageTransparencyOn() : getBackgroundColourTransparency(),
+                        isOn ? getBackgroundImageTransparencyOn() : getBackgroundColourTransparency(),
                         destination.getMeasuredWidth(),
                         destination.getMeasuredHeight(),
                         false,
-                        s.isOn() ? getBackgroundImageRenderTypeOn() : getBackgroundImageRenderType());
+                        isOn ? getBackgroundImageRenderTypeOn() : getBackgroundImageRenderType());
 
                 destination.setBackground(drawable);
                 destination.invalidate();

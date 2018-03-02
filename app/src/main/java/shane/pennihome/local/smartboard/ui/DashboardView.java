@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcel;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -135,8 +136,9 @@ public class DashboardView extends LinearLayoutCompat {
             mDashboard = dashboard;
         }
 
+        @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+        public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
             final View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.dashboard_view_group, parent, false);
 
@@ -144,7 +146,7 @@ public class DashboardView extends LinearLayoutCompat {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.mGroup = mDashboard.getGroupAt(position);
             holder.mGroupTitle.setText(holder.mGroup.getName());
             holder.mGroupTitle.setVisibility(holder.mGroup.getDisplayName() ? View.VISIBLE : View.GONE);
@@ -155,7 +157,8 @@ public class DashboardView extends LinearLayoutCompat {
            // holder.mBlockView.setDebugging(true);
             holder.mBlockView.setRequestedHorizontalSpacing(Globals.BLOCK_PADDING);
             holder.mBlockView.addItemDecoration(new SpacesItemDecoration(Globals.BLOCK_PADDING));
-            holder.mBlockView.setAdapter(new AsymmetricRecyclerViewAdapter<>(holder.itemView.getContext(),  holder.mBlockView, adapter));
+            AsymmetricRecyclerViewAdapter aptr = new AsymmetricRecyclerViewAdapter<>(holder.itemView.getContext(), holder.mBlockView, adapter);
+            holder.mBlockView.setAdapter(aptr);
         }
 
         @Override
@@ -183,9 +186,12 @@ public class DashboardView extends LinearLayoutCompat {
                 this.padding = padding;
             }
 
-            @Override public void getItemOffsets(
-                    Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
                 outRect.bottom = padding;
+//                outRect.right = padding;
+//                outRect.left = padding;
+//                outRect.top = padding;
             }
         }
     }
@@ -204,8 +210,9 @@ public class DashboardView extends LinearLayoutCompat {
             return IBlock.GetTypeID(mGroup.getBlockAt(position));
         }
 
+        @NonNull
         @Override
-        public IBlockUIHandler.BlockViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public IBlockUIHandler.BlockViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             IBlock block;
             try {
                 block = IBlock.CreateByTypeID(viewType);
@@ -215,12 +222,13 @@ public class DashboardView extends LinearLayoutCompat {
 
                 return block.getUIHandler().GetViewHolder(view);
             } catch (Exception ignored) {
+                //noinspection ConstantConditions
                 return null;
             }
         }
 
         @Override
-        public void onBindViewHolder(IBlockUIHandler.BlockViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull IBlockUIHandler.BlockViewHolder holder, int position) {
             IBlock block = mGroup.getBlockAt(position);
             block.loadThing();
 
