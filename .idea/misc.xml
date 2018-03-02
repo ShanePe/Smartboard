@@ -1010,6 +1010,22 @@
       <entry_point TYPE="method" FQNAME="shane.pennihome.local.smartboard.MainActivity$1 void complete(boolean success, java.lang.Object source)" />
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.MainActivity mDashboardRender" />
       <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.MainActivity mDashboardLoader" />
+      <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.proxy.OrbotHelper STATUS_STARTS_DISABLED" />
+      <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.proxy.OrbotHelper ORBOT_PLAY_URI" />
+      <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.proxy.OrbotHelper REQUEST_CODE_STATUS" />
+      <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.proxy.ProxyHelper STATUS_STARTS_DISABLED" />
+      <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.proxy.ProxyHelper STATUS_STOPPING" />
+      <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.proxy.ProxyHelper STATUS_STARTING" />
+      <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.proxy.ProxyHelper ACTION_START" />
+      <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.proxy.PsiphonHelper ORBOT_PLAY_URI" />
+      <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.proxy.SetFromMap serialVersionUID" />
+      <entry_point TYPE="method" FQNAME="info.guardianproject.netcipher.client.StrongBuilderBase$3 void onStatusTimeout()" />
+      <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.client.StrongConstants ENABLED_PROTOCOLS" />
+      <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.client.StrongConstants ENABLED_CIPHERS" />
+      <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.proxy.TorServiceUtils CHMOD_EXE_VALUE" />
+      <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.proxy.TorServiceUtils SHELL_CMD_RM" />
+      <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.proxy.TorServiceUtils SHELL_CMD_KILL" />
+      <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.proxy.TorServiceUtils SHELL_CMD_CHMOD" />
     </entry_points>
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="setOnValueChangedListener" />
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="getDimension" />
@@ -3197,6 +3213,78 @@
     <pattern value="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupBlock" method="Load" />
     <pattern value="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupBlock" />
     <pattern value="shane.pennihome.local.smartboard.things.switchgroup.SwitchGroupUIHandler.SwitchGroupViewHolder" method="SwitchGroupViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.comms.JsonExecutor" method="fulfil" />
+    <pattern value="shane.pennihome.local.smartboard.comms.JsonExecutor" />
+    <pattern value="info.guardianproject.netcipher.NetCipher" method="getHttpURLConnection" />
+    <pattern value="info.guardianproject.netcipher.NetCipher" method="getCompatibleHttpURLConnection" />
+    <pattern value="info.guardianproject.netcipher.NetCipher" method="getHttpsURLConnection" />
+    <pattern value="info.guardianproject.netcipher.NetCipher" method="getTlsOnlySocketFactory" />
+    <pattern value="info.guardianproject.netcipher.NetCipher" method="useTor" />
+    <pattern value="info.guardianproject.netcipher.NetCipher" method="clearProxy" />
+    <pattern value="info.guardianproject.netcipher.NetCipher" method="getProxy" />
+    <pattern value="info.guardianproject.netcipher.NetCipher" method="setProxy" />
+    <pattern value="info.guardianproject.netcipher.NetCipher" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper" method="installOrbot" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper" method="isInstalled" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper" method="skipOrbotValidation" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper" method="installTimeout" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper" method="statusTimeout" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper" method="removeInstallCallback" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper" method="addInstallCallback" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper.SimpleStatusCallback" method="onNotYetInstalled" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper.SimpleStatusCallback" method="onDisabled" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper.SimpleStatusCallback" method="onStopping" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper.SimpleStatusCallback" method="onStarting" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper.SimpleStatusCallback" method="onEnabled" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper.SimpleStatusCallback" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper" method="requestShowOrbotStart" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper" method="getOrbotStartIntent" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper" method="requestHiddenServiceOnPort" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper" method="isOrbotRunning" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper" method="isOnionAddress" />
+    <pattern value="info.guardianproject.netcipher.proxy.OrbotHelper" />
+    <pattern value="info.guardianproject.netcipher.proxy.ProxyHelper" method="getName" />
+    <pattern value="info.guardianproject.netcipher.proxy.ProxyHelper" method="getStartIntent" />
+    <pattern value="info.guardianproject.netcipher.proxy.ProxyHelper" method="getInstallIntent" />
+    <pattern value="info.guardianproject.netcipher.proxy.ProxyHelper" method="requestStart" />
+    <pattern value="info.guardianproject.netcipher.proxy.ProxyHelper" method="requestStatus" />
+    <pattern value="info.guardianproject.netcipher.proxy.ProxyHelper" method="isInstalled" />
+    <pattern value="info.guardianproject.netcipher.proxy.ProxyHelper" />
+    <pattern value="info.guardianproject.netcipher.proxy.ProxySelector" method="addProxy" />
+    <pattern value="info.guardianproject.netcipher.proxy.ProxySelector" method="ProxySelector" />
+    <pattern value="info.guardianproject.netcipher.proxy.ProxySelector" />
+    <pattern value="info.guardianproject.netcipher.proxy.PsiphonHelper" />
+    <pattern value="info.guardianproject.netcipher.proxy.SetFromMap" method="readObject" />
+    <pattern value="info.guardianproject.netcipher.proxy.SetFromMap" />
+    <pattern value="info.guardianproject.netcipher.proxy.SignatureUtils" method="validateServiceIntent" />
+    <pattern value="info.guardianproject.netcipher.proxy.SignatureUtils" method="validateActivityIntent" />
+    <pattern value="info.guardianproject.netcipher.proxy.SignatureUtils" method="validateBroadcastIntent" />
+    <pattern value="info.guardianproject.netcipher.proxy.SignatureUtils" method="getOwnSignatureHash" />
+    <pattern value="info.guardianproject.netcipher.proxy.SignatureUtils" />
+    <pattern value="info.guardianproject.netcipher.client.StrongBuilder" method="build" />
+    <pattern value="info.guardianproject.netcipher.client.StrongBuilder" method="withTorValidation" />
+    <pattern value="info.guardianproject.netcipher.client.StrongBuilder" method="withWeakCiphers" />
+    <pattern value="info.guardianproject.netcipher.client.StrongBuilder" method="withTrustManagers" />
+    <pattern value="info.guardianproject.netcipher.client.StrongBuilder" method="withSocksProxy" />
+    <pattern value="info.guardianproject.netcipher.client.StrongBuilder" method="supportsSocksProxy" />
+    <pattern value="info.guardianproject.netcipher.client.StrongBuilder" method="withHttpProxy" />
+    <pattern value="info.guardianproject.netcipher.client.StrongBuilder" method="supportsHttpProxy" />
+    <pattern value="info.guardianproject.netcipher.client.StrongBuilder" method="withBestProxy" />
+    <pattern value="info.guardianproject.netcipher.client.StrongBuilder" />
+    <pattern value="info.guardianproject.netcipher.client.StrongBuilderBase" method="build" />
+    <pattern value="info.guardianproject.netcipher.client.StrongBuilderBase" method="getSSLContext" />
+    <pattern value="info.guardianproject.netcipher.client.StrongBuilderBase" method="StrongBuilderBase" />
+    <pattern value="info.guardianproject.netcipher.client.StrongBuilderBase" method="get" />
+    <pattern value="info.guardianproject.netcipher.client.StrongBuilderBase" />
+    <pattern value="info.guardianproject.netcipher.client.StrongConnectionBuilder" method="connectTo" />
+    <pattern value="info.guardianproject.netcipher.client.StrongConnectionBuilder" method="StrongConnectionBuilder" />
+    <pattern value="info.guardianproject.netcipher.client.StrongConnectionBuilder" method="forMaxSecurity" />
+    <pattern value="info.guardianproject.netcipher.client.StrongConnectionBuilder" />
+    <pattern value="info.guardianproject.netcipher.client.StrongConstants" />
+    <pattern value="info.guardianproject.netcipher.client.TlsOnlySocketFactory" method="TlsOnlySocketFactory" />
+    <pattern value="info.guardianproject.netcipher.client.TlsOnlySocketFactory" />
+    <pattern value="info.guardianproject.netcipher.proxy.TorServiceUtils" method="isRootPossible" />
+    <pattern value="info.guardianproject.netcipher.proxy.TorServiceUtils" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

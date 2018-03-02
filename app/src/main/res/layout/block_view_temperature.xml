@@ -15,14 +15,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <shane.pennihome.local.smartboard.ui.AutoResizeTextView
-            android:id="@+id/bvt_value"
+        <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_margin="30dp"
-            android:textAlignment="center"
-            android:textSize="36sp" />
+            android:layout_gravity="center">
 
+            <shane.pennihome.local.smartboard.ui.AutoResizeTextView
+                android:id="@+id/bvt_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:textAlignment="center"
+                android:textSize="36sp" />
+        </android.support.v7.widget.LinearLayoutCompat>
     </FrameLayout>
 </android.support.v7.widget.LinearLayoutCompat>

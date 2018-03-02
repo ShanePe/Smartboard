@@ -2,6 +2,7 @@
   <dictionary name="shane">
     <words>
       <w>abcdefghijklmnopqrstuvwxyz</w>
+      <w>addr</w>
       <w>advancedrecyclerview</w>
       <w>advrecyclerview</w>
       <w>andersons</w>
@@ -9,8 +10,11 @@
       <w>authst</w>
       <w>avancement</w>
       <w>backgroundimagetrans</w>
+      <w>barebones</w>
+      <w>bcea</w>
       <w>bgclr</w>
       <w>bgselector</w>
+      <w>bhavit</w>
       <w>blockheight</w>
       <w>brid</w>
       <w>bvdg</w>
@@ -19,13 +23,16 @@
       <w>cardview</w>
       <w>ccvh</w>
       <w>cevh</w>
+      <w>classpathentry</w>
       <w>clrs</w>
+      <w>cmds</w>
       <w>cmts</w>
       <w>coeff</w>
       <w>colorpicker</w>
       <w>coms</w>
       <w>coords</w>
       <w>csvh</w>
+      <w>ctxt</w>
       <w>dashbboards</w>
       <w>datastore</w>
       <w>datastores</w>
@@ -36,47 +43,71 @@
       <w>dispname</w>
       <w>doclava</w>
       <w>doctitle</w>
+      <w>ecdhe</w>
+      <w>ecdsa</w>
+      <w>fdid</w>
+      <w>fdroid</w>
       <w>fgclr</w>
       <w>foote</w>
       <w>forground</w>
+      <w>freitas</w>
       <w>genymotion</w>
       <w>getby</w>
+      <w>getgitdetails</w>
       <w>getm</w>
       <w>gettings</w>
+      <w>github</w>
+      <w>guardianproject</w>
       <w>haruki</w>
       <w>hasegawa</w>
       <w>hgap</w>
       <w>huebridge</w>
+      <w>infos</w>
       <w>internalipaddress</w>
+      <w>javabuilder</w>
+      <w>javadocs</w>
+      <w>javanature</w>
       <w>jres</w>
+      <w>libnetcipher</w>
       <w>lkey</w>
       <w>logd</w>
       <w>logi</w>
       <w>logv</w>
       <w>longpress</w>
+      <w>mikos</w>
       <w>msec</w>
+      <w>netcipher</w>
+      <w>notimestamp</w>
       <w>occured</w>
       <w>oldh</w>
       <w>oldw</w>
       <w>onthingactionlistener</w>
+      <w>oobinline</w>
+      <w>orbot</w>
       <w>pange</w>
       <w>pennicott</w>
       <w>pennihome</w>
       <w>phlogo</w>
+      <w>pidof</w>
       <w>plhldr</w>
       <w>proc</w>
       <w>prog</w>
       <w>proj</w>
+      <w>psiphon</w>
       <w>recyclerview</w>
       <w>recycleview</w>
+      <w>redmine</w>
       <w>retrier</w>
+      <w>revalidating</w>
       <w>routineblock</w>
       <w>rtgroup</w>
       <w>samsung</w>
       <w>seekbar</w>
+      <w>sengar</w>
       <w>serveur</w>
       <w>setm</w>
       <w>sharedpref</w>
+      <w>singh</w>
       <w>smartapp</w>
       <w>smartboard</w>
       <w>smartthing</w>
@@ -87,6 +118,7 @@
       <w>tablayout</w>
       <w>textbox</w>
       <w>toggler</w>
+      <w>torproject</w>
       <w>vgap</w>
       <w>webside</w>
       <w>webv</w>

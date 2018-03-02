@@ -54,8 +54,9 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
 
                     HttpURLConnection connection;
 
-                    if (request.getUrl().getProtocol().toLowerCase().equals("https"))
-                        connection = NetCipher.getHttpsURLConnection(request.getUrl());
+                    if (request.getUrl().getProtocol().toLowerCase().equals("https")) {
+                        connection = NetCipher.getCompatibleHttpsURLConnection(request.getUrl());
+                    }
                     else
                         connection = (HttpURLConnection) request.getUrl().openConnection();
 
@@ -157,7 +158,7 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
             request.getOnExecutorRequestActionListener().OnPreExecute(connection);
 
         int resCode = connection.getResponseCode();
-        if (resCode != HttpsURLConnection.HTTP_OK)
+        if (resCode != HttpURLConnection.HTTP_OK)
             throw new IOException("Could not connect.");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "iso-8859-1"), 8);

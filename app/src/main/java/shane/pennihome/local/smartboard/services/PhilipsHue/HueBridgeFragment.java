@@ -20,8 +20,8 @@ import java.util.List;
 import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.ui.dialogs.ProgressDialog;
 import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
+import shane.pennihome.local.smartboard.ui.dialogs.ProgressDialog;
 
 /**
  * A fragment representing a list of Items.
@@ -79,6 +79,7 @@ public class HueBridgeFragment extends IRegisterServiceFragment {
                 }
                 else {
                     Toast.makeText(getActivity(), "Could not get Philips Hue Bridges.", Toast.LENGTH_SHORT).show();
+                    getDialog().dismiss();
                 }
             }
         }).execute(getService(HueBridgeService.class));
@@ -117,9 +118,9 @@ public class HueBridgeFragment extends IRegisterServiceFragment {
 
     private static class DoDiscovery extends AsyncTask<HueBridgeService, Void, ArrayList<HueBridge>>
     {
-        ProgressDialog mDialog;
         private final WeakReference<Context> mContext;
         private final OnProcessCompleteListener<ArrayList<HueBridge>> mOnProcessCompleteListener;
+        ProgressDialog mDialog;
         DoDiscovery(Context context, OnProcessCompleteListener<ArrayList<HueBridge>> onProcessCompleteListener) {
             this.mContext = new WeakReference<>(context);
             this.mOnProcessCompleteListener = onProcessCompleteListener;
@@ -146,5 +147,7 @@ public class HueBridgeFragment extends IRegisterServiceFragment {
                return null;
             }
         }
+
+
     }
 }

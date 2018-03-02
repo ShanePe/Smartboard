@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/asymmetricgridview" />
             <option value="$PROJECT_DIR$/colourPicker" />
+            <option value="$PROJECT_DIR$/libnetcipher" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

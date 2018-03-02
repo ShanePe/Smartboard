@@ -197,6 +197,7 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
                 getBlock().renderForegroundColourToTextView(holder.mTitle);
                 getBlock().renderBackgroundTo(holder.itemView);
                 getBlock().renderUnreachableBackground(holder.itemView);
+                getBlock(SwitchBlock.class).renderIconTo(holder.mIcon);
                 holder.mDimmer.setEnabled(getBlock().getThing(Switch.class).isOn());
             }
 

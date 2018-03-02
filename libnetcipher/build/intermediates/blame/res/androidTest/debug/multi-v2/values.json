@@ -1,0 +1,26 @@
+{
+    "logs": [
+        {
+            "outputFile": "/home/shane/AndroidStudioProjects/Smartboard/libnetcipher/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values/values.xml",
+            "map": [
+                {
+                    "source": "/home/shane/.gradle/caches/transforms-1/files-1.1/rules-0.4.1.aar/f02a7b3a420d14c68f7d18db6e5f1d6a/res/values/values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "4",
+                        "startOffsets": "287",
+                        "endColumns": "45",
+                        "endOffsets": "328"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "45",
+                        "endOffsets": "96"
+                    }
+                }
+            ]
+        }
+    ]
+}
