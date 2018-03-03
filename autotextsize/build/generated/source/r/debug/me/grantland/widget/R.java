@@ -6,7 +6,7 @@
  */
 package me.grantland.widget;
 
-final class R {
+public final class R {
     public static final class attr {
         public static int minTextSize = 0x7f040001;
         public static int precision = 0x7f040002;

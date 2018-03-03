@@ -1,12 +1,12 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/shane/AndroidStudioProjects/Smartboard/autotextsize/src/main/AndroidManifest.xml:2:1-6:12
-INJECTED from /home/shane/AndroidStudioProjects/Smartboard/autotextsize/src/main/AndroidManifest.xml:2:1-6:12
-INJECTED from /home/shane/AndroidStudioProjects/Smartboard/autotextsize/src/main/AndroidManifest.xml:2:1-6:12
-INJECTED from /home/shane/AndroidStudioProjects/Smartboard/autotextsize/src/main/AndroidManifest.xml:2:1-6:12
-INJECTED from /home/shane/AndroidStudioProjects/Smartboard/autotextsize/src/main/AndroidManifest.xml:2:1-6:12
-INJECTED from /home/shane/AndroidStudioProjects/Smartboard/autotextsize/src/main/AndroidManifest.xml:2:1-6:12
-INJECTED from /home/shane/AndroidStudioProjects/Smartboard/autotextsize/src/main/AndroidManifest.xml:2:1-6:12
+ADDED from /home/shane/AndroidStudioProjects/Smartboard/autotextsize/src/main/AndroidManifest.xml:2:1-5:33
+INJECTED from /home/shane/AndroidStudioProjects/Smartboard/autotextsize/src/main/AndroidManifest.xml:2:1-5:33
+INJECTED from /home/shane/AndroidStudioProjects/Smartboard/autotextsize/src/main/AndroidManifest.xml:2:1-5:33
+INJECTED from /home/shane/AndroidStudioProjects/Smartboard/autotextsize/src/main/AndroidManifest.xml:2:1-5:33
+INJECTED from /home/shane/AndroidStudioProjects/Smartboard/autotextsize/src/main/AndroidManifest.xml:2:1-5:33
+INJECTED from /home/shane/AndroidStudioProjects/Smartboard/autotextsize/src/main/AndroidManifest.xml:2:1-5:33
+INJECTED from /home/shane/AndroidStudioProjects/Smartboard/autotextsize/src/main/AndroidManifest.xml:2:1-5:33
 	package
 		ADDED from /home/shane/AndroidStudioProjects/Smartboard/autotextsize/src/main/AndroidManifest.xml:3:5-34
 		INJECTED from /home/shane/AndroidStudioProjects/Smartboard/autotextsize/src/main/AndroidManifest.xml
