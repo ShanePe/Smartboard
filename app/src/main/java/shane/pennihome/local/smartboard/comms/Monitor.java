@@ -59,21 +59,25 @@ public class Monitor {
     }
 
     public static Monitor Create(final AppCompatActivity activity, final OnProcessCompleteListener<Void> onProcessCompleteListener) {
-        getMonitor().setServices(ServiceManager.getActiveServices(activity));
+        try {
+            getMonitor().setServices(ServiceManager.getActiveServices(activity));
 
-        getMonitor().getThingsFromService(activity, new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
-            @Override
-            public void complete(boolean success, final ServiceLoader.ServiceLoaderResult source) {
-                if (source.getResult() != null)
-                    getMonitor().setThings(source.getResult());
-                if (source.getErrors() != null)
-                    for (String e : source.getErrors().keySet())
-                        Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG).show();
-                if (onProcessCompleteListener != null)
-                    onProcessCompleteListener.complete(true, null);
-                getMonitor().mLoaded = true;
-            }
-        });
+            getMonitor().getThingsFromService(activity, new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
+                @Override
+                public void complete(boolean success, final ServiceLoader.ServiceLoaderResult source) {
+                    if (source.getResult() != null)
+                        getMonitor().setThings(source.getResult());
+                    if (source.getErrors() != null)
+                        for (String e : source.getErrors().keySet())
+                            Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG).show();
+                    if (onProcessCompleteListener != null)
+                        onProcessCompleteListener.complete(true, null);
+                    getMonitor().mLoaded = true;
+                }
+            });
+        } catch (Exception ex) {
+            Log.e(Globals.ACTIVITY, "Create: failed", ex);
+        }
         return getMonitor();
     }
 
@@ -243,17 +247,16 @@ public class Monitor {
             } else {
                 if (currentThing.isUnreachable() && !newThing.isUnreachable())
                     currentThing.setUnreachable(false, true);
-               else
-                   currentThing.verifyState(newThing);
+                else
+                    currentThing.verifyState(newThing);
 
-               currentThings.remove(newThing);
+                currentThings.remove(newThing);
             }
         }
 
         if (currentThings.size() != 0)
             getThings().addAll(currentThings);
     }
-
 
     public void stop() {
         if (!isRunning())
@@ -262,7 +265,12 @@ public class Monitor {
         Log.i("Stopping Montor,", Globals.ACTIVITY);
         if (mMonitorThread != null) {
             mMonitorThread.interrupt();
-            mMonitorThread = null;
+            if (mMonitorThread != null)
+                try {
+                    mMonitorThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
         }
 
         if (mLoader != null) {
@@ -270,13 +278,6 @@ public class Monitor {
             mLoader.cancel(true);
             mLoader = null;
         }
-
-        while (mMonitorThread != null)
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
     }
 
     public String toJson() throws JSONException {

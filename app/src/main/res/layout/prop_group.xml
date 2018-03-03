@@ -20,8 +20,15 @@
             android:id="@+id/txt_row_dl_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName" />
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/textbox_default"
+            android:inputType="text"
+            android:paddingBottom="3dp"
+            android:paddingEnd="2dp"
+            android:paddingStart="5dp"
+            android:selectAllOnFocus="true"
+            android:textColor="?android:attr/textColorPrimaryInverseNoDisable" />
 
         <Switch
             android:id="@+id/sw_row_dl_dispname"

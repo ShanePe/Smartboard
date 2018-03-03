@@ -77,6 +77,10 @@
 
     <string name="lbl_data">Data</string>
     <string name="lbl_clear_data_store">Clear data store</string>
+    <string name="lbl_options">Options</string>
+    <string name="lbl_keep_on">Keep screen on</string>
+    <string name="lbl_fade_out">Fade screen out after</string>
+    <string name="lbl_minutes">Minutes</string>
 
 
 </resources>

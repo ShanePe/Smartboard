@@ -16,8 +16,9 @@ public abstract class IFragment extends Fragment {
         final MainActivity activity = (MainActivity) getActivity();
         if (activity != null) {
             ActionBar actionBar = activity.getSupportActionBar();
-            if (actionBar != null)
+            if (actionBar != null) {
                 actionBar.show();
+            }
         }
 
         super.onResume();

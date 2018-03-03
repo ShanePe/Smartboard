@@ -26,6 +26,7 @@
             android:paddingBottom="3dp"
             android:paddingEnd="2dp"
             android:paddingStart="5dp"
+            android:selectAllOnFocus="true"
             android:textColor="?android:attr/textColorPrimaryInverseNoDisable" />
     </android.support.v7.widget.LinearLayoutCompat>
 </merge>

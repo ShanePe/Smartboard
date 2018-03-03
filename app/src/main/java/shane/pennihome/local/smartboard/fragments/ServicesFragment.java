@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
 import shane.pennihome.local.smartboard.services.adapters.ServiceAdapter;
 
 /**
@@ -22,7 +20,7 @@ import shane.pennihome.local.smartboard.services.adapters.ServiceAdapter;
  */
 
 @SuppressWarnings("DefaultFileTemplate")
-public class ServicesFragment extends Fragment {
+public class ServicesFragment extends IFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -37,17 +35,5 @@ public class ServicesFragment extends Fragment {
             recyclerView.setAdapter(new ServiceAdapter());
         }
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        MainActivity activity = (MainActivity) getActivity();
-        if (activity != null) {
-            ActionBar actionBar = activity.getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.show();
-            }
-        }
-        super.onResume();
     }
 }

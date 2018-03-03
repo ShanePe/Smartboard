@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.data.Dashboard;
+import shane.pennihome.local.smartboard.data.Options;
 import shane.pennihome.local.smartboard.data.Template;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
@@ -105,6 +106,9 @@ public class DBEngine extends SQLiteOpenHelper {
                         break;
                     case Template:
                         dbO = Template.Load(Template.class, c.getString(3));
+                        break;
+                    case Options:
+                        dbO = Options.Load(Options.class, c.getString(3));
                         break;
                     default:
                         throw new Exception("Invalid Database Type : " + c.getString(1));

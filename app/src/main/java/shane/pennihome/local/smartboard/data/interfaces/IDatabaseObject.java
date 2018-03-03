@@ -114,7 +114,7 @@ public abstract class IDatabaseObject {
         return fields;
     }
 
-    public enum Types {Dashboard, Group, Thing, Block, Service, Template}
+    public enum Types {Dashboard, Group, Thing, Block, Service, Template, Options}
 
     @SuppressWarnings("WeakerAccess")
     @Retention(RetentionPolicy.RUNTIME)

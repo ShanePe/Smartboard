@@ -22,4 +22,10 @@
         android:id="@+id/dl_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <shane.pennihome.local.smartboard.ui.ScreenBlocker
+        android:id="@+id/main_blocker"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black" />
 </FrameLayout>
