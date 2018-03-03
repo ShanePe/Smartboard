@@ -58,6 +58,7 @@ public class ScreenBlocker extends FrameLayout {
             else
                 getOnBlockListener().OnDismiss();
         }
+        setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
     }
 
     private void init() {
