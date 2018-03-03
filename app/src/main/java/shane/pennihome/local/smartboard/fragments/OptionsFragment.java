@@ -131,7 +131,12 @@ public class OptionsFragment extends IFragment {
     private void saveOptions() {
         if (mSaveThread != null) {
             mSaveThread.interrupt();
-            mSaveThread = null;
+            if (mSaveThread != null)
+                try {
+                    mSaveThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
         }
 
         mSaveThread = new Thread(new Runnable() {
@@ -146,6 +151,8 @@ public class OptionsFragment extends IFragment {
                     mSaveThread = null;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                } finally {
+                    mSaveThread = null;
                 }
             }
         });

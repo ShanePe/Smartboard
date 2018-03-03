@@ -146,11 +146,6 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 showOptions();
                 drawer.closeDrawers();
-//                if(blocker.isShown())
-//                    blocker.dismiss();
-//                else
-//                    blocker.show();
-
             }
         });
 
@@ -265,7 +260,12 @@ public class MainActivity extends AppCompatActivity
 
                 if (mDashboardRender != null) {
                     mDashboardRender.interrupt();
-                    mDashboardRender = null;
+                    if (mDashboardRender != null)
+                        try {
+                            mDashboardRender.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                 }
 
                 mDashboardRender = new Thread(new Runnable() {
@@ -350,6 +350,18 @@ public class MainActivity extends AppCompatActivity
             actionBar.hide();
 
         super.onResume();
+    }
+
+    public void stopScreenFadeOutMonitor() {
+        if (mOptions == null)
+            return;
+
+        if (mOptions.isFadeOut())
+            mOptions.stopMonitorForScreenFadeOut();
+    }
+
+    public void startScreenFadeOutMonitor() {
+        setScreenFadeout();
     }
 
     private void setScreenFadeout() {

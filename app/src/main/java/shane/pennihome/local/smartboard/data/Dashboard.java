@@ -57,6 +57,12 @@ public class Dashboard extends IDatabaseObject {
     public void executeBackgroundThread(Runnable runnable) {
         if (mBackgroundThread != null) {
             mBackgroundThread.interrupt();
+            if (mBackgroundThread != null)
+                try {
+                    mBackgroundThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             mBackgroundThread = null;
         }
         mBackgroundThread = new Thread(runnable);

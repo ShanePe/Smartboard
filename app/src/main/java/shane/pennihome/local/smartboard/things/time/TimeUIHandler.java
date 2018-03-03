@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.design.widget.TabLayout;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -106,9 +107,6 @@ class TimeUIHandler extends IBlockUIHandler {
 
     @Override
     public void BindEditHolder(BlockEditViewHolder viewHolder, int backgroundResourceId) {
-        if (getBlock().getThing() == null)
-            return;
-
         TimeEditorHolder holder = (TimeEditorHolder) viewHolder;
 
         holder.mBaName.setText(getBlock().getName());
@@ -137,6 +135,11 @@ class TimeUIHandler extends IBlockUIHandler {
         getBlock().renderBackgroundTo(holder.mContainer);
         getBlock().renderUnreachableBackground(holder.itemView);
 
+        if (getBlock().getWidth() == 1)
+            holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 50f);
+        else
+            holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 100f);
+
         holder.mBgImg.post(new Runnable() {
             @Override
             public void run() {
@@ -151,7 +154,12 @@ class TimeUIHandler extends IBlockUIHandler {
 
         if (holder.mTimerThread != null) {
             holder.mTimerThread.interrupt();
-            holder.mTimerThread = null;
+            if (holder.mTimerThread != null)
+                try {
+                    holder.mTimerThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
         }
 
         final SimpleDateFormat df = new SimpleDateFormat("HH:mm", Locale.getDefault());
@@ -160,21 +168,25 @@ class TimeUIHandler extends IBlockUIHandler {
         holder.mTimerThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true) {
-                    try {
-                        int curSec = Calendar.getInstance().get(Calendar.SECOND);
-                        int laps = 60 - curSec;
-                        Log.i(Globals.ACTIVITY, "Timer Thread Sleeping for " + laps);
-                        Thread.sleep(laps * 1000);
-                        holder.mValue.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                holder.mValue.setText(df.format(Calendar.getInstance().getTime()));
-                            }
-                        });
-                    } catch (Exception e) {
-                        break;
+                try {
+                    while (true) {
+                        try {
+                            int curSec = Calendar.getInstance().get(Calendar.SECOND);
+                            int laps = 60 - curSec;
+                            Log.i(Globals.ACTIVITY, "Timer Thread Sleeping for " + laps);
+                            Thread.sleep(laps * 1000);
+                            holder.mValue.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    holder.mValue.setText(df.format(Calendar.getInstance().getTime()));
+                                }
+                            });
+                        } catch (Exception e) {
+                            break;
+                        }
                     }
+                } finally {
+                    holder.mTimerThread = null;
                 }
             }
         });

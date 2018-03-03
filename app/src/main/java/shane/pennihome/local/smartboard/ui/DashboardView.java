@@ -87,7 +87,12 @@ public class DashboardView extends LinearLayoutCompat {
 
         if (mBGDrawer != null) {
             mBGDrawer.interrupt();
-            mBGDrawer = null;
+            if (mBGDrawer != null)
+                try {
+                    mBGDrawer.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
         }
 
         mGroupViewAdapter.setDashboard(getDashboard());
@@ -113,6 +118,8 @@ public class DashboardView extends LinearLayoutCompat {
                 } catch (InterruptedException ignored) {
                     Log.i("Render -> BROKE " + getDashboard().getName(), Globals.ACTIVITY);
 
+                } finally {
+                    mBGDrawer = null;
                 }
             }
         });

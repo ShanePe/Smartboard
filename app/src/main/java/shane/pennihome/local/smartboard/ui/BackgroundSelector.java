@@ -289,7 +289,12 @@ public class BackgroundSelector extends LinearLayoutCompat {
     private void handleRender(final boolean delayPreview) {
         if (mRenderThread != null) {
             mRenderThread.interrupt();
-            mRenderThread = null;
+            if (mRenderThread != null)
+                try {
+                    mRenderThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
         }
 
         mRenderThread = new Thread(new Runnable() {
@@ -300,6 +305,8 @@ public class BackgroundSelector extends LinearLayoutCompat {
                         Thread.sleep(1000);
                     renderPreview();
                 } catch (InterruptedException ignored) {
+                } finally {
+                    mRenderThread = null;
                 }
             }
         });

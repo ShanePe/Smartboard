@@ -133,12 +133,16 @@ public class ViewSwiper extends ViewPager {
                 mSlideUpAnim.cancel();
 
                 mTabLayout.startAnimation(mSlideUpAnim);
-
             }
 
             if (mTimer != null) {
                 mTimer.interrupt();
-                mTimer = null;
+                if (mTimer != null)
+                    try {
+                        mTimer.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
             }
 
             mTimer = new Thread(new Runnable() {
@@ -153,13 +157,15 @@ public class ViewSwiper extends ViewPager {
                             }
                         });
                     } catch (InterruptedException ignored) {
+                    } finally {
+                        mTimer = null;
                     }
                 }
             });
 
             mTimer.start();
-            hideKeyboard();
         }
+        hideKeyboard();
     }
 
     void clear() {

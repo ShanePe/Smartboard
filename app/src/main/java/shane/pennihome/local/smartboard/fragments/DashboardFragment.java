@@ -55,6 +55,10 @@ public class DashboardFragment extends IFragment {
     }
 
     private void LoadDashboard(Dashboard dashboard) {
+        MainActivity main = (MainActivity) getActivity();
+        assert main != null;
+        main.stopScreenFadeOutMonitor();
+
         Intent dashAdd = new Intent(getActivity(), SmartboardActivity.class);
 
         if (dashboard == null)
@@ -77,6 +81,8 @@ public class DashboardFragment extends IFragment {
             mDashboardAptr.setDashboards(main.getDashboards());
             mDashboardAptr.notifyDataSetChanged();
         }
+
+        main.startScreenFadeOutMonitor();
 
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -130,5 +136,4 @@ public class DashboardFragment extends IFragment {
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(Dashboard item);
     }
-
 }
