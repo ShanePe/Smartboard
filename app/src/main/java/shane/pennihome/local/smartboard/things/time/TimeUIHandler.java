@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import me.grantland.widget.AutofitTextView;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
@@ -218,7 +219,7 @@ class TimeUIHandler extends IBlockUIHandler {
 
     public class TimeViewHolder extends BlockViewHolder {
         final FrameLayout mContainer;
-        final TextView mValue;
+        final AutofitTextView mValue;
         final ImageView mBgImg;
         Thread mTimerThread;
 

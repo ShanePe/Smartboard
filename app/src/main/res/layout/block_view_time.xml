@@ -17,13 +17,15 @@
         android:layout_height="match_parent"
         android:layout_gravity="center">
 
-        <shane.pennihome.local.smartboard.ui.AutoResizeTextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/bvtm_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="8dp"
-            android:textAlignment="center" />
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textSize="100sp" />
     </android.support.v7.widget.LinearLayoutCompat>
 
 </FrameLayout>

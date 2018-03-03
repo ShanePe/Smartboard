@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import me.grantland.widget.AutofitTextView;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
@@ -21,7 +22,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandl
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
-import shane.pennihome.local.smartboard.ui.AutoResizeTextView;
 import shane.pennihome.local.smartboard.ui.TemplateProperties;
 import shane.pennihome.local.smartboard.ui.ThingProperties;
 import shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector;
@@ -200,7 +200,7 @@ public class TemperatureUIHandler extends IBlockUIHandler {
     public class TemperatureViewHolder extends BlockViewHolder {
         final LinearLayoutCompat mContainer;
         final TextView mTitle;
-        final AutoResizeTextView mValue;
+        final AutofitTextView mValue;
 
         TemperatureViewHolder(View itemView) {
             super(itemView);

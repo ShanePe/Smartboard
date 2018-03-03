@@ -38,7 +38,7 @@ public class AutoResizeTextView extends AppCompatTextView {
         if (textWidth <= 0)
             return;
         int targetWidth = textWidth - this.getPaddingLeft() - this.getPaddingRight();
-        float hi = 300;
+        float hi = 150;
         float lo = 36;
         final float threshold = 0.5f; // How close we have to be
 

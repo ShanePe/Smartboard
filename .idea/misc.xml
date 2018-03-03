@@ -1026,6 +1026,10 @@
       <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.proxy.TorServiceUtils SHELL_CMD_RM" />
       <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.proxy.TorServiceUtils SHELL_CMD_KILL" />
       <entry_point TYPE="field" FQNAME="info.guardianproject.netcipher.proxy.TorServiceUtils SHELL_CMD_CHMOD" />
+      <entry_point TYPE="field" FQNAME="me.grantland.widget.R.styleable AutofitTextView_sizeToFit" />
+      <entry_point TYPE="field" FQNAME="me.grantland.widget.R.styleable AutofitTextView_precision" />
+      <entry_point TYPE="field" FQNAME="me.grantland.widget.R.styleable AutofitTextView_minTextSize" />
+      <entry_point TYPE="field" FQNAME="me.grantland.widget.R.styleable AutofitTextView" />
     </entry_points>
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="setOnValueChangedListener" />
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="getDimension" />
@@ -3285,6 +3289,36 @@
     <pattern value="info.guardianproject.netcipher.client.TlsOnlySocketFactory" />
     <pattern value="info.guardianproject.netcipher.proxy.TorServiceUtils" method="isRootPossible" />
     <pattern value="info.guardianproject.netcipher.proxy.TorServiceUtils" />
+    <pattern value="shane.pennihome.local.smartboard.ui.AutoResizeTextView" method="AutoResizeTextView" />
+    <pattern value="shane.pennihome.local.smartboard.ui.AutoResizeTextView" />
+    <pattern value="me.grantland.widget.AutofitHelper.OnTextSizeChangeListener" method="onTextSizeChange" />
+    <pattern value="me.grantland.widget.AutofitHelper.OnTextSizeChangeListener" />
+    <pattern value="me.grantland.widget.AutofitHelper" method="setTextSize" />
+    <pattern value="me.grantland.widget.AutofitHelper" method="getTextSize" />
+    <pattern value="me.grantland.widget.AutofitHelper" method="getMaxLines" />
+    <pattern value="me.grantland.widget.AutofitHelper" method="setMinTextSize" />
+    <pattern value="me.grantland.widget.AutofitHelper" method="removeOnTextSizeChangeListener" />
+    <pattern value="me.grantland.widget.AutofitHelper" method="create" />
+    <pattern value="me.grantland.widget.AutofitHelper" />
+    <pattern value="me.grantland.widget.AutofitLayout" method="getAutofitHelper" />
+    <pattern value="me.grantland.widget.AutofitLayout" method="AutofitLayout" />
+    <pattern value="me.grantland.widget.AutofitLayout" />
+    <pattern value="me.grantland.widget.AutofitTextView" method="setPrecision" />
+    <pattern value="me.grantland.widget.AutofitTextView" method="getPrecision" />
+    <pattern value="me.grantland.widget.AutofitTextView" method="setMinTextSize" />
+    <pattern value="me.grantland.widget.AutofitTextView" method="getMinTextSize" />
+    <pattern value="me.grantland.widget.AutofitTextView" method="setMaxTextSize" />
+    <pattern value="me.grantland.widget.AutofitTextView" method="getMaxTextSize" />
+    <pattern value="me.grantland.widget.AutofitTextView" method="setSizeToFit" />
+    <pattern value="me.grantland.widget.AutofitTextView" method="isSizeToFit" />
+    <pattern value="me.grantland.widget.AutofitTextView" method="getAutofitHelper" />
+    <pattern value="me.grantland.widget.AutofitTextView" method="init" />
+    <pattern value="me.grantland.widget.AutofitTextView" method="AutofitTextView" />
+    <pattern value="me.grantland.widget.AutofitTextView" />
+    <pattern value="me.grantland.widget.R.styleable" />
+    <pattern value="me.grantland.widget.R" />
+    <pattern value="shane.pennihome.local.smartboard.things.temperature.TemperatureUIHandler" method="TemperatureUIHandler" />
+    <pattern value="shane.pennihome.local.smartboard.things.temperature.TemperatureUIHandler" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
