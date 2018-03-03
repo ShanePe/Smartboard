@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.support.annotation.ColorInt;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -140,10 +139,10 @@ public class TemperatureUIHandler extends IBlockUIHandler {
         getBlock().renderBackgroundTo(holder.mContainer);
         getBlock().renderUnreachableBackground(holder.itemView);
 
-        if (getBlock().getWidth() == 1)
-            holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 50f);
-        else
-            holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 100f);
+//        if (getBlock().getWidth() == 1)
+//            holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 50f);
+//        else
+//            holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 100f);
 
         holder.itemView.setPadding(Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING);
 

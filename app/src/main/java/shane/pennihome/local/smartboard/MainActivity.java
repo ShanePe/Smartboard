@@ -76,7 +76,10 @@ public class MainActivity extends AppCompatActivity
                         if (!Monitor.getMonitor().isRunning())
                             Monitor.getMonitor().start();
 
-                        progressDialog.dismiss();
+                        try {
+                            progressDialog.dismiss();
+                        } catch (Exception ignored) {
+                        }//Ok because saveState might have executed.
 
                         if (mDashboards == null)
                             renderDashboards();

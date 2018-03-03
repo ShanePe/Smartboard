@@ -136,7 +136,7 @@ class TimeUIHandler extends IBlockUIHandler {
         getBlock().renderUnreachableBackground(holder.itemView);
 
         if (getBlock().getWidth() == 1)
-            holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 50f);
+            holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 36f);
         else
             holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 100f);
 
