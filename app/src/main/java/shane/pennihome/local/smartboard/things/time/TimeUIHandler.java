@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.design.widget.TabLayout;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -17,7 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import me.grantland.widget.AutofitTextView;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
@@ -30,6 +28,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.ui.SizeSelector;
 import shane.pennihome.local.smartboard.ui.TemplateProperties;
+import shane.pennihome.local.smartboard.ui.TextViewAutoFit;
 import shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector;
 import shane.pennihome.local.smartboard.ui.ViewSwiper;
 
@@ -135,10 +134,10 @@ class TimeUIHandler extends IBlockUIHandler {
         getBlock().renderBackgroundTo(holder.mContainer);
         getBlock().renderUnreachableBackground(holder.itemView);
 
-        if (getBlock().getWidth() == 1)
-            holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 36f);
-        else
-            holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 100f);
+//        if (getBlock().getWidth() == 1)
+//            holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 36f);
+//        else
+//            holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 100f);
 
         holder.mBgImg.post(new Runnable() {
             @Override
@@ -231,7 +230,7 @@ class TimeUIHandler extends IBlockUIHandler {
 
     public class TimeViewHolder extends BlockViewHolder {
         final FrameLayout mContainer;
-        final AutofitTextView mValue;
+        final TextViewAutoFit mValue;
         final ImageView mBgImg;
         Thread mTimerThread;
 

@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center">
 
-            <me.grantland.widget.AutofitTextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/bvt_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -28,7 +28,8 @@
                 android:layout_margin="8dp"
                 android:singleLine="true"
                 android:textAlignment="center"
-                android:textSize="50sp" />
+                android:textSize="36sp" />
+
         </android.support.v7.widget.LinearLayoutCompat>
     </FrameLayout>
 

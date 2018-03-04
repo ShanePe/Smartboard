@@ -3,14 +3,15 @@ package shane.pennihome.local.smartboard.things.temperature;
 import android.app.Activity;
 import android.support.annotation.ColorInt;
 import android.support.design.widget.TabLayout;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import me.grantland.widget.AutofitTextView;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
@@ -139,10 +140,10 @@ public class TemperatureUIHandler extends IBlockUIHandler {
         getBlock().renderBackgroundTo(holder.mContainer);
         getBlock().renderUnreachableBackground(holder.itemView);
 
-//        if (getBlock().getWidth() == 1)
-//            holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 50f);
-//        else
-//            holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 100f);
+        if (getBlock().getWidth() == 1)
+            holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 36f);
+        else
+            holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 64f);
 
         holder.itemView.setPadding(Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING);
 
@@ -206,7 +207,7 @@ public class TemperatureUIHandler extends IBlockUIHandler {
     public class TemperatureViewHolder extends BlockViewHolder {
         final LinearLayoutCompat mContainer;
         final TextView mTitle;
-        final AutofitTextView mValue;
+        final AppCompatTextView mValue;
 
         TemperatureViewHolder(View itemView) {
             super(itemView);

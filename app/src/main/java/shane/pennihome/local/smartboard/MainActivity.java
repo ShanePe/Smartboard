@@ -79,8 +79,7 @@ public class MainActivity extends AppCompatActivity
                         try {
                             progressDialog.dismiss();
                         } catch (Exception ignored) {
-                        }//Ok because saveState might have executed.
-
+                        }//Ok because saveState might have fired.
                         if (mDashboards == null)
                             renderDashboards();
                         else if (mDashboards.size() == 0)

@@ -46,7 +46,7 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
         try {
             int tries = 0;
             int maxAttempts = 5;
-            int attemptWait = 5000;
+            int attemptWait = 2500;
 
             while (tries <= maxAttempts) {
                 try {
@@ -61,7 +61,7 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
                         connection = (HttpURLConnection) request.getUrl().openConnection();
 
                     connection.setReadTimeout(10000);
-                    connection.setConnectTimeout(15000);
+                    connection.setConnectTimeout(1500);
 
                     if (request.getType() == JsonExecutorRequest.Types.GET)
                         return new JsonExecutorResult(doGET(connection, request));

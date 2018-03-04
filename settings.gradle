@@ -1,1 +1,1 @@
-include ':app', ':colourPicker', ':advrecycleview', ':asymmetricgridview', ':libnetcipher', ':autotextsize'
+include ':app', ':colourPicker', ':advrecycleview', ':asymmetricgridview', ':libnetcipher'

@@ -7,7 +7,6 @@
       <module fileurl="file://$PROJECT_DIR$/advrecycleview/advrecycleview.iml" filepath="$PROJECT_DIR$/advrecycleview/advrecycleview.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/asymmetricgridview/asymmetricgridview.iml" filepath="$PROJECT_DIR$/asymmetricgridview/asymmetricgridview.iml" />
-      <module fileurl="file://$PROJECT_DIR$/autotextsize/autotextsize.iml" filepath="$PROJECT_DIR$/autotextsize/autotextsize.iml" />
       <module fileurl="file://$PROJECT_DIR$/colourPicker/colourPicker.iml" filepath="$PROJECT_DIR$/colourPicker/colourPicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/libnetcipher/libnetcipher.iml" filepath="$PROJECT_DIR$/libnetcipher/libnetcipher.iml" />
     </modules>
