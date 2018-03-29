@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="C:\Source\SmartBoard\libnetcipher\assets"/><source path="C:\Source\SmartBoard\libnetcipher\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="C:\Source\SmartBoard\libnetcipher\src\debug\assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/home/shane/AndroidStudioProjects/Smartboard/libnetcipher/assets"/><source path="/home/shane/AndroidStudioProjects/Smartboard/libnetcipher/build/generated/assets/shaders/debug"/></dataSet><dataSet config="debug"><source path="/home/shane/AndroidStudioProjects/Smartboard/libnetcipher/src/debug/assets"/></dataSet></merger>

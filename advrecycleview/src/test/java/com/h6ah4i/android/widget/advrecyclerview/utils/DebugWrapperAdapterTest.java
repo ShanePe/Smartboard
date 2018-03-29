@@ -46,7 +46,7 @@ public class DebugWrapperAdapterTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void unwrapPosition() throws Exception {
+    public void unwrapPosition() {
         RecyclerView.Adapter adapter = new GoodWrapperAdapter(new TestAdapter());
         DebugWrapperAdapter debugAdapter = new DebugWrapperAdapter(adapter);
 
@@ -61,7 +61,7 @@ public class DebugWrapperAdapterTest {
     }
 
     @Test
-    public void wrapPosition() throws Exception {
+    public void wrapPosition() {
         RecyclerView.Adapter adapter = new GoodWrapperAdapter(new TestAdapter());
         DebugWrapperAdapter debugAdapter = new DebugWrapperAdapter(adapter);
 
@@ -78,7 +78,7 @@ public class DebugWrapperAdapterTest {
     }
 
     @Test
-    public void unwrapPosition_withBadAdapter() throws Exception {
+    public void unwrapPosition_withBadAdapter() {
         RecyclerView.Adapter adapter = new BadUnwrapPositionAdapter(new TestAdapter());
         DebugWrapperAdapter debugAdapter = new DebugWrapperAdapter(adapter);
 
@@ -90,7 +90,7 @@ public class DebugWrapperAdapterTest {
     }
 
     @Test
-    public void wrapPosition_withBadAdapter() throws Exception {
+    public void wrapPosition_withBadAdapter() {
         RecyclerView.Adapter adapter = new BadWrapPositionAdapter(new TestAdapter());
         DebugWrapperAdapter debugAdapter = new DebugWrapperAdapter(adapter);
 
@@ -109,7 +109,7 @@ public class DebugWrapperAdapterTest {
     }
 
     @Test
-    public void setSettingFlags() throws Exception {
+    public void setSettingFlags() {
         RecyclerView.Adapter adapter = new TestAdapter();
         DebugWrapperAdapter debugAdapter = new DebugWrapperAdapter(adapter);
 
@@ -120,7 +120,7 @@ public class DebugWrapperAdapterTest {
     }
 
     @Test
-    public void getSettingFlags() throws Exception {
+    public void getSettingFlags() {
         RecyclerView.Adapter adapter = new TestAdapter();
         DebugWrapperAdapter debugAdapter = new DebugWrapperAdapter(adapter);
 
@@ -148,13 +148,14 @@ public class DebugWrapperAdapterTest {
             return 0;
         }
 
+        @NonNull
         @Override
-        public TestViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public TestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             throw new IllegalStateException("not implemented");
         }
 
         @Override
-        public void onBindViewHolder(TestViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull TestViewHolder holder, int position) {
             throw new IllegalStateException("not implemented");
         }
     }
