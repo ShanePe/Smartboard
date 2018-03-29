@@ -161,7 +161,7 @@ public class Monitor {
         if (isRunning())
             return;
 
-        Log.i("Starting Monitor,", Globals.ACTIVITY);
+        Log.i(Globals.ACTIVITY, "Starting Monitor");
         mMonitorThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -262,7 +262,7 @@ public class Monitor {
         if (!isRunning())
             return;
 
-        Log.i("Stopping Montor,", Globals.ACTIVITY);
+        Log.i(Globals.ACTIVITY, "Stopping Monitor");
         if (mMonitorThread != null) {
             mMonitorThread.interrupt();
             if (mMonitorThread != null)

@@ -126,7 +126,8 @@ public class ScreenBlocker extends FrameLayout {
         post(new Runnable() {
             @Override
             public void run() {
-                startAnimation(mAnimation);
+                if (mAnimation != null)
+                    startAnimation(mAnimation);
                 Log.i(Globals.ACTIVITY, "Starting blocker dismiss animation");
             }
         });

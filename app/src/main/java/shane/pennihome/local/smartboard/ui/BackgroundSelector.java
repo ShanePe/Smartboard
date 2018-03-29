@@ -34,7 +34,7 @@ import shane.pennihome.local.smartboard.ui.listeners.OnBackgroundActionListener;
  * Created by shane on 26/01/18.
  */
 
-@SuppressWarnings({"DefaultFileTemplate", "unused"})
+@SuppressWarnings({"DefaultFileTemplate", "unused", "EmptyMethod"})
 public class BackgroundSelector extends LinearLayoutCompat {
     private SeekBar msbBGImg = null;
     private SeekBar msbBGClr = null;
@@ -177,6 +177,7 @@ public class BackgroundSelector extends LinearLayoutCompat {
             }
         });
 
+        //noinspection EmptyMethod
         msbBGClr.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -338,7 +339,7 @@ public class BackgroundSelector extends LinearLayoutCompat {
         mPreview.post(new Runnable() {
             @Override
             public void run() {
-                Log.i("Render background image", Globals.ACTIVITY);
+                Log.i(Globals.ACTIVITY, "Render background image");
                 mPreview.setImageDrawable(drawable);
             }
         });
@@ -346,11 +347,13 @@ public class BackgroundSelector extends LinearLayoutCompat {
 
     public class ViewAdapter extends PagerAdapter {
 
+        @SuppressWarnings("SameReturnValue")
         @Override
         public int getCount() {
             return 0;
         }
 
+        @SuppressWarnings("SameReturnValue")
         @Override
         public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
             return false;

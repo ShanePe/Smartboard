@@ -15,8 +15,8 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.ui.dialogs.ProgressDialog;
 import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
+import shane.pennihome.local.smartboard.ui.dialogs.ProgressDialog;
 
 /**
  * Created by shane on 29/01/18.
@@ -35,6 +35,8 @@ public class SmartThingsFragment extends IRegisterServiceFragment {
         web.getSettings().setAllowContentAccess(true);
         web.getSettings().setAppCacheEnabled(true);
         web.getSettings().setGeolocationEnabled(true);
+        web.getSettings().setDomStorageEnabled(true);
+        web.getSettings().setDatabaseEnabled(true);
 
         String requestUrl = (SmartThingsService.ST_OAUTH_URL +
                 "?redirect_uri=" + SmartThingsService.ST_REDIRECT_URI +

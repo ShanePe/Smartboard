@@ -61,6 +61,7 @@ public class Options extends IDatabaseObject {
     }
 
     public void stopMonitorForScreenFadeOut() {
+        //Log.i(Globals.ACTIVITY, "Stopping Fadeout monitor");
         if (mScreenFaderThread != null) {
             mScreenFaderThread.interrupt();
             try {
@@ -73,6 +74,7 @@ public class Options extends IDatabaseObject {
     }
 
     public void startMonitorForScreenFadeOut(final OnFadeTimeElapsedListener onFadeTimeElapsedListener) {
+        // Log.i(Globals.ACTIVITY, "Starting Fadeout monitor");
         stopMonitorForScreenFadeOut();
         mScreenFaderThread = new Thread(new Runnable() {
             @Override

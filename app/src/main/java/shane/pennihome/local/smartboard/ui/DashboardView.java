@@ -100,13 +100,13 @@ public class DashboardView extends LinearLayoutCompat {
             @Override
             public void run() {
                 try {
-                    Log.i("Presleep -> " + getDashboard().getName(), Globals.ACTIVITY);
+                    Log.i(Globals.ACTIVITY, "Presleep -> " + getDashboard().getName());
                     Thread.sleep(500);
 
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
-                            Log.i("Render thread -> " + getDashboard().getName(), Globals.ACTIVITY);
+                            Log.i(Globals.ACTIVITY, "Render thread -> " + getDashboard().getName());
                             mContainer.setVisibility(View.VISIBLE);
                             getDashboard().renderBackgroundTo(mContainer);
                             AlphaAnimation animation = new AlphaAnimation(0f, 1.0f);
@@ -116,7 +116,7 @@ public class DashboardView extends LinearLayoutCompat {
                     });
 
                 } catch (InterruptedException ignored) {
-                    Log.i("Render -> BROKE " + getDashboard().getName(), Globals.ACTIVITY);
+                    Log.i(Globals.ACTIVITY, "Render -> BROKE " + getDashboard().getName());
 
                 } finally {
                     mBGDrawer = null;
@@ -139,7 +139,7 @@ public class DashboardView extends LinearLayoutCompat {
             return mDashboard;
         }
 
-        public void setDashboard(Dashboard dashboard) {
+        void setDashboard(Dashboard dashboard) {
             mDashboard = dashboard;
         }
 
@@ -173,12 +173,13 @@ public class DashboardView extends LinearLayoutCompat {
             return mDashboard == null ? 0 : mDashboard.getGroups().size();
         }
 
+        @SuppressWarnings("unused")
         class ViewHolder extends RecyclerView.ViewHolder {
             final TextView mGroupTitle;
             final AsymmetricRecyclerView mBlockView;
             Group mGroup;
 
-            public ViewHolder(View itemView) {
+            ViewHolder(View itemView) {
                 super(itemView);
 
                 mGroupTitle = itemView.findViewById(R.id.dvg_title);

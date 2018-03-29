@@ -1,17 +1,17 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-    androidTestCompile 'com.android.support.test:runner:1.0.1'
-    androidTestCompile 'com.android.support.test:rules:1.0.1'
-    androidTestCompile 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test:rules:1.0.1'
+    androidTestImplementation 'junit:junit:4.12'
 }
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '26.0.2'
 
     sourceSets {
         main {
+            manifest.srcFile 'AndroidManifest.xml'
             java.srcDirs = ['src']
             resources.srcDirs = ['src']
             aidl.srcDirs = ['src']
@@ -21,6 +21,7 @@ android {
         }
 
         androidTest {
+            manifest.srcFile '../netciphertest/AndroidManifest.xml'
             java.srcDirs = ['../netciphertest/src']
             resources.srcDirs = ['../netciphertest/src']
             aidl.srcDirs = ['../netciphertest/src']
@@ -32,8 +33,6 @@ android {
 
     defaultConfig {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        minSdkVersion 21
-        targetSdkVersion 27
     }
 
     lintOptions {

@@ -81,6 +81,7 @@
     <string name="lbl_keep_on">Keep screen on</string>
     <string name="lbl_fade_out">Fade screen out after</string>
     <string name="lbl_minutes">Minutes</string>
+    <string name="a_label">A Label</string>
 
 
 </resources>

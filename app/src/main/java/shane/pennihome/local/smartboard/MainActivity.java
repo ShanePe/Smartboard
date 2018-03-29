@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
             }
+        startScreenFadeOutMonitor();
         super.onPostResume();
     }
 
@@ -224,22 +225,29 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    @SuppressWarnings({"StatementWithEmptyBody", "SameReturnValue"})
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.mnu_hubs)
-            serviceList();
-        else if (id == R.id.mnu_device)
-            deviceList();
-        else if (id == R.id.mnu_routine)
-            routineList();
-        else if (id == R.id.mnu_dashboard)
-            dashboardList();
-        else if (id == R.id.mnu_template)
-            templateList();
+        switch (id) {
+            case R.id.mnu_hubs:
+                serviceList();
+                break;
+            case R.id.mnu_device:
+                deviceList();
+                break;
+            case R.id.mnu_routine:
+                routineList();
+                break;
+            case R.id.mnu_dashboard:
+                dashboardList();
+                break;
+            case R.id.mnu_template:
+                templateList();
+                break;
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -328,7 +336,7 @@ public class MainActivity extends AppCompatActivity
                 progComplete.complete(true, null);
                 if (mDashboards.size() == 0) {
                     DrawerLayout drawer = findViewById(R.id.drawer_layout);
-                    drawer.openDrawer(Gravity.NO_GRAVITY);
+                    drawer.openDrawer(Gravity.START);
                 }
             }
         });
@@ -363,6 +371,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void startScreenFadeOutMonitor() {
+        if (mOptions == null)
+            mOptions = Options.getFromDataStore(this);
+
         setScreenFadeout();
     }
 
@@ -496,6 +507,7 @@ public class MainActivity extends AppCompatActivity
                 if (Monitor.getMonitor().isLoaded())
                     outState.putString("monitor", Monitor.getMonitor().toJson());
             }
+            stopScreenFadeOutMonitor();
         } catch (Exception ignored) {
         }
     }

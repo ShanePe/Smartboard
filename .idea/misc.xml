@@ -1030,6 +1030,11 @@
       <entry_point TYPE="field" FQNAME="me.grantland.widget.R.styleable AutofitTextView_precision" />
       <entry_point TYPE="field" FQNAME="me.grantland.widget.R.styleable AutofitTextView_minTextSize" />
       <entry_point TYPE="field" FQNAME="me.grantland.widget.R.styleable AutofitTextView" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.DashboardView.BlockViewAdapter mGroup" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.DashboardView.GroupViewAdapter.SpacesItemDecoration padding" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.DashboardView.GroupViewAdapter.ViewHolder mGroup" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.DashboardView.GroupViewAdapter.ViewHolder mBlockView" />
+      <entry_point TYPE="field" FQNAME="shane.pennihome.local.smartboard.ui.DashboardView.GroupViewAdapter.ViewHolder mGroupTitle" />
     </entry_points>
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="setOnValueChangedListener" />
     <pattern value="com.flask.colorpicker.slider.AbsCustomSlider" method="getDimension" />
@@ -3319,6 +3324,17 @@
     <pattern value="me.grantland.widget.R" />
     <pattern value="shane.pennihome.local.smartboard.things.temperature.TemperatureUIHandler" method="TemperatureUIHandler" />
     <pattern value="shane.pennihome.local.smartboard.things.temperature.TemperatureUIHandler" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.BlockViewAdapter" method="getItem" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.BlockViewAdapter" method="getItemCount" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.BlockViewAdapter" method="onBindViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.BlockViewAdapter" method="onCreateViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.BlockViewAdapter" method="getItemViewType" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.GroupViewAdapter.SpacesItemDecoration" method="getItemOffsets" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.GroupViewAdapter" method="getItemCount" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.GroupViewAdapter" method="onBindViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.GroupViewAdapter" method="onCreateViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.GroupViewAdapter.ViewHolder" method="ViewHolder" />
+    <pattern value="shane.pennihome.local.smartboard.ui.DashboardView.GroupViewAdapter.ViewHolder" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

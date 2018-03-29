@@ -12,7 +12,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="4dp"
-            android:labelFor="@+id/def_tb_txt" />
+            android:contentDescription="@string/a_label"
+            android:labelFor="@+id/def_tb_txt"
+            android:text="@string/a_label" />
 
         <EditText
             android:id="@+id/def_tb_txt"

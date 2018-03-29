@@ -7,6 +7,6 @@
     style="@style/listStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutManager="LinearLayoutManager"
+    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
     tools:context="shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment"
     tools:listitem="@layout/fragment_huebridge" />

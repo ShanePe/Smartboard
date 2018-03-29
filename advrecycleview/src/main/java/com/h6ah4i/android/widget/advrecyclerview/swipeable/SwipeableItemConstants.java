@@ -330,7 +330,7 @@ public interface SwipeableItemConstants {
      * <p>After-reaction type used for the {@link SwipeableItemViewHolder#setAfterSwipeReaction(int)} and {@link SwipeableItemViewHolder#getAfterSwipeReaction()} methods.</p>
      * <p>Represents that the item moved to swiped direction.</p>
      */
-    int AFTER_SWIPE_REACTION_MOVE_TO_SWIPED_DIRECTION = 2;
+    int AFTER_SWIPE_REACTION_MOVE_TO_SWIPED_DIRECTION = 1 << 1;
 
     /**
      * <p>After-reaction type used for the {@link SwipeableItemViewHolder#setAfterSwipeReaction(int)} and {@link SwipeableItemViewHolder#getAfterSwipeReaction()} methods.</p>
