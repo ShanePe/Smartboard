@@ -12,10 +12,10 @@ import shane.pennihome.local.smartboard.data.NameValuePair;
  * Created by shane on 29/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class JsonExecutorRequest {
     private final Types mType;
     private final ArrayList<NameValuePair> mQueryStringParameters;
+    private final ArrayList<NameValuePair> mHeaders;
     private URL mUrl;
     private OnExecutorRequestActionListener mOnExecutorRequestActionListener;
     private JSONObject mPostJson;
@@ -25,6 +25,7 @@ public class JsonExecutorRequest {
         this.mUrl = mUrl;
         this.mType = mType;
         mQueryStringParameters = new ArrayList<>();
+        mHeaders = new ArrayList<>();
     }
 
     public JsonExecutorRequest(URL mUrl, @SuppressWarnings("SameParameterValue") Types mType, OnExecutorRequestActionListener mOnExecutorRequestActionListener) {
@@ -32,6 +33,7 @@ public class JsonExecutorRequest {
         this.mOnExecutorRequestActionListener = mOnExecutorRequestActionListener;
         this.mType = mType;
         mQueryStringParameters = new ArrayList<>();
+        mHeaders = new ArrayList<>();
     }
 
     URL getUrl() {
@@ -75,4 +77,8 @@ public class JsonExecutorRequest {
     }
 
     public enum Types {GET, POST, PUT}
+
+    public ArrayList<NameValuePair> getHeaders() {
+        return mHeaders;
+    }
 }

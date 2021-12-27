@@ -1,17 +1,17 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/shane/AndroidStudioProjects/Smartboard/libnetcipher/AndroidManifest.xml:1:1-8:12
-INJECTED from /home/shane/AndroidStudioProjects/Smartboard/libnetcipher/AndroidManifest.xml:1:1-8:12
-INJECTED from /home/shane/AndroidStudioProjects/Smartboard/libnetcipher/AndroidManifest.xml:1:1-8:12
+ADDED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml:1:1-8:12
+INJECTED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml:1:1-8:12
+INJECTED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml:1:1-8:12
 	package
-		ADDED from /home/shane/AndroidStudioProjects/Smartboard/libnetcipher/AndroidManifest.xml:2:5-45
-		INJECTED from /home/shane/AndroidStudioProjects/Smartboard/libnetcipher/AndroidManifest.xml
-		INJECTED from /home/shane/AndroidStudioProjects/Smartboard/libnetcipher/AndroidManifest.xml
+		ADDED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml:2:5-45
+		INJECTED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml
+		INJECTED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml
 	xmlns:android
-		ADDED from /home/shane/AndroidStudioProjects/Smartboard/libnetcipher/AndroidManifest.xml:1:11-69
+		ADDED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml:1:11-69
 uses-sdk
-ADDED from /home/shane/AndroidStudioProjects/Smartboard/libnetcipher/AndroidManifest.xml:4:5-6:41
+ADDED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml:4:5-6:41
 	android:targetSdkVersion
-		ADDED from /home/shane/AndroidStudioProjects/Smartboard/libnetcipher/AndroidManifest.xml:6:9-38
+		ADDED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml:6:9-38
 	android:minSdkVersion
-		ADDED from /home/shane/AndroidStudioProjects/Smartboard/libnetcipher/AndroidManifest.xml:5:9-34
+		ADDED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml:5:9-34

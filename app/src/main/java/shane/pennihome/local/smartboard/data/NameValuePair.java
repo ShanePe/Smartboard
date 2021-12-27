@@ -7,7 +7,6 @@ import java.net.URLEncoder;
  * Created by shane on 28/12/17.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class NameValuePair {
     private String mName;
     private String mValue;
@@ -17,7 +16,7 @@ public class NameValuePair {
         mValue = value;
     }
 
-    private String getName() {
+    public String getName() {
         return mName;
     }
 
@@ -26,7 +25,7 @@ public class NameValuePair {
         this.mName = _name;
     }
 
-    private String getValue() {
+    public String getValue() {
         return mValue;
     }
 

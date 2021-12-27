@@ -82,6 +82,10 @@
     <string name="lbl_fade_out">Fade screen out after</string>
     <string name="lbl_minutes">Minutes</string>
     <string name="a_label">A Label</string>
+    <string name="lbl_id">Id</string>
+    <string name="lbl_ip">IP Address</string>
+    <string name="lbl_ok">OK</string>
+    <string name="lbl_hueman">Could not discover a hue bridge, please enter details manually.</string>
 
 
 </resources>

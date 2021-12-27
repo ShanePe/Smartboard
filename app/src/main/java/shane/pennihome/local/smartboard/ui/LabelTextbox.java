@@ -3,6 +3,8 @@ package shane.pennihome.local.smartboard.ui;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -15,12 +17,12 @@ import shane.pennihome.local.smartboard.R;
  * Created by shane on 26/01/18.
  */
 
-@SuppressWarnings({"DefaultFileTemplate", "unused"})
 public class LabelTextbox extends LinearLayoutCompat {
     private TextView mLabelTextView;
     private EditText mTextBoxEditView;
     private String mLabel;
     private String mText;
+    private boolean mAutoSet;
 
     public LabelTextbox(Context context) {
         super(context);
@@ -57,6 +59,30 @@ public class LabelTextbox extends LinearLayoutCompat {
         doPropertyChange();
     }
 
+    public void SetAutoTextListener(){
+        final LabelTextbox txtBox= this;
+        addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                txtBox.mText = s.toString();
+            }
+        });
+    }
+
+    public EditText getTextbox(){
+        return this.mTextBoxEditView;
+    }
+
     private void initializeViews(Context context) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -85,6 +111,7 @@ public class LabelTextbox extends LinearLayoutCompat {
             mLabelTextView.setText(mLabel);
         if (mText != null)
             mTextBoxEditView.setText(mText);
+
         invalidate();
         requestLayout();
     }

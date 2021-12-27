@@ -63,6 +63,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
 import shane.pennihome.local.smartboard.ui.dialogs.ImportImageDialog;
 import shane.pennihome.local.smartboard.ui.listeners.OnBlockSelectListener;
+import shane.pennihome.local.smartboard.ui.listeners.OnDialogWindowListener;
 import shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener;
 
 /**
@@ -280,6 +281,10 @@ public class UIHelper {
                 })
                 .build()
                 .show();
+    }
+
+    public static <T> void showDialogWindow(Context context, String title, int resource, OnDialogWindowListener<T> dialogWindowListener){
+       showPropertyWindow(context, title, resource, (OnPropertyWindowListener) dialogWindowListener);
     }
 
     public static void showPropertyWindow(Context context, String title, int resource,

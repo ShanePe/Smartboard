@@ -1,6 +1,7 @@
 package shane.pennihome.local.smartboard.services.PhilipsHue;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -18,6 +19,7 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import shane.pennihome.local.smartboard.R;
@@ -26,6 +28,7 @@ import shane.pennihome.local.smartboard.comms.JsonExecutorRequest;
 import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Globals;
+import shane.pennihome.local.smartboard.data.NameValuePair;
 import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
@@ -34,14 +37,15 @@ import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IExecutor;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
+import shane.pennihome.local.smartboard.ui.ColorSpaceConverter;
 
 /**
  * Created by SPennicott on 02/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class HueBridgeService extends IService {
     private final static String PH_DISCOVER_URL = "https://www.meethue.com/api/nupnp";
+    private final static String PH_DISCOVER_V2_URL = "https://discovery.meethue.com/";
     private String mAddress;
     private String mToken;
 
@@ -124,8 +128,8 @@ public class HueBridgeService extends IService {
         ArrayList<IThingsGetter> thingsGetters = new ArrayList<>();
         if (isAwaitingAction() || !isRegistered())
             thingsGetters.add(new Connector());
-        thingsGetters.add(new SwitchGetter());
-        thingsGetters.add(new RoutineGetter());
+        thingsGetters.add(new SwitchGetterV2());
+        thingsGetters.add(new RoutineGetterV2());
         return thingsGetters;
     }
 
@@ -141,7 +145,7 @@ public class HueBridgeService extends IService {
 
     ArrayList<HueBridge> discover() throws Exception {
         ArrayList<HueBridge> bridges = new ArrayList<>();
-        JsonExecutorResult result = JsonExecutor.fulfil(new JsonExecutorRequest(new URL(PH_DISCOVER_URL), JsonExecutorRequest.Types.GET));
+        JsonExecutorResult result = JsonExecutor.fulfil(new JsonExecutorRequest(new URL(PH_DISCOVER_V2_URL), JsonExecutorRequest.Types.GET));
 
         if (!result.isSuccess())
             throw result.getError();
@@ -155,6 +159,44 @@ public class HueBridgeService extends IService {
             bridges.add(new HueBridge(jBrid.getString("id"), jBrid.getString("internalipaddress")));
         }
         return bridges;
+    }
+
+    private JSONObject GetEndPointV2(String endPoint) throws Exception {
+        JsonExecutorRequest request = new JsonExecutorRequest(new URL(String.format("https://%s/clip/v2/resource/%s", getAddress(), endPoint)), JsonExecutorRequest.Types.GET);
+        request.getHeaders().add(new NameValuePair("hue-application-key", getToken()));
+
+        JsonExecutorResult result = JsonExecutor.fulfil(request);
+        if (!result.isSuccess())
+            throw result.getError();
+
+        JSONObject jResult = result.getResultAsJsonObject();
+        if (jResult.has("errors"))
+            if (jResult.getJSONArray("errors").length() > 0)
+                throw new Exception(jResult.getJSONArray("errors").getJSONObject(0).getString("description"));
+        return jResult;
+    }
+
+    private void IterateEndPointV2(String endPoint, EndPointItemIterate endPointItemIterate) throws Exception {
+        JSONArray array = GetEndPointV2(endPoint).getJSONArray("data");
+        for (int i = 0; i < array.length(); i++)
+            endPointItemIterate.Item(array.getJSONObject(i));
+    }
+
+    private JsonExecutorResult PutEndPointV2(IThing thing,String resource, String body) {
+        try {
+            JsonExecutorRequest request = new JsonExecutorRequest(new URL(String.format("https://%s/clip/v2/resource/%s/%s", getAddress(), resource, thing.getId())), JsonExecutorRequest.Types.PUT);
+            request.getHeaders().add(new NameValuePair("hue-application-key", getToken()));
+            request.setPutBody(body);
+
+            return JsonExecutor.fulfil(request);
+
+        } catch (Exception e) {
+            return new JsonExecutorResult(e);
+        }
+    }
+
+    private interface EndPointItemIterate {
+        void Item(JSONObject data) throws JSONException;
     }
 
     private static class RegisterHandler extends AsyncTask<Void, Void, Exception> {
@@ -309,6 +351,90 @@ public class HueBridgeService extends IService {
 
     }
 
+    public class SwitchGetterV2 implements IThingsGetter {
+        @Override
+        public String getLoadMessage() {
+            return "Getting Philips Hue lights";
+        }
+
+        @Override
+        public Things getThings() throws Exception {
+            final Things things = new Things();
+
+            IterateEndPointV2("light", new EndPointItemIterate() {
+                @Override
+                public void Item(JSONObject data) throws JSONException {
+                    Switch d = new Switch();
+                    d.setId(data.getString("id"));
+                    d.setName(data.getJSONObject("metadata").getString("name"));
+                    d.setUnreachable(false, false);
+                    d.setOn(data.getJSONObject("on").getBoolean("on"), false);
+                    d.setType(data.getString("type"));
+                    d.setService(ServicesTypes.PhilipsHue);
+                    if (data.has("dimming")) {
+                        d.setIsDimmer(true);
+                        d.setDimmerLevel(Math.round((float) data.getJSONObject("dimming").getDouble("brightness")), false);
+                    }
+                    if (data.has("color")) {
+                        JSONObject color = data.getJSONObject("color").getJSONObject("xy");
+                        JSONObject dim = data.getJSONObject("dimming");
+
+                        ColorSpaceConverter colorSpaceConverter = new ColorSpaceConverter();
+                        d.setSupportsColour(true);
+                        int[] cArray = colorSpaceConverter.XYZtoRGB(color.getDouble("x"), color.getDouble("y"), 1.0);
+                        d.setCurrentColour(Color.rgb(cArray[0], cArray[1], cArray[2]));
+                    }
+
+                    d.initialise();
+                    things.add(d);
+                }
+            });
+
+
+            return things;
+
+        }
+
+        @Override
+        public int getUniqueId() {
+            return 5;
+        }
+
+        @Override
+        public void setDescriptionTextView(TextView txtDescription) {
+
+        }
+
+        @Override
+        public Type getThingType() {
+            return Switch.class;
+        }
+
+        @Override
+        public IExecutor<?> getExecutor(String Id) {
+            if ("level".equals(Id)) {
+                return new LevelExecutor();
+            }
+            return new OnOffExecutor();
+        }
+
+        public class OnOffExecutor extends IExecutor<Void> {
+
+            @Override
+            protected JsonExecutorResult execute(IThing thing) {
+                return PutEndPointV2(thing,"light", String.format("{\"on\":{\"on\":%s}}", !((Switch) thing).isOn()));
+            }
+        }
+
+        public class LevelExecutor extends IExecutor<Integer> {
+
+            @Override
+            protected JsonExecutorResult execute(IThing thing) {
+                return PutEndPointV2(thing,"light", String.format("{\"dimming\": {\"brightness\": %s}}", getValue()));
+            }
+        }
+    }
+
     public class SwitchGetter implements IThingsGetter {
 
         @Override
@@ -354,7 +480,7 @@ public class HueBridgeService extends IService {
 
         private int convertLevelFrom(JSONObject jState) throws JSONException {
             String level = jState.getString("bri");
-            int lvl = Math.round((Float.valueOf(level) / 255f) * 100f);
+            int lvl = Math.round((Float.parseFloat(level) / 255f) * 100f);
             if (lvl < 0)
                 lvl = 0;
             else if (lvl > 100)
@@ -388,7 +514,7 @@ public class HueBridgeService extends IService {
 
         @Override
         public IExecutor<?> getExecutor(String Id) {
-            if (Id.toLowerCase().equals("level"))
+            if (Id.equalsIgnoreCase("level"))
                 return new LevelExecutor();
 
             return new IExecutor<Void>() {
@@ -430,6 +556,81 @@ public class HueBridgeService extends IService {
 
     }
 
+    public class RoutineGetterV2 implements IThingsGetter {
+
+
+        @Override
+        public String getLoadMessage() {
+            return "Getting Philips Hue Routines";
+        }
+
+        @Override
+        public Things getThings() throws Exception {
+            final Things things = new Things();
+            final HashMap<String, HashMap<String, String>> places = new HashMap<>();
+            places.put("zone", new HashMap<String, String>());
+            places.put("room", new HashMap<String, String>());
+
+            IterateEndPointV2("room", new EndPointItemIterate() {
+                @Override
+                public void Item(JSONObject data) throws JSONException {
+                    places.get("room").put(data.getString("id"), data.getJSONObject("metadata").getString("name"));
+                }
+            });
+
+            IterateEndPointV2("zone", new EndPointItemIterate() {
+                @Override
+                public void Item(JSONObject data) throws JSONException {
+                    places.get("zone").put(data.getString("id"), data.getJSONObject("metadata").getString("name"));
+                }
+            });
+
+            IterateEndPointV2("scene", new EndPointItemIterate() {
+                @Override
+                public void Item(JSONObject data) throws JSONException {
+                    JSONObject group = data.getJSONObject("group");
+                    String n = places.containsKey(group.getString("rtype")) ?
+                            places.get(group.getString("rtype")).get(group.getString("rid")) :
+                            "All";
+
+                    Routine r = new Routine();
+                    r.setId(data.getString("id"));
+                    r.setName(n + " : " + data.getJSONObject("metadata").getString("name"));
+                    r.setService(IService.ServicesTypes.PhilipsHue);
+                    r.initialise();
+                    things.add(r);
+                }
+            });
+
+            return things;
+        }
+
+        @Override
+        public int getUniqueId() {
+            return 6;
+        }
+
+        @Override
+        public void setDescriptionTextView(TextView txtDescription) {
+
+        }
+
+        @Override
+        public Type getThingType() {
+            return Routine.class;
+        }
+
+        @Override
+        public IExecutor<?> getExecutor(String Id) {
+            return new IExecutor<Void>() {
+                @Override
+                protected JsonExecutorResult execute(IThing thing) {
+                    return PutEndPointV2(thing,"scene","{\"recall\": {\"action\": \"active\"}}");
+                }
+            };
+        }
+    }
+
     public class RoutineGetter implements IThingsGetter {
 
         @Override
@@ -447,6 +648,10 @@ public class HueBridgeService extends IService {
             JsonExecutorResult sceneResult = JsonExecutor.fulfil(new JsonExecutorRequest(new URL(String.format("http://%s/api/%s/scenes", getAddress(), getToken())), JsonExecutorRequest.Types.GET));
             if (!sceneResult.isSuccess())
                 throw sceneResult.getError();
+
+            JsonExecutorResult linkResult = JsonExecutor.fulfil(new JsonExecutorRequest(new URL(String.format("http://%s/api/%s/resourcelinks", getAddress(), getToken())), JsonExecutorRequest.Types.GET));
+            if (!linkResult.isSuccess())
+                throw linkResult.getError();
 
             final JSONArray groups = new JSONArray();
             JSONObject jGroup = groupResult.getResultAsJsonObject();

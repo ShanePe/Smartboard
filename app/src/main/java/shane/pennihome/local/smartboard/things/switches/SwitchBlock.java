@@ -26,7 +26,6 @@ import shane.pennihome.local.smartboard.ui.UIHelper;
  * Created by shane on 13/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class SwitchBlock extends IIconBlock {
     private @ColorInt
     int mForeColourOn;
@@ -56,6 +55,15 @@ public class SwitchBlock extends IIconBlock {
 
     @ColorInt
     int getBackgroundColourOn() {
+        try {
+            Switch s = getThing(Switch.class);
+
+            if (s.SupportsColour())
+                return mBackColourOn;//s.getCurrentColour();
+        }
+        catch(Exception ignore) {
+            return mBackColourOn;
+        }
         return mBackColourOn;
     }
 

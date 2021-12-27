@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.comms;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Looper;
 import android.util.Log;
@@ -7,14 +8,22 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.nio.charset.StandardCharsets;
+import java.security.cert.X509Certificate;
 import java.util.List;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import info.guardianproject.netcipher.NetCipher;
 import shane.pennihome.local.smartboard.data.NameValuePair;
@@ -23,8 +32,26 @@ import shane.pennihome.local.smartboard.data.NameValuePair;
  * Created by shane on 29/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonExecutorResult> {
+
+    @SuppressLint("CustomX509TrustManager")
+    TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }
+
+                @SuppressLint("TrustAllX509TrustManager")
+                @Override
+                public void checkClientTrusted(X509Certificate[]
+                                                       certs, String authType) {
+                }
+
+                @SuppressLint("TrustAllX509TrustManager")
+                @Override
+                public void checkServerTrusted(X509Certificate[]
+                                                       certs, String authType) {
+                }
+            }};
 
     private static boolean isOnUIThread() {
         return Thread.currentThread() == Looper.getMainLooper().getThread();
@@ -45,23 +72,36 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
     private JsonExecutorResult executeRequest(JsonExecutorRequest request) {
         try {
             int tries = 0;
-            int maxAttempts = 5;
-            int attemptWait = 2500;
+            int maxAttempts = 3;
+            int attemptWait = 5000;
 
             while (tries <= maxAttempts) {
                 try {
-                    Log.d("Url : ", (tries+1) + " of " + maxAttempts + " " + request.getUrl().toString());
+                    Log.d("Url : ", (tries + 1) + " of " + maxAttempts + " " + request.getUrl().toString());
 
                     HttpURLConnection connection;
 
-                    if (request.getUrl().getProtocol().toLowerCase().equals("https")) {
+                    if (request.getUrl().getProtocol().equalsIgnoreCase("https")) {
                         connection = NetCipher.getCompatibleHttpsURLConnection(request.getUrl());
-                    }
-                    else
+                        final SSLContext sslContext = SSLContext.getInstance("SSL");
+                        sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+
+                        ((HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
+                        ((HttpsURLConnection) connection).setHostnameVerifier(new HostnameVerifier() {
+                            @SuppressLint("BadHostnameVerifier")
+                            @Override
+                            public boolean verify(String hostname, SSLSession session) {
+                                return true;
+                            }
+                        });
+                    } else
                         connection = (HttpURLConnection) request.getUrl().openConnection();
 
-                    connection.setReadTimeout(10000);
-                    connection.setConnectTimeout(1500);
+                    connection.setReadTimeout(15000);
+                    connection.setConnectTimeout(15000);
+
+                    for (NameValuePair header : request.getHeaders())
+                        connection.setRequestProperty(header.getName(), header.getValue());
 
                     if (request.getType() == JsonExecutorRequest.Types.GET)
                         return new JsonExecutorResult(doGET(connection, request));
@@ -73,6 +113,7 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
                     } else
                         throw new Exception("Type not supported" + request.getType().toString());
                 } catch (Exception ex) {
+                    Log.d("Url", "Error on Call: " + ex.getMessage());
                     Thread.sleep(attemptWait);
                     tries++;
                     if (tries >= maxAttempts)
@@ -94,7 +135,7 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
             connection.setRequestProperty("Connection", "close");
         }
 
-        connection.setReadTimeout(10000);
+        connection.setReadTimeout(15000);
         connection.setConnectTimeout(15000);
         connection.setRequestMethod("PUT");
         connection.setDoInput(true);
@@ -104,7 +145,7 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
 
         if (request.getPutBody() != null) {
             OutputStream os = connection.getOutputStream();
-            os.write((request.getPutBody() + "\r\n").getBytes("UTF-8"));
+            os.write((request.getPutBody() + "\r\n").getBytes(StandardCharsets.UTF_8));
             os.close();
         }
 
@@ -126,28 +167,21 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
 
         if (request.getQueryStringParameters().size() > 0) {
             BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(os, "UTF-8"));
+                    new OutputStreamWriter(os, StandardCharsets.UTF_8));
             writer.write(buildQueryString(request.getQueryStringParameters()));
             writer.flush();
             writer.close();
         }
 
         if (request.getPostJson() != null)
-            os.write((request.getPostJson().toString() + "\r\n").getBytes("UTF-8"));
+            os.write((request.getPostJson().toString() + "\r\n").getBytes(StandardCharsets.UTF_8));
 
         os.close();
 
         if (connection.getResponseCode() != HttpsURLConnection.HTTP_OK)
             throw new IOException("Could not connect.");
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "iso-8859-1"), 8);
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            sb.append(line);
-        }
-
-        return sb.toString();
+        return InputStreamToString(connection.getInputStream());
     }
 
     private String doGET(HttpURLConnection connection, JsonExecutorRequest request) throws IOException {
@@ -161,11 +195,16 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
         if (resCode != HttpURLConnection.HTTP_OK)
             throw new IOException("Could not connect.");
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "iso-8859-1"), 8);
+        return InputStreamToString(connection.getInputStream());
+    }
+
+    private String InputStreamToString(InputStream stream) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            sb.append(line);
+        char[] cbuf = new char[1024];
+        int i;
+        while ((i = reader.read(cbuf)) >= 0) {
+            sb.append(cbuf, 0, i);
         }
 
         return sb.toString();

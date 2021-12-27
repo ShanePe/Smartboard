@@ -17,6 +17,8 @@ public class Switch extends IThing {
     private boolean mOn;
     private boolean mIsDimmer;
     private int mDimmerLevel;
+    private boolean mSupportsColour;
+    private int mCurrentColour;
 
     public static Switch Load(String json) {
         try {
@@ -92,6 +94,22 @@ public class Switch extends IThing {
 
     public void setType(String _type) {
         this.mType = _type;
+    }
+
+    public boolean SupportsColour() {
+        return mSupportsColour;
+    }
+
+    public void setSupportsColour(boolean mSupportsColour) {
+        this.mSupportsColour = mSupportsColour;
+    }
+
+    public int getCurrentColour() {
+        return mCurrentColour;
+    }
+
+    public void setCurrentColour(int mCurrentColour) {
+        this.mCurrentColour = mCurrentColour;
     }
 
     @Override

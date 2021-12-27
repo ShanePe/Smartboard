@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SmartBoard.iml" filepath="$PROJECT_DIR$/SmartBoard.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Smartboard.iml" filepath="$PROJECT_DIR$/Smartboard.iml" />
-      <module fileurl="file://$PROJECT_DIR$/advrecycleview/advrecycleview.iml" filepath="$PROJECT_DIR$/advrecycleview/advrecycleview.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/asymmetricgridview/asymmetricgridview.iml" filepath="$PROJECT_DIR$/asymmetricgridview/asymmetricgridview.iml" />
-      <module fileurl="file://$PROJECT_DIR$/colourPicker/colourPicker.iml" filepath="$PROJECT_DIR$/colourPicker/colourPicker.iml" />
-      <module fileurl="file://$PROJECT_DIR$/libnetcipher/libnetcipher.iml" filepath="$PROJECT_DIR$/libnetcipher/libnetcipher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/smartboard.iml" filepath="$PROJECT_DIR$/.idea/smartboard.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/advrecycleview/smartboard.advrecycleview.iml" filepath="$PROJECT_DIR$/.idea/modules/advrecycleview/smartboard.advrecycleview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/smartboard.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/smartboard.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/asymmetricgridview/smartboard.asymmetricgridview.iml" filepath="$PROJECT_DIR$/.idea/modules/asymmetricgridview/smartboard.asymmetricgridview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/colourPicker/smartboard.colourPicker.iml" filepath="$PROJECT_DIR$/.idea/modules/colourPicker/smartboard.colourPicker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/libnetcipher/smartboard.libnetcipher.iml" filepath="$PROJECT_DIR$/.idea/modules/libnetcipher/smartboard.libnetcipher.iml" />
     </modules>
   </component>
 </project>
