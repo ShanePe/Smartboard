@@ -2,9 +2,7 @@ package shane.pennihome.local.smartboard.services.PhilipsHue;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.ColorSpace;
 import android.os.AsyncTask;
-import android.provider.Contacts;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -39,7 +37,6 @@ import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IExecutor;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
-import shane.pennihome.local.smartboard.ui.ColorSpaceConverter;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 
 /**
@@ -185,7 +182,7 @@ public class HueBridgeService extends IService {
             endPointItemIterate.Item(array.getJSONObject(i));
     }
 
-    private JsonExecutorResult PutEndPointV2(IThing thing,String resource, String body) {
+    private JsonExecutorResult PutEndPointV2(IThing thing, String resource, String body) {
         try {
             JsonExecutorRequest request = new JsonExecutorRequest(new URL(String.format("https://%s/clip/v2/resource/%s/%s", getAddress(), resource, thing.getId())), JsonExecutorRequest.Types.PUT);
             request.getHeaders().add(new NameValuePair("hue-application-key", getToken()));
@@ -360,9 +357,43 @@ public class HueBridgeService extends IService {
             return "Getting Philips Hue lights";
         }
 
+
+        private Things getGroupedLights(String group, final HashMap<String, Boolean> groupState) throws Exception {
+            final Things things = new Things();
+
+            IterateEndPointV2(group, new EndPointItemIterate() {
+                @Override
+                public void Item(JSONObject data) throws JSONException {
+                    if (data.has("grouped_services")) {
+                        JSONArray grouped = data.getJSONArray("grouped_services");
+                        for (int i = 0; i < grouped.length(); i++) {
+                            JSONObject service = grouped.getJSONObject(i);
+                            if (service.getString("rtype").equals("grouped_light")) {
+                                Switch s = new Switch();
+                                s.setId(service.getString("rid"));
+                                s.setName(data.getJSONObject("metadata").getString("name"));
+                                s.setOn(groupState.containsKey(s.getId()) ? groupState.get(s.getId()) : false, false);
+                                s.setType(data.getString("type"));
+                                s.setService(ServicesTypes.PhilipsHue);
+                                s.setResource("grouped_light");
+
+                                s.initialise();
+                                things.add(s);
+
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+
+            return things;
+        }
+
         @Override
         public Things getThings() throws Exception {
             final Things things = new Things();
+            final HashMap<String, Boolean> groupState = new HashMap<>();
 
             IterateEndPointV2("light", new EndPointItemIterate() {
                 @Override
@@ -374,6 +405,7 @@ public class HueBridgeService extends IService {
                     d.setOn(data.getJSONObject("on").getBoolean("on"), false);
                     d.setType(data.getString("type"));
                     d.setService(ServicesTypes.PhilipsHue);
+                    d.setResource("light");
                     if (data.has("dimming")) {
                         d.setIsDimmer(true);
                         d.setDimmerLevel(Math.round((float) data.getJSONObject("dimming").getDouble("brightness")), false);
@@ -385,8 +417,8 @@ public class HueBridgeService extends IService {
                         UIHelper.PhilipsHueRgbObject rgb = UIHelper.xyBriToRgb(color.getDouble("x"), color.getDouble("y"),
                                 convertLevelTo(dim.getDouble("brightness")));
 
-                        d.setSupportsColour(true,false);
-                        d.setCurrentColour(Color.rgb(rgb.getRed(), rgb.getGreen(), rgb.getBlue()),false);
+                        d.setSupportsColour(true, false);
+                        d.setCurrentColour(Color.rgb(rgb.getRed(), rgb.getGreen(), rgb.getBlue()), false);
                     }
 
                     d.initialise();
@@ -394,6 +426,15 @@ public class HueBridgeService extends IService {
                 }
             });
 
+            IterateEndPointV2("grouped_light", new EndPointItemIterate() {
+                @Override
+                public void Item(JSONObject data) throws JSONException {
+                    groupState.put(data.getString("id"), data.getJSONObject("on").getBoolean("on"));
+                }
+            });
+
+            things.addAll(getGroupedLights("room", groupState));
+            things.addAll(getGroupedLights("zone", groupState));
 
             return things;
 
@@ -435,7 +476,7 @@ public class HueBridgeService extends IService {
 
             @Override
             protected JsonExecutorResult execute(IThing thing) {
-                return PutEndPointV2(thing,"light", String.format("{\"on\":{\"on\":%s}}", !((Switch) thing).isOn()));
+                return PutEndPointV2(thing, ((Switch) thing).getResource(), String.format("{\"on\":{\"on\":%s}}", !((Switch) thing).isOn()));
             }
         }
 
@@ -443,7 +484,7 @@ public class HueBridgeService extends IService {
 
             @Override
             protected JsonExecutorResult execute(IThing thing) {
-                return PutEndPointV2(thing,"light", String.format("{\"dimming\": {\"brightness\": %s}}", getValue()));
+                return PutEndPointV2(thing, "light", String.format("{\"dimming\": {\"brightness\": %s}}", getValue()));
             }
         }
     }
@@ -638,7 +679,7 @@ public class HueBridgeService extends IService {
             return new IExecutor<Void>() {
                 @Override
                 protected JsonExecutorResult execute(IThing thing) {
-                    return PutEndPointV2(thing,"scene","{\"recall\": {\"action\": \"active\"}}");
+                    return PutEndPointV2(thing, "scene", "{\"recall\": {\"action\": \"active\"}}");
                 }
             };
         }

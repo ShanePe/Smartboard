@@ -19,6 +19,7 @@ public class Switch extends IThing {
     private int mDimmerLevel;
     private boolean mSupportsColour;
     private int mCurrentColour;
+    private String mResource;
 
     public static Switch Load(String json) {
         try {
@@ -129,6 +130,14 @@ public class Switch extends IThing {
 
         if (pre != currentColour && fireBroadcast)
             Broadcaster.broadcastMessage(new ThingChangedMessage(getKey(), ThingChangedMessage.What.SupportColourChange));
+    }
+
+    public String getResource() {
+        return mResource;
+    }
+
+    public void setResource(String mResource) {
+        this.mResource = mResource;
     }
 
     @Override
