@@ -464,7 +464,7 @@ public class HueBridgeService extends IService {
         }
 
         private double convertLevelTo(double lvl) {
-            double ret = Math.round(((double) lvl * 255.0) / 100.0);
+            double ret = Math.round((lvl * 255.0) / 100.0);
             if (ret < 0.0)
                 ret = 0.0;
             else if (ret > 255.0)
@@ -481,6 +481,11 @@ public class HueBridgeService extends IService {
         }
 
         public class LevelExecutor extends IExecutor<Integer> {
+
+            @Override
+            public String getId() {
+                return "level";
+            }
 
             @Override
             protected JsonExecutorResult execute(IThing thing) {
