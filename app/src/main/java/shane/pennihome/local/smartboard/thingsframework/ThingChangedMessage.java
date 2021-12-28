@@ -6,7 +6,6 @@ import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
  * Created by shane on 08/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class ThingChangedMessage extends IMessage<String> {
     private What mWhatChanged = What.State;
 
@@ -34,5 +33,5 @@ public class ThingChangedMessage extends IMessage<String> {
         mWhatChanged = whatChanged;
     }
 
-    public enum What {State, Unreachable, Level}
+    public enum What {State, Unreachable, Level, SupportColour, SupportColourChange}
 }

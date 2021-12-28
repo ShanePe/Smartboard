@@ -72,7 +72,7 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
     private JsonExecutorResult executeRequest(JsonExecutorRequest request) {
         try {
             int tries = 0;
-            int maxAttempts = 3;
+            int maxAttempts = 5;
             int attemptWait = 5000;
 
             while (tries <= maxAttempts) {
@@ -97,8 +97,14 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
                     } else
                         connection = (HttpURLConnection) request.getUrl().openConnection();
 
-                    connection.setReadTimeout(15000);
-                    connection.setConnectTimeout(15000);
+                    if(tries==0) {
+                        connection.setReadTimeout(15000);
+                        connection.setConnectTimeout(15000);
+                    }else
+                    {
+                        connection.setReadTimeout(5000);
+                        connection.setConnectTimeout(5000);
+                    }
 
                     for (NameValuePair header : request.getHeaders())
                         connection.setRequestProperty(header.getName(), header.getValue());
@@ -209,31 +215,6 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
 
         return sb.toString();
     }
-
-//    private int getResponse(HttpURLConnection connection) throws IOException {
-//        int tries = 0;
-//        int mAttempts = 3;
-//        while(tries < mAttempts)
-//        {
-//            try {
-//                return connection.getResponseCode();
-//            } catch (IOException e) {
-//                if(tries>= mAttempts)
-//                    throw e;
-//                else
-//                {
-//                    try {
-//                        int mPause = 1000;
-//                        Thread.sleep(mPause);
-//                        tries++;
-//                    } catch (InterruptedException Ignored) {
-//                        throw new IOException("Connection aborted");
-//                    }
-//                }
-//            }
-//        }
-//        throw new IOException("Could not connect");
-//    }
 
     private String buildQueryString(List<NameValuePair> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();

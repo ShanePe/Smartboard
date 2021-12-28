@@ -205,6 +205,16 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
             public void OnDimmerLevelChanged(IThing thing) {
                 holder.mDimmer.setProgress(getBlock().getThing(Switch.class).getDimmerLevel());
             }
+
+            @Override
+            public void OnSupportColourFlagChanged(IThing thing) {
+                OnStateChanged(thing);
+            }
+
+            @Override
+            public void OnSupportColourChanged(IThing thing) {
+                OnStateChanged(thing);
+            }
         });
     }
 

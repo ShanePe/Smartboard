@@ -38,7 +38,6 @@ import shane.pennihome.local.smartboard.ui.ViewSwiper;
  * Created by shane on 11/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class SmartThingModeUIHandler extends IBlockUIHandler {
 
     SmartThingModeUIHandler(IBlock block) {
@@ -169,6 +168,16 @@ public class SmartThingModeUIHandler extends IBlockUIHandler {
 
             @Override
             public void OnDimmerLevelChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnSupportColourFlagChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnSupportColourChanged(IThing thing) {
 
             }
         });

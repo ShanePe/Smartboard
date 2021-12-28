@@ -62,11 +62,22 @@ public class Switch extends IThing {
     @Override
     public void verifyState(IThing compare) {
         Switch newSwitch = (Switch) compare;
+
         if (isOn() != newSwitch.isOn())
             setOn(newSwitch.isOn(), true);
-        if (isDimmer())
+
+        if (isDimmer()) {
             if (getDimmerLevel() != newSwitch.getDimmerLevel())
                 setDimmerLevel(newSwitch.getDimmerLevel(), true);
+        }
+
+        if(SupportsColour()!= newSwitch.SupportsColour())
+            setSupportsColour(newSwitch.SupportsColour(),true );
+
+        if(SupportsColour()) {
+            if (getCurrentColour() != newSwitch.getCurrentColour())
+                setCurrentColour(newSwitch.getCurrentColour(), true);
+        }
     }
 
     @Override
@@ -100,16 +111,24 @@ public class Switch extends IThing {
         return mSupportsColour;
     }
 
-    public void setSupportsColour(boolean mSupportsColour) {
-        this.mSupportsColour = mSupportsColour;
+    public void setSupportsColour(boolean supportsColour, boolean fireBroadcast) {
+        boolean pre = this.mSupportsColour;
+        this.mSupportsColour = supportsColour;
+
+        if (pre != supportsColour && fireBroadcast)
+            Broadcaster.broadcastMessage(new ThingChangedMessage(getKey(), ThingChangedMessage.What.SupportColour));
     }
 
     public int getCurrentColour() {
         return mCurrentColour;
     }
 
-    public void setCurrentColour(int mCurrentColour) {
-        this.mCurrentColour = mCurrentColour;
+    public void setCurrentColour(int currentColour, boolean fireBroadcast) {
+        int pre = this.mCurrentColour;
+        this.mCurrentColour = currentColour;
+
+        if (pre != currentColour && fireBroadcast)
+            Broadcaster.broadcastMessage(new ThingChangedMessage(getKey(), ThingChangedMessage.What.SupportColourChange));
     }
 
     @Override

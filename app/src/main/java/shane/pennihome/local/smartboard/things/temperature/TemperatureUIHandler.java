@@ -32,7 +32,6 @@ import shane.pennihome.local.smartboard.ui.ViewSwiper;
  * Created by SPennicott on 10/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class TemperatureUIHandler extends IBlockUIHandler {
     TemperatureUIHandler(IBlock block) {
         super(block);
@@ -161,6 +160,16 @@ public class TemperatureUIHandler extends IBlockUIHandler {
 
             @Override
             public void OnDimmerLevelChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnSupportColourFlagChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnSupportColourChanged(IThing thing) {
 
             }
         });

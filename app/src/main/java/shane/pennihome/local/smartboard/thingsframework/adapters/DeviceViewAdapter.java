@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -25,10 +26,9 @@ import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionL
  * Created by shane on 29/12/17.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class DeviceViewAdapter extends ThingViewAdapter {
     BroadcastReceiver mBroadcastReceiver;
-    public DeviceViewAdapter(final IThings items) {
+    public DeviceViewAdapter(@SuppressWarnings("rawtypes") final IThings items) {
         super(items);
     }
 
@@ -43,13 +43,13 @@ public class DeviceViewAdapter extends ThingViewAdapter {
     }
 
     @Override
-    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
         ((ViewHolder) holder).stopListening();
         super.onViewRecycled(holder);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         final ViewHolder vh = (ViewHolder) holder;
         Switch d = (Switch) mValues.get(position);
 
@@ -92,6 +92,14 @@ public class DeviceViewAdapter extends ThingViewAdapter {
 
             @Override
             public void OnDimmerLevelChanged(IThing thing) {
+            }
+
+            @Override
+            public void OnSupportColourFlagChanged(IThing thing) {
+            }
+
+            @Override
+            public void OnSupportColourChanged(IThing thing) {
 
             }
         });
@@ -140,6 +148,10 @@ public class DeviceViewAdapter extends ThingViewAdapter {
                                     mOnThingActionListener.OnReachableStateChanged(mItem);
                                 else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Level)
                                     mOnThingActionListener.OnDimmerLevelChanged(mItem);
+                                else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.SupportColour)
+                                    mOnThingActionListener.OnSupportColourFlagChanged(mItem);
+                                else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.SupportColourChange)
+                                    mOnThingActionListener.OnSupportColourChanged(mItem);
                             }
                         }
                     }

@@ -123,6 +123,11 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
             } else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Level) {
                 mOnThingActionListener.OnDimmerLevelChanged(getThing());
                 return true;
+            } else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.SupportColour) {
+                mOnThingActionListener.OnSupportColourFlagChanged(getThing());
+                return true;
+            } else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.SupportColourChange) {
+                mOnThingActionListener.OnSupportColourChanged(getThing());
             }
         }
         return false;

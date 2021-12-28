@@ -2,7 +2,9 @@ package shane.pennihome.local.smartboard.services.PhilipsHue;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.ColorSpace;
 import android.os.AsyncTask;
+import android.provider.Contacts;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -38,6 +40,7 @@ import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IExecutor;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.ui.ColorSpaceConverter;
+import shane.pennihome.local.smartboard.ui.UIHelper;
 
 /**
  * Created by SPennicott on 02/02/2018.
@@ -379,10 +382,11 @@ public class HueBridgeService extends IService {
                         JSONObject color = data.getJSONObject("color").getJSONObject("xy");
                         JSONObject dim = data.getJSONObject("dimming");
 
-                        ColorSpaceConverter colorSpaceConverter = new ColorSpaceConverter();
-                        d.setSupportsColour(true);
-                        int[] cArray = colorSpaceConverter.XYZtoRGB(color.getDouble("x"), color.getDouble("y"), 1.0);
-                        d.setCurrentColour(Color.rgb(cArray[0], cArray[1], cArray[2]));
+                        UIHelper.PhilipsHueRgbObject rgb = UIHelper.xyBriToRgb(color.getDouble("x"), color.getDouble("y"),
+                                convertLevelTo(dim.getDouble("brightness")));
+
+                        d.setSupportsColour(true,false);
+                        d.setCurrentColour(Color.rgb(rgb.getRed(), rgb.getGreen(), rgb.getBlue()),false);
                     }
 
                     d.initialise();
@@ -416,6 +420,15 @@ public class HueBridgeService extends IService {
                 return new LevelExecutor();
             }
             return new OnOffExecutor();
+        }
+
+        private double convertLevelTo(double lvl) {
+            double ret = Math.round(((double) lvl * 255.0) / 100.0);
+            if (ret < 0.0)
+                ret = 0.0;
+            else if (ret > 255.0)
+                ret = 255.0;
+            return ret;
         }
 
         public class OnOffExecutor extends IExecutor<Void> {

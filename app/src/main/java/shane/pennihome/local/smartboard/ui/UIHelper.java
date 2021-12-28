@@ -143,7 +143,6 @@ public class UIHelper {
         });
     }
 
-
     public static String saveBitmap(Context context, Bitmap imageSave) {
         String fileName = "Smartboard_" + UUID.randomUUID().toString() + ".png";
         File fileToWrite = new File(context.getFilesDir(), fileName);
@@ -632,6 +631,85 @@ public class UIHelper {
         @ColorInt int color = ta.getResourceId(0, android.R.color.black);
         ta.recycle();
         return color;
+    }
+
+    public static class PhilipsHueRgbObject
+    {
+        private int red,green,blue;
+
+        public int getRed() {
+            return red;
+        }
+
+        public void setRed(int red) {
+            this.red = red;
+        }
+
+        public int getGreen() {
+            return green;
+        }
+
+        public void setGreen(int green) {
+            this.green = green;
+        }
+
+        public int getBlue() {
+            return blue;
+        }
+
+        public void setBlue(int blue) {
+            this.blue = blue;
+        }
+
+        public PhilipsHueRgbObject(int red, int green, int blue) {
+            this.red = red;
+            this.green = green;
+            this.blue = blue;
+        }
+    }
+
+    public static PhilipsHueRgbObject xyBriToRgb(double x, double y, double bri)
+    {
+        double z = 1.0d - x - y;
+
+        double Y = bri / 255.0d; // Brightness of lamp
+        double X = (Y / y) * x;
+        double Z = (Y / y) * z;
+
+        double r = X * 1.612d - Y * 0.203d - Z * 0.302d;
+        double g = -X * 0.509d + Y * 1.412d + Z * 0.066d;
+        double b = X * 0.026d - Y * 0.072d + Z * 0.962d;
+
+        r =  (r <= 0.0031308d ? 12.92d * r : (1.0d + 0.055d) * Math.pow(r, (1.0d / 2.4d)) - 0.055d);
+        g =  (g <= 0.0031308d ? 12.92d * g : (1.0d + 0.055d) * Math.pow(g, (1.0d / 2.4d)) - 0.055d);
+        b =  (b <= 0.0031308d ? 12.92d * b : (1.0d + 0.055d) * Math.pow(b, (1.0d / 2.4d)) - 0.055d);
+
+        double maxValue = Math.max(r, Math.max(g, b));
+
+        r /= maxValue;
+        g /= maxValue;
+        b /= maxValue;
+
+        r = r * 255;
+        if (r < 0)
+        {
+            r = 255;
+        }
+
+        g = g * 255;
+        if (g < 0)
+        {
+            g = 255;
+        }
+
+        b = b * 255;
+        if (b < 0)
+        {
+            b = 255;
+        }
+
+        return new PhilipsHueRgbObject((int)r,(int)g,(int)b);
+
     }
 
 

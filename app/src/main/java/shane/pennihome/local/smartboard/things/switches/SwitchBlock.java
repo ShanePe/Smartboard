@@ -59,7 +59,7 @@ public class SwitchBlock extends IIconBlock {
             Switch s = getThing(Switch.class);
 
             if (s.SupportsColour())
-                return mBackColourOn;//s.getCurrentColour();
+                return s.getCurrentColour();
         }
         catch(Exception ignore) {
             return mBackColourOn;

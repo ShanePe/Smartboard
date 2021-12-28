@@ -39,7 +39,6 @@ import shane.pennihome.local.smartboard.ui.ViewSwiper;
  * Created by shane on 19/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 class SwitchGroupUIHandler extends IBlockUIHandler {
     SwitchGroupUIHandler(IBlock block) {
         super(block);
@@ -228,6 +227,16 @@ class SwitchGroupUIHandler extends IBlockUIHandler {
             @Override
             public void OnDimmerLevelChanged(IThing thing) {
                 holder.mDimmer.setProgress(getBlock().getThing(SwitchGroup.class).getDimmerLevel());
+            }
+
+            @Override
+            public void OnSupportColourFlagChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnSupportColourChanged(IThing thing) {
+
             }
         });
     }
