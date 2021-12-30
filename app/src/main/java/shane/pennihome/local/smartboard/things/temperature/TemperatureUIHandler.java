@@ -134,8 +134,8 @@ public class TemperatureUIHandler extends IBlockUIHandler {
         holder.mTitle.setText(getBlock().getName());
         if(getBlock().getThing() != null)
             holder.mValue.setText(String.format("%s°",getBlock().getThing(Temperature.class).getTemperature()));
-        getBlock().renderForegroundColourToTextView(holder.mTitle);
-        getBlock().renderForegroundColourToTextView(holder.mValue);
+        getBlock().renderForegroundColourTo(holder.mTitle);
+        getBlock().renderForegroundColourTo(holder.mValue);
         getBlock().renderBackgroundTo(holder.mContainer);
         getBlock().renderUnreachableBackground(holder.itemView);
 

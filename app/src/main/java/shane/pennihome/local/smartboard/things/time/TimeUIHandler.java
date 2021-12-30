@@ -130,7 +130,7 @@ class TimeUIHandler extends IBlockUIHandler {
 
         final TimeViewHolder holder = (TimeViewHolder) viewHolder;
 
-        getBlock().renderForegroundColourToTextView(holder.mValue);
+        getBlock().renderForegroundColourTo(holder.mValue);
         getBlock().renderBackgroundTo(holder.mContainer);
         getBlock().renderUnreachableBackground(holder.itemView);
 

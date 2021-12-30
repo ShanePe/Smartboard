@@ -40,7 +40,6 @@ public class RoutineBlock extends IIconBlock {
         return new RoutineBlockHandler(this);
     }
 
-
     @Override
     public int getIconColour() {
         return getForegroundColour();

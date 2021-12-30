@@ -19,6 +19,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -282,11 +284,33 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
         return UIHelper.getColorWithAlpha(getBackgroundColour(), getBackgroundColourTransparency() / 100f);
     }
 
-    public void renderForegroundColourToTextView(final TextView destination) {
+    public void renderForegroundColourTo(final TextView destination) {
         destination.post(new Runnable() {
             @Override
             public void run() {
                 destination.setTextColor(getForegroundColour());
+            }
+        });
+    }
+
+    public void renderForegroundColourTo(final SeekBar destination) {
+        destination.post(new Runnable() {
+            @Override
+            public void run() {
+                if (destination.getThumb() != null)
+                    destination.getThumb().setColorFilter(getForegroundColour(), PorterDuff.Mode.SRC_ATOP);
+            }
+        });
+    }
+
+    public void renderForegroundColourTo(final ProgressBar destination) {
+        destination.post(new Runnable() {
+            @Override
+            public void run() {
+                if (destination.getProgressDrawable() != null)
+                    destination.getProgressDrawable().setColorFilter(getForegroundColour(), PorterDuff.Mode.SRC_ATOP);
+                else if(destination.getIndeterminateDrawable()!=null)
+                    destination.getIndeterminateDrawable().setColorFilter(getForegroundColour(), PorterDuff.Mode.SRC_ATOP);
             }
         });
     }

@@ -135,10 +135,11 @@ public class RoutineBlockHandler extends IBlockUIHandler {
 
         holder.mTitle.setText(getBlock().getName());
 
-        getBlock().renderForegroundColourToTextView(holder.mTitle);
+        getBlock().renderForegroundColourTo(holder.mTitle);
         getBlock().renderBackgroundTo(holder.mContainer);
         getBlock().renderUnreachableBackground(holder.itemView);
         getBlock(RoutineBlock.class).renderIconTo(holder.mIcon);
+        getBlock().renderForegroundColourTo(holder.mProgress);
 
         holder.itemView.setPadding(Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING);
 

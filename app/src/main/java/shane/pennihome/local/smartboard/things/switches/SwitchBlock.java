@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -12,6 +13,8 @@ import android.support.annotation.ColorInt;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import shane.pennihome.local.smartboard.R;
@@ -60,8 +63,7 @@ public class SwitchBlock extends IIconBlock {
 
             if (s.SupportsColour())
                 return s.getCurrentColour();
-        }
-        catch(Exception ignore) {
+        } catch (Exception ignore) {
             return mBackColourOn;
         }
         return mBackColourOn;
@@ -142,7 +144,43 @@ public class SwitchBlock extends IIconBlock {
         return new SwitchBlockUIHandler(this);
     }
 
-    public void renderForegroundColourToTextView(final TextView destination) {
+    @Override
+    public void renderForegroundColourTo(final ProgressBar destination) {
+        destination.post(new Runnable() {
+            @Override
+            public void run() {
+                Switch s = getThing(Switch.class);
+                boolean isOn = false;
+                if (s != null)
+                    isOn = s.isOn();
+                if (destination.getProgressDrawable() != null)
+                    destination.getProgressDrawable().setColorFilter(isOn ? getForegroundColourOn() : getForegroundColour(), PorterDuff.Mode.SRC_ATOP);
+                else if (destination.getIndeterminateDrawable() != null)
+                    destination.getIndeterminateDrawable().setColorFilter(isOn ? getForegroundColourOn() : getForegroundColour(), PorterDuff.Mode.SRC_ATOP);
+            }
+        });
+    }
+
+    @Override
+    public void renderForegroundColourTo(final SeekBar destination) {
+        destination.post(new Runnable() {
+            @Override
+            public void run() {
+                Switch s = getThing(Switch.class);
+                boolean isOn = false;
+                if (s != null)
+                    isOn = s.isOn();
+
+                if (destination.getThumb() != null)
+                    destination.getThumb().setColorFilter(isOn ? getForegroundColourOn() : getForegroundColour(), PorterDuff.Mode.SRC_ATOP);
+                if (destination.getProgressDrawable() != null)
+                    destination.getProgressDrawable().setColorFilter(isOn ? getForegroundColourOn() : getForegroundColour(), PorterDuff.Mode.SRC_ATOP);
+            }
+        });
+    }
+
+    @Override
+    public void renderForegroundColourTo(final TextView destination) {
         destination.post(new Runnable() {
             @Override
             public void run() {
@@ -223,13 +261,13 @@ public class SwitchBlock extends IIconBlock {
 
                 Drawable background = UIHelper.combineDrawables(destination.getContext(), drawable1, drawable2, destination.getMeasuredWidth(), destination.getMeasuredHeight());
 
-                Bitmap bitmap = ((BitmapDrawable)background).getBitmap();
+                Bitmap bitmap = ((BitmapDrawable) background).getBitmap();
                 Canvas canvas = new Canvas(bitmap);
                 Paint paint = new Paint();
                 paint.setColor(getForegroundColour());
-                canvas.drawRect(new Rect(bitmap.getWidth()-20,(bitmap.getHeight()/2)-20,bitmap.getWidth()-10,(bitmap.getHeight()/2)-10 ), paint);
+                canvas.drawRect(new Rect(bitmap.getWidth() - 20, (bitmap.getHeight() / 2) - 20, bitmap.getWidth() - 10, (bitmap.getHeight() / 2) - 10), paint);
                 paint.setColor(getForegroundColourOn());
-                canvas.drawRect(new Rect(bitmap.getWidth()-20,bitmap.getHeight()-20,bitmap.getWidth()-10,bitmap.getHeight()-10 ), paint);
+                canvas.drawRect(new Rect(bitmap.getWidth() - 20, bitmap.getHeight() - 20, bitmap.getWidth() - 10, bitmap.getHeight() - 10), paint);
 
                 destination.setBackground(new BitmapDrawable(destination.getResources(), bitmap));
                 destination.invalidate();
@@ -237,13 +275,12 @@ public class SwitchBlock extends IIconBlock {
         });
     }
 
-    public void renderTemplateBlip(final ImageView destination)
-    {
+    public void renderTemplateBlip(final ImageView destination) {
         destination.post(new Runnable() {
             @Override
             public void run() {
                 destination.setImageDrawable(UIHelper.createColourBlocks(destination.getContext(),
-                        new int[]{getBackgroundColourWithAlpha(), getForegroundColour(), getBackgroundColourWithAlphaOn(), getForegroundColourOn()},20,20));
+                        new int[]{getBackgroundColourWithAlpha(), getForegroundColour(), getBackgroundColourWithAlphaOn(), getForegroundColourOn()}, 20, 20));
                 destination.invalidate();
             }
         });
@@ -251,7 +288,7 @@ public class SwitchBlock extends IIconBlock {
 
     @Override
     public int getIconColour() {
-        if(getThing() == null)
+        if (getThing() == null)
             return getForegroundColour();
         else
             return getThing(Switch.class).isOn() ? getForegroundColourOn() : getForegroundColour();

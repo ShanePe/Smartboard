@@ -153,7 +153,7 @@ class RoutineGroupUIHandler extends IBlockUIHandler {
 
         holder.mTitle.setText(getBlock().getName());
 
-        getBlock().renderForegroundColourToTextView(holder.mTitle);
+        getBlock().renderForegroundColourTo(holder.mTitle);
         getBlock().renderBackgroundTo(holder.itemView);
         getBlock().renderUnreachableBackground(holder.itemView);
         getBlock(RoutineGroupBlock.class).renderIconTo(holder.mIcon);

@@ -131,10 +131,12 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
 
         holder.mTitle.setText(getBlock().getName());
 
-        getBlock().renderForegroundColourToTextView(holder.mTitle);
+        getBlock().renderForegroundColourTo(holder.mTitle);
         getBlock().renderBackgroundTo(holder.itemView);
         getBlock().renderUnreachableBackground(holder.itemView);
         getBlock(SwitchBlock.class).renderIconTo(holder.mIcon);
+        getBlock().renderForegroundColourTo(holder.mDimmer);
+        getBlock().renderForegroundColourTo(holder.mProgress);
         getBlock().startListeningForChanges();
 
         if (getBlock().getThing() != null) {
@@ -194,7 +196,7 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
 
             @Override
             public void OnStateChanged(IThing thing) {
-                getBlock().renderForegroundColourToTextView(holder.mTitle);
+                getBlock().renderForegroundColourTo(holder.mTitle);
                 getBlock().renderBackgroundTo(holder.itemView);
                 getBlock().renderUnreachableBackground(holder.itemView);
                 getBlock(SwitchBlock.class).renderIconTo(holder.mIcon);

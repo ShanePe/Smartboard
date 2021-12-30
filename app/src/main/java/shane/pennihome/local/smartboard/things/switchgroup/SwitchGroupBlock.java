@@ -5,9 +5,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -75,6 +79,55 @@ public class SwitchGroupBlock extends SwitchBlock implements IGroupBlock {
     @Override
     public boolean IsServiceLess() {
         return true;
+    }
+
+    @Override
+    public void renderForegroundColourTo(final ProgressBar destination) {
+        destination.post(new Runnable() {
+            @Override
+            public void run() {
+                Switch s = getThing(Switch.class);
+                boolean isOn = false;
+                if (s != null)
+                    isOn = s.isOn();
+                if (destination.getProgressDrawable() != null)
+                    destination.getProgressDrawable().setColorFilter(isOn ? getForegroundColourOn() : getForegroundColour(), PorterDuff.Mode.SRC_ATOP);
+                else if (destination.getIndeterminateDrawable() != null)
+                    destination.getIndeterminateDrawable().setColorFilter(isOn ? getForegroundColourOn() : getForegroundColour(), PorterDuff.Mode.SRC_ATOP);
+            }
+        });
+    }
+
+    @Override
+    public void renderForegroundColourTo(final SeekBar destination) {
+        destination.post(new Runnable() {
+            @Override
+            public void run() {
+                Switch s = getThing(Switch.class);
+                boolean isOn = false;
+                if (s != null)
+                    isOn = s.isOn();
+
+                if (destination.getThumb() != null)
+                    destination.getThumb().setColorFilter(isOn ? getForegroundColourOn() : getForegroundColour(), PorterDuff.Mode.SRC_ATOP);
+                if (destination.getProgressDrawable() != null)
+                    destination.getProgressDrawable().setColorFilter(isOn ? getForegroundColourOn() : getForegroundColour(), PorterDuff.Mode.SRC_ATOP);
+            }
+        });
+    }
+
+    @Override
+    public void renderForegroundColourTo(final TextView destination) {
+        destination.post(new Runnable() {
+            @Override
+            public void run() {
+                Switch s = getThing(Switch.class);
+                boolean isOn = false;
+                if (s != null)
+                    isOn = s.isOn();
+                destination.setTextColor(isOn ? getForegroundColourOn() : getForegroundColour());
+            }
+        });
     }
 
     public void loadChildThings() {
