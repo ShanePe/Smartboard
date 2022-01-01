@@ -138,6 +138,7 @@ public class TemperatureUIHandler extends IBlockUIHandler {
         getBlock().renderForegroundColourTo(holder.mValue);
         getBlock().renderBackgroundTo(holder.mContainer);
         getBlock().renderUnreachableBackground(holder.itemView);
+        getBlock().startListeningForChanges();
 
         if (getBlock().getWidth() == 1)
             holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 36f);
@@ -171,6 +172,11 @@ public class TemperatureUIHandler extends IBlockUIHandler {
             @Override
             public void OnSupportColourChanged(IThing thing) {
 
+            }
+
+            @Override
+            public void OnDisabledChanged(IThing thing, boolean disabled) {
+                getBlock().doEnabled(holder.itemView, !disabled);
             }
         });
     }

@@ -33,5 +33,5 @@ public class ThingChangedMessage extends IMessage<String> {
         mWhatChanged = whatChanged;
     }
 
-    public enum What {State, Unreachable, Level, SupportColour, SupportColourChange}
+    public enum What {State, Unreachable, Level, SupportColour, SupportColourChange, Disable, Enable}
 }

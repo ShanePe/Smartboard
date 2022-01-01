@@ -24,6 +24,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandl
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IIconBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
 import shane.pennihome.local.smartboard.ui.TemplateProperties;
 import shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector;
 import shane.pennihome.local.smartboard.ui.ThingPropertiesIcon;
@@ -33,7 +34,6 @@ import shane.pennihome.local.smartboard.ui.ViewSwiper;
  * Created by SPennicott on 17/01/2018.
  */
 
-@SuppressWarnings("ALL")
 public class RoutineBlockHandler extends IBlockUIHandler {
     public RoutineBlockHandler(IBlock block) {
         super(block);
@@ -73,19 +73,17 @@ public class RoutineBlockHandler extends IBlockUIHandler {
 
             ThingPropertiesIcon tbProps = (ThingPropertiesIcon) viewSwiper.getView(R.id.rt_properties);
             ThingPropertiesClrSelector tbBackground = (ThingPropertiesClrSelector) viewSwiper.getView(R.id.rt_background);
-            TemplateProperties tempProps = (TemplateProperties)viewSwiper.getView(R.id.rt_template);
+            TemplateProperties tempProps = (TemplateProperties) viewSwiper.getView(R.id.rt_template);
 
             tbProps.populate((IIconBlock) getBlock(), null);
             tbBackground.populate(getBlock());
 
-            if(tempProps.isSaveAsTemplate())
+            if (tempProps.isSaveAsTemplate())
                 tempProps.createTemplate(view.getContext(), getBlock());
 
             if (onBlockSetListener != null)
                 onBlockSetListener.OnSet(getBlock());
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Toast.makeText(view.getContext(), "Error : " + ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
@@ -101,7 +99,7 @@ public class RoutineBlockHandler extends IBlockUIHandler {
     }
 
     public void BindEditHolder(BlockEditViewHolder viewHolder, int backgroundResourceId) {
-        if(getBlock().getThing() == null)
+        if (getBlock().getThing() == null)
             return;
 
         RoutineEditorHolder holder = (RoutineEditorHolder) viewHolder;
@@ -125,8 +123,7 @@ public class RoutineBlockHandler extends IBlockUIHandler {
 
     @Override
     public void BindViewHolder(BlockViewHolder viewHolder) {
-        if(getBlock().getThing()==null)
-        {
+        if (getBlock().getThing() == null) {
             viewHolder.itemView.setVisibility(View.GONE);
             return;
         }
@@ -140,13 +137,14 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         getBlock().renderUnreachableBackground(holder.itemView);
         getBlock(RoutineBlock.class).renderIconTo(holder.mIcon);
         getBlock().renderForegroundColourTo(holder.mProgress);
+        getBlock().startListeningForChanges();
 
-        holder.itemView.setPadding(Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING,Globals.BLOCK_PADDING);
+        holder.itemView.setPadding(Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE)
+                if (getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE)
                     return;
 
                 getBlock().execute(holder.mProgress, new OnProcessCompleteListener<String>() {
@@ -155,11 +153,42 @@ public class RoutineBlockHandler extends IBlockUIHandler {
                         if (success) {
                             Toast.makeText(holder.itemView.getContext(), "Executed :" + getBlock().getName(), Toast.LENGTH_SHORT).show();
                             Monitor.getMonitor().verifyThings();
-                        }
-                        else
+                        } else
                             Toast.makeText(holder.itemView.getContext(), "Error :" + source, Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        });
+
+        getBlock().setOnThingActionListener(new OnThingActionListener() {
+            @Override
+            public void OnReachableStateChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnStateChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnDimmerLevelChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnSupportColourFlagChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnSupportColourChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnDisabledChanged(IThing thing, boolean disabled) {
+                getBlock().doEnabled(holder.itemView, !disabled);
             }
         });
     }

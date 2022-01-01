@@ -25,6 +25,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandl
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IIconBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
 import shane.pennihome.local.smartboard.ui.MultiThingSelector;
 import shane.pennihome.local.smartboard.ui.TemplateProperties;
 import shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector;
@@ -35,7 +36,6 @@ import shane.pennihome.local.smartboard.ui.ViewSwiper;
  * Created by shane on 19/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 class RoutineGroupUIHandler extends IBlockUIHandler {
     RoutineGroupUIHandler(IBlock block) {
         super(block);
@@ -174,6 +174,38 @@ class RoutineGroupUIHandler extends IBlockUIHandler {
                             Toast.makeText(holder.itemView.getContext(), "Error:" + source, Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        });
+
+        getBlock().setOnThingActionListener(new OnThingActionListener() {
+            @Override
+            public void OnReachableStateChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnStateChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnDimmerLevelChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnSupportColourFlagChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnSupportColourChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnDisabledChanged(IThing thing, boolean disabled) {
+                getBlock().doEnabled(holder.itemView, !disabled);
             }
         });
 

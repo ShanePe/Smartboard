@@ -26,6 +26,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
+import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
 import shane.pennihome.local.smartboard.ui.SizeSelector;
 import shane.pennihome.local.smartboard.ui.TemplateProperties;
 import shane.pennihome.local.smartboard.ui.TextViewAutoFit;
@@ -133,6 +134,7 @@ class TimeUIHandler extends IBlockUIHandler {
         getBlock().renderForegroundColourTo(holder.mValue);
         getBlock().renderBackgroundTo(holder.mContainer);
         getBlock().renderUnreachableBackground(holder.itemView);
+        getBlock().startListeningForChanges();
 
 //        if (getBlock().getWidth() == 1)
 //            holder.mValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 36f);
@@ -190,6 +192,38 @@ class TimeUIHandler extends IBlockUIHandler {
             }
         });
         holder.mTimerThread.start();
+
+        getBlock().setOnThingActionListener(new OnThingActionListener() {
+            @Override
+            public void OnReachableStateChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnStateChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnDimmerLevelChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnSupportColourFlagChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnSupportColourChanged(IThing thing) {
+
+            }
+
+            @Override
+            public void OnDisabledChanged(IThing thing, boolean disabled) {
+                getBlock().doEnabled(holder.itemView, !disabled);
+            }
+        });
     }
 
     @Override

@@ -180,6 +180,11 @@ public class SmartThingModeUIHandler extends IBlockUIHandler {
             public void OnSupportColourChanged(IThing thing) {
 
             }
+
+            @Override
+            public void OnDisabledChanged(IThing thing, boolean disabled) {
+                getBlock().doEnabled(holder.itemView, !disabled);
+            }
         });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

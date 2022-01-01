@@ -26,6 +26,7 @@ import android.widget.ProgressBar;
 
 import java.util.List;
 
+import shane.pennihome.local.smartboard.comms.Broadcaster;
 import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Dashboard;
@@ -44,6 +45,7 @@ import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
 import shane.pennihome.local.smartboard.fragments.listeners.OnOptionsChangedListener;
 import shane.pennihome.local.smartboard.services.ServiceManager;
 import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
+import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
 import shane.pennihome.local.smartboard.ui.DashboardLayout;
 import shane.pennihome.local.smartboard.ui.ScreenBlocker;
 import shane.pennihome.local.smartboard.ui.dialogs.ProgressDialog;
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity
                 progressDialog.setMessage("Refreshing...");
                 progressDialog.show(this);
 
+                //noinspection rawtypes
                 Monitor.getMonitor().verifyThings(new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
@@ -131,6 +134,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @SuppressWarnings("rawtypes")
             @Override
             public void onClick(View view) {
                 goHome();
@@ -225,29 +229,21 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @SuppressWarnings({"StatementWithEmptyBody", "SameReturnValue"})
+    @SuppressWarnings({"SameReturnValue"})
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        switch (id) {
-            case R.id.mnu_hubs:
-                serviceList();
-                break;
-            case R.id.mnu_device:
-                deviceList();
-                break;
-            case R.id.mnu_routine:
-                routineList();
-                break;
-            case R.id.mnu_dashboard:
-                dashboardList();
-                break;
-            case R.id.mnu_template:
-                templateList();
-                break;
-        }
+        if (id == R.id.mnu_hubs)
+            serviceList();
+        else if (id == R.id.mnu_device)
+            deviceList();
+        else if (id == R.id.mnu_routine)
+            routineList();
+        else if (id == R.id.mnu_dashboard)
+            dashboardList();
+        else if (id == R.id.mnu_template)
+            templateList();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -305,7 +301,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        final OnProcessCompleteListener progComplete = new OnProcessCompleteListener() {
+        @SuppressWarnings("rawtypes") final OnProcessCompleteListener progComplete = new OnProcessCompleteListener() {
             @Override
             public void complete(boolean success, Object source) {
                 mDashboardLoader.post(new Runnable() {
@@ -329,6 +325,7 @@ public class MainActivity extends AppCompatActivity
         mDashboards.sort();
 
         mDashboardLayout.post(new Runnable() {
+            @SuppressWarnings("unchecked")
             @Override
             public void run() {
                 mDashboardLayout.setDashboards(mDashboards);
@@ -395,6 +392,7 @@ public class MainActivity extends AppCompatActivity
                                 public void OnShown() {
                                     if (Monitor.IsInstaniated())
                                         Monitor.getMonitor().stop();
+                                    Broadcaster.broadcastMessage(new ThingChangedMessage("all", ThingChangedMessage.What.Disable));
                                 }
 
                                 @Override
@@ -402,6 +400,7 @@ public class MainActivity extends AppCompatActivity
                                     if (Monitor.IsInstaniated()) {
                                         Monitor.getMonitor().verifyThings();
                                         Monitor.getMonitor().start();
+                                        Broadcaster.broadcastMessage(new ThingChangedMessage("all", ThingChangedMessage.What.Enable));
                                     }
                                 }
                             });
@@ -443,7 +442,6 @@ public class MainActivity extends AppCompatActivity
                 doOptions();
             }
         });
-        //noinspection unchecked
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("settings");
         ft.replace(R.id.content_main, fragment);
         ft.commit();
@@ -451,7 +449,6 @@ public class MainActivity extends AppCompatActivity
 
     private void serviceList() {
         final ServicesFragment fragment = new ServicesFragment();
-        //noinspection unchecked
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("serviceList");
         ft.replace(R.id.content_main, fragment);
         ft.commit();
@@ -459,7 +456,6 @@ public class MainActivity extends AppCompatActivity
 
     private void templateList() {
         final TemplateFragment fragment = new TemplateFragment();
-        //noinspection unchecked
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("templateList");
         ft.replace(R.id.content_main, fragment);
         ft.commit();
@@ -467,7 +463,6 @@ public class MainActivity extends AppCompatActivity
 
     private void deviceList() {
         DeviceFragment fragment = new DeviceFragment();
-        //noinspection unchecked
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("deviceList");
         ft.replace(R.id.content_main, fragment);
         ft.commit();
@@ -475,7 +470,6 @@ public class MainActivity extends AppCompatActivity
 
     private void routineList() {
         RoutineFragment fragment = new RoutineFragment();
-        //noinspection unchecked
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("routineList");
         ft.replace(R.id.content_main, fragment);
         ft.commit();
@@ -483,7 +477,6 @@ public class MainActivity extends AppCompatActivity
 
     private void dashboardList() {
         DashboardFragment fragment = new DashboardFragment();
-        //noinspection unchecked
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("dashboardList");
         ft.replace(R.id.content_main, fragment);
 

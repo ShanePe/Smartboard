@@ -11,16 +11,20 @@ import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 
 /**
  * Created by shane on 13/01/18.
  */
 
-@SuppressWarnings({"DefaultFileTemplate", "unused"})
+@SuppressWarnings({ "unused"})
 public class Dashboard extends IDatabaseObject {
     private final List<Group> mGroups = new ArrayList<>();
     private String mBackgroundImage;
@@ -74,6 +78,13 @@ public class Dashboard extends IDatabaseObject {
             g.loadThings();
     }
 
+    public List<IBlock> GetBlocks(){
+        List<IBlock> ret = new ArrayList<>();
+        for(Group g: getGroups())
+            ret.addAll(g.getBlocks());
+        return ret;
+    }
+    
     public int getBackgroundImageTransparency() {
         return mBackgroundImageTrans;
     }

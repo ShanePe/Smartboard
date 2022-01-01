@@ -24,6 +24,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import shane.pennihome.local.smartboard.comms.Broadcaster;
 import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
@@ -115,7 +116,7 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
         if (thingChangedMessage == null || TextUtils.isEmpty(thingKey))
             return false;
 
-        if (thingChangedMessage.getValue().equals(thingKey)) {
+        if (thingChangedMessage.getValue().equals(thingKey) || "all".equals(thingChangedMessage.getValue())) {
             if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.State) {
                 mOnThingActionListener.OnStateChanged(getThing());
                 return true;
@@ -130,6 +131,13 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
                 return true;
             } else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.SupportColourChange) {
                 mOnThingActionListener.OnSupportColourChanged(getThing());
+                return true;
+            } else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Disable) {
+                mOnThingActionListener.OnDisabledChanged(getThing(), true);
+                return true;
+            } else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Enable) {
+                mOnThingActionListener.OnDisabledChanged(getThing(), false);
+                return true;
             }
         }
         return false;
@@ -309,7 +317,7 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
             public void run() {
                 if (destination.getProgressDrawable() != null)
                     destination.getProgressDrawable().setColorFilter(getForegroundColour(), PorterDuff.Mode.SRC_ATOP);
-                else if(destination.getIndeterminateDrawable()!=null)
+                else if (destination.getIndeterminateDrawable() != null)
                     destination.getIndeterminateDrawable().setColorFilter(getForegroundColour(), PorterDuff.Mode.SRC_ATOP);
             }
         });
@@ -370,12 +378,22 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
         });
     }
 
-    private void doUnreachable(final View view) {
+    public void doUnreachable(final View view) {
         view.post(new Runnable() {
             @Override
             public void run() {
                 view.setEnabled(false);
                 view.setBackgroundColor(Color.parseColor("#424242"));
+            }
+        });
+    }
+
+    public void doEnabled(final View view, final boolean enabled){
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                view.setAlpha(enabled?1.0f:0.5f);
+                view.setEnabled(enabled);
             }
         });
     }
@@ -452,6 +470,7 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
         protected void onPreExecute() {
             if (mProgressIndicator != null)
                 mProgressIndicator.setVisibility(View.VISIBLE);
+            Broadcaster.broadcastMessage(new ThingChangedMessage("all", ThingChangedMessage.What.Disable));
         }
 
         @Override
@@ -467,6 +486,8 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
                 mOnProcessCompleteListener.complete(jsonExecutorResult.isSuccess(), jsonExecutorResult.isSuccess() ?
                         jsonExecutorResult.getResult() :
                         jsonExecutorResult.getError().getMessage());
+
+            Broadcaster.broadcastMessage(new ThingChangedMessage("all", ThingChangedMessage.What.Enable));
         }
 
         @Override

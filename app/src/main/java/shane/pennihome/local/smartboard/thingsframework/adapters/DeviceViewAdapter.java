@@ -27,7 +27,6 @@ import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionL
  */
 
 public class DeviceViewAdapter extends ThingViewAdapter {
-    BroadcastReceiver mBroadcastReceiver;
     public DeviceViewAdapter(@SuppressWarnings("rawtypes") final IThings items) {
         super(items);
     }
@@ -100,12 +99,16 @@ public class DeviceViewAdapter extends ThingViewAdapter {
 
             @Override
             public void OnSupportColourChanged(IThing thing) {
+            }
 
+            @Override
+            public void OnDisabledChanged(IThing thing, boolean disabled) {
+                vh.mSwitchView.setEnabled(!disabled);
             }
         });
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         final ImageView mImgView;
         final android.widget.Switch mSwitchView;
         final TextView mNameView;
@@ -152,6 +155,10 @@ public class DeviceViewAdapter extends ThingViewAdapter {
                                     mOnThingActionListener.OnSupportColourFlagChanged(mItem);
                                 else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.SupportColourChange)
                                     mOnThingActionListener.OnSupportColourChanged(mItem);
+                                else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Enable)
+                                    mOnThingActionListener.OnDisabledChanged(mItem,false);
+                                else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Disable)
+                                    mOnThingActionListener.OnDisabledChanged(mItem,true);
                             }
                         }
                     }

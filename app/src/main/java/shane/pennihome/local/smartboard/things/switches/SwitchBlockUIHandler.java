@@ -200,7 +200,7 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
                 getBlock().renderBackgroundTo(holder.itemView);
                 getBlock().renderUnreachableBackground(holder.itemView);
                 getBlock(SwitchBlock.class).renderIconTo(holder.mIcon);
-                holder.mDimmer.setEnabled(getBlock().getThing(Switch.class).isOn());
+                getBlock().doEnabled(holder.mDimmer, getBlock().getThing(Switch.class).isOn());
             }
 
             @Override
@@ -216,6 +216,11 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
             @Override
             public void OnSupportColourChanged(IThing thing) {
                 OnStateChanged(thing);
+            }
+
+            @Override
+            public void OnDisabledChanged(IThing thing, boolean disabled) {
+                getBlock().doEnabled(holder.itemView, !disabled);
             }
         });
     }

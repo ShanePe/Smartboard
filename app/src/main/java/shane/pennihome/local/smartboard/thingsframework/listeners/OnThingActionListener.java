@@ -17,4 +17,5 @@ public interface OnThingActionListener {
 
     void OnSupportColourChanged(IThing thing);
 
+    void OnDisabledChanged(IThing thing, boolean disabled);
 }
