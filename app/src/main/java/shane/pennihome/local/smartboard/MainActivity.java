@@ -345,11 +345,6 @@ public class MainActivity extends AppCompatActivity
         doOptions();
     }
 
-    private void smartThingsConnect() {
-        ServiceManager serviceManager = new ServiceManager();
-        serviceManager.registerService(this, new SmartThingsService(), null);
-    }
-
     @Override
     protected void onResume() {
         ActionBar actionBar = getSupportActionBar();
@@ -393,11 +388,17 @@ public class MainActivity extends AppCompatActivity
                                     if (Monitor.IsInstaniated())
                                         Monitor.getMonitor().stop();
                                     Broadcaster.broadcastMessage(new ThingChangedMessage("all", ThingChangedMessage.What.Disable));
+                                    WindowManager.LayoutParams params = getWindow().getAttributes();
+                                    params.screenBrightness = -1;
+                                    getWindow().setAttributes(params);
                                 }
 
                                 @Override
                                 public void OnDismiss() {
                                     if (Monitor.IsInstaniated()) {
+                                        WindowManager.LayoutParams params = getWindow().getAttributes();
+                                        params.screenBrightness = 1;
+                                        getWindow().setAttributes(params);
                                         Monitor.getMonitor().verifyThings();
                                         Monitor.getMonitor().start();
                                         Broadcaster.broadcastMessage(new ThingChangedMessage("all", ThingChangedMessage.What.Enable));
