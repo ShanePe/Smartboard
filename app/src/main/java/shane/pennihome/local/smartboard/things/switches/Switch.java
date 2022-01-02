@@ -1,5 +1,7 @@
 package shane.pennihome.local.smartboard.things.switches;
 
+import android.support.annotation.ColorInt;
+
 import shane.pennihome.local.smartboard.comms.Broadcaster;
 import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
@@ -120,11 +122,12 @@ public class Switch extends IThing {
             Broadcaster.broadcastMessage(new ThingChangedMessage(getKey(), ThingChangedMessage.What.SupportColour));
     }
 
+    @ColorInt
     public int getCurrentColour() {
         return mCurrentColour;
     }
 
-    public void setCurrentColour(int currentColour, boolean fireBroadcast) {
+    public void setCurrentColour(@ColorInt int currentColour, boolean fireBroadcast) {
         int pre = this.mCurrentColour;
         this.mCurrentColour = currentColour;
 

@@ -38,7 +38,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  * Created by shane on 29/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class SmartThingsService extends IService {
     final static String ST_CLIENT_ID = "953f9b86-9a48-461a-91e9-c9544dd980c4";
     final static String ST_REDIRECT_URI = "http://localhost:4567/oauth/callback";
@@ -48,6 +47,7 @@ public class SmartThingsService extends IService {
     private final static String ST_GRANT_TYPE = "authorization_code";
     private final static String ST_TOKEN_URL = "https://graph.api.smartthings.com/oauth/token";
     private final static String ST_ENDPOINT_URL = "https://graph.api.smartthings.com/api/smartapps/endpoints";
+    private final static String ST_ROUTINE_URL = "https://api.smartthings.com/v1/scenes";
     private String mToken;
     private String mRequestUrl;
     private Date mExpires;
@@ -163,22 +163,6 @@ public class SmartThingsService extends IService {
         }
 
         public Things getThings() throws Exception {
-            JsonExecutorResult result = JsonExecutor.fulfil(
-                    new JsonExecutorRequest(new URL(ST_ENDPOINT_URL),
-                            JsonExecutorRequest.Types.GET,
-                            new OnExecutorRequestActionListener() {
-                                @Override
-                                public void OnPreExecute(HttpURLConnection connection) {
-                                    connection.setRequestProperty("Authorization", "Bearer " + mToken);
-                                }
-                            }));
-
-            if (!result.isSuccess())
-                throw result.getError();
-
-            JSONObject jsUrl = result.getResultAsJsonObject();
-            mRequestUrl = jsUrl.getString("uri");
-
             return new Things();
         }
 
@@ -236,7 +220,7 @@ public class SmartThingsService extends IService {
                 d.setName(jDev.getString("name"));
                 d.setOn(jDev.getString("value").equals("on"), false);
                 d.setType(jDev.getString("type"));
-                if (!jDev.getString("level").toLowerCase().equals("null")) {
+                if (!jDev.getString("level").equalsIgnoreCase("null")) {
                     d.setIsDimmer(true);
                     d.setDimmerLevel(jDev.getInt("level"), false);
                 }
@@ -265,7 +249,7 @@ public class SmartThingsService extends IService {
 
         @Override
         public IExecutor<?> getExecutor(String Id) {
-            if (Id.toLowerCase().equals("level"))
+            if (Id.equalsIgnoreCase("level"))
                 return new LevelExecutor();
 
             return new IExecutor<Void>() {
@@ -321,7 +305,7 @@ public class SmartThingsService extends IService {
         public Things getThings() throws Exception {
             Things things = new Things();
             JsonExecutorResult result = JsonExecutor.fulfil(new JsonExecutorRequest(
-                    new URL(mRequestUrl + "/routines"),
+                    new URL(ST_ROUTINE_URL),
                     JsonExecutorRequest.Types.GET,
                     new OnExecutorRequestActionListener() {
                         @Override

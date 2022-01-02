@@ -16,7 +16,6 @@ import shane.pennihome.local.smartboard.data.Globals;
  * Created by shane on 02/03/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class ScreenBlocker extends FrameLayout {
     private AlphaAnimation mAnimation;
     private boolean mShown = false;
@@ -75,16 +74,18 @@ public class ScreenBlocker extends FrameLayout {
     public void show() {
         setVisibility(View.VISIBLE);
         createAnimation(0.0f, 1.0f);
-
+        final ScreenBlocker me = this;
         mAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
+                me.setEnabled(false);
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
                 mAnimation = null;
                 setShown(true);
+                me.setEnabled(true);
                 Log.i(Globals.ACTIVITY, "Finished blocker show animation");
             }
 
@@ -104,15 +105,18 @@ public class ScreenBlocker extends FrameLayout {
 
     private void dismiss() {
         createAnimation(1.0f, 0.0f);
+        final ScreenBlocker me = this;
         mAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
+                me.setEnabled(false);
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
                 setVisibility(View.GONE);
                 mAnimation = null;
+                me.setEnabled(true);
                 setShown(false);
                 Log.i(Globals.ACTIVITY, "Finished blocker dismiss animation");
             }

@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="500dp"
+    android:orientation="vertical">
+
+    <shane.pennihome.local.smartboard.ui.LabelTextbox
+        android:id="@+id/st_PAT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start|top|end"
+        android:isScrollContainer="true"
+        app:label="@string/sm_pat">
+
+    </shane.pennihome.local.smartboard.ui.LabelTextbox>
+
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:paddingTop="@dimen/fab_margin">
+
+        <Button
+            android:id="@+id/btn_PAT_Cnl"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_cancel" />
+
+        <Button
+            android:id="@+id/btn_PAT_Ok"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_ok" />
+    </TableRow>
+
+
+</LinearLayout>

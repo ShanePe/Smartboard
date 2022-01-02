@@ -24,6 +24,9 @@
         <entry key="app/src/main/res/layout/dialog_thing_selection.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/dialog_thing_selection_list.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/fragment_smart_things.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/fragment_smart_things_PAT.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/fragment_template.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/prop_stmode.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/prop_switch.xml" value="0.2046875" />
       </map>
     </option>

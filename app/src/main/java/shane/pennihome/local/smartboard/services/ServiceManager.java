@@ -10,6 +10,7 @@ import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeService;
 import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
+import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsServicePAT;
 import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 
@@ -17,7 +18,6 @@ import shane.pennihome.local.smartboard.services.interfaces.IService;
  * Created by shane on 29/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class ServiceManager {
     public ServiceManager() {
     }
@@ -32,7 +32,7 @@ public class ServiceManager {
 
     public static Services getServices() {
         Services services = new Services();
-        services.add(new SmartThingsService());
+        services.add(new SmartThingsServicePAT());
         services.add(new HueBridgeService());
         return services;
     }
