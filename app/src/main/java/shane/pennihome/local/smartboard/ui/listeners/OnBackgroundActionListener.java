@@ -8,7 +8,6 @@ import shane.pennihome.local.smartboard.ui.UIHelper;
  * Created by shane on 26/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public interface OnBackgroundActionListener {
     void OnColourSelected(@ColorInt int colour);
 
@@ -19,4 +18,6 @@ public interface OnBackgroundActionListener {
     void OnImageSelected(String imageFile);
 
     void OnImageRenderTypeChanged(UIHelper.ImageRenderTypes imageRenderType);
+
+    void OnPaddingChanged(int padding);
 }

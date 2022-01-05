@@ -67,6 +67,8 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
     private String mThingKey;
     @IgnoreOnCopy
     private transient IThing mThing;
+    int mBackImgPadding;
+
     @IgnoreOnCopy
     private OnThingActionListener mOnThingActionListener;
 
@@ -136,7 +138,7 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
                 mOnThingActionListener.OnDisabledChanged(getThing(), true);
                 return true;
             } else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Enable) {
-                mOnThingActionListener.OnDisabledChanged(getThing(), false);
+                mOnThingActionListener.OnDisabledChanged(getThing(), getThing().isUnreachable() || false);
                 return true;
             }
         }
@@ -210,6 +212,7 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
         setBackgroundColourTransparency(100);
         setBackgroundImage(null);
         setBackgroundImageTransparency(100);
+        setBackgroundImagePadding(0);
     }
 
     @Override
@@ -283,6 +286,14 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
         this.mBGImgTrans = bgImgTrans;
     }
 
+    public int getBackgroundImagePadding() {
+        return mBackImgPadding;
+    }
+
+    public void setBackgroundImagePadding(int mBackImgPadding) {
+        this.mBackImgPadding = mBackImgPadding;
+    }
+
     public abstract IThing.Types getThingType();
 
     public abstract IBlockUIHandler getUIHandler();
@@ -346,6 +357,7 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
                 getBackgroundImageTransparency(),
                 destination.getMeasuredWidth(),
                 destination.getMeasuredHeight(),
+                getBackgroundImagePadding(),
                 false,
                 getBackgroundImageRenderType());
     }
@@ -378,21 +390,22 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
         });
     }
 
-    public void doUnreachable(final View view) {
+    /*public void doUnreachable(final View view) {
         view.post(new Runnable() {
             @Override
             public void run() {
+                view.setAlpha(0.5f);
                 view.setEnabled(false);
                 view.setBackgroundColor(Color.parseColor("#424242"));
             }
         });
-    }
+    }*/
 
-    public void doEnabled(final View view, final boolean enabled){
+    public void doEnabled(final View view, final boolean enabled) {
         view.post(new Runnable() {
             @Override
             public void run() {
-                view.setAlpha(enabled?1.0f:0.5f);
+                view.setAlpha(enabled ? 1.0f : 0.5f);
                 view.setEnabled(enabled);
             }
         });
@@ -404,14 +417,14 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
                 view.post(new Runnable() {
                     @Override
                     public void run() {
-                        view.setEnabled(true);
+                        doEnabled(view, true);
                         view.getBackground().setColorFilter(UIHelper.getDefaultForegroundColour(), PorterDuff.Mode.DARKEN);
                     }
                 });
             } else
-                doUnreachable(view);
+                doEnabled(view, false);
         } else
-            doUnreachable(view);
+            doEnabled(view, false);
     }
 
     public boolean IsServiceLess() {
@@ -437,8 +450,12 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
     }
 
     public void execute(View indicator, IExecutor<?> executor, OnProcessCompleteListener<String> onProcessCompleteListener) {
-        BlockExecutor blockExecutor = new BlockExecutor(indicator, executor, onProcessCompleteListener);
-        blockExecutor.execute(getThing());
+        try {
+            BlockExecutor blockExecutor = new BlockExecutor(indicator, executor, onProcessCompleteListener);
+            blockExecutor.execute(getThing());
+        } catch (Exception ex) {
+            Toast.makeText(indicator.getContext(), String.format("Could not execute block command: %s", ex.getMessage()), Toast.LENGTH_LONG);
+        }
     }
 
     public IExecutor<?> getExecutor() {
@@ -470,6 +487,7 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
         protected void onPreExecute() {
             if (mProgressIndicator != null)
                 mProgressIndicator.setVisibility(View.VISIBLE);
+            Monitor.getMonitor().stop();
             Broadcaster.broadcastMessage(new ThingChangedMessage("all", ThingChangedMessage.What.Disable));
         }
 
@@ -488,10 +506,21 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
                         jsonExecutorResult.getError().getMessage());
 
             Broadcaster.broadcastMessage(new ThingChangedMessage("all", ThingChangedMessage.What.Enable));
+            Monitor.getMonitor().start();
         }
 
         @Override
         protected JsonExecutorResult doInBackground(IThing... iThings) {
+            int wait = 0;
+            while(Monitor.getMonitor().isBusy()) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ignore) {}
+                if(wait>100)
+                    return new JsonExecutorResult(new Exception("Could not get lock for execute"));
+                wait++;
+            }
+
             return iThings[0].execute(mExecutor);
         }
     }

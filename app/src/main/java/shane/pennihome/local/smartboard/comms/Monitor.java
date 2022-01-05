@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.comms;
 
+import android.arch.core.util.Function;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,6 +15,7 @@ import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.services.ServiceLoader;
 import shane.pennihome.local.smartboard.services.ServiceManager;
 import shane.pennihome.local.smartboard.services.Services;
+import shane.pennihome.local.smartboard.services.dialogs.LoaderDialog;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
@@ -32,6 +34,7 @@ public class Monitor {
     private Thread mMonitorThread = null;
     private boolean mLoaded;
     private ServiceLoader mLoader;
+    private boolean mBusy;
 
     private Monitor() {
     }
@@ -60,25 +63,35 @@ public class Monitor {
 
     public static Monitor Create(final AppCompatActivity activity, final OnProcessCompleteListener<Void> onProcessCompleteListener) {
         try {
-            getMonitor().setServices(ServiceManager.getActiveServices(activity));
-
-            getMonitor().getThingsFromService(activity, new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
+            LoaderDialog.AsyncLoaderDialog.run(activity, new Function<Void, Void>() {
                 @Override
-                public void complete(boolean success, final ServiceLoader.ServiceLoaderResult source) {
+                public Void apply(Void unused) {
+                    LoaderDialog.AsyncLoaderDialog.AddMessage(this.toString(), "Loading ...");
+                    getMonitor().setServices(ServiceManager.getActiveServices(activity));
+                    LoaderDialog.AsyncLoaderDialog.RemoveMessage(this.toString());
+
+                    ServiceLoader.ServiceLoaderResult source = getMonitor().getThingsFromService(activity);
                     if (source.getResult() != null)
                         getMonitor().setThings(source.getResult());
                     if (source.getErrors() != null)
                         for (String e : source.getErrors().keySet())
                             Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG).show();
-                    if (onProcessCompleteListener != null)
-                        onProcessCompleteListener.complete(true, null);
                     getMonitor().mLoaded = true;
+
+                    if (onProcessCompleteListener != null)
+                        onProcessCompleteListener.complete(source.getErrors().size() == 0, null);
+                    return null;
                 }
             });
+
         } catch (Exception ex) {
             Log.e(Globals.ACTIVITY, "Create: failed", ex);
         }
         return getMonitor();
+    }
+
+    public boolean isBusy() {
+        return mBusy;
     }
 
     public boolean isLoaded() {
@@ -115,46 +128,33 @@ public class Monitor {
         return items;
     }
 
-    private void getThingsFromService(OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult> onProcessCompleteListener) {
-        getThingsFromService(null, onProcessCompleteListener);
+    private ServiceLoader.ServiceLoaderResult getThingsFromService() {
+        return getThingsFromService(null);
     }
 
-    private void getThingsFromService(final Context context, OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult> onProcessCompleteListener) {
-        getThingsFromService(context, getServices(), onProcessCompleteListener);
+    private ServiceLoader.ServiceLoaderResult getThingsFromService(final Context context) {
+        return getThingsFromService(context, getServices());
     }
 
-    private void getThingsFromService(final Context context, Services services, final OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult> onProcessCompleteListener) {
-        mLoader = new ServiceLoader(context);
+    private ServiceLoader.ServiceLoaderResult getThingsFromService(final Context context, Services services) {
+        mLoader = new ServiceLoader();
         for (IService s : services)
             if (s.isValid())
                 mLoader.getServices().add(s);
             else if (s.isAwaitingAction() && context != null)
                 Toast.makeText(context, String.format("Service %s is awaiting an action.", s.getName()), Toast.LENGTH_LONG);
-        try {
-            mLoader.setOnProcessCompleteListener(new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
-                @Override
-                public void complete(boolean success, ServiceLoader.ServiceLoaderResult source) {
-                    onProcessCompleteListener.complete(success, source);
-                    mLoader = null;
-                }
-            });
-            mLoader.execute();
 
+        try {
+            return mLoader.getThings();
         } catch (Exception e) {
             if (context != null)
                 Toast.makeText(context, String.format("Error : %s", e.getMessage()), Toast.LENGTH_LONG);
             else
                 e.printStackTrace();
         }
-    }
 
-    private void updateThingsFromService() {
-        getThingsFromService(new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
-            @Override
-            public void complete(boolean success, ServiceLoader.ServiceLoaderResult source) {
-                verifyThingState(source.getResult());
-            }
-        });
+        return null;
+
     }
 
     public void start() {
@@ -166,14 +166,24 @@ public class Monitor {
             @Override
             public void run() {
                 try {
+                    int lastTime = 0;
                     while (true) {
-                        try {
-                            Thread.sleep(1000 * Monitor.SECOND_CHECK);
-                            updateThingsFromService();
-                        } catch (InterruptedException ieu) {
-                            break;
-                        } catch (Exception ex) {
-                        }
+                        if (!isBusy())
+                            try {
+                                Thread.sleep(1000 * Monitor.SECOND_CHECK);
+                                mBusy = true;
+                                if (isLoaded()) {
+                                    ServiceLoader.ServiceLoaderResult results = getThingsFromService();
+                                    verifyThingState(results.getResult());
+                                }
+                            } catch (InterruptedException ieu) {
+                                break;
+                            } catch (Exception ex) {
+                                if (!isRunning())
+                                    break;
+                            } finally {
+                                mBusy = false;
+                            }
                     }
                 } finally {
                     mMonitorThread = null;
@@ -189,14 +199,19 @@ public class Monitor {
     }
 
     public void verifyThings(final OnProcessCompleteListener onProcessCompleteListener) {
+        if (isBusy())
+            return;
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     Thread.sleep(1000);
-                    updateThingsFromService();
+                    ServiceLoader.ServiceLoaderResult results = getThingsFromService();
+                    if (results != null)
+                        verifyThingState(results.getResult());
                     if (onProcessCompleteListener != null)
-                        onProcessCompleteListener.complete(true, null);
+                        onProcessCompleteListener.complete(results != null, null);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -224,14 +239,10 @@ public class Monitor {
             Services services = new Services();
             services.add(service);
             getServices().add(service);
-            getThingsFromService(context, services, new OnProcessCompleteListener<ServiceLoader.ServiceLoaderResult>() {
-                @Override
-                public void complete(boolean success, ServiceLoader.ServiceLoaderResult source) {
-                    getMonitor().getThings().addAll(source.getResult());
-                    for (String e : source.getErrors().keySet())
-                        Toast.makeText(context, String.format("Error getting things : %s", e), Toast.LENGTH_LONG);
-                }
-            });
+            ServiceLoader.ServiceLoaderResult source = getThingsFromService(context, services);
+            getMonitor().getThings().addAll(source.getResult());
+            for (String e : source.getErrors().keySet())
+                Toast.makeText(context, String.format("Error getting things : %s", e), Toast.LENGTH_LONG);
         } finally {
             start();
         }
@@ -271,12 +282,6 @@ public class Monitor {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-        }
-
-        if (mLoader != null) {
-            mLoader.dismissDialog();
-            mLoader.cancel(true);
-            mLoader = null;
         }
     }
 

@@ -6,10 +6,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:paddingBottom="4dp"
-        android:paddingEnd="16dp"
         android:paddingStart="16dp"
-        android:paddingTop="4dp">
+        android:paddingTop="4dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="4dp">
 
         <ImageView
             android:id="@+id/cbv_preview"
@@ -43,8 +43,8 @@
                 style="@android:style/Widget.Holo.Light.SeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp" />
 
             <ImageButton
                 android:id="@+id/cbv_image"
@@ -62,8 +62,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="fill_horizontal"
-                android:layout_marginBottom="4dp"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp" />
 
             <ImageButton
                 android:id="@+id/cbv_reset"
@@ -80,7 +80,27 @@
                 style="@style/Platform.Widget.AppCompat.Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:entries="@array/render_options" />
+                android:entries="@array/render_options"
+                android:textColor="?android:attr/textColorPrimaryInverseNoDisable"
+                />
+
+            <TextView
+                android:id="@+id/cbv_pad_head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/cbv_pad"
+                android:text="@string/txt_padding"
+                android:textColor="?android:attr/textColorPrimaryInverseNoDisable"
+                />
+
+            <EditText
+                android:autofillHints=""
+                android:id="@+id/cbv_pad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:textColor="?android:attr/textColorPrimaryInverseNoDisable" />
 
         </android.support.v7.widget.LinearLayoutCompat>
 

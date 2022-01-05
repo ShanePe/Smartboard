@@ -15,7 +15,6 @@ import shane.pennihome.local.smartboard.ui.LabelTextbox;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 import shane.pennihome.local.smartboard.ui.listeners.OnBackgroundActionListener;
 
-@SuppressWarnings("ALL")
 public class SmartboardFragment extends Fragment {
     /**
      * The fragment argument representing the section number for this
@@ -53,6 +52,7 @@ public class SmartboardFragment extends Fragment {
                 mSbAct.getDashboard().getBackgroundColourTransparency(),
                 mSbAct.getDashboard().getBackgroundImage(),
                 mSbAct.getDashboard().getBackgroundImageTransparency(),
+                mSbAct.getDashboard().getBackgroundImagePadding(),
                 mSbAct.getDashboard().getBackgroundImageRenderType());
 
         mBGSelector.setBackgroundActionListener(new OnBackgroundActionListener() {
@@ -79,6 +79,11 @@ public class SmartboardFragment extends Fragment {
             @Override
             public void OnImageRenderTypeChanged(UIHelper.ImageRenderTypes imageRenderType) {
                 mSbAct.getDashboard().setBackgroundImageRenderType(imageRenderType);
+            }
+
+            @Override
+            public void OnPaddingChanged(int padding) {
+                mSbAct.getDashboard().setBackgroundImagePadding(padding);
             }
         });
 

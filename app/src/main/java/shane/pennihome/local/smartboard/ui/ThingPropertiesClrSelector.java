@@ -17,7 +17,6 @@ import shane.pennihome.local.smartboard.ui.listeners.OnForegroundActionListener;
  * Created by shane on 27/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class ThingPropertiesClrSelector extends LinearLayoutCompat {
     private String mBackgroundImage;
     private int mBackgroundImageTransparency;
@@ -30,6 +29,8 @@ public class ThingPropertiesClrSelector extends LinearLayoutCompat {
 
     private BackgroundSelector mBackgroundSelector;
     private ForegroundSelector mForgroundSelector;
+
+    private int mBackgroundImagePadding;
 
     public ThingPropertiesClrSelector(Context context) {
         super(context);
@@ -141,6 +142,11 @@ public class ThingPropertiesClrSelector extends LinearLayoutCompat {
             public void OnImageRenderTypeChanged(UIHelper.ImageRenderTypes imageRenderType) {
                 mBackgroundImageRenderType = imageRenderType;
             }
+
+            @Override
+            public void OnPaddingChanged(int padding) {
+                mBackgroundImagePadding = padding;
+            }
         });
 
         mForgroundSelector.setOnForegroundActionListener(new OnForegroundActionListener() {
@@ -155,7 +161,7 @@ public class ThingPropertiesClrSelector extends LinearLayoutCompat {
     }
 
     private void doPropertyChange() {
-        mBackgroundSelector.setInitialValues(mBackgroundColour, mBackgroundColourTransparency, mBackgroundImage, mBackgroundImageTransparency, mBackgroundImageRenderType);
+        mBackgroundSelector.setInitialValues(mBackgroundColour, mBackgroundColourTransparency, mBackgroundImage, mBackgroundImageTransparency, mBackgroundImagePadding, mBackgroundImageRenderType);
         mForgroundSelector.setColour(mForegroundColour);
         invalidate();
         requestLayout();
@@ -170,6 +176,7 @@ public class ThingPropertiesClrSelector extends LinearLayoutCompat {
         mForegroundColour = block.getForegroundColour();
         mBackgroundImageRenderType = block.getBackgroundImageRenderType();
 
+        mBackgroundImagePadding = block.getBackgroundImagePadding();
         doPropertyChange();
     }
 
@@ -179,7 +186,7 @@ public class ThingPropertiesClrSelector extends LinearLayoutCompat {
         block.setBackgroundImage(mBackgroundImage);
         block.setBackgroundImageTransparency(mBackgroundImageTransparency);
         block.setBackgroundImageRenderType(mBackgroundImageRenderType);
-
+        block.setBackgroundImagePadding(mBackgroundImagePadding);
         block.setForegroundColour(mForegroundColour);
     }
 

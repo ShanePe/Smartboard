@@ -2,6 +2,8 @@ package shane.pennihome.local.smartboard.things.switches;
 
 import android.support.annotation.ColorInt;
 
+import java.util.Date;
+
 import shane.pennihome.local.smartboard.comms.Broadcaster;
 import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
@@ -22,6 +24,8 @@ public class Switch extends IThing {
     private boolean mSupportsColour;
     private int mCurrentColour;
     private String mResource;
+    @IgnoreOnCopy
+    private Date mLastStateUpdate;
 
     public static Switch Load(String json) {
         try {
@@ -48,6 +52,14 @@ public class Switch extends IThing {
         mDimmerLevel = dimmerLevel;
         if (pre != mDimmerLevel && fireBroadcast)
             Broadcaster.broadcastMessage(new ThingChangedMessage(getKey(), ThingChangedMessage.What.Level));
+    }
+
+    public Date getLastStateUpdate() {
+        return mLastStateUpdate;
+    }
+
+    public void setLastStateUpdate(Date lastStateUpdate) {
+        this.mLastStateUpdate = lastStateUpdate;
     }
 
     public boolean isOn() {

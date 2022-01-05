@@ -205,7 +205,7 @@ class RoutineGroupUIHandler extends IBlockUIHandler {
 
             @Override
             public void OnDisabledChanged(IThing thing, boolean disabled) {
-                getBlock().doEnabled(holder.itemView, !disabled);
+                getBlock().doEnabled(holder.itemView, !thing.isUnreachable() && !disabled);
             }
         });
 

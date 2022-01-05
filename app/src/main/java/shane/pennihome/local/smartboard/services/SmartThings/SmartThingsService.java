@@ -172,19 +172,9 @@ public class SmartThingsService extends IService {
         }
 
         @Override
-        public void setDescriptionTextView(TextView txtDescription) {
-
-        }
-
-        @Override
         public Type getThingType() {
             return IThing.class;
         }
-
-//        @Override
-//        public JsonExecutorResult execute(IThing thing) {
-//            return null;
-//        }
 
         @Override
         public IExecutor<?> getExecutor(String Id) {
@@ -235,11 +225,6 @@ public class SmartThingsService extends IService {
         @Override
         public int getUniqueId() {
             return 2;
-        }
-
-        @Override
-        public void setDescriptionTextView(TextView txtDescription) {
-
         }
 
         @Override
@@ -338,11 +323,6 @@ public class SmartThingsService extends IService {
         }
 
         @Override
-        public void setDescriptionTextView(TextView txtDescription) {
-
-        }
-
-        @Override
         public Type getThingType() {
             return Routine.class;
         }
@@ -413,11 +393,6 @@ public class SmartThingsService extends IService {
         }
 
         @Override
-        public void setDescriptionTextView(TextView txtDescription) {
-
-        }
-
-        @Override
         public Type getThingType() {
             return Temperature.class;
         }
@@ -470,11 +445,6 @@ public class SmartThingsService extends IService {
         @Override
         public int getUniqueId() {
             return 8;
-        }
-
-        @Override
-        public void setDescriptionTextView(TextView txtDescription) {
-
         }
 
         @Override

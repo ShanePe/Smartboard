@@ -1,13 +1,14 @@
 package shane.pennihome.local.smartboard.services;
 
-import android.content.Context;
-import android.os.AsyncTask;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.services.dialogs.ServiceLoadDialog;
+import shane.pennihome.local.smartboard.services.dialogs.LoaderDialog;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
 import shane.pennihome.local.smartboard.thingsframework.Things;
@@ -16,38 +17,25 @@ import shane.pennihome.local.smartboard.thingsframework.Things;
  * Created by shane on 31/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
-public class ServiceLoader extends AsyncTask<IThingsGetter, IThingsGetter, ServiceLoader.ServiceLoaderResult> {
+public class ServiceLoader {
     //AppCompatActivity mActivity;
     private Services mServices;
-    private ServiceLoadDialog mServiceLoadDialog;
-    private OnProcessCompleteListener<ServiceLoaderResult> mOnProcessCompleteListener;
+    //private ServiceLoadDialog mServiceLoadDialog;
+    //private OnProcessCompleteListener<ServiceLoaderResult> mOnProcessCompleteListener;
 
     public ServiceLoader() {
     }
 
-    public ServiceLoader(Context context) {
-        if (context != null)
-            mServiceLoadDialog = new ServiceLoadDialog(context);
-    }
 
-    public void dismissDialog()
-    {
-        if (mServiceLoadDialog != null) {
-            if (mServiceLoadDialog.isShowing())
-                mServiceLoadDialog.dismiss();
 
-            mServiceLoadDialog = null;
-        }
-    }
-
+    /*
     public OnProcessCompleteListener<ServiceLoaderResult> getOnProcessCompleteListener() {
         return mOnProcessCompleteListener;
     }
 
     public void setOnProcessCompleteListener(OnProcessCompleteListener<ServiceLoaderResult> onProcessCompleteListener) {
         this.mOnProcessCompleteListener = onProcessCompleteListener;
-    }
+    }*/
 
     public Services getServices() {
         if (mServices == null)
@@ -60,54 +48,56 @@ public class ServiceLoader extends AsyncTask<IThingsGetter, IThingsGetter, Servi
         mServices = services;
     }
 
-    private ServiceLoaderResult getThings() {
+    public ServiceLoaderResult getThings() {
         ServiceLoaderResult serviceLoaderResult = new ServiceLoaderResult();
+        Services services = getServices();
+        if (services.size() > 0) {
+            ExecutorService executor = Executors.newFixedThreadPool(services.size());
+            ArrayList<ServiceCaller> serviceThreads = new ArrayList<>();
 
-        for (IService s : getServices()) {
-            {
-                ArrayList<IThingsGetter> getters = s.getThingGetters();
-                for (IThingsGetter g : getters) {
-                    try {
-                        if(!isCancelled()) {
-                            serviceLoaderResult.getResult().addAll(g.getThings());
-                            onProgressUpdate(g);
-                        }
-                    } catch (Exception e) {
-                        serviceLoaderResult.getErrors().put(e.getMessage(), g);
-                    }
+            for (IService s : services) {
+                serviceThreads.add(new ServiceCaller(s));
+                for (IThingsGetter g : s.getThingGetters())
+                    LoaderDialog.AsyncLoaderDialog.AddMessage(g.getLoadMessage(), g.getLoadMessage());
+            }
+            try {
+                List<Future<ServiceLoaderResult>> results = executor.invokeAll(serviceThreads);
+                for (Future<ServiceLoaderResult> s : results) {
+                    serviceLoaderResult.getResult().addAll(s.get().getResult());
+                    for (String k : s.get().getErrors().keySet())
+                        serviceLoaderResult.getErrors().put(k, serviceLoaderResult.getErrors().get(k));
                 }
+            } catch (Exception ignore) {
             }
         }
 
         return serviceLoaderResult;
     }
 
-    @Override
-    protected void onPreExecute() {
-        if (mServiceLoadDialog != null) {
-            mServiceLoadDialog.setServices(getServices());
-            mServiceLoadDialog.show();
+    private class ServiceCaller implements Callable<ServiceLoaderResult> {
+
+        private IService mService;
+
+        public ServiceCaller(IService service) {
+            this.mService = service;
         }
-    }
 
-    @Override
-    protected ServiceLoaderResult doInBackground(IThingsGetter... iThingsGetters) {
-        return getThings();
-    }
+        @Override
+        public ServiceLoaderResult call()  {
+            ServiceLoaderResult result = new ServiceLoaderResult();
 
-    @Override
-    protected void onPostExecute(ServiceLoaderResult serviceLoaderResult) {
-        //super.onPostExecute(serviceLoaderResult);
-        if (mOnProcessCompleteListener != null)
-            mOnProcessCompleteListener.complete(serviceLoaderResult.getErrors().size() == 0, serviceLoaderResult);
-
-        dismissDialog();
-    }
-
-    @Override
-    protected void onProgressUpdate(IThingsGetter... values) {
-        if (mServiceLoadDialog != null)
-            mServiceLoadDialog.setGetterSuccess(values[0]);
+            ArrayList<IThingsGetter> getters = mService.getThingGetters();
+            for (IThingsGetter g : getters) {
+                try {
+                    result.getResult().addAll(g.getThings());
+                    LoaderDialog.AsyncLoaderDialog.RemoveMessage(g.getLoadMessage());
+                } catch (Exception e) {
+                    result.getErrors().put(e.getMessage(), g);
+                    LoaderDialog.AsyncLoaderDialog.RemoveMessage(g.getLoadMessage());
+                }
+            }
+            return result;
+        }
     }
 
     public class ServiceLoaderResult {
@@ -130,13 +120,5 @@ public class ServiceLoader extends AsyncTask<IThingsGetter, IThingsGetter, Servi
                 mResult = new Things();
             return mResult;
         }
-    }
-
-
-
-    @Override
-    protected void onCancelled() {
-       dismissDialog();
-        super.onCancelled();
     }
 }

@@ -87,6 +87,7 @@
     <string name="lbl_ok">OK</string>
     <string name="lbl_hueman">Could not discover a hue bridge, please enter details manually.</string>
     <string name="sm_pat">Personal  Access Token</string>
+    <string name="txt_padding">Padding</string>
 
 
 </resources>

@@ -405,7 +405,8 @@ public class MainActivity extends AppCompatActivity
                                     }
                                 }
                             });
-                            blocker.show();
+                            if(Monitor.getMonitor().isLoaded())
+                                blocker.show();
                         }
                     });
                 }

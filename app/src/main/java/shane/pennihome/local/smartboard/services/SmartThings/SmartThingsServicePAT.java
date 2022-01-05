@@ -17,6 +17,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.JsonExecutor;
@@ -45,6 +47,7 @@ public class SmartThingsServicePAT extends IService {
     private final static String ST_DEVICE_URL_EXE = "https://api.smartthings.com/v1/devices/%s/commands";
     private final static String ST_ROUTINE_URL_EXE = "https://api.smartthings.com/v1/scenes/%s/execute";
     private final static String ST_DEVICE_STATE_URL_EXE = "https://api.smartthings.com/v1/devices/%s/status";
+    private final static String ST_DEVICE_HEALTH_URL_EXE = "https://api.smartthings.com/v1/devices/%s/health";
 
     private String mPersonalAccessToken;
 
@@ -144,11 +147,6 @@ public class SmartThingsServicePAT extends IService {
         }
 
         @Override
-        public void setDescriptionTextView(TextView txtDescription) {
-
-        }
-
-        @Override
         public Type getThingType() {
             return IThing.class;
         }
@@ -188,11 +186,12 @@ public class SmartThingsServicePAT extends IService {
                     Switch d = new Switch();
                     d.setId(jDev.getString("deviceId"));
                     d.setName(jDev.getString("label"));
-                    d.setType(jDev.getString("deviceTypeName"));
+                    d.setType(getCategories(jDev));
                     d.setService(ServicesTypes.SmartThings);
                     d.initialise();
                     things.add(d);
-                } else if (IsOfType(jDev, "temperatureMeasurement")) {
+                }
+                if (IsOfType(jDev, "temperatureMeasurement")) {
                     Temperature d = new Temperature();
                     d.setId(jDev.getString("deviceId"));
                     d.setName(jDev.getString("label"));
@@ -205,19 +204,44 @@ public class SmartThingsServicePAT extends IService {
             return getThingsState(things, false);
         }
 
+        private String getCategories(JSONObject jDevice) throws JSONException {
+            StringBuilder sbCat = new StringBuilder();
+            JSONArray jComps = jDevice.getJSONArray("components");
+            for (int i = 0; i < jComps.length(); i++) {
+                JSONArray jCats = jComps.getJSONObject(i).getJSONArray("categories");
+                for (int x = 0; x < jCats.length(); x++) {
+                    if (sbCat.length() > 0)
+                        sbCat.append(", ");
+                    sbCat.append(jCats.getJSONObject(x).getString("name"));
+                }
+            }
+            return sbCat.toString();
+        }
+
+        @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+        private boolean isThingOnline(String id) throws MalformedURLException, JSONException {
+            JSONObject jHeath = getDeviceHealth(id);
+            return jHeath != null && jHeath.getString("state").equalsIgnoreCase("online");
+        }
+
+
         private Things getThingsState(Things things, boolean fireCast) throws MalformedURLException, JSONException {
             for (Switch s : things.getOfType(Switch.class)) {
-                JSONObject jState = getDeviceState(s.getId());
-                if (jState != null) {
-                    s.setOn(jState.getJSONObject("switch").getJSONObject("switch").getString("value").equals("on"), fireCast);
-                    if (jState.has("switchLevel")) {
-                        s.setIsDimmer(true);
-                        s.setDimmerLevel(jState.getJSONObject("switchLevel").getJSONObject("level").getInt("value"), fireCast);
-                    }
-                    if (jState.has("colorControl")) {
-                        int c = getColourFromColourControl(jState);
-                        s.setSupportsColour(c != Color.TRANSPARENT, fireCast);
-                        s.setCurrentColour(c, fireCast);
+                if (s.getLastStateUpdate() == null || TimeUnit.MILLISECONDS.toSeconds(Calendar.getInstance().getTime().getTime() - s.getLastStateUpdate().getTime()) > 60) {
+                    JSONObject jState = getDeviceState(s.getId());
+                    if (jState != null) {
+                        s.setOn(jState.getJSONObject("switch").getJSONObject("switch").getString("value").equals("on"), fireCast);
+                        if (jState.has("switchLevel")) {
+                            s.setIsDimmer(true);
+                            s.setDimmerLevel(jState.getJSONObject("switchLevel").getJSONObject("level").getInt("value"), fireCast);
+                        }
+                        if (jState.has("colorControl")) {
+                            int c = getColourFromColourControl(jState);
+                            s.setSupportsColour(c != Color.TRANSPARENT, fireCast);
+                            s.setCurrentColour(c, fireCast);
+                        }
+                        s.setUnreachable(jState.getJSONObject("switch").getJSONObject("switch").getString("value").equals("null") || !isThingOnline(s.getId()), fireCast);
+                        s.setLastStateUpdate(Calendar.getInstance().getTime());
                     }
                 }
             }
@@ -225,7 +249,9 @@ public class SmartThingsServicePAT extends IService {
                 JSONObject jState = getDeviceState(t.getId());
                 assert jState != null;
                 t.setTemperature(jState.getJSONObject("temperatureMeasurement").getJSONObject("temperature").getInt("value"), fireCast);
+                t.setUnreachable(!isThingOnline(t.getId()), fireCast);
             }
+
             return things;
         }
 
@@ -256,6 +282,22 @@ public class SmartThingsServicePAT extends IService {
             return null;
         }
 
+        private JSONObject getDeviceHealth(String id) throws MalformedURLException {
+            JsonExecutorResult state = JsonExecutor.fulfil(new JsonExecutorRequest(new URL(String.format(ST_DEVICE_HEALTH_URL_EXE, id)),
+                    JsonExecutorRequest.Types.GET,
+                    new OnExecutorRequestActionListener() {
+                        @Override
+                        public void OnPreExecute(HttpURLConnection connection) {
+                            connection.setRequestProperty("Authorization", "Bearer " + mPersonalAccessToken);
+                        }
+                    }));
+
+            if (state.isSuccess())
+                return state.getResultAsJsonObject();
+
+            return null;
+        }
+
         private boolean IsOfType(JSONObject jDevice, String type) throws JSONException {
             JSONArray jComp = jDevice.getJSONArray("components");
             boolean ret = false;
@@ -278,11 +320,6 @@ public class SmartThingsServicePAT extends IService {
         @Override
         public int getUniqueId() {
             return 2;
-        }
-
-        @Override
-        public void setDescriptionTextView(TextView txtDescription) {
-
         }
 
         @Override
@@ -380,11 +417,6 @@ public class SmartThingsServicePAT extends IService {
         @Override
         public int getUniqueId() {
             return 3;
-        }
-
-        @Override
-        public void setDescriptionTextView(TextView txtDescription) {
-
         }
 
         @Override

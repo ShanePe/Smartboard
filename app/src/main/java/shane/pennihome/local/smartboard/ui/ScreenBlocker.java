@@ -141,7 +141,7 @@ public class ScreenBlocker extends FrameLayout {
         if (mAnimation != null)
             mAnimation.cancel();
         mAnimation = new AlphaAnimation(from, to);
-        int DURATION = 3000;
+        int DURATION = 2000;
         mAnimation.setDuration(DURATION);
     }
 

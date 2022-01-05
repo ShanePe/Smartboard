@@ -18,7 +18,9 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -216,12 +218,6 @@ public class HueBridgeService extends IService {
             mDialog = new HueBridgeLinkDialog();
             mDialog.setDescription(mConnector.get().getLoadMessage());
             mDialog.show(((AppCompatActivity) mContext.get()).getSupportFragmentManager(), "Hue_wait");
-            mDialog.setOnLoadCompleteListener(new OnProcessCompleteListener<TextView>() {
-                @Override
-                public void complete(boolean success, TextView source) {
-                    mConnector.get().setDescriptionTextView(source);
-                }
-            });
             mDialog.setOnCancelClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -335,11 +331,6 @@ public class HueBridgeService extends IService {
         }
 
         @Override
-        public void setDescriptionTextView(TextView txtDescription) {
-            mTextDesc = txtDescription;
-        }
-
-        @Override
         public Type getThingType() {
             return IThing.class;
         }
@@ -406,6 +397,8 @@ public class HueBridgeService extends IService {
                     d.setType(data.getString("type"));
                     d.setService(ServicesTypes.PhilipsHue);
                     d.setResource("light");
+                    d.setLastStateUpdate(Calendar.getInstance().getTime());
+
                     if (data.has("dimming")) {
                         d.setIsDimmer(true);
                         d.setDimmerLevel(Math.round((float) data.getJSONObject("dimming").getDouble("brightness")), false);
@@ -443,11 +436,6 @@ public class HueBridgeService extends IService {
         @Override
         public int getUniqueId() {
             return 5;
-        }
-
-        @Override
-        public void setDescriptionTextView(TextView txtDescription) {
-
         }
 
         @Override
@@ -562,11 +550,6 @@ public class HueBridgeService extends IService {
         }
 
         @Override
-        public void setDescriptionTextView(TextView txtDescription) {
-
-        }
-
-        @Override
         public Type getThingType() {
             return Switch.class;
         }
@@ -667,11 +650,6 @@ public class HueBridgeService extends IService {
         @Override
         public int getUniqueId() {
             return 6;
-        }
-
-        @Override
-        public void setDescriptionTextView(TextView txtDescription) {
-
         }
 
         @Override
@@ -788,11 +766,6 @@ public class HueBridgeService extends IService {
         @Override
         public int getUniqueId() {
             return 6;
-        }
-
-        @Override
-        public void setDescriptionTextView(TextView txtDescription) {
-
         }
 
         @Override

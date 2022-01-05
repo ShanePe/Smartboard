@@ -427,7 +427,7 @@ public class UIHelper {
         return new BitmapDrawable(context.getResources(), bitmap);
     }
 
-    public static Drawable generateImage(Context context, @ColorInt int backClr, int backClrAlphaPerc, Bitmap image, int imageAlphaPerc, int width, int height, boolean roundCrns, ImageRenderTypes imageRenderType) {
+    public static Drawable generateImage(Context context, @ColorInt int backClr, int backClrAlphaPerc, Bitmap image, int imageAlphaPerc, int width, int height, int padding, boolean roundCrns, ImageRenderTypes imageRenderType) {
         Bitmap bitmap = null;
         Canvas canvas = null;
         Bitmap scaled = null;
@@ -452,7 +452,7 @@ public class UIHelper {
                 if (imageRenderType == null)
                     imageRenderType = ImageRenderTypes.Center;
 
-                scaled = scaleDownBitmap(image, width, height, imageRenderType == ImageRenderTypes.Center);
+                scaled = scaleDownBitmap(image, width-(padding*2), height-(padding*2), imageRenderType == ImageRenderTypes.Center);
                 if (roundCrns)
                     scaled = getRoundedCornerBitmap(scaled, 4);
 
@@ -460,12 +460,12 @@ public class UIHelper {
                 Rect dest = null;
 
                 if (imageRenderType == ImageRenderTypes.Center) {
-                    int destLeft = (width - scaled.getWidth()) / 2;
-                    int destTop = (height - scaled.getHeight()) / 2;
+                    int destLeft = ((width - scaled.getWidth()) / 2) + padding;
+                    int destTop = ((height - scaled.getHeight()) / 2)+ padding;
 
-                    dest = new Rect(destLeft, destTop, scaled.getWidth() + destLeft, scaled.getHeight() + destTop);
+                    dest = new Rect(destLeft, destTop, (scaled.getWidth() + destLeft), (scaled.getHeight() + destTop));
                 } else if (imageRenderType == ImageRenderTypes.Stretch)
-                    dest = new Rect(0, 0, width, height);
+                    dest = new Rect(padding, padding, width-(padding*2), height-(padding*2));
 
                 Paint paint = new Paint();
                 //canvas.clipRect(dest);

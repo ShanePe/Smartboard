@@ -1,5 +1,7 @@
 package shane.pennihome.local.smartboard.thingsframework.interfaces;
 
+import java.util.Date;
+
 import shane.pennihome.local.smartboard.comms.Broadcaster;
 import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.comms.Monitor;
@@ -15,7 +17,7 @@ import shane.pennihome.local.smartboard.things.temperature.Temperature;
 import shane.pennihome.local.smartboard.things.time.Time;
 import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
 
-@SuppressWarnings({"DefaultFileTemplate", "unused", "unchecked"})
+@SuppressWarnings({"unused", "unchecked"})
 public abstract class IThing extends IDatabaseObject {
     @SuppressWarnings("FieldCanBeLocal")
     private final String mInstance;
@@ -58,7 +60,6 @@ public abstract class IThing extends IDatabaseObject {
     public void initialise() {
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isUnreachable() {
         return mUnreachable;
     }
@@ -113,6 +114,7 @@ public abstract class IThing extends IDatabaseObject {
     public String getKey() {
         return String.format("%s%s%s%s", getId(), getName(), getServiceType(), getThingType());
     }
+
     public abstract Types getThingType();
 
     public enum Types {

@@ -5,11 +5,15 @@
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.23177083333333334" />
         <entry key="app/src/main/res/drawable/default_background.xml" value="0.22083333333333333" />
+        <entry key="app/src/main/res/layout/block_edit_switch.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/block_view_switch.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/block_view_switchgroup.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/custom_background_selector.xml" value="0.3055987558320373" />
+        <entry key="app/src/main/res/layout/custom_foreground_selector.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/custom_group_title.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/custom_labeltext.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/custom_size_picker.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/custom_switch_bg_selector.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/custom_thing_bg_selector.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/custom_thing_properties.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/dashboard_view_group_list.xml" value="0.2046875" />
@@ -28,6 +32,10 @@
         <entry key="app/src/main/res/layout/fragment_template.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/prop_stmode.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/prop_switch.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/service_startup.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/service_startup_list.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/tab_smartboard_dash.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/tab_smartboard_groups.xml" value="0.2046875" />
       </map>
     </option>
   </component>

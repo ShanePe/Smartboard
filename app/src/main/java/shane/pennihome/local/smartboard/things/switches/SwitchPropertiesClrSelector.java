@@ -20,7 +20,6 @@ import shane.pennihome.local.smartboard.ui.listeners.OnForegroundActionListener;
  * Created by shane on 28/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
     private String mBackgroundImageOff;
     private int mBackgroundImageTransparencyOff;
@@ -46,6 +45,9 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
 
     private BackgroundSelector mBackgroundSelectorOn;
     private ForegroundSelector mForgroundSelectorOn;
+
+    private int mBackgroundImagePaddingOff;
+    private int mBackgroundImagePaddingOn;
 
     public SwitchPropertiesClrSelector(Context context) {
         super(context);
@@ -158,6 +160,22 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
         mBackgroundImageRenderTypeOn = backgroundImageRenderTypeOn;
     }
 
+    public int getBackgroundImagePaddingOff() {
+        return mBackgroundImagePaddingOff;
+    }
+
+    public void setBackgroundImagePaddingOff(int mPadding) {
+        this.mBackgroundImagePaddingOff = mPadding;
+    }
+
+    public int getForegroundImagePaddingOn() {
+        return mBackgroundImagePaddingOn;
+    }
+
+    public void setForegroundImagePaddingOn(int mForegroundImagePadding) {
+        this.mBackgroundImagePaddingOn = mForegroundImagePadding;
+    }
+
     private void initializeViews(Context context) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -208,6 +226,11 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
             public void OnImageRenderTypeChanged(UIHelper.ImageRenderTypes imageRenderType) {
                 mBackgroundImageRenderTypeOff = imageRenderType;
             }
+
+            @Override
+            public void OnPaddingChanged(int padding) {
+                mBackgroundImagePaddingOff = padding;
+            }
         });
 
         mForgroundSelectorOff.setOnForegroundActionListener(new OnForegroundActionListener() {
@@ -243,6 +266,11 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
             public void OnImageRenderTypeChanged(UIHelper.ImageRenderTypes imageRenderType) {
                 mBackgroundImageRenderTypeOn = imageRenderType;
             }
+
+            @Override
+            public void OnPaddingChanged(int padding) {
+                mBackgroundImagePaddingOn = padding;
+            }
         });
 
         mForgroundSelectorOn.setOnForegroundActionListener(new OnForegroundActionListener() {
@@ -254,9 +282,9 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
     }
 
     private void doPropertyChange() {
-        mBackgroundSelectorOff.setInitialValues(mBackgroundColourOff, mBackgroundColourTransparencyOff, mBackgroundImageOff, mBackgroundImageTransparencyOff, mBackgroundImageRenderTypeOff);
+        mBackgroundSelectorOff.setInitialValues(mBackgroundColourOff, mBackgroundColourTransparencyOff, mBackgroundImageOff, mBackgroundImageTransparencyOff, mBackgroundImagePaddingOff, mBackgroundImageRenderTypeOff);
         mForgroundSelectorOff.setColour(mForegroundColourOff);
-        mBackgroundSelectorOn.setInitialValues(mBackgroundColourOn, mBackgroundColourTransparencyOn, mBackgroundImageOn, mBackgroundImageTransparencyOn, mBackgroundImageRenderTypeOn);
+        mBackgroundSelectorOn.setInitialValues(mBackgroundColourOn, mBackgroundColourTransparencyOn, mBackgroundImageOn, mBackgroundImageTransparencyOn, mBackgroundImagePaddingOn, mBackgroundImageRenderTypeOn);
         mForgroundSelectorOn.setColour(mForegroundColourOn);
 
         invalidate();
@@ -279,6 +307,9 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
         mBackgroundImageRenderTypeOn = block.getBackgroundImageRenderTypeOn();
 
         mForegroundColourOn = block.getForegroundColourOn();
+
+        mBackgroundImagePaddingOff = block.getBackgroundImagePadding();
+        mBackgroundImagePaddingOn = block.getBackgroundImagePaddingOn();
 
         doPropertyChange();
     }
@@ -304,6 +335,9 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
         block.setBackgroundImageRenderTypeOn(mBackgroundImageRenderTypeOn);
 
         block.setForegroundColourOn(mForegroundColourOn);
+
+        block.setBackgroundImagePadding(mBackgroundImagePaddingOff);
+        block.setBackgroundImagePaddingOn(mBackgroundImagePaddingOn);
 
     }
 }

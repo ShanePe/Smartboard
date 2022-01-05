@@ -1,6 +1,8 @@
 package shane.pennihome.local.smartboard.services.adapters;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +11,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.services.Services;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
@@ -19,24 +25,26 @@ import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
  * Created by shane on 30/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
-public class ServiceLoadAdapter extends RecyclerView.Adapter<ServiceLoadAdapter.ViewHolder> {
-    private Services mServices;
-    private ArrayList<IThingsGetter> mGetters;
+public class LoaderAdapter extends RecyclerView.Adapter<LoaderAdapter.ViewHolder> {
+    private ArrayList<Pair<String,String>> mMessages;
 
-    public Services getServices() {
-        if (mServices == null)
-            mServices = new Services();
-        return mServices;
+    public LoaderAdapter() {
+        mMessages = new ArrayList<>();
     }
 
-    public void setServices(Services services) {
-        mServices = services;
-        mGetters = new ArrayList<>();
-        for (IService service : mServices)
-            mGetters.addAll(service.getThingGetters());
+    public ArrayList<Pair<String,String>> getMessages() {
+        return mMessages;
     }
 
+    public void setMessages(ArrayList<Pair<String,String>> messages) {
+        this.mMessages = messages;
+    }
+
+    public void addMessage(Pair<String,String> message) {
+        this.mMessages.add(message);
+    }
+
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -47,20 +55,19 @@ public class ServiceLoadAdapter extends RecyclerView.Adapter<ServiceLoadAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mGetter = mGetters.get(position);
-        holder.mDesc.setText(holder.mGetter.getLoadMessage());
-        holder.mGetter.setDescriptionTextView(holder.mDesc);
+        holder.mLoadMessage = mMessages.get(position);
+        holder.mDesc.setText(holder.mLoadMessage.second);
     }
 
     @Override
     public int getItemCount() {
-        return mGetters == null ? 0 : mGetters.size();
+        return mMessages == null ? 0 : mMessages.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final TextView mDesc;
-        IThingsGetter mGetter;
+        Pair<String,String> mLoadMessage;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -68,8 +75,8 @@ public class ServiceLoadAdapter extends RecyclerView.Adapter<ServiceLoadAdapter.
             mDesc = itemView.findViewById(R.id.sl_description);
         }
 
-        public IThingsGetter getThingGetter() {
-            return mGetter;
+        public Pair<String,String> getLoadMessage() {
+            return mLoadMessage;
         }
 
         public void slideOut() {
@@ -79,10 +86,8 @@ public class ServiceLoadAdapter extends RecyclerView.Adapter<ServiceLoadAdapter.
                 public void onAnimationStart(Animation animation) {}
                 @Override
                 public void onAnimationRepeat(Animation animation) {}
-
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    mView.setVisibility(View.GONE);
                 }
             });
 
@@ -92,7 +97,6 @@ public class ServiceLoadAdapter extends RecyclerView.Adapter<ServiceLoadAdapter.
                     mView.startAnimation(animation);
                 }
             });
-
         }
     }
 }

@@ -12,13 +12,16 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -34,14 +37,14 @@ import shane.pennihome.local.smartboard.ui.listeners.OnBackgroundActionListener;
  * Created by shane on 26/01/18.
  */
 
-@SuppressWarnings({"DefaultFileTemplate", "unused", "EmptyMethod"})
+@SuppressWarnings({"unused", "EmptyMethod"})
 public class BackgroundSelector extends LinearLayoutCompat {
     private SeekBar msbBGImg = null;
     private SeekBar msbBGClr = null;
     private ImageButton mBtnBGClr;
     private ImageView mPreview;
     private Spinner mRenderStyle;
-
+    private EditText mTextPadding;
     private OnBackgroundActionListener mBackgroundActionListener;
     private Thread mRenderThread;
 
@@ -52,6 +55,7 @@ public class BackgroundSelector extends LinearLayoutCompat {
     private String mImage;
     private int mImageTransparency;
     private UIHelper.ImageRenderTypes mImageRenderType;
+    private int mPadding;
 
     public BackgroundSelector(Context context) {
         super(context);
@@ -117,6 +121,15 @@ public class BackgroundSelector extends LinearLayoutCompat {
         doPropertyChange(false);
     }
 
+    public int getPadding() {
+        return mPadding;
+    }
+
+    public void setPadding(int mPadding) {
+        this.mPadding = mPadding;
+        doPropertyChange(false);
+    }
+
     private void initializeViews(Context context) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -124,12 +137,14 @@ public class BackgroundSelector extends LinearLayoutCompat {
         inflater.inflate(R.layout.custom_background_selector, this);
     }
 
-    public void setInitialValues(@ColorInt int colour, int transparency, String image, int imageTransparency, UIHelper.ImageRenderTypes backgroundImageRenderType) {
+    public void setInitialValues(@ColorInt int colour, int transparency, String image, int imageTransparency,int padding, UIHelper.ImageRenderTypes backgroundImageRenderType) {
         mColour = colour;
         mTransparency = transparency;
         mImage = image;
         mImageTransparency = imageTransparency;
         mImageRenderType = backgroundImageRenderType;
+        mPadding= padding;
+        mTextPadding.setText(String.valueOf(padding));
         doPropertyChange(false);
     }
 
@@ -156,13 +171,14 @@ public class BackgroundSelector extends LinearLayoutCompat {
         msbBGImg = this.findViewById(R.id.cbv_image_trans);
         mBtnBGClr = this.findViewById(R.id.cbv_colour);
         mRenderStyle = this.findViewById(R.id.cbv_render_style);
-
+        mTextPadding = this.findViewById(R.id.cbv_pad);
         ImageButton mBtnReset = this.findViewById(R.id.cbv_reset);
 
         final Context context = this.getContext();
         mBtnBGClr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //noinspection rawtypes
                 UIHelper.showColourPicker(context, mColour, new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
@@ -231,7 +247,7 @@ public class BackgroundSelector extends LinearLayoutCompat {
         mBtnReset.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                setInitialValues(Color.TRANSPARENT, 100, null, 100, UIHelper.ImageRenderTypes.Center);
+                setInitialValues(Color.TRANSPARENT, 100, null, 100,0, UIHelper.ImageRenderTypes.Center);
                 if(mBackgroundActionListener != null)
                 {
                     mBackgroundActionListener.OnColourSelected(Color.TRANSPARENT);
@@ -239,6 +255,7 @@ public class BackgroundSelector extends LinearLayoutCompat {
                     mBackgroundActionListener.OnImageRenderTypeChanged(UIHelper.ImageRenderTypes.Center);
                     mBackgroundActionListener.OnImageSelected(null);
                     mBackgroundActionListener.OnImageTransparencyChanged(100);
+                    mBackgroundActionListener.OnPaddingChanged(0);
                 }
             }
         });
@@ -264,6 +281,25 @@ public class BackgroundSelector extends LinearLayoutCompat {
             @Override
             public void onGlobalLayout() {
                 handleRender(true);
+            }
+        });
+
+        mTextPadding.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                int p = TextUtils.isEmpty(s.toString())?0:Integer.parseInt(s.toString());
+                setPadding(p);
+                if(mBackgroundActionListener!=null)
+                    mBackgroundActionListener.OnPaddingChanged(p);
             }
         });
 
@@ -333,6 +369,7 @@ public class BackgroundSelector extends LinearLayoutCompat {
                 mImageTransparency,
                 width,
                 height,
+                mPadding,
                 true,
                 mImageRenderType);
 

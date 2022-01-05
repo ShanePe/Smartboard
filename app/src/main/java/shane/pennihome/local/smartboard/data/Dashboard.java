@@ -34,6 +34,7 @@ public class Dashboard extends IDatabaseObject {
     private int mBackgroundClrTrans = 0;
     private transient Thread mBackgroundThread;
     private UIHelper.ImageRenderTypes mBackgroundImageRenderType;
+    private int mBackgroundImagePadding = 0;
 
     public static Dashboard Load(String json) {
         Dashboard ret = new Dashboard();
@@ -144,6 +145,14 @@ public class Dashboard extends IDatabaseObject {
         return UIHelper.getImageFromFile(context, getBackgroundImage());
     }
 
+    public int getBackgroundImagePadding() {
+        return mBackgroundImagePadding;
+    }
+
+    public void setBackgroundImagePadding(int backgroundImagePadding) {
+        this.mBackgroundImagePadding = backgroundImagePadding;
+    }
+
     public void renderBackgroundTo(View destination) {
         Bitmap bitmap = null;
         if (!TextUtils.isEmpty(getBackgroundImage()))
@@ -156,6 +165,7 @@ public class Dashboard extends IDatabaseObject {
                 getBackgroundImageTransparency(),
                 destination.getMeasuredWidth(),
                 destination.getMeasuredHeight(),
+                getBackgroundImagePadding(),
                 false,
                 getBackgroundImageRenderType()));
     }
