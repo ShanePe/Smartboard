@@ -9,7 +9,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  * Created by shane on 19/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class SwitchGroup extends Switch implements IGroup {
     private Things mThings = null;
 
@@ -83,7 +82,13 @@ public class SwitchGroup extends Switch implements IGroup {
         for (Switch s : getChildThings().cast(Switch.class))
             level += s.getDimmerLevel();
 
+        //noinspection IntegerDivisionInFloatingPointContext
         return Math.round(level / getChildThings().size());
+    }
+
+    @Override
+    public boolean isStateful() {
+        return true;
     }
 
     @Override

@@ -13,7 +13,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  * Created by shane on 11/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class SmartThingMode extends IThing {
     private ArrayList<String> mModes;
     private int mSelectedIndex = -1;
@@ -66,7 +65,7 @@ public class SmartThingMode extends IThing {
 
     private int findIndex(String mode) {
         for (int i = 0; i < getModes().size(); i++)
-            if (getModes().get(i).toLowerCase().equals(mode.toLowerCase()))
+            if (getModes().get(i).equalsIgnoreCase(mode))
                 return i;
         return -1;
     }
@@ -74,8 +73,13 @@ public class SmartThingMode extends IThing {
     @Override
     public void verifyState(IThing compare) {
         SmartThingMode smartThingMode = (SmartThingMode) compare;
-        if (!getSelectedText().toLowerCase().equals(smartThingMode.getSelectedText().toLowerCase()))
+        if (!getSelectedText().equalsIgnoreCase(smartThingMode.getSelectedText()))
             setSelectedText(smartThingMode.getSelectedText());
+    }
+
+    @Override
+    public boolean isStateful() {
+        return true;
     }
 
     @Override
@@ -89,7 +93,7 @@ public class SmartThingMode extends IThing {
     }
 
     @Override
-    public JsonExecutorResult execute(IExecutor executor) {
+    public JsonExecutorResult execute(@SuppressWarnings("rawtypes") IExecutor executor) {
         JsonExecutorResult result = super.execute(executor);
         if (result != null)
             if (result.isSuccess()) {

@@ -460,15 +460,15 @@ public class UIHelper {
                 Rect dest = null;
 
                 if (imageRenderType == ImageRenderTypes.Center) {
-                    int destLeft = ((width - scaled.getWidth()) / 2) + padding;
-                    int destTop = ((height - scaled.getHeight()) / 2)+ padding;
+                    int destLeft = ((width - scaled.getWidth()) / 2);
+                    int destTop = ((height - scaled.getHeight()) / 2);
 
                     dest = new Rect(destLeft, destTop, (scaled.getWidth() + destLeft), (scaled.getHeight() + destTop));
                 } else if (imageRenderType == ImageRenderTypes.Stretch)
-                    dest = new Rect(padding, padding, width-(padding*2), height-(padding*2));
+                    dest = new Rect(padding, padding, width-(padding), height-(padding));
 
                 Paint paint = new Paint();
-                //canvas.clipRect(dest);
+
                 if (backClr != 0) {
                     paint.setColor(getColorWithAlpha(backClr, backClrAlphaPerc / 100f));
                     paint.setStyle(Paint.Style.FILL);

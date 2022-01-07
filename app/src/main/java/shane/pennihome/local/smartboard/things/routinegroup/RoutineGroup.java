@@ -9,7 +9,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  * Created by shane on 19/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class RoutineGroup extends Routine implements IGroup {
     private Things mThings = null;
 
@@ -55,5 +54,10 @@ public class RoutineGroup extends Routine implements IGroup {
     @Override
     public String getKey() {
         return getDataID();
+    }
+
+    @Override
+    public boolean isStateful() {
+        return false;
     }
 }

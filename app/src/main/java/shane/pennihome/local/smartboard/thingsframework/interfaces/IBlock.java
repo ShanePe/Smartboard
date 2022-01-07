@@ -496,6 +496,8 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
             if (mProgressIndicator != null)
                 mProgressIndicator.setVisibility(View.INVISIBLE);
 
+            Monitor.getMonitor().verifyDashboardThings();
+
             if (!jsonExecutorResult.isSuccess())
                 if (mProgressIndicator != null)
                     Toast.makeText(mProgressIndicator.getContext(), "Error executing : " + jsonExecutorResult.getError().getMessage(), Toast.LENGTH_LONG).show();

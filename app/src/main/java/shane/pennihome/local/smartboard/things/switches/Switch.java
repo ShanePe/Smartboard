@@ -96,6 +96,11 @@ public class Switch extends IThing {
     }
 
     @Override
+    public boolean isStateful() {
+        return true;
+    }
+
+    @Override
     public void setUnreachable(boolean unreachable, boolean fireBroadcast) {
         boolean pre = unreachable;
         super.setUnreachable(unreachable, fireBroadcast);

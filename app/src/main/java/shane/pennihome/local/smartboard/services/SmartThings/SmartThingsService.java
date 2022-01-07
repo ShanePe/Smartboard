@@ -180,6 +180,11 @@ public class SmartThingsService extends IService {
         public IExecutor<?> getExecutor(String Id) {
             return null;
         }
+
+        @Override
+        public IThing getThingState(IThing thing) {
+            return thing;
+        }
     }
 
     class SwitchGetter implements IThingsGetter {
@@ -255,6 +260,11 @@ public class SmartThingsService extends IService {
                     }
                 }
             };
+        }
+
+        @Override
+        public IThing getThingState(IThing thing) {
+            return thing;
         }
 
         class LevelExecutor extends IExecutor<Integer> {
@@ -347,6 +357,11 @@ public class SmartThingsService extends IService {
                 }
             };
         }
+
+        @Override
+        public IThing getThingState(IThing thing) {
+            return thing;
+        }
     }
 
     protected class TemperatureGetter implements IThingsGetter{
@@ -401,6 +416,11 @@ public class SmartThingsService extends IService {
         public IExecutor<?> getExecutor(String Id) {
             return null;
         }
+
+        @Override
+        public IThing getThingState(IThing thing) {
+            return thing;
+        }
     }
 
     protected class ModesGetter implements IThingsGetter {
@@ -430,7 +450,6 @@ public class SmartThingsService extends IService {
             SmartThingMode smartThingMode = new SmartThingMode();
             smartThingMode.setName("SmartThings Modes");
             smartThingMode.setService(ServicesTypes.SmartThings);
-
             for (int i = 0; i < jObjURI.length(); i++) {
                 JSONObject jMode = jObjURI.getJSONObject(i);
                 smartThingMode.addMode(jMode.getString("name"), jMode.getBoolean("active"));
@@ -471,6 +490,11 @@ public class SmartThingsService extends IService {
                     }
                 }
             };
+        }
+
+        @Override
+        public IThing getThingState(IThing thing) {
+            return thing;
         }
     }
 }

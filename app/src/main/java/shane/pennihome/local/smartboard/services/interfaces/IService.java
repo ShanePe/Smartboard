@@ -3,6 +3,7 @@ package shane.pennihome.local.smartboard.services.interfaces;
 
 import android.content.Context;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import shane.pennihome.local.smartboard.comms.Monitor;
@@ -14,6 +15,7 @@ import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.stmodes.SmartThingMode;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IExecutor;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
@@ -21,7 +23,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  * Created by shane on 29/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public abstract class IService extends IDatabaseObject {
     @SuppressWarnings("FieldCanBeLocal")
     @IgnoreOnCopy
@@ -85,8 +86,6 @@ public abstract class IService extends IDatabaseObject {
         return things;
     }
 
-
-
     @SuppressWarnings("SameReturnValue")
     public abstract ServicesTypes getServiceType();
 
@@ -102,16 +101,19 @@ public abstract class IService extends IDatabaseObject {
             onProcessCompleteListener.complete(true, null);
     }
 
+    public IThingsGetter getThingGetter(IThing thing){
+        if(thing instanceof Switch)
+            return getThingExecutor(Switch.class);
+        else if(thing instanceof Routine)
+            return getThingExecutor(Routine.class);
+        else if (thing instanceof SmartThingMode)
+            return getThingExecutor(SmartThingMode.class);
+
+        return null;
+    }
     public IExecutor<?> getExecutor(IThing thing, String id)
     {
-        IThingsGetter getter = null;
-        if(thing instanceof Switch)
-            getter = getThingExecutor(Switch.class);
-        else if(thing instanceof Routine)
-            getter = getThingExecutor(Routine.class);
-        else if (thing instanceof SmartThingMode)
-            getter = getThingExecutor(SmartThingMode.class);
-
+        IThingsGetter getter = getThingGetter(thing);
         if (getter != null)
             return getter.getExecutor(id);
         return null;

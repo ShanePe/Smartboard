@@ -7,7 +7,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  * Created by shane on 28/12/17.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class Routine extends IThing {
     public static Routine Load(String json) {
         try {
@@ -19,6 +18,11 @@ public class Routine extends IThing {
 
     @Override
     public void verifyState(IThing compare) {}
+
+    @Override
+    public boolean isStateful() {
+        return false;
+    }
 
     @Override
     public Types getThingType() {

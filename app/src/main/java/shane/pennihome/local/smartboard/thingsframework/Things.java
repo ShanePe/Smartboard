@@ -43,6 +43,13 @@ public class Things extends IThings<IThing> {
         return (F) ret;
     }
 
+    public boolean hasThingWithKey(String key) {
+        for (IThing t : this)
+            if (t.getKey().equals(key))
+                return true;
+        return false;
+    }
+
     public <T extends IThing> T get(Class<T> cls, int index) {
         return (T) get(index);
     }

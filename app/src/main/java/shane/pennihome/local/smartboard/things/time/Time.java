@@ -7,7 +7,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  * Created by shane on 17/02/18.
  */
 
-@SuppressWarnings("ALL")
 public class Time extends IThing {
     public static Time Load(String json) {
         try {
@@ -19,6 +18,11 @@ public class Time extends IThing {
 
     @Override
     public void verifyState(IThing compare) {
+    }
+
+    @Override
+    public boolean isStateful() {
+        return false;
     }
 
     @Override

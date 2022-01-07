@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
+import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.ui.UIHelper;
@@ -85,7 +86,7 @@ public class Dashboard extends IDatabaseObject {
             ret.addAll(g.getBlocks());
         return ret;
     }
-    
+
     public int getBackgroundImageTransparency() {
         return mBackgroundImageTrans;
     }

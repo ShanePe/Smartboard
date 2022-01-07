@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.services.dialogs.LoaderDialog;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
@@ -48,6 +49,10 @@ public class ServiceLoader {
         mServices = services;
     }
 
+    public ServiceLoaderResult getThingsForDashboards(){
+        return null;
+    }
+
     public ServiceLoaderResult getThings() {
         ServiceLoaderResult serviceLoaderResult = new ServiceLoaderResult();
         Services services = getServices();
@@ -62,6 +67,7 @@ public class ServiceLoader {
             }
             try {
                 List<Future<ServiceLoaderResult>> results = executor.invokeAll(serviceThreads);
+
                 for (Future<ServiceLoaderResult> s : results) {
                     serviceLoaderResult.getResult().addAll(s.get().getResult());
                     for (String k : s.get().getErrors().keySet())

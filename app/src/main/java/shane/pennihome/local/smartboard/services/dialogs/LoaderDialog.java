@@ -25,7 +25,6 @@ import shane.pennihome.local.smartboard.services.adapters.LoaderAdapter;
  */
 
 public class LoaderDialog extends Dialog {
-    public static LoaderDialog mDialog;
     private RecyclerView mRecycleView;
     private LoaderAdapter mAdapter;
 
@@ -46,18 +45,14 @@ public class LoaderDialog extends Dialog {
         setContentView(mRecycleView);
     }
 
-    private ArrayList<Pair<String, String>> getMessages() {
-        return mAdapter.getMessages();
-    }
-
     public synchronized void setMessages(ArrayList<Pair<String, String>> messages) {
         mAdapter.setMessages(messages);
         mAdapter.notifyDataSetChanged();
     }
 
     public synchronized void addMessage(Pair<String, String> message) {
-        mDialog.mAdapter.addMessage(message);
-        mDialog.mAdapter.notifyDataSetChanged();
+        mAdapter.addMessage(message);
+        mAdapter.notifyDataSetChanged();
         Log.i("Loader", String.format("Added message %s with key: %s", message.first, message.second));
     }
 
@@ -80,22 +75,9 @@ public class LoaderDialog extends Dialog {
         mRecycleView.post(action);
     }
 
-    private LoaderAdapter.ViewHolder findViewHolder(Object key) {
-        if (mRecycleView == null)
-            return null;
-
-        for (int i = 0; i < mRecycleView.getChildCount(); i++) {
-            LoaderAdapter.ViewHolder vh = (LoaderAdapter.ViewHolder) mRecycleView.findViewHolderForAdapterPosition(i);
-            if (vh != null)
-                if (vh.getLoadMessage().first.equals(key))
-                    return vh;
-        }
-
-        return null;
-    }
-
     public static class AsyncLoaderDialog extends AsyncTask<Void, Pair<String, Pair<String, String>>, Void> {
         static AsyncLoaderDialog mLoader;
+        static LoaderDialog mDialog;
         Context mContext;
         Function<Void, Void> mFunction;
 

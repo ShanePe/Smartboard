@@ -10,6 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
+import shane.pennihome.local.smartboard.data.Dashboard;
+import shane.pennihome.local.smartboard.data.Dashboards;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.services.ServiceLoader;
@@ -17,7 +19,10 @@ import shane.pennihome.local.smartboard.services.ServiceManager;
 import shane.pennihome.local.smartboard.services.Services;
 import shane.pennihome.local.smartboard.services.dialogs.LoaderDialog;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
+import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
 import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IGroupBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
@@ -28,12 +33,13 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 @SuppressWarnings("ALL")
 public class Monitor {
     private static final int SECOND_CHECK = 30;//120;
+    private static final int LOOP_LOOK_FOR_NEW = 5;//120;
     private static Monitor mMonitor;
     private Things mThings;
     private Services mServices = null;
+    private Dashboards mDashboards = null;
     private Thread mMonitorThread = null;
     private boolean mLoaded;
-    private ServiceLoader mLoader;
     private boolean mBusy;
 
     private Monitor() {
@@ -45,6 +51,24 @@ public class Monitor {
         return mMonitor;
     }
 
+    public static void destroy() {
+        if (mMonitor == null)
+            return;
+
+        if (mMonitor.mThings != null)
+            mMonitor.mThings.clear();
+        if (mMonitor.mServices != null)
+            mMonitor.mServices.clear();
+        if (mMonitor.mDashboards != null)
+            mMonitor.mDashboards.clear();
+
+        mMonitor.mThings = null;
+        mMonitor.mServices = null;
+        mMonitor.mDashboards = null;
+
+        reset();
+    }
+
     public static boolean IsInstaniated() {
         return (mMonitor != null);
     }
@@ -52,6 +76,7 @@ public class Monitor {
     public static void reset() {
         if (mMonitor != null) {
             mMonitor.stop();
+            mMonitor.mMonitorThread = null;
             mMonitor = null;
         }
     }
@@ -112,6 +137,14 @@ public class Monitor {
         mServices = services;
     }
 
+    public Dashboards getDashboards() {
+        return mDashboards;
+    }
+
+    public void setDashboards(Dashboards dashboards) {
+        this.mDashboards = dashboards;
+    }
+
     public Things getThings() {
         if (mThings == null)
             mThings = new Things();
@@ -137,15 +170,15 @@ public class Monitor {
     }
 
     private ServiceLoader.ServiceLoaderResult getThingsFromService(final Context context, Services services) {
-        mLoader = new ServiceLoader();
+        ServiceLoader loader = new ServiceLoader();
         for (IService s : services)
             if (s.isValid())
-                mLoader.getServices().add(s);
+                loader.getServices().add(s);
             else if (s.isAwaitingAction() && context != null)
                 Toast.makeText(context, String.format("Service %s is awaiting an action.", s.getName()), Toast.LENGTH_LONG);
 
         try {
-            return mLoader.getThings();
+            return loader.getThings();
         } catch (Exception e) {
             if (context != null)
                 Toast.makeText(context, String.format("Error : %s", e.getMessage()), Toast.LENGTH_LONG);
@@ -157,6 +190,51 @@ public class Monitor {
 
     }
 
+    private IService getServiceForThing(IThing thing) {
+        for (IService s : getServices())
+            if (s.isActive())
+                if (s.getServiceType() == thing.getServiceType())
+                    return s;
+
+        return null;
+    }
+
+    private void addThingState(Things things, IThing thing) throws Exception {
+        if (thing == null)
+            return;
+
+        if (thing.isStateful()) {
+            IService service = getServiceForThing(thing);
+            if (service != null) {
+                IThingsGetter getter = service.getThingGetter(thing);
+                if (getter != null && !things.hasThingWithKey(thing.getKey()))
+                    things.add(getter.getThingState(thing.clone()));
+            }
+        }
+    }
+
+    private Things getThingsFromDashboards() throws Exception {
+        Things things = new Things();
+        for (Dashboard dashboard : mDashboards)
+            for (IBlock block : dashboard.GetBlocks())
+                try {
+                    if(Thread.interrupted())
+                        return null;
+                    if (IGroupBlock.class.isAssignableFrom(block.getClass())) {
+                        for (String key : ((IGroupBlock) block).getThingKeys())
+                            if (!things.hasThingWithKey(key))
+                                addThingState(things, getMonitor().getThings().getByKey(key));
+                    } else
+                        addThingState(things, block.getThing());
+
+
+                } catch (Exception e) {
+                    Log.e("Smartboard", "Error on getThingsFromDashboards: " + e.getMessage());
+                }
+
+        return things;
+    }
+
     public void start() {
         if (isRunning())
             return;
@@ -166,15 +244,18 @@ public class Monitor {
             @Override
             public void run() {
                 try {
-                    int lastTime = 0;
+                    int full_check = 0;
+
                     while (true) {
                         if (!isBusy())
                             try {
                                 Thread.sleep(1000 * Monitor.SECOND_CHECK);
                                 mBusy = true;
                                 if (isLoaded()) {
-                                    ServiceLoader.ServiceLoaderResult results = getThingsFromService();
-                                    verifyThingState(results.getResult());
+                                    if (full_check < Monitor.LOOP_LOOK_FOR_NEW)
+                                        verifyThingsOnDashboard();
+                                    else
+                                        verifyThingState(getThingsFromService().getResult());
                                 }
                             } catch (InterruptedException ieu) {
                                 break;
@@ -182,6 +263,7 @@ public class Monitor {
                                 if (!isRunning())
                                     break;
                             } finally {
+                                full_check++;
                                 mBusy = false;
                             }
                     }
@@ -219,6 +301,42 @@ public class Monitor {
         }).start();
     }
 
+    public void verifyDashboardThings() {
+        verifyDashboardThings(null);
+    }
+
+    public void verifyDashboardThings(final OnProcessCompleteListener onProcessCompleteListener) {
+        if (isBusy() || Thread.interrupted())
+            return;
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    verifyThingsOnDashboard();
+
+                    if (onProcessCompleteListener != null)
+                        onProcessCompleteListener.complete(true, null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private void verifyThingsOnDashboard() throws Exception {
+        for (IThing t : getThingsFromDashboards()) {
+            if(Thread.interrupted())
+                return;
+
+            IThing current = getThings().getByKey(t.getKey());
+            if (current == null)
+                current.setUnreachable(false, true);
+            else
+                current.verifyState(t);
+        }
+    }
+
     public void removeService(IService service) {
         stop();
         try {
@@ -250,6 +368,9 @@ public class Monitor {
 
     private void verifyThingState(Things currentThings) {
         for (IThing currentThing : getThings()) {
+            if(Thread.interrupted())
+                return;;
+
             IThing newThing = currentThings.getbyId(currentThing.getId());
 
             if (newThing == null) {
@@ -278,10 +399,8 @@ public class Monitor {
             mMonitorThread.interrupt();
             if (mMonitorThread != null)
                 try {
-                    mMonitorThread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                    mMonitorThread = null;
+                } catch (Exception ignore) {}
         }
     }
 

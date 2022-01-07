@@ -152,7 +152,6 @@ public class RoutineBlockHandler extends IBlockUIHandler {
                     public void complete(boolean success, String source) {
                         if (success) {
                             Toast.makeText(holder.itemView.getContext(), "Executed :" + getBlock().getName(), Toast.LENGTH_SHORT).show();
-                            Monitor.getMonitor().verifyThings();
                         } else
                             Toast.makeText(holder.itemView.getContext(), "Error :" + source, Toast.LENGTH_SHORT).show();
                     }

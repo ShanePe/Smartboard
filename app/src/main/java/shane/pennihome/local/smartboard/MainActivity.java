@@ -16,6 +16,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity
                 progressDialog.show(this);
 
                 //noinspection rawtypes
-                Monitor.getMonitor().verifyThings(new OnProcessCompleteListener() {
+                Monitor.getMonitor().verifyDashboardThings(new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
                         if (!Monitor.getMonitor().isRunning())
@@ -134,15 +136,15 @@ public class MainActivity extends AppCompatActivity
         });
 
         btnRefresh.setOnClickListener(new View.OnClickListener() {
-            @SuppressWarnings("rawtypes")
             @Override
             public void onClick(View view) {
                 goHome();
-                mDashboardLoader.setVisibility(View.VISIBLE);
-                Monitor.getMonitor().verifyThings(new OnProcessCompleteListener() {
+                Monitor.destroy();
+                Monitor.Create((AppCompatActivity)((ContextThemeWrapper)view.getContext()).getBaseContext(), new OnProcessCompleteListener<Void>() {
                     @Override
-                    public void complete(boolean success, Object source) {
+                    public void complete(boolean success, Void source) {
                         renderDashboards();
+                        Monitor.getMonitor().start();
                     }
                 });
             }
@@ -323,6 +325,8 @@ public class MainActivity extends AppCompatActivity
             mDashboards.add((Dashboard) d);
 
         mDashboards.sort();
+
+        Monitor.getMonitor().setDashboards(mDashboards);
 
         mDashboardLayout.post(new Runnable() {
             @SuppressWarnings("unchecked")

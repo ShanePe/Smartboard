@@ -9,7 +9,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  * Created by SPennicott on 10/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class Temperature extends IThing {
     private int mTemperature;
 
@@ -43,6 +42,11 @@ public class Temperature extends IThing {
         Temperature newTemp = (Temperature)compare;
         if(getTemperature() != newTemp.getTemperature())
             setTemperature(newTemp.getTemperature(), true);
+    }
+
+    @Override
+    public boolean isStateful() {
+        return true;
     }
 
     @Override

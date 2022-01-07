@@ -8,6 +8,7 @@ import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
+import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
 import shane.pennihome.local.smartboard.things.routinegroup.RoutineGroup;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.stmodes.SmartThingMode;
@@ -18,14 +19,14 @@ import shane.pennihome.local.smartboard.things.time.Time;
 import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
 
 @SuppressWarnings({"unused", "unchecked"})
-public abstract class IThing extends IDatabaseObject {
+public abstract class IThing extends IDatabaseObject implements Cloneable {
     @SuppressWarnings("FieldCanBeLocal")
     private final String mInstance;
     @IgnoreOnCopy
     private transient boolean mUnreachable;
     private String mId;
     private IService.ServicesTypes mServicesTypes;
-
+    @IgnoreOnCopy
     public IThing() {
         mInstance = this.getClass().getSimpleName();
     }
@@ -56,7 +57,7 @@ public abstract class IThing extends IDatabaseObject {
     }
 
     public abstract void verifyState(IThing compare);
-
+    public abstract boolean isStateful();
     public void initialise() {
     }
 
@@ -116,6 +117,11 @@ public abstract class IThing extends IDatabaseObject {
     }
 
     public abstract Types getThingType();
+
+    @Override
+    public IThing clone() throws CloneNotSupportedException {
+        return (IThing) super.clone();
+    }
 
     public enum Types {
         Switch, Routine, Temperature, SmartThingMode, Time, SwitchGroup, RoutineGroup

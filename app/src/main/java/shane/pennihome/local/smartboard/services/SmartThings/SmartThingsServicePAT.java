@@ -156,6 +156,11 @@ public class SmartThingsServicePAT extends IService {
         public IExecutor<?> getExecutor(String Id) {
             return null;
         }
+
+        @Override
+        public IThing getThingState(IThing thing) {
+            return thing;
+        }
     }
 
     class SwitchGetter implements IThingsGetter {
@@ -201,7 +206,7 @@ public class SmartThingsServicePAT extends IService {
                 }
             }
 
-            return getThingsState(things, false);
+            return getThingsState(things);
         }
 
         private String getCategories(JSONObject jDevice) throws JSONException {
@@ -223,33 +228,13 @@ public class SmartThingsServicePAT extends IService {
             JSONObject jHeath = getDeviceHealth(id);
             return jHeath != null && jHeath.getString("state").equalsIgnoreCase("online");
         }
-
-
-        private Things getThingsState(Things things, boolean fireCast) throws MalformedURLException, JSONException {
-            for (Switch s : things.getOfType(Switch.class)) {
-                if (s.getLastStateUpdate() == null || TimeUnit.MILLISECONDS.toSeconds(Calendar.getInstance().getTime().getTime() - s.getLastStateUpdate().getTime()) > 60) {
-                    JSONObject jState = getDeviceState(s.getId());
-                    if (jState != null) {
-                        s.setOn(jState.getJSONObject("switch").getJSONObject("switch").getString("value").equals("on"), fireCast);
-                        if (jState.has("switchLevel")) {
-                            s.setIsDimmer(true);
-                            s.setDimmerLevel(jState.getJSONObject("switchLevel").getJSONObject("level").getInt("value"), fireCast);
-                        }
-                        if (jState.has("colorControl")) {
-                            int c = getColourFromColourControl(jState);
-                            s.setSupportsColour(c != Color.TRANSPARENT, fireCast);
-                            s.setCurrentColour(c, fireCast);
-                        }
-                        s.setUnreachable(jState.getJSONObject("switch").getJSONObject("switch").getString("value").equals("null") || !isThingOnline(s.getId()), fireCast);
-                        s.setLastStateUpdate(Calendar.getInstance().getTime());
-                    }
-                }
+        
+        private Things getThingsState(Things things) throws MalformedURLException, JSONException {
+            for (IThing s : things.getOfType(Switch.class)) {
+                getThingState(s);
             }
-            for (Temperature t : things.getOfType(Temperature.class)) {
-                JSONObject jState = getDeviceState(t.getId());
-                assert jState != null;
-                t.setTemperature(jState.getJSONObject("temperatureMeasurement").getJSONObject("temperature").getInt("value"), fireCast);
-                t.setUnreachable(!isThingOnline(t.getId()), fireCast);
+            for (IThing t : things.getOfType(Temperature.class)) {
+                getThingState(t);
             }
 
             return things;
@@ -343,6 +328,40 @@ public class SmartThingsServicePAT extends IService {
                 return new LevelExecutor();
             else
                 return new OnOffExecutor();
+        }
+
+        @Override
+        public IThing getThingState(IThing thing) throws MalformedURLException, JSONException {
+            if (thing.getThingType() == IThing.Types.Switch) {
+                Switch s = (Switch) thing;
+                if (s.getLastStateUpdate() == null || TimeUnit.MILLISECONDS.toSeconds(Calendar.getInstance().getTime().getTime() - s.getLastStateUpdate().getTime()) > 60) {
+                    JSONObject jState = getDeviceState(s.getId());
+                    if (jState != null) {
+                        s.setOn(jState.getJSONObject("switch").getJSONObject("switch").getString("value").equals("on"), false);
+                        if (jState.has("switchLevel")) {
+                            s.setIsDimmer(true);
+                            s.setDimmerLevel(jState.getJSONObject("switchLevel").getJSONObject("level").getInt("value"), false);
+                        }
+                        if (jState.has("colorControl")) {
+                            int c = getColourFromColourControl(jState);
+                            s.setSupportsColour(c != Color.TRANSPARENT, false);
+                            s.setCurrentColour(c, false);
+                        }
+                        s.setUnreachable(jState.getJSONObject("switch").getJSONObject("switch").getString("value").equals("null") || !isThingOnline(s.getId()), false);
+                        s.setLastStateUpdate(Calendar.getInstance().getTime());
+                    }
+                }
+            }
+            if (thing.getThingType() == IThing.Types.Temperature) {
+                assert thing instanceof Temperature;
+                Temperature t = (Temperature) thing;
+                JSONObject jState = getDeviceState(t.getId());
+                assert jState != null;
+                t.setTemperature(jState.getJSONObject("temperatureMeasurement").getJSONObject("temperature").getInt("value"), false);
+                t.setUnreachable(!isThingOnline(t.getId()), false);
+            }
+
+            return thing;
         }
 
         class OnOffExecutor extends IExecutor<Void> {
@@ -446,7 +465,10 @@ public class SmartThingsServicePAT extends IService {
                 }
             };
         }
+
+        @Override
+        public IThing getThingState(IThing thing) {
+            return thing;
+        }
     }
-
-
 }
