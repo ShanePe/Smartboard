@@ -9,7 +9,9 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Template;
@@ -24,18 +26,19 @@ import shane.pennihome.local.smartboard.ui.listeners.OnSizeActionListener;
  * Created by shane on 27/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class ThingProperties extends LinearLayoutCompat {
     private IThing mThing;
     private String mName;
     private int mBlockWidth;
     private int mBlockHeight;
     private Things mThings;
+    private boolean mHideTitle;
 
     private Spinner mSpThing;
     private LabelTextbox mTxtName;
     private GroupTitle mDeviceGroupTitle;
     private SizeSelector mSizeSelector;
+    private Switch mSwHideTitle;
 
     public ThingProperties(Context context) {
         super(context);
@@ -98,6 +101,15 @@ public class ThingProperties extends LinearLayoutCompat {
         doPropertyChange();
     }
 
+    public boolean isHideTitle() {
+        return mHideTitle;
+    }
+
+    public void setHideTitle(boolean hideTitle) {
+        this.mHideTitle = hideTitle;
+        doPropertyChange();
+    }
+
     private void initializeViews(Context context) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -113,6 +125,7 @@ public class ThingProperties extends LinearLayoutCompat {
         mTxtName = this.findViewById(R.id.prop_txt_blk_name);
         mDeviceGroupTitle = this.findViewById(R.id.prop_group_device);
         mSizeSelector = this.findViewById(R.id.prop_size_selector);
+        mSwHideTitle = this.findViewById(R.id.prop_sw_title);
 
         mSpThing.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -165,6 +178,13 @@ public class ThingProperties extends LinearLayoutCompat {
             }
         });
 
+       mSwHideTitle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+           @Override
+           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+               mHideTitle = isChecked;
+           }
+       });
+
         doSpinnerThings();
         doPropertyChange();
     }
@@ -189,6 +209,7 @@ public class ThingProperties extends LinearLayoutCompat {
 
         mTxtName.setText(mName);
         mSizeSelector.setSize(mBlockWidth, mBlockHeight);
+        mSwHideTitle.setChecked(mHideTitle);
 
         invalidate();
         requestLayout();
@@ -200,6 +221,7 @@ public class ThingProperties extends LinearLayoutCompat {
         mName = block.getName();
         mBlockWidth = block.getWidth();
         mBlockHeight = block.getHeight();
+        mHideTitle = block.isHideTitle();
 
         doSpinnerThings();
         doPropertyChange();
@@ -209,6 +231,7 @@ public class ThingProperties extends LinearLayoutCompat {
     {
         mBlockWidth = template.getBlock().getWidth();
         mBlockHeight = template.getBlock().getHeight();
+        mHideTitle = template.getBlock().isHideTitle();
     }
 
     public void populate(IBlock block, @SuppressWarnings("SameParameterValue") OnBlockSetListener onBlockSetListener) throws Exception {
@@ -217,6 +240,8 @@ public class ThingProperties extends LinearLayoutCompat {
         block.setName(mName);
         block.setWidth(mBlockWidth);
         block.setHeight(mBlockHeight);
+        block.setHideTitle(mHideTitle);
+
         if (mThing != null) {
             block.setThing(mThing);
             block.setThingKey(mThing.getKey());

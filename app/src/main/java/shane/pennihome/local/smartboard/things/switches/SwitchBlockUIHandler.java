@@ -130,6 +130,7 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
         final SwitchViewHolder holder = (SwitchViewHolder) viewHolder;
 
         holder.mTitle.setText(getBlock().getName());
+        holder.mTitle.setVisibility(getBlock().isHideTitle() ? View.GONE : View.VISIBLE);
 
         getBlock().renderForegroundColourTo(holder.mTitle);
         getBlock().renderBackgroundTo(holder.itemView);
@@ -246,6 +247,7 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
         public final ImageView mBaImg;
         public final TextView mBaDevice;
         public final TextView mBaSize;
+        public final android.widget.Switch mSwHideTitle;
         //      public final FrameLayout mContainer;
 
         public SwitchEditorHolder(View view) {
@@ -256,6 +258,7 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
             mBaImg = view.findViewById(R.id.sw_ba_image);
             mBaDevice = view.findViewById(R.id.sw_ba_device);
             mBaSize = view.findViewById(R.id.sw_ba_size);
+            mSwHideTitle = view.findViewById(R.id.prop_sw_title);
         }
 
         @Override

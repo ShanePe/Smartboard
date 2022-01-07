@@ -68,6 +68,7 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
     @IgnoreOnCopy
     private transient IThing mThing;
     int mBackImgPadding;
+    boolean mHideTitle;
 
     @IgnoreOnCopy
     private OnThingActionListener mOnThingActionListener;
@@ -292,6 +293,14 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
 
     public void setBackgroundImagePadding(int mBackImgPadding) {
         this.mBackImgPadding = mBackImgPadding;
+    }
+
+    public boolean isHideTitle() {
+        return mHideTitle;
+    }
+
+    public void setHideTitle(boolean hideTitle) {
+        this.mHideTitle = hideTitle;
     }
 
     public abstract IThing.Types getThingType();

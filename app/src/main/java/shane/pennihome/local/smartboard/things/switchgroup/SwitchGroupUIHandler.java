@@ -154,6 +154,7 @@ class SwitchGroupUIHandler extends IBlockUIHandler {
         final SwitchGroupViewHolder holder = (SwitchGroupViewHolder) viewHolder;
 
         holder.mTitle.setText(getBlock().getName());
+        holder.mTitle.setVisibility(getBlock().isHideTitle() ? View.GONE : View.VISIBLE);
 
         getBlock().renderForegroundColourTo(holder.mTitle);
         getBlock().renderBackgroundTo(holder.itemView);

@@ -10,7 +10,9 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Template;
@@ -26,7 +28,6 @@ import shane.pennihome.local.smartboard.ui.listeners.OnSizeActionListener;
  * Created by shane on 27/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class ThingPropertiesIcon extends LinearLayoutCompat {
     private IThing mThing;
     private String mName;
@@ -35,12 +36,14 @@ public class ThingPropertiesIcon extends LinearLayoutCompat {
     private Things mThings;
     private String mIconPath;
     private UIHelper.IconSizes mIconSize;
+    private boolean mHideTitle;
 
     private Spinner mSpThing;
     private LabelTextbox mTxtName;
     private SizeSelector mSizeSelector;
     private IconSelector mIconSelector;
     private GroupTitle mDeviceGroupTitle;
+    private Switch mSwHideTitle;
 
     private boolean mHideDevice;
 
@@ -131,6 +134,15 @@ public class ThingPropertiesIcon extends LinearLayoutCompat {
         doPropertyChange();
     }
 
+    public boolean isHideTitle() {
+        return mHideTitle;
+    }
+
+    public void setHideTitle(boolean hideTitle) {
+        this.mHideTitle = hideTitle;
+        doPropertyChange();
+    }
+
     private void initializeViews(Context context) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -147,6 +159,7 @@ public class ThingPropertiesIcon extends LinearLayoutCompat {
         mSizeSelector = this.findViewById(R.id.prop_size_selector_icon);
         mDeviceGroupTitle = this.findViewById(R.id.prop_group_device_icon);
         mIconSelector = this.findViewById(R.id.prop_icon_icon);
+        mSwHideTitle = this.findViewById(R.id.prop_sw_title_icon);
 
         mSpThing.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -211,6 +224,13 @@ public class ThingPropertiesIcon extends LinearLayoutCompat {
             }
         });
 
+        mSwHideTitle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mHideTitle = isChecked;
+            }
+        });
+
         doSpinnerThings();
         doPropertyChange();
     }
@@ -245,6 +265,7 @@ public class ThingPropertiesIcon extends LinearLayoutCompat {
         mTxtName.setText(mName);
         mSizeSelector.setSize(mBlockWidth, mBlockHeight);
         mIconSelector.setIcon(mIconPath, mIconSize);
+        mSwHideTitle.setChecked(mHideTitle);
 
         invalidate();
         requestLayout();
@@ -258,6 +279,7 @@ public class ThingPropertiesIcon extends LinearLayoutCompat {
         mBlockHeight = block.getHeight();
         mIconPath = block.getIcon();
         mIconSize = block.getIconSize();
+        mHideTitle = block.isHideTitle();
 
         doSpinnerThings();
         doPropertyChange();
@@ -268,6 +290,7 @@ public class ThingPropertiesIcon extends LinearLayoutCompat {
         mBlockHeight = template.getBlock().getHeight();
         mIconPath = template.getBlock(IIconBlock.class).getIcon();
         mIconSize = template.getBlock(IIconBlock.class).getIconSize();
+        mHideTitle = template.getBlock().isHideTitle();
     }
 
     public void populate(IIconBlock block, @SuppressWarnings("SameParameterValue") OnBlockSetListener onBlockSetListener) throws Exception {
@@ -278,6 +301,7 @@ public class ThingPropertiesIcon extends LinearLayoutCompat {
         block.setHeight(mBlockHeight);
         block.setIcon(mIconPath);
         block.setIconSize(mIconSize);
+        block.setHideTitle(mHideTitle);
 
         if (mThing != null) {
             block.setThing(mThing);

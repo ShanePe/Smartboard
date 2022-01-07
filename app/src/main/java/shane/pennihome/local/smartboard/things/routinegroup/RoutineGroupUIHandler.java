@@ -152,6 +152,7 @@ class RoutineGroupUIHandler extends IBlockUIHandler {
         final RoutineGroupViewHolder holder = (RoutineGroupViewHolder) viewHolder;
 
         holder.mTitle.setText(getBlock().getName());
+        holder.mTitle.setVisibility(getBlock().isHideTitle() ? View.GONE : View.VISIBLE);
 
         getBlock().renderForegroundColourTo(holder.mTitle);
         getBlock().renderBackgroundTo(holder.itemView);
