@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
@@ -28,6 +27,7 @@ import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionL
 import shane.pennihome.local.smartboard.ui.TemplateProperties;
 import shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector;
 import shane.pennihome.local.smartboard.ui.ThingPropertiesIcon;
+import shane.pennihome.local.smartboard.ui.UIHelper;
 import shane.pennihome.local.smartboard.ui.ViewSwiper;
 
 /**
@@ -145,18 +145,17 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE)
-                    return;
+                UIHelper.doClickReact(v);
+                execute(holder,false);
+            }
+        });
 
-                getBlock().execute(holder.mProgress, new OnProcessCompleteListener<String>() {
-                    @Override
-                    public void complete(boolean success, String source) {
-                        if (success) {
-                            Toast.makeText(holder.itemView.getContext(), "Executed :" + getBlock().getName(), Toast.LENGTH_SHORT).show();
-                        } else
-                            Toast.makeText(holder.itemView.getContext(), "Error :" + source, Toast.LENGTH_SHORT).show();
-                    }
-                });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                UIHelper.doLongClickReact(v);
+                execute(holder, true);
+                return true;
             }
         });
 
@@ -189,6 +188,21 @@ public class RoutineBlockHandler extends IBlockUIHandler {
             @Override
             public void OnDisabledChanged(IThing thing, boolean disabled) {
                 getBlock().doEnabled(holder.itemView, !disabled);
+            }
+        });
+    }
+
+    private void execute(final RoutineViewHolder holder, boolean delay){
+        if (getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE)
+            return;
+
+        getBlock().execute(holder.mProgress,delay, new OnProcessCompleteListener<String>() {
+            @Override
+            public void complete(boolean success, String source) {
+                if (success) {
+                    Toast.makeText(holder.itemView.getContext(), "Executed :" + getBlock().getName(), Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(holder.itemView.getContext(), "Error :" + source, Toast.LENGTH_SHORT).show();
             }
         });
     }

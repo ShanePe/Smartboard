@@ -30,6 +30,7 @@ import shane.pennihome.local.smartboard.ui.MultiThingSelector;
 import shane.pennihome.local.smartboard.ui.TemplateProperties;
 import shane.pennihome.local.smartboard.ui.ThingPropertiesClrSelector;
 import shane.pennihome.local.smartboard.ui.ThingPropertiesIcon;
+import shane.pennihome.local.smartboard.ui.UIHelper;
 import shane.pennihome.local.smartboard.ui.ViewSwiper;
 
 /**
@@ -165,16 +166,17 @@ class RoutineGroupUIHandler extends IBlockUIHandler {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE)
-                    return;
+                UIHelper.doClickReact(v);
+                execute(holder,false);
+            }
+        });
 
-                getBlock().execute(holder.mProgress, new OnProcessCompleteListener<String>() {
-                    @Override
-                    public void complete(boolean success, String source) {
-                        if (!success)
-                            Toast.makeText(holder.itemView.getContext(), "Error:" + source, Toast.LENGTH_SHORT).show();
-                    }
-                });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                UIHelper.doLongClickReact(v);
+                execute(holder,true);
+                return true;
             }
         });
 
@@ -209,7 +211,19 @@ class RoutineGroupUIHandler extends IBlockUIHandler {
                 getBlock().doEnabled(holder.itemView, !thing.isUnreachable() && !disabled);
             }
         });
+    }
 
+    private void execute(final RoutineGroupViewHolder holder,Boolean delay){
+        if (getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE)
+            return;
+
+        getBlock().execute(holder.mProgress,delay, new OnProcessCompleteListener<String>() {
+            @Override
+            public void complete(boolean success, String source) {
+                if (!success)
+                    Toast.makeText(holder.itemView.getContext(), "Error:" + source, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

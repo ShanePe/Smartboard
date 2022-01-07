@@ -197,7 +197,7 @@ public class SmartThingModeUIHandler extends IBlockUIHandler {
                             @SuppressWarnings("unchecked") IExecutor<String> executor = (IExecutor<String>) getBlock().getExecutor();
                             executor.setValue(name);
 
-                            getBlock().execute(holder.mProgress, executor, new OnProcessCompleteListener<String>() {
+                            getBlock().execute(holder.mProgress,false, executor, new OnProcessCompleteListener<String>() {
                                 @Override
                                 public void complete(boolean success, String source) {
 

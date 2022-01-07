@@ -2,6 +2,7 @@ package shane.pennihome.local.smartboard.comms;
 
 import android.arch.core.util.Function;
 import android.content.Context;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -41,6 +42,7 @@ public class Monitor {
     private Thread mMonitorThread = null;
     private boolean mLoaded;
     private boolean mBusy;
+    private Vibrator mVibrator;
 
     private Monitor() {
     }
@@ -101,6 +103,11 @@ public class Monitor {
                     if (source.getErrors() != null)
                         for (String e : source.getErrors().keySet())
                             Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG).show();
+
+                    try {
+                        getMonitor().mVibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
+                    } catch (Exception ignore) {
+                    }
                     getMonitor().mLoaded = true;
 
                     if (onProcessCompleteListener != null)
@@ -113,6 +120,12 @@ public class Monitor {
             Log.e(Globals.ACTIVITY, "Create: failed", ex);
         }
         return getMonitor();
+    }
+
+    public void Vibrate(long durationMilli) {
+        if (getMonitor().mVibrator != null) {
+            getMonitor().mVibrator.vibrate(durationMilli);
+        }
     }
 
     public boolean isBusy() {
@@ -175,13 +188,13 @@ public class Monitor {
             if (s.isValid())
                 loader.getServices().add(s);
             else if (s.isAwaitingAction() && context != null)
-                Toast.makeText(context, String.format("Service %s is awaiting an action.", s.getName()), Toast.LENGTH_LONG);
+                Toast.makeText(context, String.format("Service %s is awaiting an action.", s.getName()), Toast.LENGTH_LONG).show();
 
         try {
             return loader.getThings();
         } catch (Exception e) {
             if (context != null)
-                Toast.makeText(context, String.format("Error : %s", e.getMessage()), Toast.LENGTH_LONG);
+                Toast.makeText(context, String.format("Error : %s", e.getMessage()), Toast.LENGTH_LONG).show();
             else
                 e.printStackTrace();
         }
@@ -218,7 +231,7 @@ public class Monitor {
         for (Dashboard dashboard : mDashboards)
             for (IBlock block : dashboard.GetBlocks())
                 try {
-                    if(Thread.interrupted())
+                    if (Thread.interrupted())
                         return null;
                     if (IGroupBlock.class.isAssignableFrom(block.getClass())) {
                         for (String key : ((IGroupBlock) block).getThingKeys())
@@ -313,8 +326,8 @@ public class Monitor {
             @Override
             public void run() {
                 try {
+                    Thread.sleep(1000);
                     verifyThingsOnDashboard();
-
                     if (onProcessCompleteListener != null)
                         onProcessCompleteListener.complete(true, null);
                 } catch (Exception e) {
@@ -326,7 +339,7 @@ public class Monitor {
 
     private void verifyThingsOnDashboard() throws Exception {
         for (IThing t : getThingsFromDashboards()) {
-            if(Thread.interrupted())
+            if (Thread.interrupted())
                 return;
 
             IThing current = getThings().getByKey(t.getKey());
@@ -360,7 +373,7 @@ public class Monitor {
             ServiceLoader.ServiceLoaderResult source = getThingsFromService(context, services);
             getMonitor().getThings().addAll(source.getResult());
             for (String e : source.getErrors().keySet())
-                Toast.makeText(context, String.format("Error getting things : %s", e), Toast.LENGTH_LONG);
+                Toast.makeText(context, String.format("Error getting things : %s", e), Toast.LENGTH_LONG).show();
         } finally {
             start();
         }
@@ -368,8 +381,9 @@ public class Monitor {
 
     private void verifyThingState(Things currentThings) {
         for (IThing currentThing : getThings()) {
-            if(Thread.interrupted())
-                return;;
+            if (Thread.interrupted())
+                return;
+            ;
 
             IThing newThing = currentThings.getbyId(currentThing.getId());
 
@@ -400,7 +414,8 @@ public class Monitor {
             if (mMonitorThread != null)
                 try {
                     mMonitorThread = null;
-                } catch (Exception ignore) {}
+                } catch (Exception ignore) {
+                }
         }
     }
 

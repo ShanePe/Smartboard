@@ -24,6 +24,7 @@ import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.things.switches.SwitchBlock;
 import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
 import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IExecutor;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IGroupBlock;
@@ -144,7 +145,6 @@ public class SwitchGroupBlock extends SwitchBlock implements IGroupBlock {
     }
 
     @SuppressLint("StaticFieldLeak")
-    @Override
     public void execute(final View indicator, final OnProcessCompleteListener<String> onProcessCompleteListener) {
         new AsyncTask<Things, Void, Boolean>() {
             @Override
@@ -176,7 +176,32 @@ public class SwitchGroupBlock extends SwitchBlock implements IGroupBlock {
 
             }
         }.execute(getThing(SwitchGroup.class).getChildThings());
+    }
 
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public void execute(final View indicator, boolean delay, final OnProcessCompleteListener<String> onProcessCompleteListener) {
+        if (delay) {
+            final OnProcessCompleteListener processCompleteListener = new OnProcessCompleteListener() {
+                @Override
+                public void complete(boolean success, Object source) {
+                    execute(indicator, onProcessCompleteListener);
+                }
+            };
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(IBlock.EXECUTE_DELAY);
+                        processCompleteListener.complete(true, null);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        } else
+            execute(indicator, onProcessCompleteListener);
     }
 
     @SuppressLint("StaticFieldLeak")

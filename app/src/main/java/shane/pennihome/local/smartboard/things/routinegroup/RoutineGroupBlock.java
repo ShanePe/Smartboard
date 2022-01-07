@@ -13,6 +13,7 @@ import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.routines.RoutineBlock;
 import shane.pennihome.local.smartboard.thingsframework.Things;
+import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandler;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IGroupBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
@@ -79,8 +80,6 @@ public class RoutineGroupBlock extends RoutineBlock implements IGroupBlock {
             group.getChildThings().add(Monitor.getMonitor().getThings().getByKey(key));
     }
 
-    @SuppressLint("StaticFieldLeak")
-    @Override
     public void execute(final View indicator, final OnProcessCompleteListener<String> onProcessCompleteListener) {
         new AsyncTask<Things, Void, Boolean>() {
             @Override
@@ -110,6 +109,31 @@ public class RoutineGroupBlock extends RoutineBlock implements IGroupBlock {
 
             }
         }.execute(getThing(RoutineGroup.class).getChildThings());
+    }
 
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public void execute(final View indicator, boolean delay, final OnProcessCompleteListener<String> onProcessCompleteListener) {
+        if (delay) {
+            final OnProcessCompleteListener processCompleteListener = new OnProcessCompleteListener() {
+                @Override
+                public void complete(boolean success, Object source) {
+                    execute(indicator, onProcessCompleteListener);
+                }
+            };
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(IBlock.EXECUTE_DELAY);
+                        processCompleteListener.complete(true, null);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        } else
+            execute(indicator, onProcessCompleteListener);
     }
 }

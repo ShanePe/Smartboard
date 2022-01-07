@@ -18,6 +18,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
+import android.os.Vibrator;
 import android.provider.OpenableColumns;
 import android.support.annotation.ColorInt;
 import android.support.v4.app.FragmentManager;
@@ -30,6 +31,7 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +74,16 @@ import shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener;
 
 @SuppressWarnings("ALL")
 public class UIHelper {
+    public static void doClickReact(View v){
+        Monitor.getMonitor().Vibrate(100);
+    }
+
+    public static void doLongClickReact(View v){
+        Monitor.getMonitor().Vibrate(1000);
+        v.setEnabled(false);
+        v.setAlpha(0.5f);
+    }
+
     public static void showImageImport(FragmentManager fragmentManager, final OnProcessCompleteListener<String> onProcessCompleteListener) {
 
         final ImportImageDialog importImageDialog = ImportImageDialog.newInstance(onProcessCompleteListener);

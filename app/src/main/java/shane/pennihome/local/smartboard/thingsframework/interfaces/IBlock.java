@@ -51,7 +51,11 @@ import shane.pennihome.local.smartboard.ui.UIHelper;
 @IDatabaseObject.IgnoreOnCopy
 public abstract class IBlock extends IDatabaseObject implements Cloneable {
     @IgnoreOnCopy
+    public static final int EXECUTE_DELAY = 30;
+    @IgnoreOnCopy
     protected BroadcastReceiver mBroadcastReceiver;
+    int mBackImgPadding;
+    boolean mHideTitle;
     private int mHeight;
     private int mWidth;
     private @ColorInt
@@ -67,9 +71,6 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
     private String mThingKey;
     @IgnoreOnCopy
     private transient IThing mThing;
-    int mBackImgPadding;
-    boolean mHideTitle;
-
     @IgnoreOnCopy
     private OnThingActionListener mOnThingActionListener;
 
@@ -454,17 +455,45 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
             ((IGroupBlock) this).loadChildThings();
     }
 
-    public void execute(View indicator, OnProcessCompleteListener<String> onProcessCompleteListener) {
-        execute(indicator, getExecutor(), onProcessCompleteListener);
+    public void execute(View indicator, boolean delay, OnProcessCompleteListener<String> onProcessCompleteListener) {
+        execute(indicator, delay, getExecutor(), onProcessCompleteListener);
     }
 
-    public void execute(View indicator, IExecutor<?> executor, OnProcessCompleteListener<String> onProcessCompleteListener) {
+    public void execute(View indicator, boolean delay, IExecutor<?> executor, OnProcessCompleteListener<String> onProcessCompleteListener) {
         try {
             BlockExecutor blockExecutor = new BlockExecutor(indicator, executor, onProcessCompleteListener);
-            blockExecutor.execute(getThing());
+            if (delay)
+                delayExecute(indicator.getContext(), blockExecutor);
+            else
+                blockExecutor.execute(getThing());
         } catch (Exception ex) {
-            Toast.makeText(indicator.getContext(), String.format("Could not execute block command: %s", ex.getMessage()), Toast.LENGTH_LONG);
+            Toast.makeText(indicator.getContext(), String.format("Could not execute block command: %s", ex.getMessage()), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void delayExecute(Context context, final BlockExecutor blockExecutor) {
+        Toast.makeText(context, String.format("Executing in %s seconds", EXECUTE_DELAY), Toast.LENGTH_LONG).show();
+
+        final OnProcessCompleteListener completeListener = new OnProcessCompleteListener() {
+            @Override
+            public void complete(boolean success, Object source) {
+                blockExecutor.mProgressIndicator = null;
+                blockExecutor.execute(getThing());
+            }
+        };
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(EXECUTE_DELAY * 1000);
+                    completeListener.complete(true, null);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
     }
 
     public IExecutor<?> getExecutor() {
@@ -523,11 +552,12 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
         @Override
         protected JsonExecutorResult doInBackground(IThing... iThings) {
             int wait = 0;
-            while(Monitor.getMonitor().isBusy()) {
+            while (Monitor.getMonitor().isBusy()) {
                 try {
                     Thread.sleep(100);
-                } catch (InterruptedException ignore) {}
-                if(wait>100)
+                } catch (InterruptedException ignore) {
+                }
+                if (wait > 100)
                     return new JsonExecutorResult(new Exception("Could not get lock for execute"));
                 wait++;
             }

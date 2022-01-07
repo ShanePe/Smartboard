@@ -177,16 +177,17 @@ class SwitchGroupUIHandler extends IBlockUIHandler {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE || v == holder.mDimmer)
-                    return;
+                UIHelper.doClickReact(v);
+                execute(holder, v, false);
+            }
+        });
 
-                getBlock().execute(holder.mProgress, new OnProcessCompleteListener<String>() {
-                    @Override
-                    public void complete(boolean success, String source) {
-                        if (!success)
-                            Toast.makeText(holder.itemView.getContext(), "Error:" + source, Toast.LENGTH_SHORT).show();
-                    }
-                });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                UIHelper.doLongClickReact(v);
+                execute(holder, v, true);
+                return true;
             }
         });
 
@@ -245,6 +246,19 @@ class SwitchGroupUIHandler extends IBlockUIHandler {
             @Override
             public void OnDisabledChanged(IThing thing, boolean disabled) {
                 getBlock().doEnabled(holder.itemView, !disabled);
+            }
+        });
+    }
+
+    private void execute(final SwitchGroupViewHolder holder, View currentView, boolean delay) {
+        if (getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE || currentView == holder.mDimmer)
+            return;
+
+        getBlock().execute(holder.mProgress, delay, new OnProcessCompleteListener<String>() {
+            @Override
+            public void complete(boolean success, String source) {
+                if (!success)
+                    Toast.makeText(holder.itemView.getContext(), "Error:" + source, Toast.LENGTH_SHORT).show();
             }
         });
     }
