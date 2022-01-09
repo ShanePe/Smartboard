@@ -137,9 +137,13 @@ public class Monitor {
     }
 
     public boolean isRunning() {
-        if (mMonitorThread == null)
+        try {
+            if (mMonitorThread == null)
+                return false;
+            return mMonitorThread.getState() != Thread.State.TERMINATED;
+        } catch (Exception ignore) {
             return false;
-        return mMonitorThread.getState() != Thread.State.TERMINATED;
+        }
     }
 
     public Services getServices() {
@@ -200,7 +204,6 @@ public class Monitor {
         }
 
         return null;
-
     }
 
     private IService getServiceForThing(IThing thing) {
@@ -220,7 +223,7 @@ public class Monitor {
             IService service = getServiceForThing(thing);
             if (service != null) {
                 IThingsGetter getter = service.getThingGetter(thing);
-                if (getter != null && !things.hasThingWithKey(thing.getKey()))
+                if (getter != null)
                     things.add(getter.getThingState(thing.clone()));
             }
         }
@@ -235,8 +238,7 @@ public class Monitor {
                         return null;
                     if (IGroupBlock.class.isAssignableFrom(block.getClass())) {
                         for (String key : ((IGroupBlock) block).getThingKeys())
-                            if (!things.hasThingWithKey(key))
-                                addThingState(things, getMonitor().getThings().getByKey(key));
+                            addThingState(things, getMonitor().getThings().getByKey(key));
                     } else
                         addThingState(things, block.getThing());
 

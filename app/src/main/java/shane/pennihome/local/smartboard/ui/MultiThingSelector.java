@@ -1,17 +1,25 @@
 package shane.pennihome.local.smartboard.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.services.Services;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
@@ -20,12 +28,17 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  * Created by shane on 19/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class MultiThingSelector extends GridLayout {
-    private Things mThings;
-    private Things mSelectedThings;
+    private LayoutInflater mInflater;
+   // private IService mService;
 
+    //private Things mThings;
+    private Things mSelectedThings;
+    private RecyclerView rview;
+
+    private Spinner mSPService;
     private MultiThingSelectorAdapter mAdapter;
+    private ThingsSelector.SpinnerServiceAdapter mServiceAdapter = null;
 
     public MultiThingSelector(Context context) {
         super(context);
@@ -42,17 +55,17 @@ public class MultiThingSelector extends GridLayout {
         initialiseView(context);
     }
 
-    private Things getThings() {
-        if (mThings == null)
-            mThings = new Things();
-        return mThings;
+    public Services getServices() {
+        return mServiceAdapter.getServices();
     }
 
-    public void setThings(Things things) {
-        mThings = things;
-        if (mAdapter != null)
-            mAdapter.notifyDataSetChanged();
+    public void setData(Services services,Things things){
+        mAdapter = new MultiThingSelectorAdapter(things);
+        rview.setAdapter(mAdapter);
 
+        mServiceAdapter = new ThingsSelector.SpinnerServiceAdapter(mInflater,services);
+        mSPService.setAdapter(mServiceAdapter);
+        mSPService.setVisibility(services.size() > 1 ? View.VISIBLE : View.GONE);
     }
 
     public Things getSelectedThings() {
@@ -63,26 +76,69 @@ public class MultiThingSelector extends GridLayout {
 
     public void setSelectedThings(Things selectedThings) {
         mSelectedThings = selectedThings;
+        if (selectedThings.size() > 0) {
+            ArrayList<IService.ServicesTypes> check = new ArrayList<>();
+            for (IThing t : selectedThings)
+                if (!check.contains(t.getServiceType()))
+                    check.add(t.getServiceType());
+
+            int selected = getServices().getIndex(getServices().getByType(check.size() > 1 ? null : check.get(0)));
+            mSPService.setSelection(selected);
+        }
     }
 
     private void initialiseView(Context context) {
-        LayoutInflater inflater = (LayoutInflater) context
+        mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        assert inflater != null;
-        inflater.inflate(R.layout.custom_multi_thing_selection_list, this);
+        assert mInflater != null;
+        mInflater.inflate(R.layout.custom_multi_thing_selection_list, this);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        RecyclerView rv = findViewById(R.id.cmts_recycleview);
-        rv.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        mAdapter = new MultiThingSelectorAdapter();
-        rv.setAdapter(mAdapter);
+        rview = findViewById(R.id.cmts_recycleview);
+        rview.setLayoutManager(new GridLayoutManager(getContext(), 3));
+
+        mSPService = findViewById(R.id.prop_sp_service_mlti);
+
+        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mSPService.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        IService service = (IService) parent.getItemAtPosition(position);
+                        if (service instanceof ThingsSelector.SpinnerServiceAdapter.BlankService)
+                            service = null;
+                        mAdapter.filter(service);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        mAdapter.clearFilter();
+                    }
+                });
+
+                getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
     }
 
     public class MultiThingSelectorAdapter extends RecyclerView.Adapter<MultiThingSelectorAdapter.ViewHolder> {
+        Things mThings;
+        Things mFilteredThings;
 
+        public Things getThings() {
+            return mFilteredThings;
+        }
+
+        public MultiThingSelectorAdapter(Things things) {
+            this.mThings = things;
+            this.mFilteredThings = things;
+        }
+
+        @NonNull
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext())
@@ -91,7 +147,7 @@ public class MultiThingSelector extends GridLayout {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mItem = getThings().get(position);
+            holder.mItem = mFilteredThings.get(position);
             if (holder.mItem.getServiceType() == IService.ServicesTypes.SmartThings) {
                 holder.mImg.setImageResource(R.mipmap.icon_switch_mm_fg);
             } else if (holder.mItem.getServiceType() == IService.ServicesTypes.PhilipsHue) {
@@ -116,7 +172,17 @@ public class MultiThingSelector extends GridLayout {
 
         @Override
         public int getItemCount() {
-            return mThings.size();
+            return mFilteredThings.size();
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        public void filter(IService service){
+            mFilteredThings = service == null?mThings:mThings.getForService(service);
+            notifyDataSetChanged();
+        }
+
+        public void clearFilter(){
+            filter(null);
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
@@ -132,6 +198,5 @@ public class MultiThingSelector extends GridLayout {
             }
         }
     }
-
 }
 

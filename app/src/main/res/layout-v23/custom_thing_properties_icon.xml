@@ -12,19 +12,13 @@
             android:id="@+id/prop_group_device_icon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:labelFor="@id/prop_sp_thing_icon"
+            android:labelFor="@id/prop_things_selector_icon"
             app:title="@string/lbl_device" />
 
-        <Spinner
-            android:id="@+id/prop_sp_thing_icon"
+        <shane.pennihome.local.smartboard.ui.ThingsSelector
+            android:id="@+id/prop_things_selector_icon"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:focusable="auto"
-            android:foreground="?attr/selectableItemBackground"
-            tools:ignore="DuplicateSpeakableTextCheck" />
-
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="fill_parent"

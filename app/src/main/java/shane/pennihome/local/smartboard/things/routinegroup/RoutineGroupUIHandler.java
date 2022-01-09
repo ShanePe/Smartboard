@@ -61,9 +61,10 @@ class RoutineGroupUIHandler extends IBlockUIHandler {
         selectable.addAll(Monitor.getMonitor().getThings(Routine.class));
 
         TemplateProperties tempProps = view.findViewById(R.id.rtg_template);
-        tpProps.initialise(null, (IIconBlock) getBlock());
+        tpProps.initialise(null,null, (IIconBlock) getBlock());
         tpBackground.initialise(getBlock());
-        multiThingSelector.setThings(selectable);
+
+        multiThingSelector.setData(Monitor.getMonitor().getServices(), selectable);
 
         getBlock(RoutineGroupBlock.class).loadThing();
 

@@ -63,9 +63,10 @@ class SwitchGroupUIHandler extends IBlockUIHandler {
         selectable.addAll(Monitor.getMonitor().getThings(Switch.class));
 
         TemplateProperties tempProps = view.findViewById(R.id.dg_template);
-        tpProps.initialise(null, (IIconBlock) getBlock());
+        tpProps.initialise(null,null, (IIconBlock) getBlock());
         tpBackground.initialise(getBlock(SwitchBlock.class));
-        multiThingSelector.setThings(selectable);
+
+        multiThingSelector.setData(Monitor.getMonitor().getServices(), selectable);
 
         getBlock(SwitchGroupBlock.class).loadThing();
 

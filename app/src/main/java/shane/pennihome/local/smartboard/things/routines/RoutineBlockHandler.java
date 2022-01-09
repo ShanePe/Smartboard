@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
@@ -53,7 +54,7 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         final ThingPropertiesClrSelector tpBackground = view.findViewById(R.id.rt_background);
         TemplateProperties tempProps = view.findViewById(R.id.rt_template);
 
-        tpProps.initialise(things, (IIconBlock) getBlock());
+        tpProps.initialise(Monitor.getMonitor().getServices(), things, (IIconBlock) getBlock());
         tpBackground.initialise(getBlock());
 
         tempProps.setTemplates(Templates.Load(view.getContext()).getForType(IThing.Types.Routine));

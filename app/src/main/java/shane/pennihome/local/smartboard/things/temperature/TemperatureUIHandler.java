@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
+import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.Template;
@@ -51,7 +52,7 @@ public class TemperatureUIHandler extends IBlockUIHandler {
         final ThingPropertiesClrSelector tpBackground = view.findViewById(R.id.tp_background);
         TemplateProperties tempProps = view.findViewById(R.id.tp_template);
 
-        tpProps.initialise(things, getBlock());
+        tpProps.initialise(Monitor.getMonitor().getServices(), things, getBlock());
         tpBackground.initialise(getBlock());
 
         tempProps.setTemplates(Templates.Load(view.getContext()).getForType(IThing.Types.Temperature));

@@ -2,39 +2,25 @@ package shane.pennihome.local.smartboard.ui;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.CompoundButton;
-import android.widget.Spinner;
 import android.widget.Switch;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Template;
-import shane.pennihome.local.smartboard.thingsframework.SpinnerThingAdapter;
+import shane.pennihome.local.smartboard.services.Services;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
-import shane.pennihome.local.smartboard.ui.listeners.OnSizeActionListener;
 
 /**
  * Created by shane on 27/01/18.
  */
 
 public class ThingProperties extends LinearLayoutCompat {
-    private IThing mThing;
-    private String mName;
-    private int mBlockWidth;
-    private int mBlockHeight;
-    private Things mThings;
-    private boolean mHideTitle;
-
-    private Spinner mSpThing;
+    private ThingsSelector mThingSelector;
     private LabelTextbox mTxtName;
     private GroupTitle mDeviceGroupTitle;
     private SizeSelector mSizeSelector;
@@ -56,58 +42,43 @@ public class ThingProperties extends LinearLayoutCompat {
     }
 
     private IThing getThing() {
-        return mThing;
+        return mThingSelector.getThing();
     }
 
     public void setThing(IThing thing) {
-        mThing = thing;
-        doPropertyChange();
+        mThingSelector.setThing(thing);
     }
 
     public String getName() {
-        return mName;
+        return mTxtName.getText();
     }
 
     public void setName(String name) {
-        mName = name;
-        doPropertyChange();
+        mTxtName.setText(name);
     }
 
     public int getBlockWidth() {
-        return mBlockWidth;
+        return mSizeSelector.getBlockWidth();
     }
 
     public void setBlockWidth(int width) {
-        mBlockWidth = width;
-        doPropertyChange();
+        mSizeSelector.setBlockWidth(width);
     }
 
     public int getBlockHeight() {
-        return mBlockHeight;
+        return mSizeSelector.getBlockHeight();
     }
 
     public void setBlockHeight(int height) {
-        mBlockHeight = height;
-        doPropertyChange();
+        mSizeSelector.setBlockHeight(height);
     }
 
-    public Things getThings() {
-        return mThings;
+    public boolean getHideTitle() {
+        return mSwHideTitle.isChecked();
     }
 
-    public void setThings(Things things) {
-        mThings = things;
-        doSpinnerThings();
-        doPropertyChange();
-    }
-
-    public boolean isHideTitle() {
-        return mHideTitle;
-    }
-
-    public void setHideTitle(boolean hideTitle) {
-        this.mHideTitle = hideTitle;
-        doPropertyChange();
+    public void setHideTitle(boolean hide) {
+        mSwHideTitle.setChecked(hide);
     }
 
     private void initializeViews(Context context) {
@@ -121,130 +92,50 @@ public class ThingProperties extends LinearLayoutCompat {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mSpThing = this.findViewById(R.id.prop_sp_thing);
+        mThingSelector = this.findViewById(R.id.prop_things_selector);
         mTxtName = this.findViewById(R.id.prop_txt_blk_name);
         mDeviceGroupTitle = this.findViewById(R.id.prop_group_device);
         mSizeSelector = this.findViewById(R.id.prop_size_selector);
         mSwHideTitle = this.findViewById(R.id.prop_sw_title);
 
-        mSpThing.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                IThing thing = (IThing) adapterView.getItemAtPosition(i);
-                if (TextUtils.isEmpty(mName))
-                    mName = thing.getName();
-                else if (mThing == null)
-                    mName = thing.getName();
-                else if (TextUtils.isEmpty(mName) || mThing.getName().equals(mName))
-                    mName = thing.getName();
+        mTxtName.SetAutoTextListener();
+    }
 
-                mThing = thing;
-                doPropertyChange();
-            }
+    public void initialise(Services services, Things things, IBlock block) {
+        mThingSelector.setData(services, things);
+        setThing(block.getThing());
+        setName(block.getName());
+        setBlockWidth(block.getWidth());
+        setBlockHeight(block.getHeight());
+        setHideTitle(block.isHideTitle());
 
+        mThingSelector.setOnThingsSelectedListener(new ThingsSelector.OnThingsSelectedListener() {
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                mThing = null;
-                doPropertyChange();
+            public void OnSelected(IThing thing) {
+                if (thing != null) {
+                    setName(thing.getName());
+                }
             }
         });
-
-        mTxtName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(final Editable editable) {
-                mName = editable.toString();
-            }
-        });
-
-        mSizeSelector.setOnSizeActionListener(new OnSizeActionListener() {
-            @Override
-            public void onWidthChanged(int width) {
-                mBlockWidth = width;
-            }
-
-            @Override
-            public void onHeightChanged(int height) {
-                mBlockHeight = height;
-            }
-        });
-
-       mSwHideTitle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-           @Override
-           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-               mHideTitle = isChecked;
-           }
-       });
-
-        doSpinnerThings();
-        doPropertyChange();
     }
 
-    private void doSpinnerThings() {
-        if (mSpThing != null && mThings != null) {
-            mSpThing.setVisibility(View.VISIBLE);
-            mDeviceGroupTitle.setVisibility(View.VISIBLE);
-            SpinnerThingAdapter aptr = new SpinnerThingAdapter(getContext());
-            aptr.setThings(mThings);
-            mSpThing.setAdapter(aptr);
-        } else //noinspection ConstantConditions
-            if (mSpThing != null && mThings == null) {
-            mSpThing.setVisibility(View.GONE);
-            mDeviceGroupTitle.setVisibility(View.GONE);
-        }
-    }
-
-    private void doPropertyChange() {
-        if (mThing != null)
-            mSpThing.setSelection(mThings.getIndex(mThing));
-
-        mTxtName.setText(mName);
-        mSizeSelector.setSize(mBlockWidth, mBlockHeight);
-        mSwHideTitle.setChecked(mHideTitle);
-
-        invalidate();
-        requestLayout();
-    }
-
-    public void initialise(Things things, IBlock block) {
-        mThings = things;
-        mThing = block.getThing();
-        mName = block.getName();
-        mBlockWidth = block.getWidth();
-        mBlockHeight = block.getHeight();
-        mHideTitle = block.isHideTitle();
-
-        doSpinnerThings();
-        doPropertyChange();
-    }
-
-    public void applyTemplate(Template template)
-    {
-        mBlockWidth = template.getBlock().getWidth();
-        mBlockHeight = template.getBlock().getHeight();
-        mHideTitle = template.getBlock().isHideTitle();
+    public void applyTemplate(Template template) {
+        setBlockWidth(template.getBlock().getWidth());
+        setBlockHeight(template.getBlock().getHeight());
+        setHideTitle(template.getBlock().isHideTitle());
     }
 
     public void populate(IBlock block, @SuppressWarnings("SameParameterValue") OnBlockSetListener onBlockSetListener) throws Exception {
-        if (TextUtils.isEmpty(mName))
+        if (TextUtils.isEmpty(getName()))
             throw new Exception("Name required.");
-        block.setName(mName);
-        block.setWidth(mBlockWidth);
-        block.setHeight(mBlockHeight);
-        block.setHideTitle(mHideTitle);
+        block.setName(getName());
+        block.setWidth(getWidth());
+        block.setHeight(getHeight());
+        block.setHideTitle(getHideTitle());
 
-        if (mThing != null) {
-            block.setThing(mThing);
-            block.setThingKey(mThing.getKey());
+        if (getThing() != null) {
+            block.setThing(getThing());
+            block.setThingKey(getThing().getKey());
         }
         if (onBlockSetListener != null)
             onBlockSetListener.OnSet(block);

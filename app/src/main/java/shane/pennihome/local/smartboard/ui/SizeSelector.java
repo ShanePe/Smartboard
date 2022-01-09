@@ -17,7 +17,6 @@ import shane.pennihome.local.smartboard.ui.listeners.OnSizeActionListener;
  * Created by shane on 18/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class SizeSelector extends GridLayout {
     private ImageView m1x1;
     private ImageView m2x1;
@@ -52,7 +51,7 @@ public class SizeSelector extends GridLayout {
         mOnSizeActionListener = onSizeActionListener;
     }
 
-    private int getBlockWidth() {
+    public int getBlockWidth() {
         return mBlockWidth;
     }
 
@@ -61,7 +60,7 @@ public class SizeSelector extends GridLayout {
         doPropertyChange();
     }
 
-    private int getBlockHeight() {
+    public int getBlockHeight() {
         return mBlockHeight;
     }
 

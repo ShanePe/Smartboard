@@ -7,18 +7,24 @@
         <entry key="app/src/main/res/drawable/default_background.xml" value="0.22083333333333333" />
         <entry key="app/src/main/res/layout-v23/custom_thing_properties.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout-v23/custom_thing_properties_icon.xml" value="0.27350427350427353" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.20260416666666667" />
+        <entry key="app/src/main/res/layout/activity_smartboard.xml" value="0.20260416666666667" />
         <entry key="app/src/main/res/layout/block_edit_switch.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/block_view_routinegroup.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/block_view_switch.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/block_view_switchgroup.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/custom_background_selector.xml" value="0.3055987558320373" />
         <entry key="app/src/main/res/layout/custom_foreground_selector.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/custom_group_title.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/custom_labeltext.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/custom_multi_thing_selection.xml" value="0.20520833333333333" />
+        <entry key="app/src/main/res/layout/custom_multi_thing_selection_list.xml" value="0.20260416666666667" />
         <entry key="app/src/main/res/layout/custom_size_picker.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/custom_switch_bg_selector.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/custom_thing_bg_selector.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/custom_thing_properties.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/custom_thing_properties_icon.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/custom_things_selector.xml" value="0.20260416666666667" />
         <entry key="app/src/main/res/layout/dashboard_view_group_list.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/dashboard_view_layout.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/dialog_huebridge_man.xml" value="0.2046875" />
@@ -33,12 +39,23 @@
         <entry key="app/src/main/res/layout/fragment_smart_things.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/fragment_smart_things_PAT.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/fragment_template.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/prop_routine.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/prop_routinegroup.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/prop_stmode.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/prop_switch.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/service_startup.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/service_startup_list.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/spinner_service.xml" value="0.20260416666666667" />
+        <entry key="app/src/main/res/layout/spinner_template.xml" value="0.20260416666666667" />
+        <entry key="app/src/main/res/layout/spinner_thing.xml" value="0.20260416666666667" />
         <entry key="app/src/main/res/layout/tab_smartboard_dash.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/tab_smartboard_groups.xml" value="0.2046875" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/icon_add_mm.xml" value="0.21875" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/icon_add_mm_round.xml" value="0.21875" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/icon_colour_picker_mm.xml" value="0.21875" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/icon_dashboard_mm.xml" value="0.21875" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/icon_dashboard_mm_round.xml" value="0.21875" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/icon_def_dimgroup_mm.xml" value="0.21875" />
       </map>
     </option>
   </component>

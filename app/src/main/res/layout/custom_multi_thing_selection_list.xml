@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:tools="http://schemas.android.com/tools">
+<merge xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        >
+
+        <Spinner
+            android:id="@+id/prop_sp_service_mlti"
+            style="@style/Platform.Widget.AppCompat.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/cmts_recycleview"
         style="@style/listStyle"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/custom_multi_thing_selection" />
+</android.support.v7.widget.LinearLayoutCompat>
 </merge>

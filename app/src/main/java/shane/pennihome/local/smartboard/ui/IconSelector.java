@@ -28,7 +28,6 @@ import shane.pennihome.local.smartboard.ui.listeners.OnIconActionListener;
  * Created by SPennicott on 06/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class IconSelector extends LinearLayoutCompat {
     private OnIconActionListener mOnIconActionListener;
     private String mIconPath;
@@ -53,20 +52,20 @@ public class IconSelector extends LinearLayoutCompat {
         initialiseView(context);
     }
 
-    private String getIconPath() {
+    public String getIconPath() {
         return mIconPath;
     }
 
-    private void setIconPath(String iconpath) {
+    public void setIconPath(String iconpath) {
         this.mIconPath = iconpath;
         doPropertyChange();
     }
 
-    private UIHelper.IconSizes getIconSize() {
+    public UIHelper.IconSizes getIconSize() {
         return mIconSize;
     }
 
-    private void setIconSize(UIHelper.IconSizes iconSize) {
+    public void setIconSize(UIHelper.IconSizes iconSize) {
         mIconSize = iconSize;
         doPropertyChange();
     }
