@@ -13,6 +13,7 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 
 import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
+import shane.pennihome.local.smartboard.services.Harmony.HarmonyHubService;
 import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeService;
 import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsServicePAT;
@@ -148,6 +149,8 @@ public class JsonBuilder {
                     return context.serialize((SmartThingsServicePAT) src);
                 if(src instanceof HueBridgeService)
                     return context.serialize((HueBridgeService) src);
+                if(src instanceof HarmonyHubService)
+                    return context.serialize((HarmonyHubService) src);
                 else
                     throw new JsonParseException("Invalid type of service : " + src.toString());
             }
@@ -163,7 +166,9 @@ public class JsonBuilder {
                         return SmartThingsService.Load(jService.toString());
                     case "smartthingsservicepat":
                         return SmartThingsServicePAT.Load(jService.toString());
-                    case "huebridgeservice":
+                    case "harmonyhubservice":
+                        return HarmonyHubService.Load(jService.toString());
+                        case "huebridgeservice":
                         return HueBridgeService.Load(jService.toString());
                     default:
                         throw new JsonParseException("Invalid type of service : " + jService.get("mInstance").getAsString());

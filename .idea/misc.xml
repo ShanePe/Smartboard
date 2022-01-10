@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.23177083333333334" />
+        <entry key="app/src/main/res/drawable-v24/harm_logo_foreground.xml" value="0.38177083333333334" />
         <entry key="app/src/main/res/drawable/default_background.xml" value="0.22083333333333333" />
+        <entry key="app/src/main/res/drawable/harm_logo_background.xml" value="0.38177083333333334" />
         <entry key="app/src/main/res/layout-v23/custom_thing_properties.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout-v23/custom_thing_properties_icon.xml" value="0.27350427350427353" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20260416666666667" />
@@ -36,20 +38,29 @@
         <entry key="app/src/main/res/layout/dialog_smartthings_mode_list.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/dialog_thing_selection.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/dialog_thing_selection_list.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/fragment_harmonyhub.xml" value="0.3120471014492754" />
+        <entry key="app/src/main/res/layout/fragment_huebridge.xml" value="0.3120471014492754" />
+        <entry key="app/src/main/res/layout/fragment_huebridge_list.xml" value="0.3120471014492754" />
         <entry key="app/src/main/res/layout/fragment_smart_things.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/fragment_smart_things_PAT.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/fragment_smart_things_pat.xml" value="0.3120471014492754" />
         <entry key="app/src/main/res/layout/fragment_template.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/prop_routine.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/prop_routinegroup.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/prop_stmode.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/prop_switch.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/service.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layout/service_startup.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/service_startup_list.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/services_list.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layout/spinner_service.xml" value="0.20260416666666667" />
         <entry key="app/src/main/res/layout/spinner_template.xml" value="0.20260416666666667" />
         <entry key="app/src/main/res/layout/spinner_thing.xml" value="0.20260416666666667" />
         <entry key="app/src/main/res/layout/tab_smartboard_dash.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/tab_smartboard_groups.xml" value="0.2046875" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/harm_logo.xml" value="0.38177083333333334" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/harm_logo_mm_large.xml" value="0.22135416666666666" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.38177083333333334" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/icon_add_mm.xml" value="0.21875" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/icon_add_mm_round.xml" value="0.21875" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/icon_colour_picker_mm.xml" value="0.21875" />

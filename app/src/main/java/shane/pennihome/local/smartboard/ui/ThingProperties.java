@@ -98,7 +98,7 @@ public class ThingProperties extends LinearLayoutCompat {
         mSizeSelector = this.findViewById(R.id.prop_size_selector);
         mSwHideTitle = this.findViewById(R.id.prop_sw_title);
 
-        mTxtName.SetAutoTextListener();
+        mTxtName.setAutoTextListener();
     }
 
     public void initialise(Services services, Things things, IBlock block) {

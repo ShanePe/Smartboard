@@ -19,7 +19,6 @@ import shane.pennihome.local.smartboard.services.adapters.ServiceAdapter;
  * Created by shane on 31/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class ServicesFragment extends IFragment {
     @Nullable
     @Override
@@ -30,7 +29,7 @@ public class ServicesFragment extends IFragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayout.HORIZONTAL, false));
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayout.VERTICAL, false));
 
             recyclerView.setAdapter(new ServiceAdapter());
         }

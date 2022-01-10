@@ -13,7 +13,6 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ import java.util.List;
 import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.data.Globals;
 import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
 import shane.pennihome.local.smartboard.ui.LabelTextbox;
 import shane.pennihome.local.smartboard.ui.UIHelper;
@@ -94,8 +92,8 @@ public class HueBridgeFragment extends IRegisterServiceFragment {
                             txtIp = view.findViewById(R.id.txt_ip_hueman);
                             txtIp.getTextbox().setInputType(InputType.TYPE_CLASS_PHONE);
 
-                            txtId.SetAutoTextListener();
-                            txtIp.SetAutoTextListener();
+                            txtId.setAutoTextListener();
+                            txtIp.setAutoTextListener();
                         }
 
                         @Override

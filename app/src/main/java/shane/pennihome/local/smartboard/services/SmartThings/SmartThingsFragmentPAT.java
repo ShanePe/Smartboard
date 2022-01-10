@@ -22,7 +22,7 @@ public class SmartThingsFragmentPAT extends IRegisterServiceFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_smart_things_pat, container, false);
         mPAT = view.findViewById(R.id.st_PAT);
-        mPAT.SetAutoTextListener();
+        mPAT.setAutoTextListener();
         mPAT.setText(getService(SmartThingsServicePAT.class).getPersonalAccessToken());
 
         view.findViewById(R.id.btn_PAT_Cnl).setOnClickListener(new View.OnClickListener() {

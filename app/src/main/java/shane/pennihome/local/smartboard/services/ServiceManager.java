@@ -8,6 +8,7 @@ import android.widget.Toast;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
+import shane.pennihome.local.smartboard.services.Harmony.HarmonyHubService;
 import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeService;
 import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsServicePAT;
@@ -34,6 +35,7 @@ public class ServiceManager {
         Services services = new Services();
         services.add(new SmartThingsServicePAT());
         services.add(new HueBridgeService());
+        services.add(new HarmonyHubService());
         return services;
     }
 

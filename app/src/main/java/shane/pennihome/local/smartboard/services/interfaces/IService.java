@@ -136,5 +136,5 @@ public abstract class IService extends IDatabaseObject {
         return isRegistered() && !isAwaitingAction();
     }
 
-    public enum ServicesTypes {SmartThings, PhilipsHue}
+    public enum ServicesTypes {SmartThings, PhilipsHue,HarmonyHub}
 }

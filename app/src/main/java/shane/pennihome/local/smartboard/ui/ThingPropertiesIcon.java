@@ -3,13 +3,10 @@ package shane.pennihome.local.smartboard.ui;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import shane.pennihome.local.smartboard.R;
@@ -19,8 +16,6 @@ import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IIconBlock;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetListener;
-import shane.pennihome.local.smartboard.ui.listeners.OnIconActionListener;
-import shane.pennihome.local.smartboard.ui.listeners.OnSizeActionListener;
 
 /**
  * Created by shane on 27/01/18.
@@ -145,7 +140,7 @@ public class ThingPropertiesIcon extends LinearLayoutCompat {
         mIconSelector = this.findViewById(R.id.prop_icon_icon);
         mSwHideTitle = this.findViewById(R.id.prop_sw_title_icon);
 
-        mTxtName.SetAutoTextListener();
+        mTxtName.setAutoTextListener();
 
         if (mHideDevice) {
             if (mThingSelector != null)

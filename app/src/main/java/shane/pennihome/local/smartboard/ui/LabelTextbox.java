@@ -59,7 +59,15 @@ public class LabelTextbox extends LinearLayoutCompat {
         doPropertyChange();
     }
 
-    public void SetAutoTextListener(){
+    public void setInputType(int type){
+        this.mTextBoxEditView.setInputType(type);
+    }
+
+    public int  getInputType(){
+        return  this.mTextBoxEditView.getInputType();
+    }
+
+    public void setAutoTextListener(){
         final LabelTextbox txtBox= this;
         addTextChangedListener(new TextWatcher() {
             @Override

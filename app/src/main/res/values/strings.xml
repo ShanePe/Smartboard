@@ -89,6 +89,7 @@
     <string name="sm_pat">Personal  Access Token</string>
     <string name="txt_padding">Padding</string>
     <string name="hide_title">Hide Title</string>
+    <string name="port">Port</string>
 
 
 </resources>
