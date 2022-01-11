@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.things.routines;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,9 +17,8 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
  * Created by shane on 30/12/17.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class RoutineViewAdapter extends ThingViewAdapter {
-    public RoutineViewAdapter(IThings items) {
+    public RoutineViewAdapter(@SuppressWarnings("rawtypes") IThings items) {
         super(items);
     }
 
@@ -34,7 +34,7 @@ public class RoutineViewAdapter extends ThingViewAdapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         final ViewHolder vh = (ViewHolder) holder;
         final Routine r = (Routine) getThings().get(position);
         vh.mItem = r;
@@ -46,6 +46,9 @@ public class RoutineViewAdapter extends ThingViewAdapter {
         } else if (vh.mItem.getServiceType() == IService.ServicesTypes.PhilipsHue) {
             vh.mImgView.setImageResource(R.mipmap.icon_phlogo_mm_fg);
             vh.mSourceView.setText(R.string.device_ph_label);
+        }else if (vh.mItem.getServiceType() == IService.ServicesTypes.HarmonyHub) {
+            vh.mImgView.setImageResource(R.mipmap.logo_harm_mm_fg);
+            vh.mSourceView.setText(R.string.device_harm_label);
         }
 
         vh.mButtonView.setEnabled(!vh.mItem.isUnreachable());

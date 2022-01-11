@@ -30,11 +30,15 @@ public class HarmonyMessage {
 
     }
 
-    public static String sendMessage(URI wsURL, int msgId, String remoteId, String command) throws Exception {
-        return sendMessage(wsURL, msgId, remoteId, command, new JSONObject());
+    public static String sendMessage(URI wsURL, int msgId, String remoteId, String command, boolean noResponse) throws Exception {
+        JSONObject def = new JSONObject();
+        def.put("verb", "get");
+        def.put("format", "json");
+
+        return sendMessage(wsURL, msgId, remoteId, command, def, noResponse);
     }
 
-    public static String sendMessage(final URI wsURL, final int msgId, final String remoteId, final String command, final JSONObject params) throws Exception {
+    public static String sendMessage(final URI wsURL, final int msgId, final String remoteId, final String command, final JSONObject params, boolean noResponse) throws Exception {
         final Object threadLock = new Object();
 
         final String[] response = {""};
@@ -83,40 +87,46 @@ public class HarmonyMessage {
 
             }
         };
+        try {
 
-        synchronized (threadLock) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    client.setConnectTimeout(10000);
-                    client.setReadTimeout(60000);
-                    client.addHeader("Origin", WS_ORIGIN);
-                    client.enableAutomaticReconnection(5000);
-                    client.connect();
-                }
-            }).start();
-
-            threadLock.wait(10000);
-        }
-
-        synchronized (threadLock) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        client.send(getMessagePayload(msgId, remoteId, command, params));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+            synchronized (threadLock) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        client.setConnectTimeout(10000);
+                        client.setReadTimeout(60000);
+                        client.addHeader("Origin", WS_ORIGIN);
+                        client.enableAutomaticReconnection(5000);
+                        client.connect();
                     }
-                }
-            }).start();
+                }).start();
 
-            threadLock.wait(10000);
+                threadLock.wait(10000);
+            }
+
+            synchronized (threadLock) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Log.i("Url",command);
+                            client.send(getMessagePayload(msgId, remoteId, command, params));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+
+                if (!noResponse)
+                    threadLock.wait(10000);
+                else
+                    Thread.sleep(200);
+            }
+
+        } finally {
+            client.close();
         }
 
-        client.close();
         return response[0];
-
-
     }
 }

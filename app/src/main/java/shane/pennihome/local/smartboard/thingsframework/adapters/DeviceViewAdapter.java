@@ -65,15 +65,22 @@ public class DeviceViewAdapter extends ThingViewAdapter {
         } else if (vh.mItem.getServiceType() == IService.ServicesTypes.PhilipsHue) {
             vh.mImgView.setImageResource(R.mipmap.icon_phlogo_mm_fg);
             vh.mSourceView.setText(R.string.device_ph_label);
+        }else if (vh.mItem.getServiceType() == IService.ServicesTypes.HarmonyHub) {
+            vh.mImgView.setImageResource(R.mipmap.logo_harm_mm_fg);
+            vh.mSourceView.setText(R.string.device_harm_label);
         }
 
         vh.mSwitchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vh.mSwitchView.setEnabled(false);
-                JsonExecutorResult result = vh.mItem.execute();
-                if (!result.isSuccess())
-                    Toast.makeText(vh.mSwitchView.getContext(), "Error:" + result.getError().getMessage(), Toast.LENGTH_SHORT).show();
+                try {
+                    vh.mSwitchView.setEnabled(false);
+                    JsonExecutorResult result = vh.mItem.execute();
+                    if (!result.isSuccess())
+                        Toast.makeText(vh.mSwitchView.getContext(), "Error:" + result.getError().getMessage(), Toast.LENGTH_SHORT).show();
+                }catch (Exception ex){
+                    Toast.makeText(vh.mSwitchView.getContext(), "Error:" + ex.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

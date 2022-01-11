@@ -2,7 +2,6 @@ package shane.pennihome.local.smartboard.services.SmartThings;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -102,9 +101,7 @@ public class SmartThingsService extends IService {
             mExpires = c.getTime();
 
             super.register(context, onProcessCompleteListener);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Toast.makeText(context, "Error : " + ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
@@ -127,14 +124,14 @@ public class SmartThingsService extends IService {
 
     @Override
     public void connect() throws Exception {
-       Connector connector = new Connector();
-       connector.getThings();
+        Connector connector = new Connector();
+        connector.getThings();
     }
 
     @Override
     public ArrayList<IThingsGetter> getThingGetters() {
         ArrayList<IThingsGetter> thingsGetters = new ArrayList<>();
-        if(TextUtils.isEmpty(mRequestUrl))
+        if (TextUtils.isEmpty(mRequestUrl))
             thingsGetters.add(new Connector());
         thingsGetters.add(new SwitchGetter());
         thingsGetters.add(new RoutineGetter());
@@ -156,7 +153,7 @@ public class SmartThingsService extends IService {
         mAuthorisationCode = authorisationCode;
     }
 
-    protected class Connector implements IThingsGetter{
+    protected class Connector implements IThingsGetter {
 
         public String getLoadMessage() {
             return "Connecting to SmartThings";
@@ -172,8 +169,8 @@ public class SmartThingsService extends IService {
         }
 
         @Override
-        public Type getThingType() {
-            return IThing.class;
+        public Type[] getThingType() {
+            return new Type[]{IThing.class};
         }
 
         @Override
@@ -233,8 +230,8 @@ public class SmartThingsService extends IService {
         }
 
         @Override
-        public Type getThingType() {
-            return Switch.class;
+        public Type[] getThingType() {
+            return new Type[]{Switch.class};
         }
 
         @Override
@@ -333,8 +330,8 @@ public class SmartThingsService extends IService {
         }
 
         @Override
-        public Type getThingType() {
-            return Routine.class;
+        public Type[] getThingType() {
+            return new Type[]{Routine.class};
         }
 
         @Override
@@ -364,7 +361,7 @@ public class SmartThingsService extends IService {
         }
     }
 
-    protected class TemperatureGetter implements IThingsGetter{
+    protected class TemperatureGetter implements IThingsGetter {
 
         @Override
         public String getLoadMessage() {
@@ -408,8 +405,8 @@ public class SmartThingsService extends IService {
         }
 
         @Override
-        public Type getThingType() {
-            return Temperature.class;
+        public Type[] getThingType() {
+            return new Type[]{Temperature.class};
         }
 
         @Override
@@ -467,8 +464,8 @@ public class SmartThingsService extends IService {
         }
 
         @Override
-        public Type getThingType() {
-            return SmartThingMode.class;
+        public Type[] getThingType() {
+            return new Type[]{SmartThingMode.class};
         }
 
         @Override

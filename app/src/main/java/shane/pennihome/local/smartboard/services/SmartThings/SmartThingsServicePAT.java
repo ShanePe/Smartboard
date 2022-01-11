@@ -147,8 +147,8 @@ public class SmartThingsServicePAT extends IService {
         }
 
         @Override
-        public Type getThingType() {
-            return IThing.class;
+        public Type[] getThingType() {
+            return new Type[] {IThing.class};
         }
 
 
@@ -308,8 +308,8 @@ public class SmartThingsServicePAT extends IService {
         }
 
         @Override
-        public Type getThingType() {
-            return Switch.class;
+        public Type[] getThingType() {
+            return new Type[] {Switch.class};
         }
 
         private JsonExecutorResult executeSTCommand(IThing thing, String cmd) throws UnsupportedEncodingException, MalformedURLException, JSONException {
@@ -439,8 +439,8 @@ public class SmartThingsServicePAT extends IService {
         }
 
         @Override
-        public Type getThingType() {
-            return Routine.class;
+        public Type[] getThingType() {
+            return new Type[] {Routine.class};
         }
 
         @Override

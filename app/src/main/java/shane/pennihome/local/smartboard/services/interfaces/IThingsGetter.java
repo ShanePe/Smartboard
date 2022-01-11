@@ -19,7 +19,7 @@ public interface IThingsGetter {
     String getLoadMessage();
     Things getThings() throws Exception;
     int getUniqueId();
-    Type getThingType();
+    Type[] getThingType();
 
     //JsonExecutorResult execute(IThing thing);
     IExecutor<?> getExecutor(String Id);

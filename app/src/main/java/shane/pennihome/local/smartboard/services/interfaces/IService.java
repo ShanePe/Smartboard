@@ -4,6 +4,7 @@ package shane.pennihome.local.smartboard.services.interfaces;
 import android.content.Context;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import shane.pennihome.local.smartboard.comms.Monitor;
@@ -38,8 +39,9 @@ public abstract class IService extends IDatabaseObject {
 
     private <V extends IThing> IThingsGetter getThingExecutor(Class<V> cls) {
         for (IThingsGetter t : getThingGetters())
-            if (t.getThingType().equals(cls) || t.getThingType().equals(IThing.class))
-                return t;
+            for(Type tt:t.getThingType())
+                if (tt.equals(cls) || tt.equals(IThing.class))
+                    return t;
 
         return null;
     }
@@ -47,8 +49,10 @@ public abstract class IService extends IDatabaseObject {
     public <T extends IThing> ArrayList<IThingsGetter> getThingsGetter(Class<T> cls) {
         ArrayList<IThingsGetter> thingGetters = new ArrayList<>();
         for (IThingsGetter t : getThingGetters())
-            if (t.getThingType().equals(cls) || t.getThingType().equals(IThing.class))
-                thingGetters.add(t);
+            for(Type tt:t.getThingType())
+                if (tt.equals(cls) || tt.equals(IThing.class))
+                    thingGetters.add(t);
+
         return thingGetters;
     }
 

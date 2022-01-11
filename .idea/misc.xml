@@ -59,6 +59,7 @@
         <entry key="app/src/main/res/layout/tab_smartboard_dash.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/tab_smartboard_groups.xml" value="0.2046875" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/harm_logo.xml" value="0.38177083333333334" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/harm_logo_mm.xml" value="0.22135416666666666" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/harm_logo_mm_large.xml" value="0.22135416666666666" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.38177083333333334" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/icon_add_mm.xml" value="0.21875" />
@@ -67,6 +68,7 @@
         <entry key="app/src/main/res/mipmap-anydpi-v26/icon_dashboard_mm.xml" value="0.21875" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/icon_dashboard_mm_round.xml" value="0.21875" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/icon_def_dimgroup_mm.xml" value="0.21875" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/icon_phlogo_mm.xml" value="0.22135416666666666" />
       </map>
     </option>
   </component>

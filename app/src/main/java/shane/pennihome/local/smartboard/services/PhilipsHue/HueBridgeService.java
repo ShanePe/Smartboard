@@ -335,8 +335,8 @@ public class HueBridgeService extends IService {
         }
 
         @Override
-        public Type getThingType() {
-            return IThing.class;
+        public Type[] getThingType() {
+            return new Type[] {IThing.class};
         }
 
         @Override
@@ -449,8 +449,8 @@ public class HueBridgeService extends IService {
         }
 
         @Override
-        public Type getThingType() {
-            return Switch.class;
+        public Type[] getThingType() {
+            return new Type[] {Switch.class};
         }
 
         @Override
@@ -574,8 +574,8 @@ public class HueBridgeService extends IService {
         }
 
         @Override
-        public Type getThingType() {
-            return Switch.class;
+        public Type[] getThingType() {
+            return new Type[] {Switch.class};
         }
 
         @Override
@@ -682,8 +682,8 @@ public class HueBridgeService extends IService {
         }
 
         @Override
-        public Type getThingType() {
-            return Routine.class;
+        public Type[] getThingType() {
+            return new Type[] {Routine.class};
         }
 
         @Override
@@ -803,8 +803,8 @@ public class HueBridgeService extends IService {
         }
 
         @Override
-        public Type getThingType() {
-            return Routine.class;
+        public Type[] getThingType() {
+            return new Type[] {Routine.class};
         }
 
         @Override

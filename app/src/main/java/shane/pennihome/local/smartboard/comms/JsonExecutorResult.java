@@ -11,7 +11,6 @@ import org.json.JSONTokener;
  * Created by shane on 29/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class JsonExecutorResult {
     private Exception mError;
     private String mResult;
@@ -29,13 +28,12 @@ public class JsonExecutorResult {
         this.mError = mError;
     }
 
-    JsonExecutorResult(String mResult) throws JSONException {
+    public JsonExecutorResult(String mResult) throws JSONException {
         this.mResult = fixFaultyResultString(mResult);
         if(!TextUtils.isEmpty(this.mResult))
             mJsonResult = buildJsonResponse(this.mResult);
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isSuccess() {
         return mError == null;
     }

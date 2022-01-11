@@ -90,6 +90,7 @@
     <string name="txt_padding">Padding</string>
     <string name="hide_title">Hide Title</string>
     <string name="port">Port</string>
+    <string name="device_harm_label">Harmony Hub</string>
 
 
 </resources>

@@ -39,4 +39,9 @@ public class HarmonyFunction extends IAdditional {
         this.mName = name;
         this.mLabel = label;
     }
+
+    @Override
+    public String getKey() {
+        return mName;
+    }
 }

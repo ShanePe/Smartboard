@@ -17,6 +17,7 @@ import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.things.switchgroup.SwitchGroup;
 import shane.pennihome.local.smartboard.things.temperature.Temperature;
 import shane.pennihome.local.smartboard.things.time.Time;
+import shane.pennihome.local.smartboard.thingsframework.Additionals;
 import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
 
 @SuppressWarnings({"unused", "unchecked"})
@@ -27,12 +28,12 @@ public abstract class IThing extends IDatabaseObject implements Cloneable {
     private transient boolean mUnreachable;
     private String mId;
     private IService.ServicesTypes mServicesTypes;
-    private ArrayList<IAdditional> mAdditional;
+    private Additionals mAdditional;
 
     @IgnoreOnCopy
     public IThing() {
         mInstance = this.getClass().getSimpleName();
-        mAdditional = new ArrayList<>();
+        mAdditional = new Additionals();
     }
 
     private static <V extends IThing> V fromJson(Class<V> cls, String json) {
@@ -127,12 +128,8 @@ public abstract class IThing extends IDatabaseObject implements Cloneable {
         return (IThing) super.clone();
     }
 
-    public ArrayList<IAdditional> getAdditional() {
+    public Additionals getAdditional() {
         return mAdditional;
-    }
-
-    public void setAdditional(ArrayList<IAdditional> additional) {
-        this.mAdditional = additional;
     }
 
     public enum Types {

@@ -153,6 +153,9 @@ public class MultiThingSelector extends GridLayout {
             } else if (holder.mItem.getServiceType() == IService.ServicesTypes.PhilipsHue) {
                 holder.mImg.setImageResource(R.mipmap.icon_phlogo_mm_fg);
             }
+            else if (holder.mItem.getServiceType() == IService.ServicesTypes.HarmonyHub) {
+                holder.mImg.setImageResource(R.mipmap.icon_hub_mm_fg);
+            }
             holder.mName.setText(holder.mItem.getName());
 
             if (getSelectedThings() != null)
