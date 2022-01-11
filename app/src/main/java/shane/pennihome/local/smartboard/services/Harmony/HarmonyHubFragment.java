@@ -26,6 +26,7 @@ import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.OnExecutorRequestActionListener;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.NameValuePair;
+import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeService;
 import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
 import shane.pennihome.local.smartboard.ui.LabelTextbox;
 import shane.pennihome.local.smartboard.ui.dialogs.ProgressDialog;
@@ -57,7 +58,6 @@ public class HarmonyHubFragment extends IRegisterServiceFragment {
                 getOnProcessCompleteListener().complete(false, getService());
             }
         });
-
 
         view.findViewById(R.id.btn_srv_harm_ok).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +113,7 @@ public class HarmonyHubFragment extends IRegisterServiceFragment {
             try {
                 JsonExecutorRequest request = new JsonExecutorRequest(new URL("http://" + mIp + ":" + mPort), JsonExecutorRequest.Types.POST);
                 request.getHeaders().add(new NameValuePair("Host", mIp + ":" + mPort));
-                request.getHeaders().add(new NameValuePair("Origin", "http://sl.dhg.myharmony.com"));
+                request.getHeaders().add(new NameValuePair("Origin", HarmonyHubService.WS_ORIGIN));
                 request.getHeaders().add(new NameValuePair("Content-Type", "application/json"));
                 request.getHeaders().add(new NameValuePair("Charset", "utf-8"));
                 request.setOnExecutorRequestActionListener(new OnExecutorRequestActionListener() {

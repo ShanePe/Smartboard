@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.thingsframework.interfaces;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import shane.pennihome.local.smartboard.comms.Broadcaster;
@@ -26,9 +27,12 @@ public abstract class IThing extends IDatabaseObject implements Cloneable {
     private transient boolean mUnreachable;
     private String mId;
     private IService.ServicesTypes mServicesTypes;
+    private ArrayList<IAdditional> mAdditional;
+
     @IgnoreOnCopy
     public IThing() {
         mInstance = this.getClass().getSimpleName();
+        mAdditional = new ArrayList<>();
     }
 
     private static <V extends IThing> V fromJson(Class<V> cls, String json) {
@@ -121,6 +125,14 @@ public abstract class IThing extends IDatabaseObject implements Cloneable {
     @Override
     public IThing clone() throws CloneNotSupportedException {
         return (IThing) super.clone();
+    }
+
+    public ArrayList<IAdditional> getAdditional() {
+        return mAdditional;
+    }
+
+    public void setAdditional(ArrayList<IAdditional> additional) {
+        this.mAdditional = additional;
     }
 
     public enum Types {

@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/smartboard.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/smartboard.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/asymmetricgridview/smartboard.asymmetricgridview.iml" filepath="$PROJECT_DIR$/.idea/modules/asymmetricgridview/smartboard.asymmetricgridview.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/colourPicker/smartboard.colourPicker.iml" filepath="$PROJECT_DIR$/.idea/modules/colourPicker/smartboard.colourPicker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/java-android-websocket-client/smartboard.java-android-websocket-client.iml" filepath="$PROJECT_DIR$/.idea/modules/java-android-websocket-client/smartboard.java-android-websocket-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/libnetcipher/smartboard.libnetcipher.iml" filepath="$PROJECT_DIR$/.idea/modules/libnetcipher/smartboard.libnetcipher.iml" />
     </modules>
   </component>

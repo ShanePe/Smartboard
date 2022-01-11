@@ -1,1 +1,2 @@
 include ':app', ':colourPicker', ':advrecycleview', ':asymmetricgridview', ':libnetcipher'
+include ':java-android-websocket-client'
