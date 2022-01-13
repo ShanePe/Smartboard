@@ -96,6 +96,17 @@ public class MainActivity extends AppCompatActivity
         super.onPostResume();
     }
 
+    private void pauseFadeMonitor(){
+        if(mOptions != null)
+            mOptions.setPaused(true);
+    }
+
+    private void unpauseFadeMonitor(){
+        if(mOptions != null)
+            mOptions.setPaused(false);
+    }
+
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,8 +128,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         Globals.setSharedPreferences(this);
-
-        CookieManager.getInstance().setAcceptCookie(true);
 
         mDashboardLayout = findViewById(R.id.dl_main);
         mDashboardLoader = findViewById(R.id.db_load_progress);
@@ -159,6 +168,10 @@ public class MainActivity extends AppCompatActivity
         });
 
         init(savedInstanceState);
+
+        try {
+            CookieManager.getInstance().setAcceptCookie(true);
+        }catch(Exception ignore) {}
     }
 
     public void goHome() {
@@ -173,6 +186,7 @@ public class MainActivity extends AppCompatActivity
             actionBar.hide();
 
         drawer.closeDrawers();
+        unpauseFadeMonitor();
     }
 
     private void init(Bundle savedInstanceState) {
@@ -403,7 +417,7 @@ public class MainActivity extends AppCompatActivity
                                         WindowManager.LayoutParams params = getWindow().getAttributes();
                                         params.screenBrightness = 1;
                                         getWindow().setAttributes(params);
-                                        Monitor.getMonitor().verifyThings();
+                                        Monitor.getMonitor().verifyDashboardThings();
                                         Monitor.getMonitor().start();
                                         Broadcaster.broadcastMessage(new ThingChangedMessage("all", ThingChangedMessage.What.Enable));
                                     }
@@ -437,6 +451,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showOptions() {
+        pauseFadeMonitor();
         final OptionsFragment fragment = new OptionsFragment();
         fragment.setOnOptionChangeListener(new OnOptionsChangedListener() {
             @Override
@@ -454,6 +469,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void serviceList() {
+        pauseFadeMonitor();
         final ServicesFragment fragment = new ServicesFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("serviceList");
         ft.replace(R.id.content_main, fragment);
@@ -461,6 +477,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void templateList() {
+        pauseFadeMonitor();
         final TemplateFragment fragment = new TemplateFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("templateList");
         ft.replace(R.id.content_main, fragment);
@@ -468,6 +485,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void deviceList() {
+        pauseFadeMonitor();
         DeviceFragment fragment = new DeviceFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("deviceList");
         ft.replace(R.id.content_main, fragment);
@@ -475,6 +493,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void routineList() {
+        mOptions.stopMonitorForScreenFadeOut();
         RoutineFragment fragment = new RoutineFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("routineList");
         ft.replace(R.id.content_main, fragment);
@@ -482,6 +501,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void dashboardList() {
+        pauseFadeMonitor();
         DashboardFragment fragment = new DashboardFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("dashboardList");
         ft.replace(R.id.content_main, fragment);

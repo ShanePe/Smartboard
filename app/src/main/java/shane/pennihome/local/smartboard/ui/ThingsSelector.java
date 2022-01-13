@@ -52,11 +52,11 @@ public class ThingsSelector extends LinearLayoutCompat {
     }
 
     public Services getServices() {
-        return mServiceAptr==null?null: mServiceAptr.getServices();
+        return mServiceAptr == null ? null : mServiceAptr.getServices();
     }
 
     public Things getThings() {
-        return mThingsAptr == null?null: mThingsAptr.getThings();
+        return mThingsAptr == null ? null : mThingsAptr.getThings();
     }
 
 
@@ -84,7 +84,7 @@ public class ThingsSelector extends LinearLayoutCompat {
 
     public void setThing(IThing thing) {
         if (thing != null) {
-            if (mSpService != null && getServices() !=null) {
+            if (mSpService != null && getServices() != null) {
                 int serviceAt = getServices().getIndex(getServices().getByType(thing.getServiceType()));
                 if (mSpService.getSelectedItemPosition() != serviceAt)
                     mSpService.setSelection(serviceAt);
@@ -282,11 +282,13 @@ public class ThingsSelector extends LinearLayoutCompat {
             ImageView img = (ImageView) convertView.findViewById(R.id.img_spin_icon_srv);
             TextView txtName = (TextView) convertView.findViewById(R.id.txt_spin_name_srv);
 
-            if (service.getServiceType() == IService.ServicesTypes.SmartThings) {
+            if (service.getServiceType() == IService.ServicesTypes.SmartThings)
                 img.setImageResource(R.mipmap.icon_switch_mm_fg);
-            } else if (service.getServiceType() == IService.ServicesTypes.PhilipsHue) {
+            else if (service.getServiceType() == IService.ServicesTypes.PhilipsHue)
                 img.setImageResource(R.mipmap.icon_phlogo_mm_fg);
-            } else
+            else if (service.getServiceType() == IService.ServicesTypes.HarmonyHub)
+                img.setImageResource(R.mipmap.icon_hub_mm_fg);
+            else
                 img.setImageResource(R.mipmap.icon_dashboard_mm_fg);
 
             txtName.setText(service.getName());

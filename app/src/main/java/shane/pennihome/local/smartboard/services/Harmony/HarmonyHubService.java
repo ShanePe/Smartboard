@@ -15,7 +15,6 @@ import java.util.Iterator;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
-import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
@@ -119,15 +118,15 @@ public class HarmonyHubService extends IService {
     }
 
     private String sendMessage(String command) throws Exception {
-        return sendMessage(command,false);
+        return sendMessage(command, false);
     }
 
-    private String sendMessage(String command,boolean noResponse) throws Exception {
-        return sendMessage(command, new JSONObject(),noResponse);
+    private String sendMessage(String command, boolean noResponse) throws Exception {
+        return sendMessage(command, new JSONObject(), noResponse);
     }
 
     private String sendMessage(String command, JSONObject params, boolean noResponse) throws Exception {
-        return HarmonyMessage.sendMessage(new URI(String.format(WS_CLIENT, mIp, mPort, mRemoteId)), mMessageId++, mRemoteId, command, params,noResponse);
+        return HarmonyMessage.sendMessage(new URI(String.format(WS_CLIENT, mIp, mPort, mRemoteId)), mMessageId++, mRemoteId, command, params, noResponse);
     }
 
     public class ActivityGetter implements IThingsGetter {
@@ -136,64 +135,51 @@ public class HarmonyHubService extends IService {
             return "Getting Harmony Hub Activities";
         }
 
-        private Switch createSwitch(JSONObject jDevice, JSONObject jControl, boolean activity) throws JSONException {
-            Switch s = new Switch();
-            s.setId(jDevice.getString("id"));
-            s.setResource(activity ? ACT_KEY : jDevice.getString("deviceProfileUri"));
-            s.setName(jDevice.getString("label"));
-            s.setType(activity ? "Harmony Activity" : jDevice.getString("model"));
-            s.setService(ServicesTypes.HarmonyHub);
-            s.initialise();
+        private Things processActivies(JSONArray activities) throws Exception {
+            Things things = new Things();
+            for (int i = 0; i < activities.length(); i++) {
+                JSONObject jActivity = activities.getJSONObject(i);
+                if (!jActivity.getString("id").equals("-1")) {
+                    Switch s = new Switch();
+                    s.setId(jActivity.getString("id"));
+                    s.setResource(ACT_KEY);
+                    s.setName(jActivity.getString("label"));
+                    s.setType("Harmony Activity");
+                    s.setService(ServicesTypes.HarmonyHub);
+                    s.initialise();
 
-            if (jControl != null) {
-                JSONArray jFunctions = jControl.getJSONArray("function");
-                for (int c = 0; c < jFunctions.length(); c++) {
-                    JSONObject jFunction = jFunctions.getJSONObject(c);
-                    s.getAdditional().add(new HarmonyFunction(
-                            jFunction.getString("action"),
-                            jFunction.getString("name"),
-                            jFunction.getString("label")));
+                    JSONObject jRelated = jActivity.getJSONObject("fixit");
+                    Iterator<String> keys = jRelated.keys();
+                    while (keys.hasNext()) {
+                        JSONObject jData = jRelated.getJSONObject(keys.next());
+                        s.getAdditional().add(new HarmonyActivityDevice(jData.getString("id"), jData.getString("Power").equalsIgnoreCase("on")));
+                    }
+                    things.add(s);
                 }
             }
 
-            if (activity) {
-                JSONObject jRelated = jDevice.getJSONObject("fixit");
-                Iterator<String> keys = jRelated.keys();
-                while (keys.hasNext()) {
-                    JSONObject jData = jRelated.getJSONObject(keys.next());
-                    s.getAdditional().add(new HarmonyActivityDevice(jData.getString("id"), jData.getString("Power").equalsIgnoreCase("on")));
-                }
-            }
+            doStateForSwitches(things);
 
-            return s;
+            return things;
         }
 
-        private Things processCollection(JSONArray item, boolean activity) throws JSONException {
+        private Things processDevices(JSONArray devices) throws JSONException {
             Things things = new Things();
-            for (int i = 0; i < item.length(); i++) {
-                JSONObject jDevice = item.getJSONObject(i);
-                if (activity) {
-                    things.add(createSwitch(jDevice, null, activity));
-                } else {
-                    JSONArray jControls = jDevice.getJSONArray("controlGroup");
-                    for (int x = 0; x < jControls.length(); x++) {
-                        JSONObject jControl = jControls.getJSONObject(x);
-                        if (jControl.getString("name").equalsIgnoreCase("power")) {
-                            things.add(createSwitch(jDevice, jControl, activity));
-                        } else if (jControl.getString("name").equalsIgnoreCase("volume") || jControl.getString("name").equalsIgnoreCase("transportbasic")) {
-                            JSONArray jFunctions = jControl.getJSONArray("function");
-                            for (int c = 0; c < jFunctions.length(); c++) {
-                                JSONObject jFunction = jFunctions.getJSONObject(c);
-                                Routine routine = new Routine();
-                                routine.setId(String.format("%s-%s", jDevice.getString("id"), jFunction.getString("label").replace(' ', '-')));
-                                routine.setName(String.format("%s %s", jDevice.getString("label"), jFunction.getString("label")));
-                                routine.setService(ServicesTypes.HarmonyHub);
-                                routine.getAdditional().add(new HarmonyFunction(jFunction.getString("action"), jFunction.getString("name"), jFunction.getString("label")));
+            for (int i = 0; i < devices.length(); i++) {
+                JSONObject jDevice = devices.getJSONObject(i);
+                JSONArray jControls = jDevice.getJSONArray("controlGroup");
+                for (int x = 0; x < jControls.length(); x++) {
+                    JSONArray jFunctions =  jControls.getJSONObject(x).getJSONArray("function");
+                    for (int c = 0; c < jFunctions.length(); c++) {
+                        JSONObject jFunction = jFunctions.getJSONObject(c);
+                        Routine routine = new Routine();
+                        routine.setId(String.format("%s-%s", jDevice.getString("id"), jFunction.getString("label").replace(' ', '-')));
+                        routine.setName(String.format("%s %s", jDevice.getString("label"), jFunction.getString("label")));
+                        routine.setService(ServicesTypes.HarmonyHub);
+                        routine.getAdditional().add(new HarmonyFunction(jFunction.getString("action"), jFunction.getString("name"), jFunction.getString("label")));
 
-                                routine.initialise();
-                                things.add(routine);
-                            }
-                        }
+                        routine.initialise();
+                        things.add(routine);
                     }
                 }
             }
@@ -206,10 +192,9 @@ public class HarmonyHubService extends IService {
             Things things = new Things();
 
             JSONObject jData = new JSONObject(sendMessage(HH_CONFIG)).getJSONObject("data");
-            things.addAll(processCollection(jData.getJSONArray("device"), false));
-            things.addAll(processCollection(jData.getJSONArray("activity"), true));
 
-            doStateForSwitches(things);
+            things.addAll(processDevices(jData.getJSONArray("device")));
+            things.addAll(processActivies(jData.getJSONArray("activity")));
 
             return things;
         }
@@ -253,11 +238,26 @@ public class HarmonyHubService extends IService {
 
         @Override
         public IThing getThingState(IThing thing) {
+            Switch s = (Switch) thing;
+            if (s.getResource().equals(ACT_KEY)) {
+                try {
+                    JSONObject jActive = new JSONObject(sendMessage(HH_CURRENT));
+                    String result = jActive.getJSONObject("data").getString("result");
+                    s.setOn(result.equalsIgnoreCase(s.getId()), false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             return thing;
         }
     }
 
     public class HarmonyExecutor extends IExecutor<Void> {
+
+        @Override
+        public boolean delayVerification() {
+            return true;
+        }
 
         private JSONObject getCommandParams(HarmonyFunction cmd) throws JSONException {
             JSONObject jAction = new JSONObject(cmd.getAction());
@@ -273,49 +273,36 @@ public class HarmonyHubService extends IService {
 
         private JsonExecutorResult executeRoutine(Routine routine) throws Exception {
             HarmonyFunction funct = (HarmonyFunction) routine.getAdditional().get(0);
-            String response = sendMessage(HH_ACTION, getCommandParams(funct),true);
+            String response = sendMessage(HH_ACTION, getCommandParams(funct), true);
 
             return new JsonExecutorResult(response);
         }
 
-        private JsonExecutorResult executeSwitch(Switch s,boolean forceOff) throws Exception {
+        private JsonExecutorResult executeSwitch(Switch s, boolean forceOff) throws Exception {
             HarmonyFunction func;
 
-            if(s.isOn() || forceOff)
+            if (s.isOn() || forceOff)
                 func = (HarmonyFunction) s.getAdditional().getByKey("PowerOff");
             else
                 func = (HarmonyFunction) s.getAdditional().getByKey("PowerOn");
 
-            if(func==null)
+            if (func == null)
                 func = (HarmonyFunction) s.getAdditional().getByKey("PowerToggle");
 
-            if(func!=null)
-            {
-                String response = sendMessage(HH_ACTION,getCommandParams(func),true);
+            if (func != null) {
+                String response = sendMessage(HH_ACTION, getCommandParams(func), true);
 
                 return new JsonExecutorResult(response);
-            }
-            else
+            } else
                 return new JsonExecutorResult(new Exception("No power control for switch"));
         }
 
-        private JsonExecutorResult executeActivity(Switch s) throws Exception{
-            if(s.isOn()){
-                for (HarmonyActivityDevice h : s.getAdditional().cast(HarmonyActivityDevice.class))
-                {
-                    Switch related = (Switch) Monitor.getMonitor().getThings().getbyId(h.getId());
-                    if(related!=null) {
-                        executeSwitch(related, true);
-                        related.setOn(false,true);
-                    }
-                }
-            }else {
-                JSONObject jParams = new JSONObject();
-                jParams.put("timestame", new Date().getTime());
-                jParams.put("activityId", s.getId());
+        private JsonExecutorResult executeActivity(Switch s) throws Exception {
+            JSONObject jParams = new JSONObject();
+            jParams.put("timestame", new Date().getTime());
+            jParams.put("activityId", s.isOn() ? "-1" : s.getId());
 
-                sendMessage(HH_ACT, jParams, true);
-            }
+            sendMessage(HH_ACT, jParams, true);
 
             return new JsonExecutorResult("");
         }
@@ -326,10 +313,10 @@ public class HarmonyHubService extends IService {
             try {
                 if (thing instanceof Switch) {
                     Switch s = (Switch) thing;
-                    if(s.getResource().equals(ACT_KEY)){
+                    if (s.getResource().equals(ACT_KEY)) {
                         result = executeActivity(s);
-                    }else {
-                        result = executeSwitch(s,false);
+                    } else {
+                        result = executeSwitch(s, false);
                     }
                 } else if (thing instanceof Routine)
                     result = executeRoutine((Routine) thing);
@@ -337,7 +324,7 @@ public class HarmonyHubService extends IService {
             } catch (Exception ex) {
                 result = new JsonExecutorResult(ex);
             }
-            if(result == null)
+            if (result == null)
                 result = new JsonExecutorResult(new Exception("Executor failed"));
             return result;
         }

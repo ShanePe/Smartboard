@@ -43,6 +43,8 @@ public class Monitor {
     private boolean mLoaded;
     private boolean mBusy;
     private Vibrator mVibrator;
+    private ServiceLoader mServiceLoader;
+    private boolean mStopped;
 
     private Monitor() {
     }
@@ -63,10 +65,13 @@ public class Monitor {
             mMonitor.mServices.clear();
         if (mMonitor.mDashboards != null)
             mMonitor.mDashboards.clear();
+        if (mMonitor.mServiceLoader != null)
+            mMonitor.mServiceLoader.stop();
 
         mMonitor.mThings = null;
         mMonitor.mServices = null;
         mMonitor.mDashboards = null;
+        mMonitor.mServiceLoader = null;
 
         reset();
     }
@@ -187,20 +192,22 @@ public class Monitor {
     }
 
     private ServiceLoader.ServiceLoaderResult getThingsFromService(final Context context, Services services) {
-        ServiceLoader loader = new ServiceLoader();
+        mServiceLoader = new ServiceLoader();
         for (IService s : services)
             if (s.isValid())
-                loader.getServices().add(s);
+                mServiceLoader.getServices().add(s);
             else if (s.isAwaitingAction() && context != null)
                 Toast.makeText(context, String.format("Service %s is awaiting an action.", s.getName()), Toast.LENGTH_LONG).show();
 
         try {
-            return loader.getThings();
+            return mServiceLoader.getThings();
         } catch (Exception e) {
             if (context != null)
                 Toast.makeText(context, String.format("Error : %s", e.getMessage()), Toast.LENGTH_LONG).show();
             else
                 e.printStackTrace();
+        } finally {
+            mServiceLoader = null;
         }
 
         return null;
@@ -234,8 +241,12 @@ public class Monitor {
         for (Dashboard dashboard : mDashboards)
             for (IBlock block : dashboard.GetBlocks())
                 try {
+                    if (mStopped)
+                        return null;
+
                     if (Thread.interrupted())
                         return null;
+
                     if (IGroupBlock.class.isAssignableFrom(block.getClass())) {
                         for (String key : ((IGroupBlock) block).getThingKeys())
                             addThingState(things, getMonitor().getThings().getByKey(key));
@@ -254,6 +265,8 @@ public class Monitor {
         if (isRunning())
             return;
 
+        mStopped = false;
+
         Log.i(Globals.ACTIVITY, "Starting Monitor");
         mMonitorThread = new Thread(new Runnable() {
             @Override
@@ -269,8 +282,10 @@ public class Monitor {
                                 if (isLoaded()) {
                                     if (full_check < Monitor.LOOP_LOOK_FOR_NEW)
                                         verifyThingsOnDashboard();
-                                    else
+                                    else {
                                         verifyThingState(getThingsFromService().getResult());
+                                        full_check = 0;
+                                    }
                                 }
                             } catch (InterruptedException ieu) {
                                 break;
@@ -317,10 +332,18 @@ public class Monitor {
     }
 
     public void verifyDashboardThings() {
-        verifyDashboardThings(null);
+        verifyDashboardThings(false);
+    }
+
+    public void verifyDashboardThings(boolean delay) {
+        verifyDashboardThings(delay, null);
     }
 
     public void verifyDashboardThings(final OnProcessCompleteListener onProcessCompleteListener) {
+        verifyDashboardThings(false, onProcessCompleteListener);
+    }
+
+    public void verifyDashboardThings(final boolean delay, final OnProcessCompleteListener onProcessCompleteListener) {
         if (isBusy() || Thread.interrupted())
             return;
 
@@ -328,7 +351,7 @@ public class Monitor {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(delay ? 20000 : 1000);
                     verifyThingsOnDashboard();
                     if (onProcessCompleteListener != null)
                         onProcessCompleteListener.complete(true, null);
@@ -340,9 +363,16 @@ public class Monitor {
     }
 
     private void verifyThingsOnDashboard() throws Exception {
-        for (IThing t : getThingsFromDashboards()) {
+        Things things = getThingsFromDashboards();
+        if (things == null)
+            return;
+
+        for (IThing t : things) {
+            if (mStopped)
+                break;
+
             if (Thread.interrupted())
-                return;
+                break;
 
             IThing current = getThings().getByKey(t.getKey());
             if (current == null)
@@ -383,9 +413,11 @@ public class Monitor {
 
     private void verifyThingState(Things currentThings) {
         for (IThing currentThing : getThings()) {
+            if (mStopped)
+                break;
+
             if (Thread.interrupted())
-                return;
-            ;
+                break;
 
             IThing newThing = currentThings.getbyId(currentThing.getId());
 
@@ -402,13 +434,18 @@ public class Monitor {
             }
         }
 
-        if (currentThings.size() != 0)
+        if (currentThings.size() != 0 && !mStopped)
             getThings().addAll(currentThings);
     }
 
     public void stop() {
         if (!isRunning())
             return;
+
+        mStopped = true;
+
+        if (mServiceLoader != null)
+            mServiceLoader.stop();
 
         Log.i(Globals.ACTIVITY, "Stopping Monitor");
         if (mMonitorThread != null) {

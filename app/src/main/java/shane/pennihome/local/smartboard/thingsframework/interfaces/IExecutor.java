@@ -6,7 +6,6 @@ import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
  * Created by shane on 11/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public abstract class IExecutor<T> {
     private T mValue;
 
@@ -23,4 +22,8 @@ public abstract class IExecutor<T> {
     }
 
     protected abstract JsonExecutorResult execute(IThing thing);
+
+    public boolean delayVerification(){
+        return false;
+    }
 }

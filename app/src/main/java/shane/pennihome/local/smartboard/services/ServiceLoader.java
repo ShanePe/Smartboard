@@ -8,7 +8,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.services.dialogs.LoaderDialog;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
@@ -19,24 +18,16 @@ import shane.pennihome.local.smartboard.thingsframework.Things;
  */
 
 public class ServiceLoader {
-    //AppCompatActivity mActivity;
     private Services mServices;
-    //private ServiceLoadDialog mServiceLoadDialog;
-    //private OnProcessCompleteListener<ServiceLoaderResult> mOnProcessCompleteListener;
+    private ExecutorService mExecutor;
 
     public ServiceLoader() {
     }
 
-
-
-    /*
-    public OnProcessCompleteListener<ServiceLoaderResult> getOnProcessCompleteListener() {
-        return mOnProcessCompleteListener;
+    public void stop(){
+        if(mExecutor!=null)
+            mExecutor.shutdownNow();
     }
-
-    public void setOnProcessCompleteListener(OnProcessCompleteListener<ServiceLoaderResult> onProcessCompleteListener) {
-        this.mOnProcessCompleteListener = onProcessCompleteListener;
-    }*/
 
     public Services getServices() {
         if (mServices == null)
@@ -57,7 +48,7 @@ public class ServiceLoader {
         ServiceLoaderResult serviceLoaderResult = new ServiceLoaderResult();
         Services services = getServices();
         if (services.size() > 0) {
-            ExecutorService executor = Executors.newFixedThreadPool(services.size());
+           mExecutor = Executors.newFixedThreadPool(services.size());
             ArrayList<ServiceCaller> serviceThreads = new ArrayList<>();
 
             for (IService s : services) {
@@ -66,7 +57,7 @@ public class ServiceLoader {
                     LoaderDialog.AsyncLoaderDialog.AddMessage(g.getLoadMessage(), g.getLoadMessage());
             }
             try {
-                List<Future<ServiceLoaderResult>> results = executor.invokeAll(serviceThreads);
+                List<Future<ServiceLoaderResult>> results = mExecutor.invokeAll(serviceThreads);
 
                 for (Future<ServiceLoaderResult> s : results) {
                     serviceLoaderResult.getResult().addAll(s.get().getResult());
@@ -74,6 +65,9 @@ public class ServiceLoader {
                         serviceLoaderResult.getErrors().put(k, serviceLoaderResult.getErrors().get(k));
                 }
             } catch (Exception ignore) {
+            }
+            finally {
+                mExecutor = null;
             }
         }
 

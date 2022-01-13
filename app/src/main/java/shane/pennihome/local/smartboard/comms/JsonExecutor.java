@@ -75,7 +75,7 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
             int maxAttempts = 5;
             int attemptWait = 5000;
 
-            while (tries <= maxAttempts) {
+            while (true) {
                 try {
                     Log.d("Url : ", (tries + 1) + " of " + maxAttempts + " " + request.getUrl().toString());
 
@@ -120,6 +120,7 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
                         throw new Exception("Type not supported" + request.getType().toString());
                 } catch (Exception ex) {
                     Log.d("Url", "Error on Call: " + ex.getMessage());
+                    //noinspection BusyWait
                     Thread.sleep(attemptWait);
                     tries++;
                     if (tries >= maxAttempts)
@@ -129,8 +130,6 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
         } catch (Exception ex) {
             return new JsonExecutorResult(ex);
         }
-
-        return new JsonExecutorResult(new Exception("Could not execute request"));
     }
 
     private void doPUT(HttpURLConnection connection, JsonExecutorRequest request) throws IOException {
@@ -205,15 +204,19 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
     }
 
     private String InputStreamToString(InputStream stream) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        StringBuilder sb = new StringBuilder();
-        char[] cbuf = new char[1024];
-        int i;
-        while ((i = reader.read(cbuf)) >= 0) {
-            sb.append(cbuf, 0, i);
-        }
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            StringBuilder sb = new StringBuilder();
+            char[] cbuf = new char[1024];
+            int i;
+            while ((i = reader.read(cbuf)) >= 0) {
+                sb.append(cbuf, 0, i);
+            }
 
-        return sb.toString();
+            return sb.toString();
+        }finally {
+            stream.close();
+        }
     }
 
     private String buildQueryString(List<NameValuePair> params) throws UnsupportedEncodingException {

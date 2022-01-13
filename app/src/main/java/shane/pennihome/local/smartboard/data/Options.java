@@ -1,6 +1,7 @@
 package shane.pennihome.local.smartboard.data;
 
 import android.content.Context;
+import android.util.Log;
 
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
@@ -9,12 +10,12 @@ import shane.pennihome.local.smartboard.data.sql.DBEngine;
  * Created by shane on 02/03/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class Options extends IDatabaseObject {
     private boolean mKeepScreenOn = false;
     private boolean mFadeOut = false;
     private int mFadeOutInMinutes = 5;
     private Thread mScreenFaderThread;
+    private boolean mPaused = false;
 
     public static Options getFromDataStore(Context context) {
         DBEngine db = new DBEngine(context);
@@ -22,6 +23,14 @@ public class Options extends IDatabaseObject {
         if (opts == null)
             opts = new Options();
         return opts;
+    }
+
+    public boolean isPaused() {
+        return mPaused;
+    }
+
+    public void setPaused(boolean paused) {
+        this.mPaused = paused;
     }
 
     public boolean isKeepScreenOn() {
@@ -61,7 +70,6 @@ public class Options extends IDatabaseObject {
     }
 
     public void stopMonitorForScreenFadeOut() {
-        //Log.i(Globals.ACTIVITY, "Stopping Fadeout monitor");
         if (mScreenFaderThread != null) {
             mScreenFaderThread.interrupt();
             try {
@@ -74,14 +82,13 @@ public class Options extends IDatabaseObject {
     }
 
     public void startMonitorForScreenFadeOut(final OnFadeTimeElapsedListener onFadeTimeElapsedListener) {
-        // Log.i(Globals.ACTIVITY, "Starting Fadeout monitor");
         stopMonitorForScreenFadeOut();
         mScreenFaderThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(getFadeOutInMinutes() * 60 * 1000);
-                    if (onFadeTimeElapsedListener != null)
+                    Thread.sleep((long) getFadeOutInMinutes() * 60 * 1000);
+                    if (onFadeTimeElapsedListener != null && !isPaused())
                         onFadeTimeElapsedListener.onElapsed();
 
                 } catch (InterruptedException ignored) {
