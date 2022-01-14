@@ -16,7 +16,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -25,7 +24,9 @@ import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.comms.Broadcaster;
@@ -45,8 +46,6 @@ import shane.pennihome.local.smartboard.fragments.ServicesFragment;
 import shane.pennihome.local.smartboard.fragments.TemplateFragment;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
 import shane.pennihome.local.smartboard.fragments.listeners.OnOptionsChangedListener;
-import shane.pennihome.local.smartboard.services.ServiceManager;
-import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
 import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
 import shane.pennihome.local.smartboard.ui.DashboardLayout;
 import shane.pennihome.local.smartboard.ui.ScreenBlocker;
@@ -96,13 +95,13 @@ public class MainActivity extends AppCompatActivity
         super.onPostResume();
     }
 
-    private void pauseFadeMonitor(){
-        if(mOptions != null)
+    private void pauseFadeMonitor() {
+        if (mOptions != null)
             mOptions.setPaused(true);
     }
 
-    private void unpauseFadeMonitor(){
-        if(mOptions != null)
+    private void unpauseFadeMonitor() {
+        if (mOptions != null)
             mOptions.setPaused(false);
     }
 
@@ -134,7 +133,7 @@ public class MainActivity extends AppCompatActivity
 
         View headerView = navigationView.getHeaderView(0);
         ImageButton btnHome = headerView.findViewById(R.id.mnu_btn_home);
-        ImageButton btnRefresh = headerView.findViewById(R.id.mnu_btn_refresh);
+        final ImageButton btnRefresh = headerView.findViewById(R.id.mnu_btn_refresh);
         ImageButton btnSettings = headerView.findViewById(R.id.mnu_btn_opts);
 
         btnHome.setOnClickListener(new View.OnClickListener() {
@@ -149,9 +148,12 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 goHome();
                 Monitor.destroy();
-                Monitor.Create((AppCompatActivity)((ContextThemeWrapper)view.getContext()).getBaseContext(), new OnProcessCompleteListener<Void>() {
+                Monitor.Create((AppCompatActivity) ((ContextThemeWrapper) view.getContext()).getBaseContext(), new OnProcessCompleteListener<ArrayList<String>>() {
                     @Override
-                    public void complete(boolean success, Void source) {
+                    public void complete(boolean success, ArrayList<String> source) {
+                        if (!success)
+                            for (String e : source)
+                                Toast.makeText(btnRefresh.getContext(), e, Toast.LENGTH_LONG).show();
                         renderDashboards();
                         Monitor.getMonitor().start();
                     }
@@ -171,7 +173,8 @@ public class MainActivity extends AppCompatActivity
 
         try {
             CookieManager.getInstance().setAcceptCookie(true);
-        }catch(Exception ignore) {}
+        } catch (Exception ignore) {
+        }
     }
 
     public void goHome() {
@@ -206,9 +209,12 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (!Monitor.IsInstaniated())
-            Monitor.Create(this, new OnProcessCompleteListener<Void>() {
+            Monitor.Create(this, new OnProcessCompleteListener<ArrayList<String>>() {
                 @Override
-                public void complete(boolean success, Void source) {
+                public void complete(boolean success, ArrayList<String> source) {
+                    if (!success)
+                        for (String e : source)
+                            Toast.makeText(Globals.getContext(), e, Toast.LENGTH_LONG).show();
                     renderDashboards();
                     Monitor.getMonitor().start();
                 }
@@ -308,6 +314,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void populateDashbboards() {
+        if (Monitor.IsInstaniated())
+            Monitor.getMonitor().stop();
+
         final DBEngine db = new DBEngine(this);
         //db.cleanDataStore();
         mDashboardLoader.post(new Runnable() {
@@ -317,18 +326,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        @SuppressWarnings("rawtypes") final OnProcessCompleteListener progComplete = new OnProcessCompleteListener() {
-            @Override
-            public void complete(boolean success, Object source) {
-                mDashboardLoader.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mDashboardLoader.setVisibility(View.GONE);
-                        mDashboardLayout.setVisibility(View.VISIBLE);
-                    }
-                });
-            }
-        };
 
         if (mDashboards == null)
             mDashboards = new Dashboards();
@@ -343,16 +340,24 @@ public class MainActivity extends AppCompatActivity
         Monitor.getMonitor().setDashboards(mDashboards);
 
         mDashboardLayout.post(new Runnable() {
-            @SuppressWarnings("unchecked")
             @Override
             public void run() {
                 mDashboardLayout.setDashboards(mDashboards);
                 System.gc();
-                progComplete.complete(true, null);
+
                 if (mDashboards.size() == 0) {
                     DrawerLayout drawer = findViewById(R.id.drawer_layout);
                     drawer.openDrawer(Gravity.START);
                 }
+                mDashboardLoader.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDashboardLoader.setVisibility(View.GONE);
+                        mDashboardLayout.setVisibility(View.VISIBLE);
+                    }
+                });
+                if(Monitor.IsInstaniated() && !Monitor.getMonitor().isRunning())
+                    Monitor.getMonitor().start();
             }
         });
 
@@ -423,7 +428,7 @@ public class MainActivity extends AppCompatActivity
                                     }
                                 }
                             });
-                            if(Monitor.getMonitor().isLoaded())
+                            if (Monitor.getMonitor().isLoaded())
                                 blocker.show();
                         }
                     });

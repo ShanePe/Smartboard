@@ -135,4 +135,8 @@ public abstract class IThing extends IDatabaseObject implements Cloneable {
     public enum Types {
         Switch, Routine, Temperature, SmartThingMode, Time, SwitchGroup, RoutineGroup
     }
+
+    public void clear(){
+
+    }
 }

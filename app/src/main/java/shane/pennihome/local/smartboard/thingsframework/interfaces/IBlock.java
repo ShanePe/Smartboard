@@ -73,6 +73,8 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
     private transient IThing mThing;
     @IgnoreOnCopy
     private OnThingActionListener mOnThingActionListener;
+    @IgnoreOnCopy
+    private Thread mDelay;
 
     public IBlock() {
         mInstance = this.getClass().getSimpleName();
@@ -482,18 +484,37 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
             }
         };
 
-        new Thread(new Runnable() {
+        if (mDelay != null) {
+            mDelay.interrupt();
+            mDelay = null;
+        }
+
+        mDelay = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     Thread.sleep(EXECUTE_DELAY * 1000);
                     completeListener.complete(true, null);
+                    mDelay = null;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
             }
-        }).start();
+        });
+
+        mDelay.start();
+    }
+
+    public void clear() {
+        if (mDelay != null) {
+            mDelay.interrupt();
+            mDelay = null;
+        }
+        if (mThing != null) {
+            mThing.clear();
+            mThing = null;
+        }
     }
 
     public IExecutor<?> getExecutor() {
@@ -514,6 +535,7 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
         View mProgressIndicator;
         OnProcessCompleteListener<String> mOnProcessCompleteListener;
         IExecutor<?> mExecutor;
+        IThing mThing;
 
         public BlockExecutor(View progressindicator, IExecutor<?> executor, OnProcessCompleteListener<String> onProcessCompleteListener) {
             this.mProgressIndicator = progressindicator;
@@ -534,7 +556,8 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
             if (mProgressIndicator != null)
                 mProgressIndicator.setVisibility(View.INVISIBLE);
 
-            Monitor.getMonitor().verifyDashboardThings(mExecutor.delayVerification());
+            if (mExecutor.doVerification(mThing))
+                Monitor.getMonitor().verifyDashboardThings(mExecutor.delayVerification());
 
             if (!jsonExecutorResult.isSuccess())
                 if (mProgressIndicator != null)
@@ -562,7 +585,8 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
                 wait++;
             }
 
-            return iThings[0].execute(mExecutor);
+            mThing = iThings[0];
+            return mThing.execute(mExecutor);
         }
     }
 }

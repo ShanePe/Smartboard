@@ -26,4 +26,8 @@ public abstract class IExecutor<T> {
     public boolean delayVerification(){
         return false;
     }
+
+    public boolean doVerification(IThing thing){
+        return true;
+    }
 }

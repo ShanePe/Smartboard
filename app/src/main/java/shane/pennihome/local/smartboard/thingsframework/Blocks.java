@@ -21,7 +21,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
  * Created by shane on 01/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class Blocks extends ArrayList<IBlock> {
     public static Blocks getAvailableTypes() {
         Blocks blocks = new Blocks();
@@ -33,7 +32,7 @@ public class Blocks extends ArrayList<IBlock> {
             blocks.add(new RoutineBlock());
             blocks.add((new RoutineGroupBlock()));
         }
-        if(Monitor.getMonitor().getThings().containsType(Temperature.class))
+        if (Monitor.getMonitor().getThings().containsType(Temperature.class))
             blocks.add((new TemperatureBlock()));
         if (Monitor.getMonitor().getThings().containsType(SmartThingMode.class))
             blocks.add(new SmartThingModeBlock());
@@ -57,5 +56,13 @@ public class Blocks extends ArrayList<IBlock> {
         }
 
         Collections.swap(this, toPosition, fromPosition);
+    }
+
+    public void clear() {
+        for (int i = this.size() - 1; i >= 0; i--) {
+            this.get(i).clear();
+            this.set(i, null);
+            this.remove(i);
+        }
     }
 }

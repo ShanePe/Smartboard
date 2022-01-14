@@ -122,8 +122,7 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
                     Log.d("Url", "Error on Call: " + ex.getMessage());
                     //noinspection BusyWait
                     Thread.sleep(attemptWait);
-                    tries++;
-                    if (tries >= maxAttempts)
+                    if (++tries >= maxAttempts)
                         throw ex;
                 }
             }

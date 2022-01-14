@@ -11,7 +11,6 @@ import shane.pennihome.local.smartboard.ui.GroupViewHandler;
  * Created by shane on 13/01/18.
  */
 
-@SuppressWarnings({"DefaultFileTemplate", "unused"})
 public class Group extends IDatabaseObject {
     private final Blocks mBlocks = new Blocks();
     private boolean mIsUIExpanded;
@@ -119,4 +118,7 @@ public class Group extends IDatabaseObject {
         this.mGroupViewHandler = groupViewHandler;
     }
 
+    public void clear(){
+        mBlocks.clear();
+    }
 }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import shane.pennihome.local.smartboard.R;
@@ -153,45 +154,19 @@ class TimeUIHandler extends IBlockUIHandler {
 
         holder.itemView.setPadding(Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING, Globals.BLOCK_PADDING);
 
-        if (holder.mTimerThread != null) {
-            holder.mTimerThread.interrupt();
-            if (holder.mTimerThread != null)
-                try {
-                    holder.mTimerThread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-        }
-
         final SimpleDateFormat df = new SimpleDateFormat("HH:mm", Locale.getDefault());
         holder.mValue.setText(df.format(Calendar.getInstance().getTime()));
-
-        holder.mTimerThread = new Thread(new Runnable() {
+        getBlock().getThing(Time.class).start(new Time.TickHandler() {
             @Override
-            public void run() {
-                try {
-                    while (true) {
-                        try {
-                            int curSec = Calendar.getInstance().get(Calendar.SECOND);
-                            int laps = 60 - curSec;
-                            Log.i(Globals.ACTIVITY, "Timer Thread Sleeping for " + laps);
-                            Thread.sleep(laps * 1000);
-                            holder.mValue.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    holder.mValue.setText(df.format(Calendar.getInstance().getTime()));
-                                }
-                            });
-                        } catch (Exception e) {
-                            break;
-                        }
+            public void OnTick(final Date date) {
+                holder.mValue.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        holder.mValue.setText(df.format(date));
                     }
-                } finally {
-                    holder.mTimerThread = null;
-                }
+                });
             }
         });
-        holder.mTimerThread.start();
 
         getBlock().setOnThingActionListener(new OnThingActionListener() {
             @Override
@@ -266,7 +241,6 @@ class TimeUIHandler extends IBlockUIHandler {
         final FrameLayout mContainer;
         final TextViewAutoFit mValue;
         final ImageView mBgImg;
-        Thread mTimerThread;
 
         TimeViewHolder(View itemView) {
             super(itemView);

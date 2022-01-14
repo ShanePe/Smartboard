@@ -10,10 +10,13 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Dashboards;
 import shane.pennihome.local.smartboard.data.Globals;
+import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.services.ServiceLoader;
 import shane.pennihome.local.smartboard.services.ServiceManager;
@@ -45,6 +48,7 @@ public class Monitor {
     private Vibrator mVibrator;
     private ServiceLoader mServiceLoader;
     private boolean mStopped;
+    private Thread mVerifier;
 
     private Monitor() {
     }
@@ -59,19 +63,18 @@ public class Monitor {
         if (mMonitor == null)
             return;
 
+        mMonitor.stop();
+
         if (mMonitor.mThings != null)
             mMonitor.mThings.clear();
         if (mMonitor.mServices != null)
             mMonitor.mServices.clear();
         if (mMonitor.mDashboards != null)
             mMonitor.mDashboards.clear();
-        if (mMonitor.mServiceLoader != null)
-            mMonitor.mServiceLoader.stop();
 
         mMonitor.mThings = null;
         mMonitor.mServices = null;
         mMonitor.mDashboards = null;
-        mMonitor.mServiceLoader = null;
 
         reset();
     }
@@ -93,7 +96,8 @@ public class Monitor {
         return getMonitor();
     }
 
-    public static Monitor Create(final AppCompatActivity activity, final OnProcessCompleteListener<Void> onProcessCompleteListener) {
+    public static Monitor Create(final AppCompatActivity activity, final OnProcessCompleteListener<ArrayList<String>> onProcessCompleteListener) {
+
         try {
             LoaderDialog.AsyncLoaderDialog.run(activity, new Function<Void, Void>() {
                 @Override
@@ -101,13 +105,13 @@ public class Monitor {
                     LoaderDialog.AsyncLoaderDialog.AddMessage(this.toString(), "Loading ...");
                     getMonitor().setServices(ServiceManager.getActiveServices(activity));
                     LoaderDialog.AsyncLoaderDialog.RemoveMessage(this.toString());
-
+                    final ArrayList<String> errors = new ArrayList<>();
                     ServiceLoader.ServiceLoaderResult source = getMonitor().getThingsFromService(activity);
                     if (source.getResult() != null)
                         getMonitor().setThings(source.getResult());
                     if (source.getErrors() != null)
                         for (String e : source.getErrors().keySet())
-                            Toast.makeText(activity, String.format("Error getting things : %s", e), Toast.LENGTH_LONG).show();
+                            errors.add( String.format("Error getting things : %s", e));
 
                     try {
                         getMonitor().mVibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
@@ -116,7 +120,7 @@ public class Monitor {
                     getMonitor().mLoaded = true;
 
                     if (onProcessCompleteListener != null)
-                        onProcessCompleteListener.complete(source.getErrors().size() == 0, null);
+                        onProcessCompleteListener.complete(source.getErrors().size() == 0, errors);
                     return null;
                 }
             });
@@ -278,6 +282,9 @@ public class Monitor {
                         if (!isBusy())
                             try {
                                 Thread.sleep(1000 * Monitor.SECOND_CHECK);
+                                if(mStopped)
+                                    break;
+
                                 mBusy = true;
                                 if (isLoaded()) {
                                     if (full_check < Monitor.LOOP_LOOK_FOR_NEW)
@@ -314,7 +321,7 @@ public class Monitor {
         if (isBusy())
             return;
 
-        new Thread(new Runnable() {
+        mVerifier = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -327,8 +334,13 @@ public class Monitor {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                finally {
+                    mVerifier = null;
+                }
             }
-        }).start();
+        });
+
+        mVerifier.start();
     }
 
     public void verifyDashboardThings() {
@@ -347,7 +359,7 @@ public class Monitor {
         if (isBusy() || Thread.interrupted())
             return;
 
-        new Thread(new Runnable() {
+        mVerifier = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -357,9 +369,13 @@ public class Monitor {
                         onProcessCompleteListener.complete(true, null);
                 } catch (Exception e) {
                     e.printStackTrace();
+                }finally {
+                    mVerifier = null;
                 }
             }
-        }).start();
+        });
+
+        mVerifier.start();
     }
 
     private void verifyThingsOnDashboard() throws Exception {
@@ -444,8 +460,15 @@ public class Monitor {
 
         mStopped = true;
 
-        if (mServiceLoader != null)
+        if (mServiceLoader != null) {
             mServiceLoader.stop();
+            mServiceLoader = null;
+        }
+
+        if(mVerifier != null) {
+            mVerifier.interrupt();
+            mVerifier = null;
+        }
 
         Log.i(Globals.ACTIVITY, "Stopping Monitor");
         if (mMonitorThread != null) {

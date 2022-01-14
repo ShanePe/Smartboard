@@ -308,6 +308,11 @@ public class HarmonyHubService extends IService {
         }
 
         @Override
+        public boolean doVerification(IThing thing) {
+            return thing.getThingType() != IThing.Types.Routine;
+        }
+
+        @Override
         protected JsonExecutorResult execute(IThing thing) {
             JsonExecutorResult result = null;
             try {

@@ -287,7 +287,7 @@ public class ThingsSelector extends LinearLayoutCompat {
             else if (service.getServiceType() == IService.ServicesTypes.PhilipsHue)
                 img.setImageResource(R.mipmap.icon_phlogo_mm_fg);
             else if (service.getServiceType() == IService.ServicesTypes.HarmonyHub)
-                img.setImageResource(R.mipmap.icon_hub_mm_fg);
+                img.setImageResource(R.mipmap.logo_harm_mm_fg);
             else
                 img.setImageResource(R.mipmap.icon_dashboard_mm_fg);
 

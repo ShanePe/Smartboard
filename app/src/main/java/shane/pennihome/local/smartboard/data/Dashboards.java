@@ -27,8 +27,7 @@ public class Dashboards extends ArrayList<Dashboard> {
         Collections.swap(this, toPosition, fromPosition);
     }
 
-    public void sort()
-    {
+    public void sort() {
         Collections.sort(this, new Comparator<Dashboard>() {
             @Override
             public int compare(Dashboard o1, Dashboard o2) {
@@ -37,5 +36,11 @@ public class Dashboards extends ArrayList<Dashboard> {
         });
     }
 
-
+    public void clear() {
+        for (int i = this.size() - 1; i >= 0; i--) {
+            this.get(i).clear();
+            this.set(i, null);
+            this.remove(i);
+        }
+    }
 }
