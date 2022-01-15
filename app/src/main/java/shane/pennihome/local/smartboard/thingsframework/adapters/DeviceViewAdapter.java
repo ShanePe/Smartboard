@@ -18,6 +18,7 @@ import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
+import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
@@ -27,7 +28,7 @@ import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionL
  */
 
 public class DeviceViewAdapter extends ThingViewAdapter {
-    public DeviceViewAdapter(@SuppressWarnings("rawtypes") final IThings items) {
+    public DeviceViewAdapter(final Things items) {
         super(items);
     }
 

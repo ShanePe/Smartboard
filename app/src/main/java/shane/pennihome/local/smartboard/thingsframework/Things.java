@@ -15,6 +15,12 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 @SuppressWarnings("ALL")
 public class Things extends IThings<IThing> {
+
+    public Things(){}
+    public <T extends IThing> Things(IThings<T> things){
+        this.addAll(things);
+    }
+
     public Things getForBlock(IBlock block) {
         Things ret = new Things();
         for (IThing t : this)

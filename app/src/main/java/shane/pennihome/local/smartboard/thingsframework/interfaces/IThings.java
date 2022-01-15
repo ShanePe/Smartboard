@@ -92,4 +92,8 @@ public abstract class IThings<T extends IThing> extends ArrayList<T> {
         this.remove(index);
         this.add(index, thing);
     }
+
+    public Things toThings(){
+        return new Things(this);
+    }
 }
