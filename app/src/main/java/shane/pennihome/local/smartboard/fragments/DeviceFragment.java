@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.things.switches.Switch;
+import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.adapters.DeviceViewAdapter;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
@@ -12,7 +13,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
  * Created by shane on 30/12/17.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class DeviceFragment extends ThingFragment {
 
 
@@ -21,15 +21,14 @@ public class DeviceFragment extends ThingFragment {
         return R.layout.fragment_device_list;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
-    protected RecyclerView.Adapter getAdapter(IThings things) {
+    protected RecyclerView.Adapter getAdapter(Things things) {
         return new DeviceViewAdapter(things);
     }
 
     @Override
-    IThings getDataSource() {
-        return Monitor.getMonitor().getThings(Switch.class);
+    Things getDataSource() {
+        return Monitor.getMonitor().getThings(Switch.class).toThings();
     }
-
-
 }

@@ -74,9 +74,9 @@ public class ServiceLoader {
         return serviceLoaderResult;
     }
 
-    private class ServiceCaller implements Callable<ServiceLoaderResult> {
+    private static class ServiceCaller implements Callable<ServiceLoaderResult> {
 
-        private IService mService;
+        private final IService mService;
 
         public ServiceCaller(IService service) {
             this.mService = service;
@@ -100,7 +100,7 @@ public class ServiceLoader {
         }
     }
 
-    public class ServiceLoaderResult {
+    public static class ServiceLoaderResult {
         private HashMap<String, IThingsGetter> mErrors;
         private Things mResult;
 

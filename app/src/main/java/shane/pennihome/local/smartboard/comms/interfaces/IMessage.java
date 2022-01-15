@@ -8,7 +8,6 @@ import shane.pennihome.local.smartboard.data.JsonBuilder;
  * Created by SPennicott on 01/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public abstract class IMessage<T> {
     @SuppressWarnings("unused")
     private final String mInstance;

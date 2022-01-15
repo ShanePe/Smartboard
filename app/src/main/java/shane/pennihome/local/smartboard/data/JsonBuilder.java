@@ -13,10 +13,10 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 
 import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
-import shane.pennihome.local.smartboard.services.Harmony.HarmonyHubService;
-import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeService;
-import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
-import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsServicePAT;
+import shane.pennihome.local.smartboard.services.harmony.HarmonyHubService;
+import shane.pennihome.local.smartboard.services.philipsHue.HueBridgeService;
+import shane.pennihome.local.smartboard.services.smartThings.SmartThingsService;
+import shane.pennihome.local.smartboard.services.smartThings.SmartThingsServicePAT;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.things.routinegroup.RoutineGroup;
 import shane.pennihome.local.smartboard.things.routinegroup.RoutineGroupBlock;

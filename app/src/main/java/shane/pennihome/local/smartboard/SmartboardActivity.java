@@ -100,7 +100,7 @@ public class SmartboardActivity extends AppCompatActivity {
 
     public void DataChanged() {
         writeDashboardToDatabase();
-        mGroupEditAdapter.notifyDataSetChanged();
+        //mGroupEditAdapter.notifyDataSetChanged();
     }
 
     private void hideKeyboard() {
@@ -142,7 +142,7 @@ public class SmartboardActivity extends AppCompatActivity {
 
     }
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public static class SectionsPagerAdapter extends FragmentPagerAdapter {
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }

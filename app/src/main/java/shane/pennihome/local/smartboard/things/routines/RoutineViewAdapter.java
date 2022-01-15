@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
+import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.adapters.ThingViewAdapter;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
@@ -18,7 +19,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
  */
 
 public class RoutineViewAdapter extends ThingViewAdapter {
-    public RoutineViewAdapter(@SuppressWarnings("rawtypes") IThings items) {
+    public RoutineViewAdapter(Things items) {
         super(items);
     }
 
@@ -69,7 +70,7 @@ public class RoutineViewAdapter extends ThingViewAdapter {
 //        });
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         final ImageView mImgView;
         final TextView mNameView;
         final AppCompatImageButton mButtonView;

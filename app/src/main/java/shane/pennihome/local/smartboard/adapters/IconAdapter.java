@@ -3,6 +3,7 @@ package shane.pennihome.local.smartboard.adapters;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,6 @@ import shane.pennihome.local.smartboard.R;
  * Created by SPennicott on 06/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder>{
 
     private String[] mIcons;
@@ -54,6 +54,7 @@ public class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder>{
         return mSelectedPos;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mRecycleView = (RecyclerView) parent;
@@ -104,7 +105,7 @@ public class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder>{
         return mIcons.length;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder
+    public static class ViewHolder extends RecyclerView.ViewHolder
     {
         public ViewHolder(View itemView) {
             super(itemView);

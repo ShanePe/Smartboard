@@ -1,16 +1,18 @@
 package shane.pennihome.local.smartboard.thingsframework.adapters;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 public abstract class ThingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    final IThings mValues;
-    protected ThingViewAdapter(IThings items) {
+    final Things mValues;
+    protected ThingViewAdapter(Things items) {
         mValues = items;
     }
 
@@ -18,6 +20,7 @@ public abstract class ThingViewAdapter extends RecyclerView.Adapter<RecyclerView
 
     protected abstract RecyclerView.ViewHolder getViewHolder(View view);
 
+    @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -25,7 +28,7 @@ public abstract class ThingViewAdapter extends RecyclerView.Adapter<RecyclerView
         return getViewHolder(view);
     }
 
-    protected IThings getThings() {
+    protected Things getThings() {
         return mValues;
     }
 

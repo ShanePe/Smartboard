@@ -2,6 +2,7 @@ package shane.pennihome.local.smartboard.comms;
 
 import android.arch.core.util.Function;
 import android.content.Context;
+import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,7 +17,6 @@ import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListen
 import shane.pennihome.local.smartboard.data.Dashboard;
 import shane.pennihome.local.smartboard.data.Dashboards;
 import shane.pennihome.local.smartboard.data.Globals;
-import shane.pennihome.local.smartboard.data.Group;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.services.ServiceLoader;
 import shane.pennihome.local.smartboard.services.ServiceManager;
@@ -133,7 +133,7 @@ public class Monitor {
 
     public void Vibrate(long durationMilli) {
         if (getMonitor().mVibrator != null) {
-            getMonitor().mVibrator.vibrate(durationMilli);
+            getMonitor().mVibrator.vibrate(VibrationEffect.createOneShot(durationMilli, VibrationEffect.DEFAULT_AMPLITUDE));
         }
     }
 
@@ -242,6 +242,9 @@ public class Monitor {
 
     private Things getThingsFromDashboards() throws Exception {
         Things things = new Things();
+        if(mDashboards == null)
+            return  things;
+        
         for (Dashboard dashboard : mDashboards)
             for (IBlock block : dashboard.GetBlocks())
                 try {

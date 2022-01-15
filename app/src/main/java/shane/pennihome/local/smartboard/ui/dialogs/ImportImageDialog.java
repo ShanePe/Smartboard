@@ -1,5 +1,7 @@
 package shane.pennihome.local.smartboard.ui.dialogs;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -20,13 +22,10 @@ import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 
-import static android.app.Activity.RESULT_OK;
-
 /**
  * Created by shane on 27/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class ImportImageDialog extends DialogFragment {
     private static final int IMAGE_RESULT = 8841;
     private static final int CAMERA_RESULT = 8842;

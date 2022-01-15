@@ -17,7 +17,6 @@ import android.view.View;
 import java.util.ArrayList;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.services.adapters.LoaderAdapter;
 
 /**
@@ -47,12 +46,12 @@ public class LoaderDialog extends Dialog {
 
     public synchronized void setMessages(ArrayList<Pair<String, String>> messages) {
         mAdapter.setMessages(messages);
-        mAdapter.notifyDataSetChanged();
+        //mAdapter.notifyDataSetChanged();
     }
 
     public synchronized void addMessage(Pair<String, String> message) {
         mAdapter.addMessage(message);
-        mAdapter.notifyDataSetChanged();
+        //mAdapter.notifyDataSetChanged();
         Log.i("Loader", String.format("Added message %s with key: %s", message.first, message.second));
     }
 
@@ -67,7 +66,7 @@ public class LoaderDialog extends Dialog {
 
         if (item != null) {
             mAdapter.getMessages().remove(item);
-            mAdapter.notifyDataSetChanged();
+          //  mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -76,8 +75,11 @@ public class LoaderDialog extends Dialog {
     }
 
     public static class AsyncLoaderDialog extends AsyncTask<Void, Pair<String, Pair<String, String>>, Void> {
+        @SuppressLint("StaticFieldLeak")
         static AsyncLoaderDialog mLoader;
+        @SuppressLint("StaticFieldLeak")
         static LoaderDialog mDialog;
+        @SuppressLint("StaticFieldLeak")
         Context mContext;
         Function<Void, Void> mFunction;
 
@@ -94,12 +96,14 @@ public class LoaderDialog extends Dialog {
         public static void AddMessage(String messageKey, String message) {
             if(mLoader==null)
                 return;
+            //noinspection unchecked
             mLoader.publishProgress(new Pair<>("add", new Pair<>(messageKey, message)));
         }
 
         public static void RemoveMessage(String messageKey) {
             if(mLoader==null)
                 return;
+            //noinspection unchecked
             mLoader.publishProgress(new Pair<>("remove", new Pair<>(messageKey, "")));
         }
 
@@ -110,8 +114,9 @@ public class LoaderDialog extends Dialog {
             super.onPreExecute();
         }
 
+        @SafeVarargs
         @Override
-        protected void onProgressUpdate(final Pair<String, Pair<String, String>>... values) {
+        protected final void onProgressUpdate(final Pair<String, Pair<String, String>>... values) {
             if (values[0].first.equals("add"))
                 mDialog.addMessage(values[0].second);
             if (values[0].first.equals("remove"))
@@ -122,6 +127,13 @@ public class LoaderDialog extends Dialog {
         protected Void doInBackground(Void... voids) {
             mFunction.apply(null);
             return null;
+        }
+
+        @Override
+        protected void finalize() {
+            mDialog = null;
+            mLoader = null;
+            mContext = null;
         }
 
         @Override

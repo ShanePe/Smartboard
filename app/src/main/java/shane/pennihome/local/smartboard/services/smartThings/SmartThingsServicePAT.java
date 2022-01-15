@@ -1,9 +1,8 @@
-package shane.pennihome.local.smartboard.services.SmartThings;
+package shane.pennihome.local.smartboard.services.smartThings;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;

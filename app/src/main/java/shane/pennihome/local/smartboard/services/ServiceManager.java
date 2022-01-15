@@ -8,10 +8,9 @@ import android.widget.Toast;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
-import shane.pennihome.local.smartboard.services.Harmony.HarmonyHubService;
-import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeService;
-import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsService;
-import shane.pennihome.local.smartboard.services.SmartThings.SmartThingsServicePAT;
+import shane.pennihome.local.smartboard.services.harmony.HarmonyHubService;
+import shane.pennihome.local.smartboard.services.philipsHue.HueBridgeService;
+import shane.pennihome.local.smartboard.services.smartThings.SmartThingsServicePAT;
 import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 

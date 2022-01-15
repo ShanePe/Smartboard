@@ -10,7 +10,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  * Created by SPennicott on 10/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class TemperatureBlock extends IBlock {
     public static TemperatureBlock Load(String json) {
         try {

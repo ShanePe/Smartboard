@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.adapters;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IIconBlock;
  * Created by SPennicott on 10/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.ViewHolder>  {
     private Templates mTemplates;
     private OnInteractionListener mOnInteractionListener;
@@ -42,6 +42,7 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.ViewHo
         return mTemplates.size() -1;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext())
@@ -79,7 +80,7 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.ViewHo
         return mTemplates.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
         final FrameLayout mContainer;
         final TextView mTemplateName;
         final ImageView mIcon;

@@ -23,7 +23,6 @@ import shane.pennihome.local.smartboard.data.Globals;
  * Created by SPennicott on 06/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class ProgressDialog extends DialogFragment {
     private TextView mMsgText;
     private String mMessage = "";

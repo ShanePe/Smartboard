@@ -1,6 +1,7 @@
 package shane.pennihome.local.smartboard.services.adapters;
 
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +21,6 @@ import shane.pennihome.local.smartboard.ui.UIHelper;
  * Created by shane on 31/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHolder> {
 
     private final Services mServices;
@@ -29,12 +29,13 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         this.mServices = ServiceManager.getServices();
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.service, parent, false);
 
-        return new ServiceAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
@@ -49,6 +50,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
             public void onClick(View view) {
                 final ServiceManager serviceManager = new ServiceManager();
                 if (holder.mService.isActive())
+                    //noinspection rawtypes
                     UIHelper.showConfirm(holder.mView.getContext(), "Confirm",
                             String.format("Are you sure you want to unregister from the %s service?", holder.mService.getName()),
                             new OnProcessCompleteListener() {
@@ -83,7 +85,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         return mServices.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final Button btnService;
         IService mService;

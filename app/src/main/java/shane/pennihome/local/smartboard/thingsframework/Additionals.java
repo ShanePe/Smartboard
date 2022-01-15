@@ -23,13 +23,14 @@ public class Additionals extends ArrayList<IAdditional> {
             @Override
             public Iterator<T> iterator() {
                 return new Iterator<T>() {
-                    Iterator<IAdditional> iter = me.iterator();
+                    final Iterator<IAdditional> iter = me.iterator();
 
                     @Override
                     public boolean hasNext() {
                         return iter.hasNext();
                     }
 
+                    @SuppressWarnings("unchecked")
                     @Override
                     public T next() {
                         return (T) iter.next();

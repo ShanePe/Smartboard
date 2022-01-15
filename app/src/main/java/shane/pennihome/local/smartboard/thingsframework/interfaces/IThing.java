@@ -1,15 +1,11 @@
 package shane.pennihome.local.smartboard.thingsframework.interfaces;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import shane.pennihome.local.smartboard.comms.Broadcaster;
 import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.comms.Monitor;
 import shane.pennihome.local.smartboard.data.JsonBuilder;
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
-import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
 import shane.pennihome.local.smartboard.things.routinegroup.RoutineGroup;
 import shane.pennihome.local.smartboard.things.routines.Routine;
 import shane.pennihome.local.smartboard.things.stmodes.SmartThingMode;
@@ -28,7 +24,7 @@ public abstract class IThing extends IDatabaseObject implements Cloneable {
     private transient boolean mUnreachable;
     private String mId;
     private IService.ServicesTypes mServicesTypes;
-    private Additionals mAdditional;
+    private final Additionals mAdditional;
 
     @IgnoreOnCopy
     public IThing() {

@@ -382,7 +382,7 @@ public class BackgroundSelector extends LinearLayoutCompat {
         });
     }
 
-    public class ViewAdapter extends PagerAdapter {
+    public static class ViewAdapter extends PagerAdapter {
 
         @SuppressWarnings("SameReturnValue")
         @Override

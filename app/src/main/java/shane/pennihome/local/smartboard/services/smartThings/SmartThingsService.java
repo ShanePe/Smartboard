@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.services.SmartThings;
+package shane.pennihome.local.smartboard.services.smartThings;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -153,7 +153,7 @@ public class SmartThingsService extends IService {
         mAuthorisationCode = authorisationCode;
     }
 
-    protected class Connector implements IThingsGetter {
+    protected static class Connector implements IThingsGetter {
 
         public String getLoadMessage() {
             return "Connecting to SmartThings";

@@ -1,5 +1,6 @@
-package shane.pennihome.local.smartboard.services.PhilipsHue;
+package shane.pennihome.local.smartboard.services.philipsHue;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment.OnListFragmentInteractionListener;
+import shane.pennihome.local.smartboard.services.philipsHue.HueBridgeFragment.OnListFragmentInteractionListener;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link HueBridge} and makes a call to the
@@ -20,7 +21,7 @@ import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeFragment.On
 public class HueBridgeViewAdapter extends RecyclerView.Adapter<HueBridgeViewAdapter.ViewHolder> {
 
     private final OnListFragmentInteractionListener mListener;
-    private List<HueBridge> mValues = new ArrayList<>();
+    private List<HueBridge> mValues;
 
     HueBridgeViewAdapter(List<HueBridge> items, OnListFragmentInteractionListener listener) {
         mValues = items;
@@ -39,6 +40,7 @@ public class HueBridgeViewAdapter extends RecyclerView.Adapter<HueBridgeViewAdap
         mValues = items;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -67,7 +69,7 @@ public class HueBridgeViewAdapter extends RecyclerView.Adapter<HueBridgeViewAdap
         return mValues.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final TextView mIpView;
         final TextView mIdView;

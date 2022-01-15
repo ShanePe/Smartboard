@@ -8,10 +8,8 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  * Created by SPennicott on 09/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class Template extends IDatabaseObject{
 
-    @SuppressWarnings("FieldCanBeLocal")
     private final String mInstance;
     private IBlock mBlock;
     private IThing.Types mThingType;

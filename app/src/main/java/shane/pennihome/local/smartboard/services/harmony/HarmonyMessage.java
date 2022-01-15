@@ -1,6 +1,6 @@
-package shane.pennihome.local.smartboard.services.Harmony;
+package shane.pennihome.local.smartboard.services.harmony;
 
-import static shane.pennihome.local.smartboard.services.Harmony.HarmonyHubService.WS_ORIGIN;
+import static shane.pennihome.local.smartboard.services.harmony.HarmonyHubService.WS_ORIGIN;
 
 import android.util.Log;
 
@@ -12,7 +12,7 @@ import java.net.URI;
 import tech.gusavila92.websocketclient.WebSocketClient;
 
 public class HarmonyMessage {
-    private static Object mLock = new Object();
+    private static final Object mLock = new Object();
 
     private static String getMessagePayload(int msgId, String remoteId, String command, JSONObject params) throws JSONException {
 

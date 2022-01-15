@@ -16,7 +16,6 @@ import shane.pennihome.local.smartboard.ui.UIHelper;
  * Created by SPennicott on 07/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public abstract class IIconBlock extends IBlock {
     private String mIcon;
     private UIHelper.IconSizes mIconSize;
@@ -67,9 +66,7 @@ public abstract class IIconBlock extends IBlock {
 
                     if (getIconSize() != null) {
                         int s = 40;
-                        if (getIconSize() == UIHelper.IconSizes.Small)
-                            s = 40;
-                        else if (getIconSize() == UIHelper.IconSizes.Medium)
+                        if (getIconSize() == UIHelper.IconSizes.Medium)
                             s = 80;
                         else if (getIconSize() == UIHelper.IconSizes.Large)
                             s = 160;

@@ -22,7 +22,6 @@ import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetList
 public class ThingProperties extends LinearLayoutCompat {
     private ThingsSelector mThingSelector;
     private LabelTextbox mTxtName;
-    private GroupTitle mDeviceGroupTitle;
     private SizeSelector mSizeSelector;
     private Switch mSwHideTitle;
 
@@ -94,7 +93,7 @@ public class ThingProperties extends LinearLayoutCompat {
 
         mThingSelector = this.findViewById(R.id.prop_things_selector);
         mTxtName = this.findViewById(R.id.prop_txt_blk_name);
-        mDeviceGroupTitle = this.findViewById(R.id.prop_group_device);
+        GroupTitle mDeviceGroupTitle = this.findViewById(R.id.prop_group_device);
         mSizeSelector = this.findViewById(R.id.prop_size_selector);
         mSwHideTitle = this.findViewById(R.id.prop_sw_title);
 

@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.services.Harmony;
+package shane.pennihome.local.smartboard.services.harmony;
 
 import android.text.TextUtils;
 

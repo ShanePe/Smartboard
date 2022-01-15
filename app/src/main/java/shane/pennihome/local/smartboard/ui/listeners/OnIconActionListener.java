@@ -6,7 +6,6 @@ import shane.pennihome.local.smartboard.ui.UIHelper;
  * Created by SPennicott on 06/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public interface OnIconActionListener {
     void OnIconSelected(String iconPath);
 

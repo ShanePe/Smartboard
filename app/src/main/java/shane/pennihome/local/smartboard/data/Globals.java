@@ -1,19 +1,18 @@
 package shane.pennihome.local.smartboard.data;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.Random;
 
-import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
-import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
-
 /**
  * Created by shane on 27/12/17.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class Globals extends Application{
     public final static String ACTIVITY = "SmartBoard";
     //public final static int BLOCK_COLUMNS = 8;

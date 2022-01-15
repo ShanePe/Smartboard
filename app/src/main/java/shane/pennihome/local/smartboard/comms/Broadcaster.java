@@ -11,9 +11,8 @@ import shane.pennihome.local.smartboard.data.Globals;
  * Created by SPennicott on 01/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class Broadcaster {
-    public static void broadcastMessage(final IMessage message) {
+    public static void broadcastMessage(@SuppressWarnings("rawtypes") final IMessage message) {
         new Thread(new Runnable() {
             @Override
             public void run() {

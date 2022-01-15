@@ -19,7 +19,7 @@ import shane.pennihome.local.smartboard.services.interfaces.IService;
  * Created by shane on 13/01/18.
  */
 
-@SuppressWarnings({"DefaultFileTemplate", "unused"})
+@SuppressWarnings({"unused"})
 public class DBEngine extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "smartboard";
@@ -75,16 +75,11 @@ public class DBEngine extends SQLiteOpenHelper {
     }
 
     private void ExecuteSQL(String query) {
-        SQLiteDatabase db = null;
-        try {
-            db = this.getWritableDatabase();
+        try (SQLiteDatabase db = this.getWritableDatabase()) {
             db.execSQL(query);
         } catch (Exception ex) {
             if (mContext != null)
                 Toast.makeText(mContext, "Write Error : " + ex.getMessage(), Toast.LENGTH_LONG).show();
-        } finally {
-            if (db != null)
-                db.close();
         }
     }
 

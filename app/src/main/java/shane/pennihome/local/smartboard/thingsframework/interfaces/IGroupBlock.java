@@ -6,7 +6,6 @@ import java.util.ArrayList;
  * Created by shane on 20/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public interface IGroupBlock {
     void loadChildThings();
 

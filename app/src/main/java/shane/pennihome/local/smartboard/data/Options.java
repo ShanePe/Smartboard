@@ -1,7 +1,6 @@
 package shane.pennihome.local.smartboard.data;
 
 import android.content.Context;
-import android.util.Log;
 
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;

@@ -14,7 +14,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  * Created by SPennicott on 10/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class Templates extends ArrayList<Template> {
     public Templates getForType(IThing.Types type)
     {

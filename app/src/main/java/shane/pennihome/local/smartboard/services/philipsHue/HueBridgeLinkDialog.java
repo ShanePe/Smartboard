@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.services.PhilipsHue;
+package shane.pennihome.local.smartboard.services.philipsHue;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,7 +21,6 @@ import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListen
  * Created by SPennicott on 02/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class HueBridgeLinkDialog extends DialogFragment {
     private TextView mTxtDescription;
     private String mPreText;

@@ -34,7 +34,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  * Created by shane on 19/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class SwitchGroupBlock extends SwitchBlock implements IGroupBlock {
     @IgnoreOnCopy
     private ArrayList<String> mThingKeys;
@@ -182,6 +181,7 @@ public class SwitchGroupBlock extends SwitchBlock implements IGroupBlock {
     @Override
     public void execute(final View indicator, boolean delay, final OnProcessCompleteListener<String> onProcessCompleteListener) {
         if (delay) {
+            //noinspection rawtypes
             final OnProcessCompleteListener processCompleteListener = new OnProcessCompleteListener() {
                 @Override
                 public void complete(boolean success, Object source) {
@@ -194,6 +194,7 @@ public class SwitchGroupBlock extends SwitchBlock implements IGroupBlock {
                 public void run() {
                     try {
                         Thread.sleep(IBlock.EXECUTE_DELAY);
+                        //noinspection unchecked
                         processCompleteListener.complete(true, null);
                     } catch (InterruptedException e) {
                         e.printStackTrace();

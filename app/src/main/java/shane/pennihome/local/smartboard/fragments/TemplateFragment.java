@@ -31,7 +31,6 @@ import shane.pennihome.local.smartboard.ui.listeners.OnBlockSelectListener;
  * Created by SPennicott on 09/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class TemplateFragment extends IFragment {
 
     private TemplateAdapter mAdapter;
@@ -99,6 +98,7 @@ public class TemplateFragment extends IFragment {
 
                 @Override
                 public void onItemLongClick(final Template item, final int position) {
+                    //noinspection rawtypes
                     UIHelper.showConfirm(getContext(), "Confirm",
                             String.format("Are you sure you want to delete the template block '%s'", item.getName()), new OnProcessCompleteListener() {
                         @Override

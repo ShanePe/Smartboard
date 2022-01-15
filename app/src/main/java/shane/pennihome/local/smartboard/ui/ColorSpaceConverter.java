@@ -1,7 +1,5 @@
 package shane.pennihome.local.smartboard.ui;
 
-import android.graphics.Color;
-
 public class ColorSpaceConverter {
 
     /**
@@ -51,9 +49,6 @@ public class ColorSpaceConverter {
         else if (white.equalsIgnoreCase("d55")) {
             whitePoint = D55;
             chromaWhitePoint = chromaD55;
-        }
-        else if (white.equalsIgnoreCase("d65")) {
-            chromaWhitePoint = chromaD65;
         }
         else if (white.equalsIgnoreCase("d75")) {
             whitePoint = D75;

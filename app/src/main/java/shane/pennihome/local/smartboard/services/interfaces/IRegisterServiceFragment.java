@@ -8,7 +8,6 @@ import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListen
  * Created by SPennicott on 02/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class IRegisterServiceFragment extends DialogFragment {
     private OnProcessCompleteListener<IService> mOnProcessCompleteListener;
     private IService mService;

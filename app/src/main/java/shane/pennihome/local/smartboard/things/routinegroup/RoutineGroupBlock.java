@@ -22,7 +22,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  * Created by shane on 19/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
+@SuppressWarnings("unchecked")
 public class RoutineGroupBlock extends RoutineBlock implements IGroupBlock {
     @IgnoreOnCopy
     private ArrayList<String> mThingKeys;
@@ -81,7 +81,7 @@ public class RoutineGroupBlock extends RoutineBlock implements IGroupBlock {
     }
 
     public void execute(final View indicator, final OnProcessCompleteListener<String> onProcessCompleteListener) {
-        new AsyncTask<Things, Void, Boolean>() {
+        @SuppressLint("StaticFieldLeak") final AsyncTask<Things, Void, Boolean> executor = new AsyncTask<Things, Void, Boolean>() {
             @Override
             protected void onPreExecute() {
                 indicator.setVisibility(View.VISIBLE);
@@ -108,13 +108,16 @@ public class RoutineGroupBlock extends RoutineBlock implements IGroupBlock {
                 indicator.setVisibility(View.GONE);
 
             }
-        }.execute(getThing(RoutineGroup.class).getChildThings());
+        };
+
+        executor.execute(getThing(RoutineGroup.class).getChildThings());
     }
 
     @SuppressLint("StaticFieldLeak")
     @Override
     public void execute(final View indicator, boolean delay, final OnProcessCompleteListener<String> onProcessCompleteListener) {
         if (delay) {
+            //noinspection rawtypes
             final OnProcessCompleteListener processCompleteListener = new OnProcessCompleteListener() {
                 @Override
                 public void complete(boolean success, Object source) {

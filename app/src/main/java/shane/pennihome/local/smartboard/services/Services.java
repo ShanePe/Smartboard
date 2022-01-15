@@ -3,7 +3,6 @@ package shane.pennihome.local.smartboard.services;
 import java.util.ArrayList;
 
 import shane.pennihome.local.smartboard.services.interfaces.IService;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
 /**
  * Created by shane on 30/01/18.

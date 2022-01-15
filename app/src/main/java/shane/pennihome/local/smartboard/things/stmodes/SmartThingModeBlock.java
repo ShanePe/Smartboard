@@ -10,7 +10,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
  * Created by shane on 11/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class SmartThingModeBlock extends IIconBlock {
     public static SmartThingModeBlock Load(String json) {
         try {

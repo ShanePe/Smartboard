@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.services.PhilipsHue;
+package shane.pennihome.local.smartboard.services.philipsHue;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -15,7 +15,6 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;

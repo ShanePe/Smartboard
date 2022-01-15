@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.services.SmartThings;
+package shane.pennihome.local.smartboard.services.smartThings;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
@@ -28,7 +28,6 @@ import shane.pennihome.local.smartboard.ui.dialogs.ProgressDialog;
  * Created by shane on 29/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class SmartThingsFragment extends IRegisterServiceFragment {
     @SuppressLint("SetJavaScriptEnabled")
     @Nullable
@@ -49,7 +48,7 @@ public class SmartThingsFragment extends IRegisterServiceFragment {
         web.getSettings().setLoadWithOverviewMode(true);
         web.getSettings().setUseWideViewPort(true);
         web.getSettings().setSupportZoom(false);
-        web.setWebContentsDebuggingEnabled(true);
+        WebView.setWebContentsDebuggingEnabled(true);
         web.setBackgroundColor(Color.TRANSPARENT);
 
         String requestUrl = (SmartThingsService.ST_OAUTH_URL +

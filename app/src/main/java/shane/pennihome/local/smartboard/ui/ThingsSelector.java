@@ -174,7 +174,7 @@ public class ThingsSelector extends LinearLayoutCompat {
 
     public static class SpinnerThingAdapter extends BaseAdapter implements SpinnerAdapter {
         private static LayoutInflater mInflater = null;
-        private Things mThings;
+        private final Things mThings;
         private Things mFilteredThings;
 
         public SpinnerThingAdapter(LayoutInflater inflater, Things things) {
@@ -207,8 +207,8 @@ public class ThingsSelector extends LinearLayoutCompat {
             if (position < getCount()) {
                 IThing thing = (IThing) getItem(position);
 
-                TextView txtName = (TextView) convertView.findViewById(R.id.txt_spin_name);
-                TextView txtSrc = (TextView) convertView.findViewById(R.id.txt_spin_source);
+                TextView txtName = convertView.findViewById(R.id.txt_spin_name);
+                TextView txtSrc = convertView.findViewById(R.id.txt_spin_source);
 
                 txtName.setText(thing.getName());
                 txtSrc.setText(thing instanceof Switch ? ((Switch) thing).getType() : thing.getThingType().toString());
@@ -279,8 +279,8 @@ public class ThingsSelector extends LinearLayoutCompat {
 
             IService service = (IService) getItem(position);
 
-            ImageView img = (ImageView) convertView.findViewById(R.id.img_spin_icon_srv);
-            TextView txtName = (TextView) convertView.findViewById(R.id.txt_spin_name_srv);
+            ImageView img = convertView.findViewById(R.id.img_spin_icon_srv);
+            TextView txtName = convertView.findViewById(R.id.txt_spin_name_srv);
 
             if (service.getServiceType() == IService.ServicesTypes.SmartThings)
                 img.setImageResource(R.mipmap.icon_switch_mm_fg);
@@ -296,7 +296,7 @@ public class ThingsSelector extends LinearLayoutCompat {
             return convertView;
         }
 
-        class BlankService extends IService {
+        static class BlankService extends IService {
 
             @Override
             public String getName() {

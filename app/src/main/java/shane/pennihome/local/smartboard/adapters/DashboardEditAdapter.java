@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.adapters;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -46,6 +47,7 @@ public class DashboardEditAdapter extends RecyclerView.Adapter<DashboardEditAdap
         mDashboards = values;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext())
@@ -71,6 +73,7 @@ public class DashboardEditAdapter extends RecyclerView.Adapter<DashboardEditAdap
         holder.mDelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
+                //noinspection rawtypes
                 UIHelper.showConfirm(view.getContext(), "Confirm", "Are you sure you want to delete this dashboard_view_group_list", new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
@@ -96,8 +99,6 @@ public class DashboardEditAdapter extends RecyclerView.Adapter<DashboardEditAdap
                 bgResId = R.drawable.btn_round_accent;
             } else if ((dragState & DashboardEditAdapter.Draggable.STATE_FLAG_DRAGGING) != 0) {
                 bgResId = R.drawable.btn_round_dark;
-            } else {
-                bgResId = R.drawable.btn_round;
             }
         }
 
@@ -136,18 +137,18 @@ public class DashboardEditAdapter extends RecyclerView.Adapter<DashboardEditAdap
 
     @Override
     public void onItemDragStarted(int position) {
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
     @Override
     public void onItemDragFinished(int fromPosition, int toPosition, boolean result) {
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
     private interface Draggable extends DraggableItemConstants {
     }
 
-    public class ViewHolder extends AbstractDraggableItemViewHolder {
+    public static class ViewHolder extends AbstractDraggableItemViewHolder {
         final View mView;
         final TextView mNameView;
         final LinearLayoutCompat mContainer;

@@ -26,7 +26,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlock;
  * Created by SPennicott on 10/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class TemplateProperties extends LinearLayoutCompat {
     private Templates mTemplates;
     private Spinner mSpTemplate;
@@ -152,7 +151,7 @@ public class TemplateProperties extends LinearLayoutCompat {
         db.writeToDatabase(template);
     }
 
-    private class TemplateAdapter extends BaseAdapter implements SpinnerAdapter
+    private static class TemplateAdapter extends BaseAdapter implements SpinnerAdapter
     {
         final Templates mTemplates;
 

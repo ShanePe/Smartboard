@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.things.stmodes;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,10 +16,9 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
  * Created by shane on 11/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class SmartThingsModeAdapter extends RecyclerView.Adapter<SmartThingsModeAdapter.ViewHolder> {
-    private SmartThingMode mSmartThingMode;
-    private OnModeSelectedListener mOnModeSelectedListener;
+    private final SmartThingMode mSmartThingMode;
+    private final OnModeSelectedListener mOnModeSelectedListener;
 
     SmartThingsModeAdapter(OnModeSelectedListener onModeSelectedListener) throws Exception {
         IThings<SmartThingMode> things = Monitor.getMonitor().getThings(SmartThingMode.class);
@@ -29,6 +29,7 @@ public class SmartThingsModeAdapter extends RecyclerView.Adapter<SmartThingsMode
         mOnModeSelectedListener = onModeSelectedListener;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -61,7 +62,7 @@ public class SmartThingsModeAdapter extends RecyclerView.Adapter<SmartThingsMode
         void OnModeSelected(int index, String name);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final LinearLayoutCompat mContainer;
         private final TextView mText;
 

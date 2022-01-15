@@ -17,7 +17,6 @@ import shane.pennihome.local.smartboard.ui.listeners.OnForegroundActionListener;
  * Created by shane on 27/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class ForegroundSelector extends LinearLayoutCompat {
     private int mBtnHeight;
     private Button mColourBtn;
@@ -81,6 +80,7 @@ public class ForegroundSelector extends LinearLayoutCompat {
         mColourBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                //noinspection rawtypes
                 UIHelper.showColourPicker(context, mColour, new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {

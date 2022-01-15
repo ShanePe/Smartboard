@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.services.SmartThings;
+package shane.pennihome.local.smartboard.services.smartThings;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

@@ -13,7 +13,7 @@ import shane.pennihome.local.smartboard.R;
  * Created by shane on 26/01/18.
  */
 
-@SuppressWarnings({"DefaultFileTemplate", "unused"})
+@SuppressWarnings({"unused"})
 public class GroupTitle extends LinearLayoutCompat {
     private TextView mTitleTextView;
     private String mTitle;

@@ -1,6 +1,7 @@
 package shane.pennihome.local.smartboard.thingsframework.adapters;
 
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,6 @@ import shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener;
  * Created by shane on 20/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.ViewHolder>
         implements DraggableItemAdapter<GroupEditAdapter.ViewHolder> {
 
@@ -51,6 +51,7 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
         return mSmartboardActivity.getDashboard().getGroupAt(position).getPosition();
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -73,6 +74,7 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
         holder.mBtnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //noinspection rawtypes
                 UIHelper.showConfirm(mSmartboardActivity, "Confirm", "Are you sure you want to remove this group?", new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
@@ -151,8 +153,6 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
                 bgResId = R.drawable.btn_round_accent;
             } else if ((dragState & GroupEditAdapter.Draggable.STATE_FLAG_DRAGGING) != 0) {
                 bgResId = R.drawable.btn_round_dark;
-            } else {
-                bgResId = R.drawable.btn_round;
             }
         }
 
@@ -189,7 +189,7 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
     public void onMoveItem(int fromPosition, int toPosition) {
         Group item = mSmartboardActivity.getDashboard().getGroups().remove(fromPosition);
         mSmartboardActivity.getDashboard().getGroups().add(toPosition, item);
-        this.notifyDataSetChanged();
+        //this.notifyDataSetChanged();
     }
 
     @Override
@@ -204,7 +204,7 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
 
     @Override
     public void onItemDragFinished(int fromPosition, int toPosition, boolean result) {
-        this.notifyDataSetChanged();
+        //this.notifyDataSetChanged();
     }
 
     private void rotateView(final View view, final boolean expanded) {

@@ -1,10 +1,9 @@
-package shane.pennihome.local.smartboard.services.PhilipsHue;
+package shane.pennihome.local.smartboard.services.philipsHue;
 
 /**
  * Created by shane on 31/12/17.
  */
 
-@SuppressWarnings("ALL")
 public class HueBridge {
     private String mIp;
     private String mId;

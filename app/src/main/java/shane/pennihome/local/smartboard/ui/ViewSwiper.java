@@ -23,7 +23,6 @@ import shane.pennihome.local.smartboard.R;
  * Created by shane on 27/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class ViewSwiper extends ViewPager {
     private ViewAdapter mViewAdapter;
     private TabLayout mTabLayout;
@@ -203,7 +202,7 @@ public class ViewSwiper extends ViewPager {
         void removeView(String name)
         {
             for(int i=0;i<mTabs.size();i++)
-                if(mTabs.get(i).first.toLowerCase().equals(name.toLowerCase()))
+                if(mTabs.get(i).first.equalsIgnoreCase(name))
                 {
                     mTabs.remove(i);
                     mViewCache.remove(i);

@@ -35,7 +35,6 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IBlockUIHandl
  * Created by shane on 03/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class DashboardView extends LinearLayoutCompat {
     private Dashboard mDashboard;
     private LinearLayoutCompat mContainer;
@@ -125,7 +124,7 @@ public class DashboardView extends LinearLayoutCompat {
         });
         mBGDrawer.start();
 
-        mGroupViewAdapter.notifyDataSetChanged();
+        //mGroupViewAdapter.notifyDataSetChanged();
     }
 
     class GroupViewAdapter extends RecyclerView.Adapter<GroupViewAdapter.ViewHolder> {
@@ -164,6 +163,7 @@ public class DashboardView extends LinearLayoutCompat {
            // holder.mBlockView.setDebugging(true);
             holder.mBlockView.setRequestedHorizontalSpacing(Globals.BLOCK_PADDING);
             holder.mBlockView.addItemDecoration(new SpacesItemDecoration(Globals.BLOCK_PADDING));
+            //noinspection rawtypes
             AsymmetricRecyclerViewAdapter aptr = new AsymmetricRecyclerViewAdapter<>(holder.itemView.getContext(), holder.mBlockView, adapter);
             holder.mBlockView.setAdapter(aptr);
         }
@@ -204,13 +204,11 @@ public class DashboardView extends LinearLayoutCompat {
         }
     }
 
-    class BlockViewAdapter extends AGVRecyclerViewAdapter<IBlockUIHandler.BlockViewHolder> {
+    static class BlockViewAdapter extends AGVRecyclerViewAdapter<IBlockUIHandler.BlockViewHolder> {
         private final Group mGroup;
-        private final int mBlockSize;
 
         BlockViewAdapter(Group group, int blockSize) {
             this.mGroup = group;
-            this.mBlockSize = blockSize;
         }
 
         @Override

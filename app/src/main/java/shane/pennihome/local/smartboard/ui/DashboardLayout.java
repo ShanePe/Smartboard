@@ -14,7 +14,6 @@ import shane.pennihome.local.smartboard.data.Dashboards;
  * Created by shane on 03/02/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class DashboardLayout extends LinearLayoutCompat {
     private Dashboards mDashboards;
     private ViewSwiper mViewSwiper;

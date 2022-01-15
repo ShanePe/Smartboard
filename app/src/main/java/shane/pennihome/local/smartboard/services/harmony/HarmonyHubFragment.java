@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.services.Harmony;
+package shane.pennihome.local.smartboard.services.harmony;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -26,7 +26,6 @@ import shane.pennihome.local.smartboard.comms.JsonExecutorResult;
 import shane.pennihome.local.smartboard.comms.interfaces.OnExecutorRequestActionListener;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
 import shane.pennihome.local.smartboard.data.NameValuePair;
-import shane.pennihome.local.smartboard.services.PhilipsHue.HueBridgeService;
 import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
 import shane.pennihome.local.smartboard.ui.LabelTextbox;
 import shane.pennihome.local.smartboard.ui.dialogs.ProgressDialog;
@@ -88,9 +87,9 @@ public class HarmonyHubFragment extends IRegisterServiceFragment {
     private static class RemoteGetter extends AsyncTask<Void, Void, Long> {
         private final WeakReference<Context> mContext;
         ProgressDialog mProgressDialog;
-        private OnProcessCompleteListener<Long> mOnProcessCompleteListener;
-        private String mIp;
-        private String mPort;
+        private final OnProcessCompleteListener<Long> mOnProcessCompleteListener;
+        private final String mIp;
+        private final String mPort;
 
         private RemoteGetter(Context context, String ip, String port, OnProcessCompleteListener<Long> onProcessCompleteListener) {
             this.mContext = new WeakReference<>(context);

@@ -11,15 +11,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import shane.pennihome.local.smartboard.R;
-import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
-import shane.pennihome.local.smartboard.services.Services;
-import shane.pennihome.local.smartboard.services.interfaces.IService;
-import shane.pennihome.local.smartboard.services.interfaces.IThingsGetter;
 
 /**
  * Created by shane on 30/01/18.
@@ -64,7 +57,7 @@ public class LoaderAdapter extends RecyclerView.Adapter<LoaderAdapter.ViewHolder
         return mMessages == null ? 0 : mMessages.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final TextView mDesc;
         Pair<String,String> mLoadMessage;

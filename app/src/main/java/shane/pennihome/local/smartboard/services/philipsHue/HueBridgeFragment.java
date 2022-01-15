@@ -1,4 +1,4 @@
-package shane.pennihome.local.smartboard.services.PhilipsHue;
+package shane.pennihome.local.smartboard.services.philipsHue;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;

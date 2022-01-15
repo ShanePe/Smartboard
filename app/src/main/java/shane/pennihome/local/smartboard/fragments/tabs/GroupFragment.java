@@ -24,7 +24,6 @@ import shane.pennihome.local.smartboard.ui.UIHelper;
  * Created by shane on 20/01/18.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class GroupFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -41,6 +40,7 @@ public class GroupFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.mnu_dash_add) {
             final SmartboardActivity smartboardActivity = (SmartboardActivity) getContext();
+            //noinspection rawtypes
             UIHelper.showInput(smartboardActivity, getString(R.string.lbl_add_group_msg), new OnProcessCompleteListener() {
                 @Override
                 public void complete(boolean success, Object source) {
@@ -49,7 +49,7 @@ public class GroupFragment extends Fragment {
                             .getDashboard()
                             .getGroups()
                             .add(new Group((String)source));
-                    smartboardActivity.getGroupAdapter().notifyDataSetChanged();
+                    //smartboardActivity.getGroupAdapter().notifyDataSetChanged();
                 }
             });
         }

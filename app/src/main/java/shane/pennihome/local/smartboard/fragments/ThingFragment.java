@@ -13,13 +13,13 @@ import android.view.ViewGroup;
 
 import shane.pennihome.local.smartboard.MainActivity;
 import shane.pennihome.local.smartboard.fragments.interfaces.IFragment;
+import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 /**
  * Created by shane on 29/12/17.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public abstract class ThingFragment extends IFragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -55,7 +55,8 @@ public abstract class ThingFragment extends IFragment {
 
     protected abstract int getFragmentLayout();
 
-    protected abstract RecyclerView.Adapter getAdapter(IThings things);
+    @SuppressWarnings("rawtypes")
+    protected abstract RecyclerView.Adapter getAdapter(Things things);
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -76,5 +77,5 @@ public abstract class ThingFragment extends IFragment {
         return view;
     }
 
-    abstract IThings getDataSource();
+    abstract Things getDataSource();
 }

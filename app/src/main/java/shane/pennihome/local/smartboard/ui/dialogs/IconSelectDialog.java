@@ -12,6 +12,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import java.util.Objects;
+
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.adapters.IconAdapter;
 import shane.pennihome.local.smartboard.ui.listeners.OnIconActionListener;
@@ -20,7 +22,6 @@ import shane.pennihome.local.smartboard.ui.listeners.OnIconActionListener;
  * Created by SPennicott on 06/02/2018.
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class IconSelectDialog extends DialogFragment {
     private OnIconActionListener mOnIconActionListener;
     private String mIconPath;
@@ -61,7 +62,7 @@ public class IconSelectDialog extends DialogFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setSelected(true);
 
-        IconAdapter iconAdapter = new IconAdapter(getContext());
+        IconAdapter iconAdapter = new IconAdapter(Objects.requireNonNull(getContext()));
         iconAdapter.setSelected(getIconPath());
         recyclerView.setAdapter(iconAdapter);
 
