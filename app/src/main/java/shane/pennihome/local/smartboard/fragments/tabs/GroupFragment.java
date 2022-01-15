@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.fragments.tabs;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
+
+import java.util.Objects;
 
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
@@ -42,14 +45,14 @@ public class GroupFragment extends Fragment {
             final SmartboardActivity smartboardActivity = (SmartboardActivity) getContext();
             //noinspection rawtypes
             UIHelper.showInput(smartboardActivity, getString(R.string.lbl_add_group_msg), new OnProcessCompleteListener() {
+                @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void complete(boolean success, Object source) {
-                    assert smartboardActivity != null;
                     smartboardActivity
                             .getDashboard()
                             .getGroups()
                             .add(new Group((String)source));
-                    //smartboardActivity.getGroupAdapter().notifyDataSetChanged();
+                    Objects.requireNonNull(smartboardActivity).getGroupAdapter().notifyDataSetChanged();
                 }
             });
         }

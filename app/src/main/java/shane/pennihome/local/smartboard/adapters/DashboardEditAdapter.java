@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.adapters;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
@@ -135,14 +136,16 @@ public class DashboardEditAdapter extends RecyclerView.Adapter<DashboardEditAdap
         return true;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onItemDragStarted(int position) {
-        //notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onItemDragFinished(int fromPosition, int toPosition, boolean result) {
-        //notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     private interface Draggable extends DraggableItemConstants {

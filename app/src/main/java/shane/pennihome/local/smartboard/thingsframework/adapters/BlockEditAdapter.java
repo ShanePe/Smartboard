@@ -96,7 +96,7 @@ public class BlockEditAdapter extends RecyclerView.Adapter<IBlockUIHandler.Block
                 UIHelper.showBlockPropertyWindow(mSmartboardActivity, block, new OnBlockSetListener() {
                     @Override
                     public void OnSet(IBlock block) {
-                        mGroup.getGroupViewHandler().NotifyChanged();
+                        //mGroup.getGroupViewHandler().NotifyChanged();
                     }
                 });
             }

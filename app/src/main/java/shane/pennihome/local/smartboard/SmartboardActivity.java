@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -98,9 +99,10 @@ public class SmartboardActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void DataChanged() {
         writeDashboardToDatabase();
-        //mGroupEditAdapter.notifyDataSetChanged();
+        mGroupEditAdapter.notifyDataSetChanged();
     }
 
     private void hideKeyboard() {

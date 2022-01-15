@@ -44,17 +44,20 @@ public class LoaderDialog extends Dialog {
         setContentView(mRecycleView);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public synchronized void setMessages(ArrayList<Pair<String, String>> messages) {
         mAdapter.setMessages(messages);
-        //mAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public synchronized void addMessage(Pair<String, String> message) {
         mAdapter.addMessage(message);
-        //mAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
         Log.i("Loader", String.format("Added message %s with key: %s", message.first, message.second));
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public synchronized void removeMessage(final String key) {
 
         Log.i("Loader", String.format("Removing message with key: %s", key));
@@ -66,7 +69,7 @@ public class LoaderDialog extends Dialog {
 
         if (item != null) {
             mAdapter.getMessages().remove(item);
-          //  mAdapter.notifyDataSetChanged();
+            mAdapter.notifyDataSetChanged();
         }
     }
 

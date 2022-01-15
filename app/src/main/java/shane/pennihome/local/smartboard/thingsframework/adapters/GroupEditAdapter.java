@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.thingsframework.adapters;
 
+import android.annotation.SuppressLint;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -185,11 +186,12 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
         return null;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onMoveItem(int fromPosition, int toPosition) {
         Group item = mSmartboardActivity.getDashboard().getGroups().remove(fromPosition);
         mSmartboardActivity.getDashboard().getGroups().add(toPosition, item);
-        //this.notifyDataSetChanged();
+        this.notifyDataSetChanged();
     }
 
     @Override
@@ -202,9 +204,10 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onItemDragFinished(int fromPosition, int toPosition, boolean result) {
-        //this.notifyDataSetChanged();
+        this.notifyDataSetChanged();
     }
 
     private void rotateView(final View view, final boolean expanded) {

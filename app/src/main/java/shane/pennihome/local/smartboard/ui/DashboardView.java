@@ -1,5 +1,6 @@
 package shane.pennihome.local.smartboard.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -80,6 +81,7 @@ public class DashboardView extends LinearLayoutCompat {
         mRecycleView.setAdapter(mGroupViewAdapter);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void doPropertyChanged() {
         if (getDashboard() == null)
             return;
@@ -124,7 +126,7 @@ public class DashboardView extends LinearLayoutCompat {
         });
         mBGDrawer.start();
 
-        //mGroupViewAdapter.notifyDataSetChanged();
+        mGroupViewAdapter.notifyDataSetChanged();
     }
 
     class GroupViewAdapter extends RecyclerView.Adapter<GroupViewAdapter.ViewHolder> {
