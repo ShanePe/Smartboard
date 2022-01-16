@@ -129,6 +129,13 @@ public class Dashboard extends IDatabaseObject {
         return mGroups.get(index);
     }
 
+    public int getGroupIndex(Group g) {
+        for (int i = 0; i < mGroups.size(); i++)
+            if (mGroups.get(i) == g)
+                return i;
+        return -1;
+    }
+
     @ColorInt
     public int getBackgroundColourWithAlpha() {
         return UIHelper.getColorWithAlpha(getBackgroundColour(), getBackgroundColourTransparency() / 100f);

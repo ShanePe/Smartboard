@@ -2,6 +2,7 @@ package shane.pennihome.local.smartboard;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -21,56 +22,77 @@ import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.fragments.tabs.GroupFragment;
 import shane.pennihome.local.smartboard.fragments.tabs.SmartboardFragment;
 import shane.pennihome.local.smartboard.thingsframework.adapters.GroupEditAdapter;
+import shane.pennihome.local.smartboard.ui.dialogs.ProgressDialog;
 
 public class SmartboardActivity extends AppCompatActivity {
-
+    private static AsyncTask<Void, Void, Void> mLoaderTask;
     private Dashboard mDashboard;
     private GroupEditAdapter mGroupEditAdapter;
+
+    @SuppressLint("StaticFieldLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_smartboard);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_sb);
-        setSupportActionBar(toolbar);
-
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        ViewPager mViewPager = findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        TabLayout tabLayout = findViewById(R.id.tabs);
-
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        final ProgressDialog progressDialog = new ProgressDialog();
+        progressDialog.setMessage("Loading ...");
+        progressDialog.show(this);
 
         mGroupEditAdapter = new GroupEditAdapter(this);
 
-        Bundle extras = getIntent().getExtras();
-        assert extras != null;
-        mDashboard = Dashboard.Load(extras.getString("dashboard_view_group_list"));
-        mDashboard.loadThings();
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        mLoaderTask = new AsyncTask<Void, Void, Void>() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                hideKeyboard();
+            protected void onPostExecute(Void unused) {
+                setContentView(R.layout.activity_smartboard);
+
+                Toolbar toolbar = findViewById(R.id.toolbar_sb);
+                setSupportActionBar(toolbar);
+
+                final ActionBar actionBar = getSupportActionBar();
+                assert actionBar != null;
+                actionBar.setDisplayHomeAsUpEnabled(true);
+
+                SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+                final ViewPager mViewPager = findViewById(R.id.container);
+                mViewPager.setAdapter(mSectionsPagerAdapter);
+
+                TabLayout tabLayout = findViewById(R.id.tabs);
+
+                mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+                tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+                tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        hideKeyboard();
+                    }
+
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
+
+                    }
+
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
+
+                    }
+                });
+
+                progressDialog.dismiss();
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
+            protected Void doInBackground(Void... voids) {
+                Bundle extras = getIntent().getExtras();
+                assert extras != null;
+                mDashboard = Dashboard.Load(extras.getString("dashboard_view_group_list"));
+                mDashboard.loadThings();
+                return null;
             }
+        };
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        mLoaderTask.execute();
     }
 
     private void writeDashboardToDatabase() {
@@ -122,8 +144,7 @@ public class SmartboardActivity extends AppCompatActivity {
         return mDashboard;
     }
 
-    public GroupEditAdapter getGroupAdapter()
-    {
+    public GroupEditAdapter getGroupAdapter() {
         return mGroupEditAdapter;
     }
 
@@ -152,9 +173,9 @@ public class SmartboardActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0:
-                    return SmartboardFragment.newInstance(1);
                 case 1:
+                    return SmartboardFragment.newInstance(1);
+                case 0:
                     return GroupFragment.newInstance(2);
                 default:
                     return null;

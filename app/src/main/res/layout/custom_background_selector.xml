@@ -27,6 +27,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/cbv_pad_head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/cbv_pad"
+                android:text="@string/txt_padding"
+                android:textColor="?android:attr/textColorPrimaryInverseNoDisable"
+                />
+
+            <EditText
+                android:autofillHints=""
+                android:id="@+id/cbv_pad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:selectAllOnFocus="true"
+                android:textColor="?android:attr/textColorPrimaryInverseNoDisable" />
+
             <ImageButton
                 android:id="@+id/cbv_colour"
                 android:layout_width="100dp"
@@ -83,24 +102,6 @@
                 android:entries="@array/render_options"
                 android:textColor="?android:attr/textColorPrimaryInverseNoDisable"
                 />
-
-            <TextView
-                android:id="@+id/cbv_pad_head"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:labelFor="@id/cbv_pad"
-                android:text="@string/txt_padding"
-                android:textColor="?android:attr/textColorPrimaryInverseNoDisable"
-                />
-
-            <EditText
-                android:autofillHints=""
-                android:id="@+id/cbv_pad"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="number"
-                android:textColor="?android:attr/textColorPrimaryInverseNoDisable" />
 
         </android.support.v7.widget.LinearLayoutCompat>
 

@@ -22,6 +22,8 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstant
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
 
+import java.util.Objects;
+
 import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.SmartboardActivity;
 import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListener;
@@ -32,6 +34,7 @@ import shane.pennihome.local.smartboard.ui.GroupViewHandler;
 import shane.pennihome.local.smartboard.ui.UIHelper;
 import shane.pennihome.local.smartboard.ui.listeners.OnBlockSelectListener;
 import shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener;
+import tech.gusavila92.apache.http.util.TextUtils;
 
 /**
  * Created by shane on 20/01/18.
@@ -65,7 +68,7 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
         final Group group = mSmartboardActivity.getDashboard().getGroupAt(position);
         ViewGroup parent = (ViewGroup) holder.mView;
 
-        if(holder.mGroup == null)
+        if (holder.mGroup == null)
             holder.mGroup = group;
 
         holder.mTxtName.setText(group.getName());
@@ -82,6 +85,40 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
                         if (success) {
                             mSmartboardActivity.getDashboard().getGroups().remove(group);
                             mSmartboardActivity.DataChanged();
+                        }
+                    }
+                });
+            }
+        });
+
+        holder.mBtnCopy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIHelper.showInput(mSmartboardActivity, "Name of the copied group", group.getName() + " (Copy)", new OnProcessCompleteListener<String>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void complete(boolean success, String source) {
+                        if (success) {
+                            if (TextUtils.isEmpty(source)) {
+                                Toast.makeText(mSmartboardActivity, "Please supply a new group name", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            Group group1 = new Group();
+                            group1.setName(source);
+                            for (IBlock b : group.getBlocks()) {
+                                try {
+                                    group1.getBlocks().add(b.clone());
+                                } catch (CloneNotSupportedException e) {
+                                    Toast.makeText(mSmartboardActivity, "Error copying group: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            }
+                            group1.setUIExpanded(true);
+                            mSmartboardActivity
+                                    .getDashboard()
+                                    .getGroups()
+                                    .add(group1);
+                            Objects.requireNonNull(mSmartboardActivity).getGroupAdapter().notifyDataSetChanged();
                         }
                     }
                 });
@@ -122,14 +159,14 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
                     public void BlockSelected(IBlock block) {
                         createBlockInstance(block, group);
                         UIHelper.showBlockPropertyWindow(mSmartboardActivity, block, group, new OnBlockSetListener() {
-                                    @Override
-                                    public void OnSet(IBlock block) {
-                                        group.getBlocks().add(block);
-                                        group.getGroupViewHandler().NotifyChanged();
-                                        if (!holder.mExpanded)
-                                            holder.showBlocks(true);
-                                    }
-                                });
+                            @Override
+                            public void OnSet(IBlock block) {
+                                group.getBlocks().add(block);
+                                group.getGroupViewHandler().NotifyChanged();
+                                if (!holder.mExpanded)
+                                    holder.showBlocks(true);
+                            }
+                        });
                     }
                 });
             }
@@ -244,6 +281,8 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
         final ImageButton mBtnProps;
         final ImageButton mBtnAdd;
         final ImageButton mBtnDelete;
+        final ImageButton mBtnMove;
+        final ImageButton mBtnCopy;
         final RecyclerView mRVBlocks;
         @SuppressWarnings("unused")
         final LinearLayout mContainer;
@@ -261,7 +300,9 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
             mTxtName = itemView.findViewById(R.id.txt_row_name);
             mBtnProps = itemView.findViewById(R.id.btn_add_prop);
             mBtnAdd = itemView.findViewById(R.id.btn_add_block);
+            mBtnMove = itemView.findViewById(R.id.btn_move_item);
             mBtnDelete = itemView.findViewById(R.id.btn_delete_item);
+            mBtnCopy = itemView.findViewById(R.id.btn_copy_item);
             mRVBlocks = itemView.findViewById(R.id.list_blocks);
             mContainer = itemView.findViewById(R.id.group_container);
             mChildCount = itemView.findViewById(R.id.txt_row_child_count);
@@ -278,25 +319,23 @@ public class GroupEditAdapter extends RecyclerView.Adapter<GroupEditAdapter.View
             showBlocksAction(show);
         }
 
-        private void showBlocksAction(boolean show)
-        {
-            if(mExpanded == show)
+        private void showBlocksAction(boolean show) {
+            if (mExpanded == show)
                 return;
 
             mExpanded = show;
-            if(mGroup != null)
+            if (mGroup != null)
                 mGroup.setUIExpanded(show);
 
             //scaleView(mRVBlocks, mExpanded);
-            mRVBlocks.setVisibility(show? View.VISIBLE : View.GONE);
+            mRVBlocks.setVisibility(show ? View.VISIBLE : View.GONE);
             rotateView(mBtnExpand, mExpanded);
 
-            if(show)
+            if (show)
                 mChildCount.setVisibility(View.GONE);
-            else
-            {
+            else {
                 int itemCount = (mGroup == null ? mRVBlocks.getChildCount() : mGroup.getBlocks().size());
-                mChildCount.setText(String.format("| %s |",itemCount));
+                mChildCount.setText(String.format("| %s |", itemCount));
                 mChildCount.setVisibility(itemCount != 0 ? View.VISIBLE : View.GONE);
             }
         }

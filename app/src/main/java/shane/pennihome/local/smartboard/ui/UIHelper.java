@@ -550,12 +550,19 @@ public class UIHelper {
         return shape;
     }
 
-    public static void showInput(final Context context, String title, final OnProcessCompleteListener onProcessCompleteListener) {
+    public static void showInput(final Context context, String title,final OnProcessCompleteListener<String> onProcessCompleteListener) {
+        showInput(context,title,null,onProcessCompleteListener);
+    }
+
+    public static void showInput(final Context context, String title,String defText, final OnProcessCompleteListener<String> onProcessCompleteListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title);
 
         final EditText input = new EditText(context);
+        input.setSelectAllOnFocus(true);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
+        if(defText!=null)
+            input.setText(defText);
         builder.setView(input);
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

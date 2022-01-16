@@ -5,16 +5,44 @@
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.23177083333333334" />
         <entry key="app/src/main/res/drawable-v24/harm_logo_foreground.xml" value="0.38177083333333334" />
+        <entry key="app/src/main/res/drawable/btn_circle.xml" value="0.21875" />
+        <entry key="app/src/main/res/drawable/btn_round.xml" value="0.21875" />
+        <entry key="app/src/main/res/drawable/btn_round_accent.xml" value="0.21875" />
+        <entry key="app/src/main/res/drawable/btn_round_dark.xml" value="0.21875" />
         <entry key="app/src/main/res/drawable/default_background.xml" value="0.22083333333333333" />
         <entry key="app/src/main/res/drawable/harm_logo_background.xml" value="0.38177083333333334" />
+        <entry key="app/src/main/res/drawable/harm_logo_mm_large_background.xml" value="0.38177083333333334" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.38177083333333334" />
+        <entry key="app/src/main/res/drawable/seekbar_background.xml" value="0.21875" />
+        <entry key="app/src/main/res/drawable/seekbar_progress.xml" value="0.21875" />
+        <entry key="app/src/main/res/drawable/seekbar_progress_fill.xml" value="0.21875" />
+        <entry key="app/src/main/res/drawable/seekbar_thumb.xml" value="0.21875" />
+        <entry key="app/src/main/res/drawable/white_background_round.xml" value="0.21875" />
+        <entry key="app/src/main/res/layout-v23/block_view_routine.xml" value="0.21927083333333333" />
+        <entry key="app/src/main/res/layout-v23/block_view_routinegroup.xml" value="0.21927083333333333" />
+        <entry key="app/src/main/res/layout-v23/block_view_stmode.xml" value="0.21927083333333333" />
+        <entry key="app/src/main/res/layout-v23/block_view_switch.xml" value="0.2791666666666667" />
+        <entry key="app/src/main/res/layout-v23/block_view_switchgroup.xml" value="0.2791666666666667" />
+        <entry key="app/src/main/res/layout-v23/block_view_temperature.xml" value="0.2791666666666667" />
         <entry key="app/src/main/res/layout-v23/custom_thing_properties.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout-v23/custom_thing_properties_icon.xml" value="0.27350427350427353" />
+        <entry key="app/src/main/res/layout-v23/dashboard_edit_group_listitem.xml" value="0.2791666666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20260416666666667" />
         <entry key="app/src/main/res/layout/activity_smartboard.xml" value="0.20260416666666667" />
-        <entry key="app/src/main/res/layout/block_edit_switch.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.21927083333333333" />
+        <entry key="app/src/main/res/layout/block_edit_routine.xml" value="0.21927083333333333" />
+        <entry key="app/src/main/res/layout/block_edit_routinegroup.xml" value="0.21927083333333333" />
+        <entry key="app/src/main/res/layout/block_edit_stmode.xml" value="0.21927083333333333" />
+        <entry key="app/src/main/res/layout/block_edit_switch.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/block_edit_switchgroup.xml" value="0.21927083333333333" />
+        <entry key="app/src/main/res/layout/block_edit_temperature.xml" value="0.21927083333333333" />
+        <entry key="app/src/main/res/layout/block_edit_time.xml" value="0.21927083333333333" />
+        <entry key="app/src/main/res/layout/block_view_routine.xml" value="0.21927083333333333" />
         <entry key="app/src/main/res/layout/block_view_routinegroup.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/block_view_stmode.xml" value="0.21927083333333333" />
         <entry key="app/src/main/res/layout/block_view_switch.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/block_view_switchgroup.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/block_view_temperature.xml" value="0.2791666666666667" />
         <entry key="app/src/main/res/layout/custom_background_selector.xml" value="0.3055987558320373" />
         <entry key="app/src/main/res/layout/custom_foreground_selector.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/custom_group_title.xml" value="0.2046875" />
@@ -27,8 +55,11 @@
         <entry key="app/src/main/res/layout/custom_thing_properties.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/custom_thing_properties_icon.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/custom_things_selector.xml" value="0.20260416666666667" />
+        <entry key="app/src/main/res/layout/dashboard_edit_block_list.xml" value="0.20520833333333333" />
+        <entry key="app/src/main/res/layout/dashboard_edit_group_listitem.xml" value="0.365625" />
         <entry key="app/src/main/res/layout/dashboard_view_group_list.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/dashboard_view_layout.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/dialog_group_select.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layout/dialog_huebridge_man.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/dialog_icon.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/dialog_icon_list.xml" value="0.2046875" />
@@ -45,6 +76,7 @@
         <entry key="app/src/main/res/layout/fragment_smart_things_PAT.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/fragment_smart_things_pat.xml" value="0.3120471014492754" />
         <entry key="app/src/main/res/layout/fragment_template.xml" value="0.2046875" />
+        <entry key="app/src/main/res/layout/prop_group.xml" value="0.21927083333333333" />
         <entry key="app/src/main/res/layout/prop_routine.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/prop_routinegroup.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/prop_stmode.xml" value="0.2046875" />
@@ -53,7 +85,8 @@
         <entry key="app/src/main/res/layout/service_startup.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/service_startup_list.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/services_list.xml" value="0.20520833333333333" />
-        <entry key="app/src/main/res/layout/spinner_service.xml" value="0.20260416666666667" />
+        <entry key="app/src/main/res/layout/spinner_group.xml" value="0.20520833333333333" />
+        <entry key="app/src/main/res/layout/spinner_service.xml" value="0.24721279689772177" />
         <entry key="app/src/main/res/layout/spinner_template.xml" value="0.20260416666666667" />
         <entry key="app/src/main/res/layout/spinner_thing.xml" value="0.20260416666666667" />
         <entry key="app/src/main/res/layout/tab_smartboard_dash.xml" value="0.2046875" />
@@ -65,9 +98,11 @@
         <entry key="app/src/main/res/mipmap-anydpi-v26/icon_add_mm.xml" value="0.21875" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/icon_add_mm_round.xml" value="0.21875" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/icon_colour_picker_mm.xml" value="0.21875" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/icon_copy_mm_round.xml" value="0.22083333333333333" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/icon_dashboard_mm.xml" value="0.21875" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/icon_dashboard_mm_round.xml" value="0.21875" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/icon_def_dimgroup_mm.xml" value="0.21875" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/icon_move_mm.xml" value="0.38177083333333334" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/icon_phlogo_mm.xml" value="0.22135416666666666" />
       </map>
     </option>

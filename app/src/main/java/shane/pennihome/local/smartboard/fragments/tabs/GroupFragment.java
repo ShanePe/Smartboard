@@ -43,15 +43,15 @@ public class GroupFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.mnu_dash_add) {
             final SmartboardActivity smartboardActivity = (SmartboardActivity) getContext();
-            //noinspection rawtypes
-            UIHelper.showInput(smartboardActivity, getString(R.string.lbl_add_group_msg), new OnProcessCompleteListener() {
+            UIHelper.showInput(smartboardActivity, getString(R.string.lbl_add_group_msg), new OnProcessCompleteListener<String>() {
                 @SuppressLint("NotifyDataSetChanged")
                 @Override
-                public void complete(boolean success, Object source) {
+                public void complete(boolean success, String source) {
+                    assert smartboardActivity != null;
                     smartboardActivity
                             .getDashboard()
                             .getGroups()
-                            .add(new Group((String)source));
+                            .add(new Group(source));
                     Objects.requireNonNull(smartboardActivity).getGroupAdapter().notifyDataSetChanged();
                 }
             });

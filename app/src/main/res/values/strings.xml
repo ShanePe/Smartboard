@@ -91,6 +91,7 @@
     <string name="hide_title">Hide Title</string>
     <string name="port">Port</string>
     <string name="device_harm_label">Harmony Hub</string>
-
+    <string name="lbl_avl_groups">Available Groups</string>
+    <string name="lbl_elipse">…</string>
 
 </resources>

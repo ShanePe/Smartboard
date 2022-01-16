@@ -79,8 +79,8 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="$USER_HOME$/Downloads/harmony_logo.png" />
-                                                <entry key="scalingPercent" value="53" />
+                                                <entry key="imagePath" value="$USER_HOME$/Downloads/icons8-move-64.png" />
+                                                <entry key="scalingPercent" value="60" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -114,9 +114,9 @@
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
                                       <entry key="backgroundColor" value="424242" />
-                                      <entry key="backgroundLayerName" value="logo_harm_mm_bg" />
-                                      <entry key="foregroundLayerName" value="logo_harm_mm_fg" />
-                                      <entry key="outputName" value="logo_harm_mm" />
+                                      <entry key="backgroundLayerName" value="icon_move_mm_bg" />
+                                      <entry key="foregroundLayerName" value="icon_move_mm_fg" />
+                                      <entry key="outputName" value="icon_move_mm" />
                                     </map>
                                   </option>
                                 </PersistentState>

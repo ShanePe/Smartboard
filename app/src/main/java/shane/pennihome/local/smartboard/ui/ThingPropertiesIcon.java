@@ -22,16 +22,6 @@ import shane.pennihome.local.smartboard.thingsframework.listeners.OnBlockSetList
  */
 
 public class ThingPropertiesIcon extends LinearLayoutCompat {
-    /*
-    private IThing mThing;
-    private String mName;
-    private int mBlockWidth;
-    private int mBlockHeight;
-    private String mIconPath;
-    private UIHelper.IconSizes mIconSize;
-    private boolean mHideTitle;
-*/
-
     private ThingsSelector mThingSelector;
     private LabelTextbox mTxtName;
     private SizeSelector mSizeSelector;

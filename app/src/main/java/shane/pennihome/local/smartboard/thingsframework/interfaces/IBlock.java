@@ -531,6 +531,13 @@ public abstract class IBlock extends IDatabaseObject implements Cloneable {
         super.finalize();
     }
 
+    public IBlock clone() throws CloneNotSupportedException {
+        IBlock block = (IBlock) super.clone();
+        if (getThing() != null)
+            block.setThing(getThing().clone());
+        return block;
+    }
+
     private static class BlockExecutor extends AsyncTask<IThing, Void, JsonExecutorResult> {
         View mProgressIndicator;
         OnProcessCompleteListener<String> mOnProcessCompleteListener;
