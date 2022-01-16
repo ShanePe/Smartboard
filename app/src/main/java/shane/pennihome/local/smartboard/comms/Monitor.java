@@ -133,7 +133,10 @@ public class Monitor {
 
     public void Vibrate(long durationMilli) {
         if (getMonitor().mVibrator != null) {
-            getMonitor().mVibrator.vibrate(VibrationEffect.createOneShot(durationMilli, VibrationEffect.DEFAULT_AMPLITUDE));
+            try {
+                getMonitor().mVibrator.vibrate(durationMilli);
+                //getMonitor().mVibrator.vibrate(VibrationEffect.createOneShot(durationMilli, VibrationEffect.DEFAULT_AMPLITUDE));
+            }catch (Exception ignore){ }
         }
     }
 
