@@ -409,7 +409,7 @@ public class MainActivity extends AppCompatActivity
                                 @Override
                                 public void OnShown() {
                                     if (Monitor.IsInstaniated())
-                                        Monitor.getMonitor().stop();
+                                        Monitor.getMonitor().startSlowCheck();
                                     Broadcaster.broadcastMessage(new ThingChangedMessage("all", ThingChangedMessage.What.Disable));
                                     WindowManager.LayoutParams params = getWindow().getAttributes();
                                     params.screenBrightness = -1;
@@ -422,9 +422,18 @@ public class MainActivity extends AppCompatActivity
                                         WindowManager.LayoutParams params = getWindow().getAttributes();
                                         params.screenBrightness = 1;
                                         getWindow().setAttributes(params);
-                                        Monitor.getMonitor().verifyDashboardThings();
-                                        Monitor.getMonitor().start();
                                         Broadcaster.broadcastMessage(new ThingChangedMessage("all", ThingChangedMessage.What.Enable));
+                                    }
+                                }
+
+                                @Override
+                                public void OnDismissStart() {
+                                    if (Monitor.IsInstaniated()) {
+                                        try {
+                                            Monitor.getMonitor().stopSlowCheck();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 }
                             });

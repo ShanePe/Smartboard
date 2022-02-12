@@ -2,7 +2,6 @@ package shane.pennihome.local.smartboard.comms;
 
 import android.arch.core.util.Function;
 import android.content.Context;
-import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -37,6 +36,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 @SuppressWarnings("ALL")
 public class Monitor {
     private static final int SECOND_CHECK = 30;//120;
+    private static final int SLOW_SECOND_CHECK = 300;
     private static final int LOOP_LOOK_FOR_NEW = 5;//120;
     private static Monitor mMonitor;
     private Things mThings;
@@ -45,10 +45,10 @@ public class Monitor {
     private Thread mMonitorThread = null;
     private boolean mLoaded;
     private boolean mBusy;
-    private Vibrator mVibrator;
     private ServiceLoader mServiceLoader;
     private boolean mStopped;
     private Thread mVerifier;
+    private boolean mSlowCheck;
 
     private Monitor() {
     }
@@ -111,12 +111,8 @@ public class Monitor {
                         getMonitor().setThings(source.getResult());
                     if (source.getErrors() != null)
                         for (String e : source.getErrors().keySet())
-                            errors.add( String.format("Error getting things : %s", e));
+                            errors.add(String.format("Error getting things : %s", e));
 
-                    try {
-                        getMonitor().mVibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
-                    } catch (Exception ignore) {
-                    }
                     getMonitor().mLoaded = true;
 
                     if (onProcessCompleteListener != null)
@@ -129,15 +125,6 @@ public class Monitor {
             Log.e(Globals.ACTIVITY, "Create: failed", ex);
         }
         return getMonitor();
-    }
-
-    public void Vibrate(long durationMilli) {
-        if (getMonitor().mVibrator != null) {
-            try {
-                getMonitor().mVibrator.vibrate(durationMilli);
-                //getMonitor().mVibrator.vibrate(VibrationEffect.createOneShot(durationMilli, VibrationEffect.DEFAULT_AMPLITUDE));
-            }catch (Exception ignore){ }
-        }
     }
 
     public boolean isBusy() {
@@ -156,6 +143,14 @@ public class Monitor {
         } catch (Exception ignore) {
             return false;
         }
+    }
+
+    public boolean isSlowCheck() {
+        return mSlowCheck;
+    }
+
+    public void setSlowCheck(boolean mSlowCheck) {
+        this.mSlowCheck = mSlowCheck;
     }
 
     public Services getServices() {
@@ -245,9 +240,9 @@ public class Monitor {
 
     private Things getThingsFromDashboards() throws Exception {
         Things things = new Things();
-        if(mDashboards == null)
-            return  things;
-        
+        if (mDashboards == null)
+            return things;
+
         for (Dashboard dashboard : mDashboards)
             for (IBlock block : dashboard.GetBlocks())
                 try {
@@ -271,6 +266,21 @@ public class Monitor {
         return things;
     }
 
+    public void startSlowCheck() {
+        stop();
+        setSlowCheck(true);
+        start();
+    }
+
+    public void stopSlowCheck() throws Exception {
+        stop();
+        while(isBusy())
+            Thread.sleep(100);
+        setSlowCheck(false);
+        verifyThingsOnDashboard();
+        start();
+    }
+
     public void start() {
         if (isRunning())
             return;
@@ -287,8 +297,9 @@ public class Monitor {
                     while (true) {
                         if (!isBusy())
                             try {
-                                Thread.sleep(1000 * Monitor.SECOND_CHECK);
-                                if(mStopped)
+                                Log.i(Globals.ACTIVITY, "Monitor thread going to sleep for " + (isSlowCheck() ? Monitor.SLOW_SECOND_CHECK : Monitor.SECOND_CHECK) + " seconds");
+                                Thread.sleep(1000 * (isSlowCheck() ? Monitor.SLOW_SECOND_CHECK : Monitor.SECOND_CHECK));
+                                if (mStopped)
                                     break;
 
                                 mBusy = true;
@@ -339,8 +350,7 @@ public class Monitor {
                         onProcessCompleteListener.complete(results != null, null);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
-                finally {
+                } finally {
                     mVerifier = null;
                 }
             }
@@ -350,18 +360,18 @@ public class Monitor {
     }
 
     public void verifyDashboardThings() {
-        verifyDashboardThings(false);
+        verifyDashboardThings(1000);
     }
 
-    public void verifyDashboardThings(boolean delay) {
+    public void verifyDashboardThings(int delay) {
         verifyDashboardThings(delay, null);
     }
 
     public void verifyDashboardThings(final OnProcessCompleteListener onProcessCompleteListener) {
-        verifyDashboardThings(false, onProcessCompleteListener);
+        verifyDashboardThings(1000, onProcessCompleteListener);
     }
 
-    public void verifyDashboardThings(final boolean delay, final OnProcessCompleteListener onProcessCompleteListener) {
+    public void verifyDashboardThings(final int delay, final OnProcessCompleteListener onProcessCompleteListener) {
         if (isBusy() || Thread.interrupted())
             return;
 
@@ -369,13 +379,13 @@ public class Monitor {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(delay ? 20000 : 1000);
+                    Thread.sleep(delay);
                     verifyThingsOnDashboard();
                     if (onProcessCompleteListener != null)
                         onProcessCompleteListener.complete(true, null);
                 } catch (Exception e) {
                     e.printStackTrace();
-                }finally {
+                } finally {
                     mVerifier = null;
                 }
             }
@@ -471,7 +481,7 @@ public class Monitor {
             mServiceLoader = null;
         }
 
-        if(mVerifier != null) {
+        if (mVerifier != null) {
             mVerifier.interrupt();
             mVerifier = null;
         }

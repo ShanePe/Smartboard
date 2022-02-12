@@ -255,8 +255,8 @@ public class HarmonyHubService extends IService {
     public class HarmonyExecutor extends IExecutor<Void> {
 
         @Override
-        public boolean delayVerification() {
-            return true;
+        public int delayVerification() {
+            return 20000;
         }
 
         private JSONObject getCommandParams(HarmonyFunction cmd) throws JSONException {

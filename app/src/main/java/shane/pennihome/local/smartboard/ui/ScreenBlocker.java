@@ -109,6 +109,7 @@ public class ScreenBlocker extends FrameLayout {
         mAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
+                getOnBlockListener().OnDismissStart();
                 me.setEnabled(false);
             }
 
@@ -147,7 +148,7 @@ public class ScreenBlocker extends FrameLayout {
 
     public interface OnBlockListener {
         void OnShown();
-
         void OnDismiss();
+        void OnDismissStart();
     }
 }

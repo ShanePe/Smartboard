@@ -146,7 +146,6 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.doClickReact(v);
                 execute(holder,false);
             }
         });

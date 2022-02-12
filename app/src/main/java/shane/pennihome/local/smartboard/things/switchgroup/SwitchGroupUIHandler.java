@@ -178,7 +178,6 @@ class SwitchGroupUIHandler extends IBlockUIHandler {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.doClickReact(v);
                 execute(holder, v, false);
             }
         });

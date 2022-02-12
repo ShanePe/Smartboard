@@ -72,12 +72,7 @@ import shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener;
 
 @SuppressWarnings("ALL")
 public class UIHelper {
-    public static void doClickReact(View v){
-        Monitor.getMonitor().Vibrate(100);
-    }
-
     public static void doLongClickReact(View v){
-        Monitor.getMonitor().Vibrate(1000);
         v.setEnabled(false);
         v.setAlpha(0.5f);
     }
