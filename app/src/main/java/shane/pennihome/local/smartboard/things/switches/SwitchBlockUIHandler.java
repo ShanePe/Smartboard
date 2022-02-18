@@ -61,12 +61,12 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
         tempProps.setOnTemplateActionListener(new TemplateProperties.OnTemplateActionListener() {
             @Override
             public void OnTemplateSelected(Template template) {
-               tpProps.applyTemplate(template);
-               tpBackground.applyTemplate(template);
+                tpProps.applyTemplate(template);
+                tpBackground.applyTemplate(template);
             }
         });
 
-        tpProps.initialise(Monitor.getMonitor().getServices(),things, (IIconBlock) getBlock());
+        tpProps.initialise(Monitor.getMonitor().getServices(), things, (IIconBlock) getBlock());
         tpBackground.initialise(getBlock(SwitchBlock.class));
     }
 
@@ -76,12 +76,12 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
             ViewSwiper viewSwiper = view.findViewById(R.id.sw_swiper);
             ThingPropertiesIcon tbProps = (ThingPropertiesIcon) viewSwiper.getView(R.id.sw_properties);
             SwitchPropertiesClrSelector tbBackground = (SwitchPropertiesClrSelector) viewSwiper.getView(R.id.sw_background);
-            TemplateProperties tempProps = (TemplateProperties)viewSwiper.getView(R.id.sw_template);
+            TemplateProperties tempProps = (TemplateProperties) viewSwiper.getView(R.id.sw_template);
 
             tbProps.populate((IIconBlock) getBlock(), null);
             tbBackground.populate(getBlock(SwitchBlock.class));
 
-            if(tempProps.isSaveAsTemplate())
+            if (tempProps.isSaveAsTemplate())
                 tempProps.createTemplate(view.getContext(), getBlock());
 
             if (onBlockSetListener != null)
@@ -154,7 +154,7 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                execute(holder,v,false);
+                execute(holder, v, false);
             }
         });
 
@@ -162,7 +162,7 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
             @Override
             public boolean onLongClick(View v) {
                 UIHelper.doLongClickReact(v);
-                execute(holder,v,true);
+                execute(holder, v, true);
                 return true;
             }
         });
@@ -181,7 +181,7 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
                 IExecutor<Integer> executor = (IExecutor<Integer>) getBlock().getExecutor("level");
                 executor.setValue(holder.mDimmer.getProgress());
 
-                getBlock().execute(holder.mProgress,false, executor, new OnProcessCompleteListener<String>() {
+                getBlock().execute(holder.mProgress, false, executor, new OnProcessCompleteListener<String>() {
                     @Override
                     public void complete(boolean success, String source) {
                         if (!success)
@@ -203,7 +203,7 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
                 getBlock().renderBackgroundTo(holder.itemView);
                 getBlock().renderUnreachableBackground(holder.itemView);
                 getBlock(SwitchBlock.class).renderIconTo(holder.mIcon);
-                getBlock().doEnabled(holder.mDimmer,thing.isUnreachable()?false:getBlock().getThing(Switch.class).isOn());
+                getBlock().doEnabled(holder.mDimmer, thing.isUnreachable() ? false : getBlock().getThing(Switch.class).isOn());
             }
 
             @Override
@@ -223,16 +223,16 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
 
             @Override
             public void OnDisabledChanged(IThing thing, boolean disabled) {
-                getBlock().doEnabled(holder.itemView,thing.isUnreachable()?false:!disabled);
+                getBlock().doEnabled(holder.itemView, thing.isUnreachable() ? false : !disabled);
             }
         });
     }
 
-    private void execute(final SwitchViewHolder holder,View currentView, boolean delay){
+    private void execute(final SwitchViewHolder holder, View currentView, boolean delay) {
         if (getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE || currentView == holder.mDimmer)
             return;
 
-        getBlock().execute(holder.mProgress,delay, new OnProcessCompleteListener<String>() {
+        getBlock().execute(holder.mProgress, delay, new OnProcessCompleteListener<String>() {
             @Override
             public void complete(boolean success, String source) {
                 if (!success)
@@ -288,6 +288,7 @@ public class SwitchBlockUIHandler extends IBlockUIHandler {
         ImageView mIcon;
         ProgressBar mProgress;
         SeekBar mDimmer;
+
         public SwitchViewHolder(View itemView) {
             super(itemView);
 

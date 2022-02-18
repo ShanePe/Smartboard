@@ -23,11 +23,11 @@ public abstract class IExecutor<T> {
 
     protected abstract JsonExecutorResult execute(IThing thing);
 
-    public int delayVerification(){
+    public int delayVerification() {
         return 1000;
     }
 
-    public boolean doVerification(IThing thing){
+    public boolean doVerification(IThing thing) {
         return true;
     }
 }

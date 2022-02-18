@@ -8,12 +8,12 @@ import java.util.Iterator;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IAdditional;
 
 public class Additionals extends ArrayList<IAdditional> {
-    public IAdditional getByKey(String key){
-        for(IAdditional t:this)
-            if(t.getKey().equalsIgnoreCase(key))
+    public IAdditional getByKey(String key) {
+        for (IAdditional t : this)
+            if (t.getKey().equalsIgnoreCase(key))
                 return t;
 
-            return null;
+        return null;
     }
 
     public <T extends IAdditional> Iterable<T> cast(Class<T> cls) {

@@ -37,7 +37,7 @@ public abstract class IService extends IDatabaseObject {
 
     private <V extends IThing> IThingsGetter getThingExecutor(Class<V> cls) {
         for (IThingsGetter t : getThingGetters())
-            for(Type tt:t.getThingType())
+            for (Type tt : t.getThingType())
                 if (tt.equals(cls) || tt.equals(IThing.class))
                     return t;
 
@@ -47,7 +47,7 @@ public abstract class IService extends IDatabaseObject {
     public <T extends IThing> ArrayList<IThingsGetter> getThingsGetter(Class<T> cls) {
         ArrayList<IThingsGetter> thingGetters = new ArrayList<>();
         for (IThingsGetter t : getThingGetters())
-            for(Type tt:t.getThingType())
+            for (Type tt : t.getThingType())
                 if (tt.equals(cls) || tt.equals(IThing.class))
                     thingGetters.add(t);
 
@@ -63,11 +63,10 @@ public abstract class IService extends IDatabaseObject {
     @SuppressWarnings("SameReturnValue")
     public abstract int getDrawableIconResource();
 
-    public void register(Context context, OnProcessCompleteListener<IService> onProcessCompleteListener)
-    {
+    public void register(Context context, OnProcessCompleteListener<IService> onProcessCompleteListener) {
         new DBEngine(context).writeToDatabase(this);
         Monitor.getMonitor().addService(context, this);
-        if(onProcessCompleteListener!=null)
+        if (onProcessCompleteListener != null)
             onProcessCompleteListener.complete(true, this);
     }
 
@@ -80,8 +79,7 @@ public abstract class IService extends IDatabaseObject {
 
     public abstract ArrayList<IThingsGetter> getThingGetters();
 
-    public Things getThings() throws Exception
-    {
+    public Things getThings() throws Exception {
         Things things = new Things();
         for (IThingsGetter g : getThingGetters())
             things.addAll(g.getThings());
@@ -103,18 +101,18 @@ public abstract class IService extends IDatabaseObject {
             onProcessCompleteListener.complete(true, null);
     }
 
-    public IThingsGetter getThingGetter(IThing thing){
-        if(thing instanceof Switch)
+    public IThingsGetter getThingGetter(IThing thing) {
+        if (thing instanceof Switch)
             return getThingExecutor(Switch.class);
-        else if(thing instanceof Routine)
+        else if (thing instanceof Routine)
             return getThingExecutor(Routine.class);
         else if (thing instanceof SmartThingMode)
             return getThingExecutor(SmartThingMode.class);
 
         return null;
     }
-    public IExecutor<?> getExecutor(IThing thing, String id)
-    {
+
+    public IExecutor<?> getExecutor(IThing thing, String id) {
         IThingsGetter getter = getThingGetter(thing);
         if (getter != null)
             return getter.getExecutor(id);
@@ -138,5 +136,5 @@ public abstract class IService extends IDatabaseObject {
         return isRegistered() && !isAwaitingAction();
     }
 
-    public enum ServicesTypes {SmartThings, PhilipsHue,HarmonyHub}
+    public enum ServicesTypes {SmartThings, PhilipsHue, HarmonyHub}
 }

@@ -70,21 +70,19 @@ public class TemperatureUIHandler extends IBlockUIHandler {
         try {
             ViewSwiper viewSwiper = view.findViewById(R.id.tp_swiper);
 
-            ThingProperties tbProps = (ThingProperties)viewSwiper.getView(R.id.tp_properties);
+            ThingProperties tbProps = (ThingProperties) viewSwiper.getView(R.id.tp_properties);
             ThingPropertiesClrSelector tbBackground = (ThingPropertiesClrSelector) viewSwiper.getView(R.id.tp_background);
-            TemplateProperties tempProps = (TemplateProperties)viewSwiper.getView(R.id.tp_template);
+            TemplateProperties tempProps = (TemplateProperties) viewSwiper.getView(R.id.tp_template);
 
             tbProps.populate(getBlock(), null);
             tbBackground.populate(getBlock());
 
-            if(tempProps.isSaveAsTemplate())
+            if (tempProps.isSaveAsTemplate())
                 tempProps.createTemplate(view.getContext(), getBlock());
 
             if (onBlockSetListener != null)
                 onBlockSetListener.OnSet(getBlock());
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Toast.makeText(view.getContext(), "Error : " + ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
@@ -101,7 +99,7 @@ public class TemperatureUIHandler extends IBlockUIHandler {
 
     @Override
     public void BindEditHolder(BlockEditViewHolder viewHolder, int backgroundResourceId) {
-        if(getBlock().getThing() == null)
+        if (getBlock().getThing() == null)
             return;
 
         TemperatureEditorHolder holder = (TemperatureEditorHolder) viewHolder;
@@ -124,8 +122,7 @@ public class TemperatureUIHandler extends IBlockUIHandler {
 
     @Override
     public void BindViewHolder(BlockViewHolder viewHolder) {
-        if(getBlock().getThing()==null)
-        {
+        if (getBlock().getThing() == null) {
             viewHolder.itemView.setVisibility(View.GONE);
             return;
         }
@@ -135,8 +132,8 @@ public class TemperatureUIHandler extends IBlockUIHandler {
         holder.mTitle.setText(getBlock().getName());
         holder.mTitle.setVisibility(getBlock().isHideTitle() ? View.GONE : View.VISIBLE);
 
-        if(getBlock().getThing() != null)
-            holder.mValue.setText(String.format("%s°",getBlock().getThing(Temperature.class).getTemperature()));
+        if (getBlock().getThing() != null)
+            holder.mValue.setText(String.format("%s°", getBlock().getThing(Temperature.class).getTemperature()));
 
         getBlock().renderForegroundColourTo(holder.mTitle);
         getBlock().renderForegroundColourTo(holder.mValue);
@@ -159,8 +156,8 @@ public class TemperatureUIHandler extends IBlockUIHandler {
 
             @Override
             public void OnStateChanged(IThing thing) {
-                if(getBlock().getThing() != null)
-                    holder.mValue.setText(String.format("%s°",getBlock().getThing(Temperature.class).getTemperature()));
+                if (getBlock().getThing() != null)
+                    holder.mValue.setText(String.format("%s°", getBlock().getThing(Temperature.class).getTemperature()));
             }
 
             @Override

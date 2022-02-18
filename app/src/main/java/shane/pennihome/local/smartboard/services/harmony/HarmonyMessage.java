@@ -109,7 +109,7 @@ public class HarmonyMessage {
                     @Override
                     public void run() {
                         try {
-                            Log.i("Url",command);
+                            Log.i("Url", command);
                             client.send(getMessagePayload(msgId, remoteId, command, params));
                         } catch (JSONException e) {
                             e.printStackTrace();

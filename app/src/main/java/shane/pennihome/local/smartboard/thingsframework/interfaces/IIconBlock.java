@@ -50,9 +50,8 @@ public abstract class IIconBlock extends IBlock {
         });
     }
 
-    public void renderIconTo(final ImageView destination)
-    {
-        if(TextUtils.isEmpty(getIcon())) {
+    public void renderIconTo(final ImageView destination) {
+        if (TextUtils.isEmpty(getIcon())) {
             destination.setVisibility(View.GONE);
             return;
         }
@@ -77,7 +76,7 @@ public abstract class IIconBlock extends IBlock {
                             destination.getLayoutParams().width = s;
                     }
 
-                    img.setColorFilter(getIconColour(),  PorterDuff.Mode.SRC_ATOP);
+                    img.setColorFilter(getIconColour(), PorterDuff.Mode.SRC_ATOP);
                     destination.setImageDrawable(img);
                     destination.setVisibility(View.VISIBLE);
                 } catch (IOException e) {

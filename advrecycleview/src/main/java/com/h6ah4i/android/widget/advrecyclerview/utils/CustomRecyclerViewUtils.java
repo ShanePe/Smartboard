@@ -353,7 +353,7 @@ public class CustomRecyclerViewUtils {
         }
     }
 
-    private static View getLaidOutItemView(@Nullable RecyclerView.ViewHolder  holder) {
+    private static View getLaidOutItemView(@Nullable RecyclerView.ViewHolder holder) {
         if (holder == null) {
             return null;
         }

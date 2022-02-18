@@ -137,13 +137,13 @@ public class BackgroundSelector extends LinearLayoutCompat {
         inflater.inflate(R.layout.custom_background_selector, this);
     }
 
-    public void setInitialValues(@ColorInt int colour, int transparency, String image, int imageTransparency,int padding, UIHelper.ImageRenderTypes backgroundImageRenderType) {
+    public void setInitialValues(@ColorInt int colour, int transparency, String image, int imageTransparency, int padding, UIHelper.ImageRenderTypes backgroundImageRenderType) {
         mColour = colour;
         mTransparency = transparency;
         mImage = image;
         mImageTransparency = imageTransparency;
         mImageRenderType = backgroundImageRenderType;
-        mPadding= padding;
+        mPadding = padding;
         mTextPadding.setText(String.valueOf(padding));
         doPropertyChange(false);
     }
@@ -247,9 +247,8 @@ public class BackgroundSelector extends LinearLayoutCompat {
         mBtnReset.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                setInitialValues(Color.TRANSPARENT, 100, null, 100,0, UIHelper.ImageRenderTypes.Center);
-                if(mBackgroundActionListener != null)
-                {
+                setInitialValues(Color.TRANSPARENT, 100, null, 100, 0, UIHelper.ImageRenderTypes.Center);
+                if (mBackgroundActionListener != null) {
                     mBackgroundActionListener.OnColourSelected(Color.TRANSPARENT);
                     mBackgroundActionListener.OnColourTransparencyChanged(100);
                     mBackgroundActionListener.OnImageRenderTypeChanged(UIHelper.ImageRenderTypes.Center);
@@ -296,9 +295,9 @@ public class BackgroundSelector extends LinearLayoutCompat {
 
             @Override
             public void afterTextChanged(Editable s) {
-                int p = TextUtils.isEmpty(s.toString())?0:Integer.parseInt(s.toString());
+                int p = TextUtils.isEmpty(s.toString()) ? 0 : Integer.parseInt(s.toString());
                 setPadding(p);
-                if(mBackgroundActionListener!=null)
+                if (mBackgroundActionListener != null)
                     mBackgroundActionListener.OnPaddingChanged(p);
             }
         });

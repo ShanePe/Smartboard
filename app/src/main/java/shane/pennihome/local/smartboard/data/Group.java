@@ -118,7 +118,7 @@ public class Group extends IDatabaseObject {
         this.mGroupViewHandler = groupViewHandler;
     }
 
-    public void clear(){
+    public void clear() {
         mBlocks.clear();
     }
 }

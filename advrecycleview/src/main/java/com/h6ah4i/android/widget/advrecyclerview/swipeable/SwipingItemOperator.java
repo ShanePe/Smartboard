@@ -108,7 +108,7 @@ class SwipingItemOperator {
         final int distance = (mSwipeHorizontal)
                 ? (mSwipeDistanceX + mInitialTranslateAmountX)
                 : (mSwipeDistanceY + mInitialTranslateAmountY);
-        final int itemSize = (mSwipeHorizontal) ? mSwipingItemWidth  : mSwipingItemHeight;
+        final int itemSize = (mSwipeHorizontal) ? mSwipingItemWidth : mSwipingItemHeight;
         final float invItemSize = (mSwipeHorizontal) ? mInvSwipingItemWidth : mInvSwipingItemHeight;
 
         final int reactionType;

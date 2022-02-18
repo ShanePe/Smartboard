@@ -16,17 +16,16 @@ public class Services extends ArrayList<IService> {
         return false;
     }
 
-    public IService getByType(IService.ServicesTypes type)
-    {
+    public IService getByType(IService.ServicesTypes type) {
         for (IService s : this)
-            if(s.getServiceType() == type)
+            if (s.getServiceType() == type)
                 return s;
         return null;
     }
 
     public int getIndex(IService s) {
         for (int i = 0; i < size(); i++) {
-            if(get(i).getServiceType() == s.getServiceType())
+            if (get(i).getServiceType() == s.getServiceType())
                 return i;
         }
 

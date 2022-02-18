@@ -146,7 +146,7 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                execute(holder,false);
+                execute(holder, false);
             }
         });
 
@@ -192,11 +192,11 @@ public class RoutineBlockHandler extends IBlockUIHandler {
         });
     }
 
-    private void execute(final RoutineViewHolder holder, boolean delay){
+    private void execute(final RoutineViewHolder holder, boolean delay) {
         if (getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE)
             return;
 
-        getBlock().execute(holder.mProgress,delay, new OnProcessCompleteListener<String>() {
+        getBlock().execute(holder.mProgress, delay, new OnProcessCompleteListener<String>() {
             @Override
             public void complete(boolean success, String source) {
                 if (success) {

@@ -9,10 +9,10 @@ import shane.pennihome.local.smartboard.comms.interfaces.OnProcessCompleteListen
 import shane.pennihome.local.smartboard.data.interfaces.IDatabaseObject;
 import shane.pennihome.local.smartboard.data.sql.DBEngine;
 import shane.pennihome.local.smartboard.services.harmony.HarmonyHubService;
-import shane.pennihome.local.smartboard.services.philipsHue.HueBridgeService;
-import shane.pennihome.local.smartboard.services.smartThings.SmartThingsServicePAT;
 import shane.pennihome.local.smartboard.services.interfaces.IRegisterServiceFragment;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
+import shane.pennihome.local.smartboard.services.philipsHue.HueBridgeService;
+import shane.pennihome.local.smartboard.services.smartThings.SmartThingsServicePAT;
 
 /**
  * Created by shane on 29/01/18.
@@ -46,10 +46,10 @@ public class ServiceManager {
             dialogFragment.setOnProcessCompleteListener(new OnProcessCompleteListener<IService>() {
                 @Override
                 public void complete(final boolean success, final IService source) {
-                dialogFragment.dismiss();
-                if (success)
+                    dialogFragment.dismiss();
+                    if (success)
                         source.register(activity, onProcessCompleteListener);
-                 else
+                    else
                         Toast.makeText(activity, "Could not register service", Toast.LENGTH_LONG).show();
                 }
             });

@@ -11,11 +11,7 @@
     <item>
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
             <!--<solid android:color="?attr/colorBackgroundFloating" />-->
-            <gradient android:angle="90" android:centerColor="?android:attr/colorBackground"
-                android:centerX="1%"
-                android:endColor="?android:attr/textColorHintInverse"
-                android:startColor="?android:attr/textColorHintInverse"
-                android:useLevel="false" />
+            <gradient android:angle="90" android:centerColor="?android:attr/colorBackground" android:centerX="1%" android:endColor="?android:attr/textColorHintInverse" android:startColor="?android:attr/textColorHintInverse" android:useLevel="false" />
             <corners android:radius="4dp" />
             <stroke android:width="10dp" android:color="?attr/colorButtonNormal" />
         </shape>

@@ -17,7 +17,8 @@ public class Routine extends IThing {
     }
 
     @Override
-    public void verifyState(IThing compare) {}
+    public void verifyState(IThing compare) {
+    }
 
     @Override
     public boolean isStateful() {

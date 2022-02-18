@@ -11,7 +11,11 @@ INJECTED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.x
 		ADDED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml:1:11-69
 uses-sdk
 ADDED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml:4:5-6:41
+INJECTED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml:4:5-6:41
+INJECTED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml:4:5-6:41
 	android:targetSdkVersion
 		ADDED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml:6:9-38
 	android:minSdkVersion
 		ADDED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml:5:9-34
+		INJECTED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml
+		INJECTED from /home/shane/code/android/smartboard/libnetcipher/AndroidManifest.xml

@@ -86,10 +86,10 @@ public class Switch extends IThing {
                 setDimmerLevel(newSwitch.getDimmerLevel(), true);
         }
 
-        if(SupportsColour()!= newSwitch.SupportsColour())
-            setSupportsColour(newSwitch.SupportsColour(),true );
+        if (SupportsColour() != newSwitch.SupportsColour())
+            setSupportsColour(newSwitch.SupportsColour(), true);
 
-        if(SupportsColour()) {
+        if (SupportsColour()) {
             if (getCurrentColour() != newSwitch.getCurrentColour())
                 setCurrentColour(newSwitch.getCurrentColour(), true);
         }
@@ -109,7 +109,7 @@ public class Switch extends IThing {
     @Override
     public JsonExecutorResult execute(IExecutor executor) {
         JsonExecutorResult result = super.execute(executor);
-        if(result!=null)
+        if (result != null)
             if (result.isSuccess()) {
                 if (executor.getId().equals("level"))
                     setDimmerLevel((int) executor.getValue(), true);

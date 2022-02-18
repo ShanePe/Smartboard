@@ -34,6 +34,7 @@ import shane.pennihome.local.smartboard.ui.listeners.OnBlockSelectListener;
 public class TemplateFragment extends IFragment {
 
     private TemplateAdapter mAdapter;
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.mnu_add_frag, menu);
@@ -41,9 +42,8 @@ public class TemplateFragment extends IFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.mnu_dash_add)
-        {
-            UIHelper.showBlockSelectionWindow((AppCompatActivity)getActivity(), new OnBlockSelectListener() {
+        if (item.getItemId() == R.id.mnu_dash_add) {
+            UIHelper.showBlockSelectionWindow((AppCompatActivity) getActivity(), new OnBlockSelectListener() {
                 @Override
                 public void BlockSelected(IBlock block) {
                     block.setBlockDefaults(new Group());
@@ -101,17 +101,16 @@ public class TemplateFragment extends IFragment {
                     //noinspection rawtypes
                     UIHelper.showConfirm(getContext(), "Confirm",
                             String.format("Are you sure you want to delete the template block '%s'", item.getName()), new OnProcessCompleteListener() {
-                        @Override
-                        public void complete(boolean success, Object source) {
-                            if(success)
-                            {
-                                DBEngine db = new DBEngine(getContext());
-                                db.deleteFromDatabase(item);
-                                mAdapter.getTemplates().remove(item);
-                                mAdapter.notifyItemRemoved(position);
-                            }
-                        }
-                    });
+                                @Override
+                                public void complete(boolean success, Object source) {
+                                    if (success) {
+                                        DBEngine db = new DBEngine(getContext());
+                                        db.deleteFromDatabase(item);
+                                        mAdapter.getTemplates().remove(item);
+                                        mAdapter.notifyItemRemoved(position);
+                                    }
+                                }
+                            });
                 }
             });
             recyclerView.setAdapter(mAdapter);

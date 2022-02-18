@@ -42,11 +42,12 @@ public class HueBridgeLinkDialog extends DialogFragment {
     public TextView getDescription() {
         return mTxtDescription;
     }
+
     public void setDescription(String msg) {
-        if(mTxtDescription == null)
+        if (mTxtDescription == null)
             mPreText = msg;
         else
-        this.mTxtDescription.setText(msg);
+            this.mTxtDescription.setText(msg);
     }
 
     @Override
@@ -60,10 +61,10 @@ public class HueBridgeLinkDialog extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.philip_hue_link, container, false);
         mTxtDescription = view.findViewById(R.id.ph_link_desc);
-        if(!TextUtils.isEmpty(mPreText))
+        if (!TextUtils.isEmpty(mPreText))
             mTxtDescription.setText(mPreText);
 
-        ImageView img =  view.findViewById(R.id.ph_link_btn);
+        ImageView img = view.findViewById(R.id.ph_link_btn);
         Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.bounce_animate);
         animation.setRepeatCount(Animation.INFINITE);
         animation.setRepeatMode(Animation.REVERSE);
@@ -73,7 +74,7 @@ public class HueBridgeLinkDialog extends DialogFragment {
         Button btnCancel = view.findViewById(R.id.ph_cnl_btn);
         btnCancel.setOnClickListener(getOnCancelClickListener());
 
-        if(mOnLoadCompleteListener !=null)
+        if (mOnLoadCompleteListener != null)
             mOnLoadCompleteListener.complete(true, mTxtDescription);
         return view;
     }

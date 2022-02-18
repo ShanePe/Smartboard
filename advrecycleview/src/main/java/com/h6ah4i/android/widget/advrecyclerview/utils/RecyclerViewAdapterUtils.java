@@ -28,6 +28,7 @@ public class RecyclerViewAdapterUtils {
 
     /**
      * Gets parent RecyclerView instance.
+     *
      * @param view Child view of the RecyclerView's item
      * @return Parent RecyclerView instance
      */
@@ -48,6 +49,7 @@ public class RecyclerViewAdapterUtils {
 
     /**
      * Gets directly child of RecyclerView (== {@link android.support.v7.widget.RecyclerView.ViewHolder#itemView}})
+     *
      * @param view Child view of the RecyclerView's item
      * @return Item view
      */
@@ -62,6 +64,7 @@ public class RecyclerViewAdapterUtils {
 
     /**
      * Gets {@link android.support.v7.widget.RecyclerView.ViewHolder}.
+     *
      * @param view Child view of the RecyclerView's item
      * @return ViewHolder
      */

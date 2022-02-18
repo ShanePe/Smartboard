@@ -37,7 +37,7 @@ public class AdapterPathSegment {
      * Constructor.
      *
      * @param adapter The adapter
-     * @param tag The tag object
+     * @param tag     The tag object
      */
     public AdapterPathSegment(@NonNull RecyclerView.Adapter adapter, @Nullable Object tag) {
         this.adapter = adapter;

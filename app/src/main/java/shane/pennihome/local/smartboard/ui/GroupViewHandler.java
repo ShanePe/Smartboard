@@ -75,7 +75,8 @@ public class GroupViewHandler {
         //adapter
         mBlockEditAdapter = new BlockEditAdapter(smartboardActivity, group, new DashboardFragment.OnListFragmentInteractionListener() {
             @Override
-            public void onListFragmentInteraction(Dashboard item) { }
+            public void onListFragmentInteraction(Dashboard item) {
+            }
         });
 
         final ArrayList<AnimationButton> animationButtons = new ArrayList<>();
@@ -188,7 +189,7 @@ public class GroupViewHandler {
                         item.setVisibility(View.VISIBLE);
                         a.getOnProcessCompleteListener().complete(true, item);
                     }
-                    if(a.getOnEnd()!=null)
+                    if (a.getOnEnd() != null)
                         a.getOnEnd().apply(a.getImageButton());
                 }
             }
@@ -263,7 +264,7 @@ public class GroupViewHandler {
             this(btn, onProcessCompleteListener, null, null);
         }
 
-        public AnimationButton(ImageButton btn, OnProcessCompleteListener<View> onProcessCompleteListener, Function<View, Void> init,Function<View,Void> end) {
+        public AnimationButton(ImageButton btn, OnProcessCompleteListener<View> onProcessCompleteListener, Function<View, Void> init, Function<View, Void> end) {
             setOnInitialise(init);
             setOnEnd(end);
             setImageButton(btn);

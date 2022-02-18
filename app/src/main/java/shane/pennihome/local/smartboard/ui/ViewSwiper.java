@@ -39,8 +39,7 @@ public class ViewSwiper extends ViewPager {
         super(context, attrs);
     }
 
-    public View getView(int id)
-    {
+    public View getView(int id) {
         return getViewAdapter().getView(id);
     }
 
@@ -48,8 +47,7 @@ public class ViewSwiper extends ViewPager {
         getViewAdapter().addView(name, ResId);
     }
 
-    public void removeView(@SuppressWarnings("SameParameterValue") String name)
-    {
+    public void removeView(@SuppressWarnings("SameParameterValue") String name) {
         getViewAdapter().removeView(name);
     }
 
@@ -199,11 +197,9 @@ public class ViewSwiper extends ViewPager {
             mViewCache.put(pos, view);
         }
 
-        void removeView(String name)
-        {
-            for(int i=0;i<mTabs.size();i++)
-                if(mTabs.get(i).first.equalsIgnoreCase(name))
-                {
+        void removeView(String name) {
+            for (int i = 0; i < mTabs.size(); i++)
+                if (mTabs.get(i).first.equalsIgnoreCase(name)) {
                     mTabs.remove(i);
                     mViewCache.remove(i);
                     notifyDataSetChanged();
@@ -211,13 +207,12 @@ public class ViewSwiper extends ViewPager {
                 }
         }
 
-        View getView(int id)
-        {
-            for(int i = 0;i<mViewCache.size();i++) {
+        View getView(int id) {
+            for (int i = 0; i < mViewCache.size(); i++) {
                 if (mViewCache.get(i).getId() == id)
                     return mViewCache.get(i);
                 View internal = mViewCache.get(i).findViewById(id);
-                if(internal != null)
+                if (internal != null)
                     return internal;
             }
             return findViewById(id);

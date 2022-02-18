@@ -93,7 +93,7 @@ public class RecyclerViewTouchActionGuardManager {
 
     /**
      * Detach the {@link android.support.v7.widget.RecyclerView} instance and release internal field references.
-     *
+     * <p>
      * This method should be called in order to avoid memory leaks.
      */
     public void release() {

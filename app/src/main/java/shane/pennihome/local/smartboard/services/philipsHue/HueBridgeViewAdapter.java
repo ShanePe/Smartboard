@@ -30,13 +30,11 @@ public class HueBridgeViewAdapter extends RecyclerView.Adapter<HueBridgeViewAdap
         mListener = listener;
     }
 
-    public List<HueBridge> getItems()
-    {
+    public List<HueBridge> getItems() {
         return mValues;
     }
 
-    void setItems(List<HueBridge> items)
-    {
+    void setItems(List<HueBridge> items) {
         mValues = items;
     }
 
@@ -52,8 +50,8 @@ public class HueBridgeViewAdapter extends RecyclerView.Adapter<HueBridgeViewAdap
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
 
-        holder.mIdView.setText(String.format("[%s]",holder.mItem.getId()));
-        holder.mIpView.setText(String.format("[%s]",holder.mItem.getIp()));
+        holder.mIdView.setText(String.format("[%s]", holder.mItem.getId()));
+        holder.mIpView.setText(String.format("[%s]", holder.mItem.getIp()));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

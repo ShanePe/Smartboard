@@ -64,7 +64,7 @@ class SegmentedViewTypeTranslator {
     }
 
     static int extractWrappedViewType(long packedViewType) {
-        final int segment = (int)(packedViewType >>> 32) & 0xFFFF;
+        final int segment = (int) (packedViewType >>> 32) & 0xFFFF;
         final int viewType = (int) (packedViewType & 0xFFFFFFFFL);
         return ItemViewTypeComposer.composeSegment(segment, viewType);
     }

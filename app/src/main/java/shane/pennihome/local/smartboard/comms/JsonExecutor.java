@@ -36,22 +36,22 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
 
     @SuppressLint("CustomX509TrustManager")
     TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
-                public X509Certificate[] getAcceptedIssuers() {
-                    return new X509Certificate[0];
-                }
+        public X509Certificate[] getAcceptedIssuers() {
+            return new X509Certificate[0];
+        }
 
-                @SuppressLint("TrustAllX509TrustManager")
-                @Override
-                public void checkClientTrusted(X509Certificate[]
-                                                       certs, String authType) {
-                }
+        @SuppressLint("TrustAllX509TrustManager")
+        @Override
+        public void checkClientTrusted(X509Certificate[]
+                                               certs, String authType) {
+        }
 
-                @SuppressLint("TrustAllX509TrustManager")
-                @Override
-                public void checkServerTrusted(X509Certificate[]
-                                                       certs, String authType) {
-                }
-            }};
+        @SuppressLint("TrustAllX509TrustManager")
+        @Override
+        public void checkServerTrusted(X509Certificate[]
+                                               certs, String authType) {
+        }
+    }};
 
     private static boolean isOnUIThread() {
         return Thread.currentThread() == Looper.getMainLooper().getThread();
@@ -97,11 +97,10 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
                     } else
                         connection = (HttpURLConnection) request.getUrl().openConnection();
 
-                    if(tries==0) {
+                    if (tries == 0) {
                         connection.setReadTimeout(15000);
                         connection.setConnectTimeout(15000);
-                    }else
-                    {
+                    } else {
                         connection.setReadTimeout(5000);
                         connection.setConnectTimeout(5000);
                     }
@@ -213,7 +212,7 @@ public class JsonExecutor extends AsyncTask<JsonExecutorRequest, Integer, JsonEx
             }
 
             return sb.toString();
-        }finally {
+        } finally {
             stream.close();
         }
     }

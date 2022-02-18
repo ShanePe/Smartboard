@@ -7,11 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import shane.pennihome.local.smartboard.thingsframework.Things;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 public abstract class ThingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     final Things mValues;
+
     protected ThingViewAdapter(Things items) {
         mValues = items;
     }

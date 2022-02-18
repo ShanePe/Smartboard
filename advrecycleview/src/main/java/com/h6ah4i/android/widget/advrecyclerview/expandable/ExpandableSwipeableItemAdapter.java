@@ -22,41 +22,39 @@ import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAct
 
 @SuppressWarnings("WeakerAccess")
 public interface ExpandableSwipeableItemAdapter<GVH extends RecyclerView.ViewHolder, CVH extends RecyclerView.ViewHolder>
-    extends BaseExpandableSwipeableItemAdapter<GVH, CVH> {
+        extends BaseExpandableSwipeableItemAdapter<GVH, CVH> {
 
     /**
      * Called when group item is swiped.
-     *
+     * <p>
      * *Note that do not change data set and do not call notifyDataXXX() methods inside of this method.*
      *
-     * @param holder The ViewHolder which is associated to the swiped item.
+     * @param holder        The ViewHolder which is associated to the swiped item.
      * @param groupPosition Group position.
-     * @param result The result code of user's swipe operation.
-     *              {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_CANCELED},
-     *              {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_SWIPED_LEFT},
-     *              {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_SWIPED_UP},
-     *              {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_SWIPED_RIGHT} or
-     *              {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_SWIPED_DOWN}
-     *
+     * @param result        The result code of user's swipe operation.
+     *                      {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_CANCELED},
+     *                      {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_SWIPED_LEFT},
+     *                      {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_SWIPED_UP},
+     *                      {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_SWIPED_RIGHT} or
+     *                      {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_SWIPED_DOWN}
      * @return {@link SwipeResultAction} object.
      */
     SwipeResultAction onSwipeGroupItem(GVH holder, int groupPosition, int result);
 
     /**
      * Called when child item is swiped.
-     *
+     * <p>
      * *Note that do not change data set and do not call notifyDataXXX() methods inside of this method.*
      *
-     * @param holder The ViewHolder which is associated to the swiped item.
+     * @param holder        The ViewHolder which is associated to the swiped item.
      * @param groupPosition Group position.
      * @param childPosition Child position.
-     * @param result The result code of user's swipe operation.
-     *              {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_CANCELED},
-     *              {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_SWIPED_LEFT},
-     *              {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_SWIPED_UP},
-     *              {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_SWIPED_RIGHT} or
-     *              {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_SWIPED_DOWN}
-     *
+     * @param result        The result code of user's swipe operation.
+     *                      {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_CANCELED},
+     *                      {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_SWIPED_LEFT},
+     *                      {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_SWIPED_UP},
+     *                      {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_SWIPED_RIGHT} or
+     *                      {@link com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager#RESULT_SWIPED_DOWN}
      * @return {@link SwipeResultAction} object.
      */
     SwipeResultAction onSwipeChildItem(CVH holder, int groupPosition, int childPosition, int result);

@@ -30,7 +30,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
 public class MultiThingSelector extends GridLayout {
     private LayoutInflater mInflater;
-   // private IService mService;
+    // private IService mService;
 
     //private Things mThings;
     private Things mSelectedThings;
@@ -59,11 +59,11 @@ public class MultiThingSelector extends GridLayout {
         return mServiceAdapter.getServices();
     }
 
-    public void setData(Services services,Things things){
+    public void setData(Services services, Things things) {
         mAdapter = new MultiThingSelectorAdapter(things);
         rview.setAdapter(mAdapter);
 
-        mServiceAdapter = new ThingsSelector.SpinnerServiceAdapter(mInflater,services);
+        mServiceAdapter = new ThingsSelector.SpinnerServiceAdapter(mInflater, services);
         mSPService.setAdapter(mServiceAdapter);
         mSPService.setVisibility(services.size() > 1 ? View.VISIBLE : View.GONE);
     }
@@ -152,8 +152,7 @@ public class MultiThingSelector extends GridLayout {
                 holder.mImg.setImageResource(R.mipmap.icon_switch_mm_fg);
             } else if (holder.mItem.getServiceType() == IService.ServicesTypes.PhilipsHue) {
                 holder.mImg.setImageResource(R.mipmap.icon_phlogo_mm_fg);
-            }
-            else if (holder.mItem.getServiceType() == IService.ServicesTypes.HarmonyHub) {
+            } else if (holder.mItem.getServiceType() == IService.ServicesTypes.HarmonyHub) {
                 holder.mImg.setImageResource(R.mipmap.icon_hub_mm_fg);
             }
             holder.mName.setText(holder.mItem.getName());
@@ -179,12 +178,12 @@ public class MultiThingSelector extends GridLayout {
         }
 
         @SuppressLint("NotifyDataSetChanged")
-        public void filter(IService service){
-            mFilteredThings = service == null?mThings:mThings.getForService(service);
+        public void filter(IService service) {
+            mFilteredThings = service == null ? mThings : mThings.getForService(service);
             notifyDataSetChanged();
         }
 
-        public void clearFilter(){
+        public void clearFilter() {
             filter(null);
         }
 

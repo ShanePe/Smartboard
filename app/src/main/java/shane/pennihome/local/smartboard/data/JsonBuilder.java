@@ -14,10 +14,10 @@ import java.lang.reflect.Type;
 
 import shane.pennihome.local.smartboard.comms.interfaces.IMessage;
 import shane.pennihome.local.smartboard.services.harmony.HarmonyHubService;
+import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.services.philipsHue.HueBridgeService;
 import shane.pennihome.local.smartboard.services.smartThings.SmartThingsService;
 import shane.pennihome.local.smartboard.services.smartThings.SmartThingsServicePAT;
-import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.things.routinegroup.RoutineGroup;
 import shane.pennihome.local.smartboard.things.routinegroup.RoutineGroupBlock;
 import shane.pennihome.local.smartboard.things.routines.Routine;
@@ -76,7 +76,7 @@ public class JsonBuilder {
                     return context.serialize((RoutineGroup) src);
                 else if (src instanceof Routine)
                     return context.serialize((Routine) src);
-                else if (src instanceof  Temperature)
+                else if (src instanceof Temperature)
                     return context.serialize((Temperature) src);
                 else if (src instanceof SmartThingMode)
                     return context.serialize((SmartThingMode) src);
@@ -147,9 +147,9 @@ public class JsonBuilder {
                     return context.serialize((SmartThingsService) src);
                 if (src instanceof SmartThingsServicePAT)
                     return context.serialize((SmartThingsServicePAT) src);
-                if(src instanceof HueBridgeService)
+                if (src instanceof HueBridgeService)
                     return context.serialize((HueBridgeService) src);
-                if(src instanceof HarmonyHubService)
+                if (src instanceof HarmonyHubService)
                     return context.serialize((HarmonyHubService) src);
                 else
                     throw new JsonParseException("Invalid type of service : " + src.toString());
@@ -168,7 +168,7 @@ public class JsonBuilder {
                         return SmartThingsServicePAT.Load(jService.toString());
                     case "harmonyhubservice":
                         return HarmonyHubService.Load(jService.toString());
-                        case "huebridgeservice":
+                    case "huebridgeservice":
                         return HueBridgeService.Load(jService.toString());
                     default:
                         throw new JsonParseException("Invalid type of service : " + jService.get("mInstance").getAsString());

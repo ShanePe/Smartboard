@@ -18,7 +18,7 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IIconBlock;
  * Created by SPennicott on 10/02/2018.
  */
 
-public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.ViewHolder>  {
+public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.ViewHolder> {
     private Templates mTemplates;
     private OnInteractionListener mOnInteractionListener;
 
@@ -34,12 +34,11 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.ViewHo
         this.mTemplates = templates;
     }
 
-    public int addTemplate(Template template)
-    {
-        if(mTemplates == null)
+    public int addTemplate(Template template) {
+        if (mTemplates == null)
             mTemplates = new Templates();
         mTemplates.add(template);
-        return mTemplates.size() -1;
+        return mTemplates.size() - 1;
     }
 
     @NonNull
@@ -54,21 +53,21 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.ViewHo
         holder.mItem = mTemplates.get(position);
         holder.mTemplateName.setText(holder.mItem.getName());
         holder.mTemplateThingType.setText(holder.mItem.getBlock().getThingType().toString());
-        holder.mTemplateSize.setText(String.format("%sx%s", holder.mItem.getBlock().getWidth(),holder.mItem.getBlock().getHeight()));
+        holder.mTemplateSize.setText(String.format("%sx%s", holder.mItem.getBlock().getWidth(), holder.mItem.getBlock().getHeight()));
         holder.mItem.getBlock().renderTemplateBackgroundTo(holder.mContainer);
-        if(holder.mItem.getBlock() instanceof IIconBlock)
-            ((IIconBlock)holder.mItem.getBlock()).renderIconTo(holder.mIcon);
+        if (holder.mItem.getBlock() instanceof IIconBlock)
+            ((IIconBlock) holder.mItem.getBlock()).renderIconTo(holder.mIcon);
         holder.mContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mOnInteractionListener != null)
+                if (mOnInteractionListener != null)
                     mOnInteractionListener.onInteraction(mTemplates.get(holder.getAdapterPosition()), holder.getAdapterPosition());
             }
         });
         holder.mContainer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if(mOnInteractionListener != null)
+                if (mOnInteractionListener != null)
                     mOnInteractionListener.onItemLongClick(mTemplates.get(holder.getAdapterPosition()), holder.getAdapterPosition());
                 return true;
             }
@@ -80,7 +79,7 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.ViewHo
         return mTemplates.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         final FrameLayout mContainer;
         final TextView mTemplateName;
         final ImageView mIcon;
@@ -101,6 +100,7 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.ViewHo
 
     public interface OnInteractionListener {
         void onInteraction(Template item, int position);
+
         void onItemLongClick(Template item, int position);
     }
 }

@@ -45,8 +45,7 @@ public abstract class IBlockUIHandler {
         return mIBlock;
     }
 
-    public void setBlock(IBlock block)
-    {
+    public void setBlock(IBlock block) {
         mIBlock = block;
     }
 
@@ -59,9 +58,9 @@ public abstract class IBlockUIHandler {
         public BlockEditViewHolder(View itemView) {
             super(itemView);
         }
-        public View getContainer()
-        {
-            return ((ViewGroup)itemView).getChildAt(0);
+
+        public View getContainer() {
+            return ((ViewGroup) itemView).getChildAt(0);
         }
     }
 
@@ -69,9 +68,9 @@ public abstract class IBlockUIHandler {
         public BlockViewHolder(View itemView) {
             super(itemView);
         }
-        public View getContainer()
-        {
-            return ((ViewGroup)itemView).getChildAt(0);
+
+        public View getContainer() {
+            return ((ViewGroup) itemView).getChildAt(0);
         }
     }
 }

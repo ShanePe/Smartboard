@@ -45,6 +45,7 @@ public class SimpleWrapperAdapter<VH extends RecyclerView.ViewHolder>
 
     /**
      * Constructor
+     *
      * @param adapter The adapter which to be wrapped
      */
     public SimpleWrapperAdapter(@NonNull RecyclerView.Adapter<VH> adapter) {
@@ -57,6 +58,7 @@ public class SimpleWrapperAdapter<VH extends RecyclerView.ViewHolder>
 
     /**
      * Returns whether the wrapped adapter exists.
+     *
      * @return True if underlying adapter is present. Otherwise, false.
      */
     public boolean isWrappedAdapterAlive() {
@@ -65,6 +67,7 @@ public class SimpleWrapperAdapter<VH extends RecyclerView.ViewHolder>
 
     /**
      * Returns underlying adapter.
+     *
      * @return The underlying adapter instance
      */
     public RecyclerView.Adapter<VH> getWrappedAdapter() {

@@ -32,7 +32,7 @@ public class IconSelectDialog extends DialogFragment {
 
     public void setIconPath(String iconpath) {
         this.mIconPath = iconpath;
-        if(mOnIconActionListener != null)
+        if (mOnIconActionListener != null)
             mOnIconActionListener.OnIconSelected(mIconPath);
     }
 
@@ -56,7 +56,7 @@ public class IconSelectDialog extends DialogFragment {
         @SuppressWarnings("ConstantConditions")
         @SuppressLint("InflateParams")
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_icon_list, null);
-        final RecyclerView recyclerView = (RecyclerView)view;
+        final RecyclerView recyclerView = (RecyclerView) view;
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 5);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -79,7 +79,7 @@ public class IconSelectDialog extends DialogFragment {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        setIconPath(((IconAdapter)recyclerView.getAdapter()).getSelected());
+                        setIconPath(((IconAdapter) recyclerView.getAdapter()).getSelected());
                         getDialog().dismiss();
                     }
                 })

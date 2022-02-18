@@ -19,15 +19,14 @@ import shane.pennihome.local.smartboard.R;
  * Created by SPennicott on 06/02/2018.
  */
 
-public class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder>{
+public class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder> {
 
     private String[] mIcons;
     private int mSelectedPos = RecyclerView.NO_POSITION;
     private String mSelected;
     private RecyclerView mRecycleView;
 
-    public IconAdapter(Context context)
-    {
+    public IconAdapter(Context context) {
         AssetManager assetManager = context.getAssets();
         try {
             mIcons = assetManager.list("icons");
@@ -36,21 +35,18 @@ public class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder>{
         }
     }
 
-    public String getSelected()
-    {
-        if(mSelectedPos == RecyclerView.NO_POSITION)
+    public String getSelected() {
+        if (mSelectedPos == RecyclerView.NO_POSITION)
             return "";
         else
             return "icons/" + mIcons[mSelectedPos];
     }
 
-    public void setSelected(String iconPath)
-    {
+    public void setSelected(String iconPath) {
         mSelected = iconPath;
     }
 
-    public int getSelectedPosition()
-    {
+    public int getSelectedPosition() {
         return mSelectedPos;
     }
 
@@ -65,7 +61,7 @@ public class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final ImageView img = (ImageView)holder.itemView;
+        final ImageView img = (ImageView) holder.itemView;
         final int pos = holder.getAdapterPosition() == -1 ? position : holder.getAdapterPosition();
         img.post(new Runnable() {
             @Override
@@ -105,8 +101,7 @@ public class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder>{
         return mIcons.length;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder
-    {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(View itemView) {
             super(itemView);
         }

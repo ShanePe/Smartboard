@@ -18,7 +18,7 @@ public class Time extends IThing {
     private Thread mTimeThread;
     @IgnoreOnCopy
     private TickHandler mTickHandler;
-    private boolean mLoop =true;
+    private boolean mLoop = true;
 
     public static Time Load(String json) {
         try {

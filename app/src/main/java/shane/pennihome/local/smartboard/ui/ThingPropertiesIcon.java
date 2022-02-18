@@ -77,7 +77,7 @@ public class ThingPropertiesIcon extends LinearLayoutCompat {
     }
 
     public void setBlockWidth(int width) {
-       mSizeSelector.setBlockWidth(width);
+        mSizeSelector.setBlockWidth(width);
     }
 
     public int getBlockHeight() {
@@ -141,7 +141,7 @@ public class ThingPropertiesIcon extends LinearLayoutCompat {
     }
 
     public void initialise(Services services, Things things, IIconBlock block) {
-        mThingSelector.setData(services,things);
+        mThingSelector.setData(services, things);
         setThing(block.getThing());
         setName(block.getName());
         setBlockWidth(block.getWidth());

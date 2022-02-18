@@ -55,4 +55,5 @@ android {
             }
         }
     }
+    buildToolsVersion '27.0.3'
 }

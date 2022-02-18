@@ -78,8 +78,7 @@ public class DashboardEditAdapter extends RecyclerView.Adapter<DashboardEditAdap
                 UIHelper.showConfirm(view.getContext(), "Confirm", "Are you sure you want to delete this dashboard_view_group_list", new OnProcessCompleteListener() {
                     @Override
                     public void complete(boolean success, Object source) {
-                        if(success)
-                        {
+                        if (success) {
                             DBEngine db = new DBEngine(view.getContext());
                             db.deleteFromDatabase(holder.mItem);
                             mDashboards.remove(holder.mItem);
@@ -165,6 +164,7 @@ public class DashboardEditAdapter extends RecyclerView.Adapter<DashboardEditAdap
             mContainer = view.findViewById(R.id.dashboard_list_block);
             mDelBtn = view.findViewById(R.id.btn_delete_dash);
         }
+
         @Override
         public String toString() {
             return super.toString() + " '" + mNameView.getText() + "'";

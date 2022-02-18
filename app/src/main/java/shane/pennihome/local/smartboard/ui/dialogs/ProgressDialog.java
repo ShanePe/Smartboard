@@ -26,13 +26,14 @@ import shane.pennihome.local.smartboard.data.Globals;
 public class ProgressDialog extends DialogFragment {
     private TextView mMsgText;
     private String mMessage = "";
+
     private String getMessage() {
         return mMessage;
     }
 
     public void setMessage(String message) {
         this.mMessage = message;
-        if(mMsgText != null)
+        if (mMsgText != null)
             mMsgText.setText(message);
     }
 
@@ -48,14 +49,13 @@ public class ProgressDialog extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.dialog_progress, null);
         mMsgText = view.findViewById(R.id.pd_text);
-        if(!TextUtils.isEmpty(getMessage()))
+        if (!TextUtils.isEmpty(getMessage()))
             setMessage(getMessage());
         return view;
     }
 
-    public void show(Context context)
-    {
-        if(!isAdded()) {
+    public void show(Context context) {
+        if (!isAdded()) {
             FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
             if (fragmentManager != null)
                 this.show(fragmentManager, Globals.ACTIVITY);

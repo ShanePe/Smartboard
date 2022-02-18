@@ -61,7 +61,7 @@ class RoutineGroupUIHandler extends IBlockUIHandler {
         selectable.addAll(Monitor.getMonitor().getThings(Routine.class));
 
         TemplateProperties tempProps = view.findViewById(R.id.rtg_template);
-        tpProps.initialise(null,null, (IIconBlock) getBlock());
+        tpProps.initialise(null, null, (IIconBlock) getBlock());
         tpBackground.initialise(getBlock());
 
         multiThingSelector.setData(Monitor.getMonitor().getServices(), selectable);
@@ -167,7 +167,7 @@ class RoutineGroupUIHandler extends IBlockUIHandler {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                execute(holder,false);
+                execute(holder, false);
             }
         });
 
@@ -175,7 +175,7 @@ class RoutineGroupUIHandler extends IBlockUIHandler {
             @Override
             public boolean onLongClick(View v) {
                 UIHelper.doLongClickReact(v);
-                execute(holder,true);
+                execute(holder, true);
                 return true;
             }
         });
@@ -213,11 +213,11 @@ class RoutineGroupUIHandler extends IBlockUIHandler {
         });
     }
 
-    private void execute(final RoutineGroupViewHolder holder,Boolean delay){
+    private void execute(final RoutineGroupViewHolder holder, Boolean delay) {
         if (getBlock().getThing().isUnreachable() || holder.mProgress.getVisibility() == View.VISIBLE)
             return;
 
-        getBlock().execute(holder.mProgress,delay, new OnProcessCompleteListener<String>() {
+        getBlock().execute(holder.mProgress, delay, new OnProcessCompleteListener<String>() {
             @Override
             public void complete(boolean success, String source) {
                 if (!success)

@@ -169,7 +169,7 @@ public class HarmonyHubService extends IService {
                 JSONObject jDevice = devices.getJSONObject(i);
                 JSONArray jControls = jDevice.getJSONArray("controlGroup");
                 for (int x = 0; x < jControls.length(); x++) {
-                    JSONArray jFunctions =  jControls.getJSONObject(x).getJSONArray("function");
+                    JSONArray jFunctions = jControls.getJSONObject(x).getJSONArray("function");
                     for (int c = 0; c < jFunctions.length(); c++) {
                         JSONObject jFunction = jFunctions.getJSONObject(c);
                         Routine routine = new Routine();

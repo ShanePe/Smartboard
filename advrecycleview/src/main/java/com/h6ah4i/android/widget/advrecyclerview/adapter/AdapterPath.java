@@ -49,11 +49,11 @@ public class AdapterPath {
      * Appends path segment.
      *
      * @param adapter The adapter
-     * @param tag The tag object
+     * @param tag     The tag object
      * @return {@link AdapterPath} instance itself.
      */
     public AdapterPath append(@NonNull RecyclerView.Adapter adapter, @Nullable Object tag) {
-       return append(new AdapterPathSegment(adapter, tag));
+        return append(new AdapterPathSegment(adapter, tag));
     }
 
     /**

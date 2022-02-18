@@ -16,21 +16,21 @@ public class JsonExecutorResult {
     private String mResult;
     private JSONObject mJsonResult;
 
-    private String fixFaultyResultString(String fix)
-    {
+    private String fixFaultyResultString(String fix) {
         String result = fix.trim();
-        if(result.startsWith("[") && !result.endsWith("]"))
+        if (result.startsWith("[") && !result.endsWith("]"))
             return result + "]";
         else
             return result;
     }
+
     public JsonExecutorResult(Exception mError) {
         this.mError = mError;
     }
 
     public JsonExecutorResult(String mResult) throws JSONException {
         this.mResult = fixFaultyResultString(mResult);
-        if(!TextUtils.isEmpty(this.mResult))
+        if (!TextUtils.isEmpty(this.mResult))
             mJsonResult = buildJsonResponse(this.mResult);
     }
 
@@ -46,8 +46,7 @@ public class JsonExecutorResult {
         return mResult;
     }
 
-    public JSONObject getResultAsJsonObject()
-    {
+    public JSONObject getResultAsJsonObject() {
         return mJsonResult;
     }
 

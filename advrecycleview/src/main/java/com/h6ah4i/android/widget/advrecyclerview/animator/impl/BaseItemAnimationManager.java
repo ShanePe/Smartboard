@@ -181,7 +181,7 @@ public abstract class BaseItemAnimationManager<T extends ItemAnimationInfo> {
     }
 
     protected void startActiveItemAnimation(T info, RecyclerView.ViewHolder holder,
-            ViewPropertyAnimatorCompat animator) {
+                                            ViewPropertyAnimatorCompat animator) {
         animator.setListener(new BaseAnimatorListener(this, info, holder, animator));
         addActiveAnimationTarget(holder);
         animator.start();
@@ -211,7 +211,7 @@ public abstract class BaseItemAnimationManager<T extends ItemAnimationInfo> {
         private ViewPropertyAnimatorCompat mAnimator;
 
         public BaseAnimatorListener(BaseItemAnimationManager manager, ItemAnimationInfo info,
-                RecyclerView.ViewHolder holder, ViewPropertyAnimatorCompat animator) {
+                                    RecyclerView.ViewHolder holder, ViewPropertyAnimatorCompat animator) {
             mManager = manager;
             mAnimationInfo = info;
             mHolder = holder;

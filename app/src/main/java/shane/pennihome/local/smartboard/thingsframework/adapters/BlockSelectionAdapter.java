@@ -55,8 +55,7 @@ public class BlockSelectionAdapter extends RecyclerView.Adapter<BlockSelectionAd
         return mBlocks.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder
-    {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private final FrameLayout mContainer;
         private final TextView mText;
         private final ImageView mImg;

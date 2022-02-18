@@ -12,7 +12,6 @@ import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.services.interfaces.IService;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.adapters.ThingViewAdapter;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 
 /**
  * Created by shane on 30/12/17.
@@ -47,7 +46,7 @@ public class RoutineViewAdapter extends ThingViewAdapter {
         } else if (vh.mItem.getServiceType() == IService.ServicesTypes.PhilipsHue) {
             vh.mImgView.setImageResource(R.mipmap.icon_phlogo_mm_fg);
             vh.mSourceView.setText(R.string.device_ph_label);
-        }else if (vh.mItem.getServiceType() == IService.ServicesTypes.HarmonyHub) {
+        } else if (vh.mItem.getServiceType() == IService.ServicesTypes.HarmonyHub) {
             vh.mImgView.setImageResource(R.mipmap.logo_harm_mm_fg);
             vh.mSourceView.setText(R.string.device_harm_label);
         }
@@ -57,8 +56,8 @@ public class RoutineViewAdapter extends ThingViewAdapter {
         vh.mButtonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               vh.mItem.execute();
-                Toast.makeText(vh.mImgView.getContext(), "Execute routine : " + vh.mItem.getName(), Toast.LENGTH_SHORT ).show();
+                vh.mItem.execute();
+                Toast.makeText(vh.mImgView.getContext(), "Execute routine : " + vh.mItem.getName(), Toast.LENGTH_SHORT).show();
             }
         });
 

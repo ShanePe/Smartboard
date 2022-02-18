@@ -97,14 +97,14 @@ public class LoaderDialog extends Dialog {
         }
 
         public static void AddMessage(String messageKey, String message) {
-            if(mLoader==null)
+            if (mLoader == null)
                 return;
             //noinspection unchecked
             mLoader.publishProgress(new Pair<>("add", new Pair<>(messageKey, message)));
         }
 
         public static void RemoveMessage(String messageKey) {
-            if(mLoader==null)
+            if (mLoader == null)
                 return;
             //noinspection unchecked
             mLoader.publishProgress(new Pair<>("remove", new Pair<>(messageKey, "")));

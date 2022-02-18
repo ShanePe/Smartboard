@@ -85,7 +85,6 @@ public abstract class BaseRecyclerViewEventDistributor<T> {
      * Add a {@link T} listener to the chain.
      *
      * @param listener The {@link T} instance
-     *
      * @return True if the listener object successfully added, otherwise false. Also returns true if have already been added.
      */
     public boolean add(T listener) {
@@ -96,8 +95,7 @@ public abstract class BaseRecyclerViewEventDistributor<T> {
      * Add a {@link T} listener to the chain at the specified position.
      *
      * @param listener The {@link T} instance
-     * @param index Position in the listener chain to insert this listener at.  (&lt; 0:  tail of the chain)
-     *
+     * @param index    Position in the listener chain to insert this listener at.  (&lt; 0:  tail of the chain)
      * @return True if the listener object successfully added, otherwise false. Also returns true if have already been added.
      */
     public boolean add(@NonNull T listener, int index) {
@@ -132,7 +130,6 @@ public abstract class BaseRecyclerViewEventDistributor<T> {
      * Remove a {@link T} listener from the chain.
      *
      * @param listener Listener to remove
-     *
      * @return True for successfully removed the listener object, otherwise false
      */
     public boolean remove(@NonNull T listener) {
@@ -211,7 +208,6 @@ public abstract class BaseRecyclerViewEventDistributor<T> {
      * Gets whether the specified listener object is contained in the chain.
      *
      * @param listener Listener to check
-     *
      * @return True for the listener contains in the chain, otherwise false
      */
     public boolean contains(T listener) {

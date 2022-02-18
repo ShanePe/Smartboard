@@ -22,6 +22,7 @@ import com.h6ah4i.android.widget.advrecyclerview.adapter.SimpleWrapperAdapter;
 
 /**
  * This class exists just for compatibility purpose and it will be deprecated soon. Use {@link SimpleWrapperAdapter} directly.
+ *
  * @param <VH> ViewHolder type
  */
 // @Deprecated

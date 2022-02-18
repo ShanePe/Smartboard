@@ -41,20 +41,18 @@ public abstract class IDatabaseObject {
     }
 
     public String getDataID() {
-        if(TextUtils.isEmpty(mDataId))
+        if (TextUtils.isEmpty(mDataId))
             mDataId = UUID.randomUUID().toString();
         return mDataId;
     }
 
-    public long getPosition()
-    {
-        if(mPosition==0)
+    public long getPosition() {
+        if (mPosition == 0)
             mPosition = Globals.GetNextLongId();
         return mPosition;
     }
 
-    public void setPosition(long position)
-    {
+    public void setPosition(long position) {
         mPosition = position;
     }
 
@@ -79,18 +77,18 @@ public abstract class IDatabaseObject {
         fieldsTo = getAllFields(fieldsTo, this.getClass());
         fieldsFrom = getAllFields(fieldsFrom, from.getClass());
 
-        for(int i =0;i<fieldsTo.size();i++){
+        for (int i = 0; i < fieldsTo.size(); i++) {
             try {
                 Field fieldTo = fieldsTo.get(i);
                 Field fieldFrom = fieldsFrom.get(i);
                 IgnoreOnCopy ignore = fieldFrom.getAnnotation(IgnoreOnCopy.class);
-                if(ignore == null)
+                if (ignore == null)
                     ignore = fieldTo.getAnnotation(IgnoreOnCopy.class);
 
-                if(ignore == null && !Modifier.isTransient(fieldTo.getModifiers()) ) {
-                    if(!fieldTo.isAccessible())
+                if (ignore == null && !Modifier.isTransient(fieldTo.getModifiers())) {
+                    if (!fieldTo.isAccessible())
                         fieldTo.setAccessible(true);
-                    if(!fieldFrom.isAccessible())
+                    if (!fieldFrom.isAccessible())
                         fieldFrom.setAccessible(true);
 
                     fieldTo.set(this, fieldFrom.get(from));
@@ -103,7 +101,7 @@ public abstract class IDatabaseObject {
     }
 
     private ArrayList<Field> getAllFields(ArrayList<Field> fields, Class<?> type) {
-        if(fields==null)
+        if (fields == null)
             fields = new ArrayList<>();
         fields.addAll(Arrays.asList(type.getDeclaredFields()));
 

@@ -356,7 +356,7 @@ public class MainActivity extends AppCompatActivity
                         mDashboardLayout.setVisibility(View.VISIBLE);
                     }
                 });
-                if(Monitor.IsInstaniated() && !Monitor.getMonitor().isRunning())
+                if (Monitor.IsInstaniated() && !Monitor.getMonitor().isRunning())
                     Monitor.getMonitor().start();
             }
         });

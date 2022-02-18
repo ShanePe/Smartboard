@@ -33,17 +33,15 @@ public abstract class IMessage<T> {
         return fromJson(IMessage.class, intent.getStringExtra("message"));
     }
 
-    public T getValue()
-    {
+    public T getValue() {
         return mValue;
     }
 
-    public void setValue(T value)
-    {
+    public void setValue(T value) {
         mValue = value;
     }
 
-    public String getMessageType(){
+    public String getMessageType() {
         return this.getClass().getSimpleName();
     }
 

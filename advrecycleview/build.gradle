@@ -20,7 +20,7 @@ ext {
     // required for 'android-maven-publish.gradle'
     mavenPublishDestDir = new File(rootDir, "repository").absolutePath
     mavenPublishDataFile = file('./library-data.properties').absolutePath
-    mavenPublishSigningSetting =  file('../signing/library-maven-publish-signing.properties').absolutePath
+    mavenPublishSigningSetting = file('../signing/library-maven-publish-signing.properties').absolutePath
 
     useDoclava = true
 }

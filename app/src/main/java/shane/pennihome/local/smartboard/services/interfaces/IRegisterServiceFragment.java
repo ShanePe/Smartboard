@@ -26,7 +26,7 @@ public class IRegisterServiceFragment extends DialogFragment {
 
     protected <T extends IService> T getService(Class<T> c) {
         //noinspection unchecked
-        return (T)mService;
+        return (T) mService;
     }
 
     public void setService(IService service) {

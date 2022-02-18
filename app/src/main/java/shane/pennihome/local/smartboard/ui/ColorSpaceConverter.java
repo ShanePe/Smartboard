@@ -23,16 +23,16 @@ public class ColorSpaceConverter {
     /**
      * sRGB to XYZ conversion matrix
      */
-    public double[][] M   = {{0.4124, 0.3576,  0.1805},
-            {0.2126, 0.7152,  0.0722},
-            {0.0193, 0.1192,  0.9505}};
+    public double[][] M = {{0.4124, 0.3576, 0.1805},
+            {0.2126, 0.7152, 0.0722},
+            {0.0193, 0.1192, 0.9505}};
 
     /**
      * XYZ to sRGB conversion matrix
      */
-    public double[][] Mi  = {{ 3.2406, -1.5372, -0.4986},
-            {-0.9689,  1.8758,  0.0415},
-            { 0.0557, -0.2040,  1.0570}};
+    public double[][] Mi = {{3.2406, -1.5372, -0.4986},
+            {-0.9689, 1.8758, 0.0415},
+            {0.0557, -0.2040, 1.0570}};
 
     public ColorSpaceConverter() {
         whitePoint = D65;
@@ -45,12 +45,10 @@ public class ColorSpaceConverter {
         if (white.equalsIgnoreCase("d50")) {
             whitePoint = D50;
             chromaWhitePoint = chromaD50;
-        }
-        else if (white.equalsIgnoreCase("d55")) {
+        } else if (white.equalsIgnoreCase("d55")) {
             whitePoint = D55;
             chromaWhitePoint = chromaD55;
-        }
-        else if (white.equalsIgnoreCase("d75")) {
+        } else if (white.equalsIgnoreCase("d75")) {
             whitePoint = D75;
             chromaWhitePoint = chromaD75;
         }
@@ -76,20 +74,17 @@ public class ColorSpaceConverter {
 
         if (y3 > 0.008856) {
             y = y3;
-        }
-        else {
+        } else {
             y = (y - (16.0 / 116.0)) / 7.787;
         }
         if (x3 > 0.008856) {
             x = x3;
-        }
-        else {
+        } else {
             x = (x - (16.0 / 116.0)) / 7.787;
         }
         if (z3 > 0.008856) {
             z = z3;
-        }
-        else {
+        } else {
             z = (z - (16.0 / 116.0)) / 7.787;
         }
 
@@ -123,20 +118,17 @@ public class ColorSpaceConverter {
         // assume sRGB
         if (r <= 0.04045) {
             r = r / 12.92;
-        }
-        else {
+        } else {
             r = Math.pow(((r + 0.055) / 1.055), 2.4);
         }
         if (g <= 0.04045) {
             g = g / 12.92;
-        }
-        else {
+        } else {
             g = Math.pow(((g + 0.055) / 1.055), 2.4);
         }
         if (b <= 0.04045) {
             b = b / 12.92;
-        }
-        else {
+        } else {
             b = Math.pow(((b + 0.055) / 1.055), 2.4);
         }
 
@@ -162,8 +154,7 @@ public class ColorSpaceConverter {
             result[0] = 0;
             result[1] = 0;
             result[2] = 0;
-        }
-        else {
+        } else {
             result[0] = (x * Y) / y;
             result[1] = Y;
             result[2] = ((1 - x - y) * Y) / y;
@@ -183,20 +174,17 @@ public class ColorSpaceConverter {
 
         if (x > 0.008856) {
             x = Math.pow(x, 1.0 / 3.0);
-        }
-        else {
+        } else {
             x = (7.787 * x) + (16.0 / 116.0);
         }
         if (y > 0.008856) {
             y = Math.pow(y, 1.0 / 3.0);
-        }
-        else {
+        } else {
             y = (7.787 * y) + (16.0 / 116.0);
         }
         if (z > 0.008856) {
             z = Math.pow(z, 1.0 / 3.0);
-        }
-        else {
+        } else {
             z = (7.787 * z) + (16.0 / 116.0);
         }
 
@@ -228,20 +216,17 @@ public class ColorSpaceConverter {
         // assume sRGB
         if (r > 0.0031308) {
             r = ((1.055 * Math.pow(r, 1.0 / 2.4)) - 0.055);
-        }
-        else {
+        } else {
             r = (r * 12.92);
         }
         if (g > 0.0031308) {
             g = ((1.055 * Math.pow(g, 1.0 / 2.4)) - 0.055);
-        }
-        else {
+        } else {
             g = (g * 12.92);
         }
         if (b > 0.0031308) {
             b = ((1.055 * Math.pow(b, 1.0 / 2.4)) - 0.055);
-        }
-        else {
+        } else {
             b = (b * 12.92);
         }
 
@@ -267,8 +252,7 @@ public class ColorSpaceConverter {
             result[0] = chromaWhitePoint[0];
             result[1] = chromaWhitePoint[1];
             result[2] = chromaWhitePoint[2];
-        }
-        else {
+        } else {
             result[0] = X / (X + Y + Z);
             result[1] = Y / (X + Y + Z);
             result[2] = Y;

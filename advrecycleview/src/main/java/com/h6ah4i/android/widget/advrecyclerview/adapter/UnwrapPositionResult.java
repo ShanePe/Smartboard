@@ -52,6 +52,7 @@ public class UnwrapPositionResult {
 
     /**
      * Returns the result is valid.
+     *
      * @return True if the result object indicates valid position. Otherwise, false.
      */
     public boolean isValid() {

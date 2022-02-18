@@ -6,4 +6,4 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     tools:listitem="@layout/service_startup"
-    style="@style/listStyle"/>
+    style="@style/listStyle" />

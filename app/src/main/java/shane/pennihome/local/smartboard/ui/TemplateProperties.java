@@ -76,7 +76,7 @@ public class TemplateProperties extends LinearLayoutCompat {
         initialiseView(context);
     }
 
-    private void initialiseView(Context context){
+    private void initialiseView(Context context) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
@@ -93,7 +93,7 @@ public class TemplateProperties extends LinearLayoutCompat {
         mSpTemplate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(i==0)
+                if (i == 0)
                     mTemplate = null;
                 else {
                     mTemplate = mTemplates.get(i - 1);
@@ -116,14 +116,12 @@ public class TemplateProperties extends LinearLayoutCompat {
 
     }
 
-    private void doPropertyChange()
-    {
+    private void doPropertyChange() {
         mSaveTemplate.setEnabled(mTemplate == null);
-        if(mPreview != null && mTemplate != null) {
+        if (mPreview != null && mTemplate != null) {
             mSaveTemplate.setChecked(false);
             mTemplate.getBlock().renderTemplateBackgroundTo(mPreview);
-        }
-        else if(mTemplate == null) {
+        } else if (mTemplate == null) {
             assert mPreview != null;
             mPreview.setBackgroundColor(Color.TRANSPARENT);
         }
@@ -151,8 +149,7 @@ public class TemplateProperties extends LinearLayoutCompat {
         db.writeToDatabase(template);
     }
 
-    private static class TemplateAdapter extends BaseAdapter implements SpinnerAdapter
-    {
+    private static class TemplateAdapter extends BaseAdapter implements SpinnerAdapter {
         final Templates mTemplates;
 
         TemplateAdapter(Templates templates) {
@@ -186,14 +183,13 @@ public class TemplateProperties extends LinearLayoutCompat {
             TextView txt = view.findViewById(R.id.temp_sp_templates);
             ImageView img = view.findViewById(R.id.temp_blip);
 
-            if(i == 0) {
+            if (i == 0) {
                 txt.setText(R.string.lbl_select_a_template);
                 img.setVisibility(View.GONE);
-            }
-            else {
-                Template t = mTemplates.get(i-1);
+            } else {
+                Template t = mTemplates.get(i - 1);
                 txt.setText(t.getName());
-                mTemplates.get(i-1).getBlock().renderTemplateBlip(img);
+                mTemplates.get(i - 1).getBlock().renderTemplateBlip(img);
             }
             return view;
         }

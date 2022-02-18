@@ -20,7 +20,7 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.annotation.DraggableI
 
 /**
  * Interface which provides required information for dragging item.
- *
+ * <p>
  * Implement this interface on your sub-class of the {@link android.support.v7.widget.RecyclerView.ViewHolder}.
  */
 public interface DraggableItemViewHolder {
@@ -38,11 +38,11 @@ public interface DraggableItemViewHolder {
     /**
      * Gets the state flags value for dragging item
      *
-     * @return  Bitwise OR of these flags;
-     *              - {@link com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstants#STATE_FLAG_DRAGGING}
-     *              - {@link com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstants#STATE_FLAG_IS_ACTIVE}
-     *              - {@link com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstants#STATE_FLAG_IS_IN_RANGE}
-     *              - {@link com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstants#STATE_FLAG_IS_UPDATED}
+     * @return Bitwise OR of these flags;
+     * - {@link com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstants#STATE_FLAG_DRAGGING}
+     * - {@link com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstants#STATE_FLAG_IS_ACTIVE}
+     * - {@link com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstants#STATE_FLAG_IS_IN_RANGE}
+     * - {@link com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstants#STATE_FLAG_IS_UPDATED}
      */
     @DraggableItemStateFlags
     int getDragStateFlags();

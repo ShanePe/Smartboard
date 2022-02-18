@@ -22,18 +22,16 @@ public abstract class IThings<T extends IThing> extends ArrayList<T> {
         this.removeAll(remove);
     }
 
-    public <T extends IThing> boolean containsType(Class<T> cls)
-    {
-        for(IThing t:this)
-            if(t.getClass() == cls)
+    public <T extends IThing> boolean containsType(Class<T> cls) {
+        for (IThing t : this)
+            if (t.getClass() == cls)
                 return true;
         return false;
     }
 
-    public <E extends IThing> void remove(Class<E> cls)
-    {
-        for(T t : this)
-            if(t.getClass().equals(cls))
+    public <E extends IThing> void remove(Class<E> cls) {
+        for (T t : this)
+            if (t.getClass().equals(cls))
                 remove(t);
     }
 
@@ -56,15 +54,15 @@ public abstract class IThings<T extends IThing> extends ArrayList<T> {
         Collections.sort(this, new Comparator<T>() {
             @Override
             public int compare(T o1, T o2) {
-               return o1.getName().compareTo(o2.getName());
+                return o1.getName().compareTo(o2.getName());
             }
         });
     }
 
     public int getIndex(IThing t) {
         for (int i = 0; i < size(); i++) {
-            if(get(i).getKey().equals(t.getKey()))
-              return i;
+            if (get(i).getKey().equals(t.getKey()))
+                return i;
         }
 
         return -1;
@@ -87,13 +85,12 @@ public abstract class IThings<T extends IThing> extends ArrayList<T> {
         Collections.swap(this, toPosition, fromPosition);
     }
 
-    public void replaceAt(int index, T thing)
-    {
+    public void replaceAt(int index, T thing) {
         this.remove(index);
         this.add(index, thing);
     }
 
-    public Things toThings(){
+    public Things toThings() {
         return new Things(this);
     }
 }

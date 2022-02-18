@@ -53,6 +53,7 @@
                 android:layout_height="wrap_content" />
 
         </android.support.v7.widget.LinearLayoutCompat>
+
         <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/tp_tab_template"
             android:layout_width="match_parent"
@@ -61,7 +62,7 @@
             <shane.pennihome.local.smartboard.ui.TemplateProperties
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tp_template"/>
+                android:id="@+id/tp_template" />
 
         </android.support.v7.widget.LinearLayoutCompat>
     </shane.pennihome.local.smartboard.ui.ViewSwiper>

@@ -43,11 +43,9 @@ public class DashboardFragment extends IFragment {
     }
 
     @SuppressWarnings("unused")
-    public void saveDashboardsPosition(final Dashboards dashboards)
-    {
+    public void saveDashboardsPosition(final Dashboards dashboards) {
         DBEngine db = new DBEngine(getActivity());
-        for(int i = 0;i<dashboards.size();i++)
-        {
+        for (int i = 0; i < dashboards.size(); i++) {
             Dashboard d = dashboards.get(i);
             d.setPosition(i + 1);
             db.updatePosition(d);
@@ -100,7 +98,7 @@ public class DashboardFragment extends IFragment {
         View view = inflater.inflate(R.layout.fragment_dashboard_list, container, false);
         MainActivity activity = (MainActivity) getActivity();
 
-       // Set the adapter
+        // Set the adapter
         if (view instanceof RecyclerView) {
 
             RecyclerView recyclerView = (RecyclerView) view;

@@ -66,8 +66,8 @@ public class DraggingItemInfo {
         final float gpx = cx + centerOffsetX;
         final float gpy = cy + centerOffsetY;
 
-        grabbedPositionX = (int)((gpx >= 0 && gpx < width) ? gpx : cx);
-        grabbedPositionY = (int)((gpy >= 0 && gpy < height) ? gpy : cy);
+        grabbedPositionX = (int) ((gpx >= 0 && gpx < width) ? gpx : cx);
+        grabbedPositionY = (int) ((gpy >= 0 && gpy < height) ? gpy : cy);
     }
 
     public static DraggingItemInfo createWithNewView(DraggingItemInfo info, RecyclerView.ViewHolder vh) {

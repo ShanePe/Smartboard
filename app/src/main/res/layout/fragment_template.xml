@@ -6,8 +6,7 @@
     android:layout_margin="4dp"
     android:foreground="?attr/selectableItemBackground"
     android:focusable="true"
-    android:clickable="true"
-    >
+    android:clickable="true">
 
     <FrameLayout
         android:id="@+id/tmp_container"
@@ -22,7 +21,7 @@
             android:shadowColor="?attr/colorBackgroundFloating"
             android:shadowRadius="1.5"
             android:shadowDx="1"
-            android:shadowDy="1"/>
+            android:shadowDy="1" />
 
         <ImageView
             android:id="@+id/tmp_icon"
@@ -46,7 +45,7 @@
                 android:shadowColor="?attr/colorBackgroundFloating"
                 android:shadowRadius="1.5"
                 android:shadowDx="1"
-                android:shadowDy="1"/>
+                android:shadowDy="1" />
 
             <TextView
                 android:id="@+id/tmp_size"
@@ -56,7 +55,7 @@
                 android:shadowColor="?attr/colorBackgroundFloating"
                 android:shadowRadius="1.5"
                 android:shadowDx="1"
-                android:shadowDy="1"/>
+                android:shadowDy="1" />
         </android.support.v7.widget.LinearLayoutCompat>
     </FrameLayout>
 </android.support.v7.widget.LinearLayoutCompat>

@@ -19,21 +19,21 @@ import shane.pennihome.local.smartboard.R;
  */
 
 public class LoaderAdapter extends RecyclerView.Adapter<LoaderAdapter.ViewHolder> {
-    private ArrayList<Pair<String,String>> mMessages;
+    private ArrayList<Pair<String, String>> mMessages;
 
     public LoaderAdapter() {
         mMessages = new ArrayList<>();
     }
 
-    public ArrayList<Pair<String,String>> getMessages() {
+    public ArrayList<Pair<String, String>> getMessages() {
         return mMessages;
     }
 
-    public void setMessages(ArrayList<Pair<String,String>> messages) {
+    public void setMessages(ArrayList<Pair<String, String>> messages) {
         this.mMessages = messages;
     }
 
-    public void addMessage(Pair<String,String> message) {
+    public void addMessage(Pair<String, String> message) {
         this.mMessages.add(message);
     }
 
@@ -60,7 +60,7 @@ public class LoaderAdapter extends RecyclerView.Adapter<LoaderAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final TextView mDesc;
-        Pair<String,String> mLoadMessage;
+        Pair<String, String> mLoadMessage;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -68,7 +68,7 @@ public class LoaderAdapter extends RecyclerView.Adapter<LoaderAdapter.ViewHolder
             mDesc = itemView.findViewById(R.id.sl_description);
         }
 
-        public Pair<String,String> getLoadMessage() {
+        public Pair<String, String> getLoadMessage() {
             return mLoadMessage;
         }
 
@@ -76,9 +76,13 @@ public class LoaderAdapter extends RecyclerView.Adapter<LoaderAdapter.ViewHolder
             final Animation animation = AnimationUtils.loadAnimation(mView.getContext(), R.anim.slide_out_up);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
-                public void onAnimationStart(Animation animation) {}
+                public void onAnimationStart(Animation animation) {
+                }
+
                 @Override
-                public void onAnimationRepeat(Animation animation) {}
+                public void onAnimationRepeat(Animation animation) {
+                }
+
                 @Override
                 public void onAnimationEnd(Animation animation) {
                 }

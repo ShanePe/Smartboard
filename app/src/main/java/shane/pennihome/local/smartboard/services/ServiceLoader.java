@@ -24,8 +24,8 @@ public class ServiceLoader {
     public ServiceLoader() {
     }
 
-    public void stop(){
-        if(mExecutor!=null)
+    public void stop() {
+        if (mExecutor != null)
             mExecutor.shutdownNow();
     }
 
@@ -40,7 +40,7 @@ public class ServiceLoader {
         mServices = services;
     }
 
-    public ServiceLoaderResult getThingsForDashboards(){
+    public ServiceLoaderResult getThingsForDashboards() {
         return null;
     }
 
@@ -48,7 +48,7 @@ public class ServiceLoader {
         ServiceLoaderResult serviceLoaderResult = new ServiceLoaderResult();
         Services services = getServices();
         if (services.size() > 0) {
-           mExecutor = Executors.newFixedThreadPool(services.size());
+            mExecutor = Executors.newFixedThreadPool(services.size());
             ArrayList<ServiceCaller> serviceThreads = new ArrayList<>();
 
             for (IService s : services) {
@@ -65,8 +65,7 @@ public class ServiceLoader {
                         serviceLoaderResult.getErrors().put(k, serviceLoaderResult.getErrors().get(k));
                 }
             } catch (Exception ignore) {
-            }
-            finally {
+            } finally {
                 mExecutor = null;
             }
         }
@@ -83,7 +82,7 @@ public class ServiceLoader {
         }
 
         @Override
-        public ServiceLoaderResult call()  {
+        public ServiceLoaderResult call() {
             ServiceLoaderResult result = new ServiceLoaderResult();
 
             ArrayList<IThingsGetter> getters = mService.getThingGetters();

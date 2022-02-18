@@ -20,7 +20,6 @@ import shane.pennihome.local.smartboard.things.switches.Switch;
 import shane.pennihome.local.smartboard.thingsframework.ThingChangedMessage;
 import shane.pennihome.local.smartboard.thingsframework.Things;
 import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
-import shane.pennihome.local.smartboard.thingsframework.interfaces.IThings;
 import shane.pennihome.local.smartboard.thingsframework.listeners.OnThingActionListener;
 
 /**
@@ -66,7 +65,7 @@ public class DeviceViewAdapter extends ThingViewAdapter {
         } else if (vh.mItem.getServiceType() == IService.ServicesTypes.PhilipsHue) {
             vh.mImgView.setImageResource(R.mipmap.icon_phlogo_mm_fg);
             vh.mSourceView.setText(R.string.device_ph_label);
-        }else if (vh.mItem.getServiceType() == IService.ServicesTypes.HarmonyHub) {
+        } else if (vh.mItem.getServiceType() == IService.ServicesTypes.HarmonyHub) {
             vh.mImgView.setImageResource(R.mipmap.logo_harm_mm_fg);
             vh.mSourceView.setText(R.string.device_harm_label);
         }
@@ -79,7 +78,7 @@ public class DeviceViewAdapter extends ThingViewAdapter {
                     JsonExecutorResult result = vh.mItem.execute();
                     if (!result.isSuccess())
                         Toast.makeText(vh.mSwitchView.getContext(), "Error:" + result.getError().getMessage(), Toast.LENGTH_SHORT).show();
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     Toast.makeText(vh.mSwitchView.getContext(), "Error:" + ex.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -164,9 +163,9 @@ public class DeviceViewAdapter extends ThingViewAdapter {
                                 else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.SupportColourChange)
                                     mOnThingActionListener.OnSupportColourChanged(mItem);
                                 else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Enable)
-                                    mOnThingActionListener.OnDisabledChanged(mItem,false);
+                                    mOnThingActionListener.OnDisabledChanged(mItem, false);
                                 else if (thingChangedMessage.getWhatChanged() == ThingChangedMessage.What.Disable)
-                                    mOnThingActionListener.OnDisabledChanged(mItem,true);
+                                    mOnThingActionListener.OnDisabledChanged(mItem, true);
                             }
                         }
                     }

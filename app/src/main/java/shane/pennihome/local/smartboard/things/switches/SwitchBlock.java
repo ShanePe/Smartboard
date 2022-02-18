@@ -225,7 +225,7 @@ public class SwitchBlock extends IIconBlock {
                         isOn ? getBackgroundImageTransparencyOn() : getBackgroundColourTransparency(),
                         destination.getMeasuredWidth(),
                         destination.getMeasuredHeight(),
-                        isOn?getBackgroundImagePaddingOn(): getBackgroundImagePadding(),
+                        isOn ? getBackgroundImagePaddingOn() : getBackgroundImagePadding(),
                         false,
                         isOn ? getBackgroundImageRenderTypeOn() : getBackgroundImageRenderType());
 

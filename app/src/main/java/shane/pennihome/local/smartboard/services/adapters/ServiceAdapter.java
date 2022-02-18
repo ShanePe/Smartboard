@@ -60,7 +60,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
                                         serviceManager.unRegisterService(holder.mView.getContext(), holder.mService, new OnProcessCompleteListener<Void>() {
                                             @Override
                                             public void complete(boolean success, Void source) {
-                                                if(success)
+                                                if (success)
                                                     notifyItemChanged(holder.getAdapterPosition());
                                             }
                                         });

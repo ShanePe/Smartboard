@@ -20,8 +20,8 @@ public class Temperature extends IThing {
         int pre = mTemperature;
 
         this.mTemperature = temperature;
-        if(pre != mTemperature && fireBroadcast)
-           Broadcaster.broadcastMessage(new ThingChangedMessage(getKey(), ThingChangedMessage.What.State));
+        if (pre != mTemperature && fireBroadcast)
+            Broadcaster.broadcastMessage(new ThingChangedMessage(getKey(), ThingChangedMessage.What.State));
     }
 
     public static Temperature Load(String json) {
@@ -39,8 +39,8 @@ public class Temperature extends IThing {
 
     @Override
     public void verifyState(IThing compare) {
-        Temperature newTemp = (Temperature)compare;
-        if(getTemperature() != newTemp.getTemperature())
+        Temperature newTemp = (Temperature) compare;
+        if (getTemperature() != newTemp.getTemperature())
             setTemperature(newTemp.getTemperature(), true);
     }
 

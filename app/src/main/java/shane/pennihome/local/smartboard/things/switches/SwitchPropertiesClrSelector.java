@@ -314,8 +314,7 @@ public class SwitchPropertiesClrSelector extends LinearLayoutCompat {
         doPropertyChange();
     }
 
-    public void applyTemplate(Template template)
-    {
+    public void applyTemplate(Template template) {
         initialise(template.getBlock(SwitchBlock.class));
     }
 

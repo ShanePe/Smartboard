@@ -12,8 +12,11 @@ import shane.pennihome.local.smartboard.thingsframework.interfaces.IThing;
 
 public interface IThingsGetter {
     String getLoadMessage();
+
     Things getThings() throws Exception;
+
     int getUniqueId();
+
     Type[] getThingType();
 
     //JsonExecutorResult execute(IThing thing);

@@ -18,6 +18,7 @@ import shane.pennihome.local.smartboard.ui.LabelTextbox;
 
 public class SmartThingsFragmentPAT extends IRegisterServiceFragment {
     private LabelTextbox mPAT;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_smart_things_pat, container, false);
@@ -28,17 +29,17 @@ public class SmartThingsFragmentPAT extends IRegisterServiceFragment {
         view.findViewById(R.id.btn_PAT_Cnl).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getOnProcessCompleteListener().complete(false,getService());
+                getOnProcessCompleteListener().complete(false, getService());
             }
         });
 
         view.findViewById(R.id.btn_PAT_Ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(TextUtils.isEmpty(mPAT.getText()))
-                    getOnProcessCompleteListener().complete(false,getService());
+                if (TextUtils.isEmpty(mPAT.getText()))
+                    getOnProcessCompleteListener().complete(false, getService());
                 getService(SmartThingsServicePAT.class).setPersonalAccessToken(mPAT.getText());
-                getOnProcessCompleteListener().complete(true,getService());
+                getOnProcessCompleteListener().complete(true, getService());
             }
         });
 

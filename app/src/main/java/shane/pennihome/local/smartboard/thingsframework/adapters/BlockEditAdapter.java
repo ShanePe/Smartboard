@@ -39,16 +39,15 @@ public class BlockEditAdapter extends RecyclerView.Adapter<IBlockUIHandler.Block
         setHasStableIds(true);
     }
 
-    private View reverseFindById(View view, int id)
-    {
-        if(view == null)
+    private View reverseFindById(View view, int id) {
+        if (view == null)
             return null;
 
         View v = view.findViewById(id);
-        if(v!=null)
+        if (v != null)
             return v;
         else
-            return reverseFindById((View)view.getParent(), id);
+            return reverseFindById((View) view.getParent(), id);
     }
 
     @Override
@@ -65,8 +64,7 @@ public class BlockEditAdapter extends RecyclerView.Adapter<IBlockUIHandler.Block
                     .inflate(block.getUIHandler().getEditLayoutID(), parent, false);
 
             return block.getUIHandler().GetEditHolder(view);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }

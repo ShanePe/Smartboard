@@ -18,6 +18,7 @@ public class TemperatureBlock extends IBlock {
             return new TemperatureBlock();
         }
     }
+
     @Override
     public int getDefaultIconResource() {
         return R.mipmap.icon_def_temperature_mm_fg;

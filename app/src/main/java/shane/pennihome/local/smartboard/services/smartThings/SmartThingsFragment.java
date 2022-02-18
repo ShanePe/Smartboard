@@ -89,7 +89,7 @@ public class SmartThingsFragment extends IRegisterServiceFragment {
             @Override
             public void onPageFinished(WebView view, String url) {
                 try {
-                  //  dialog.dismiss();
+                    //  dialog.dismiss();
                     super.onPageFinished(view, url);
                     view.setVisibility(View.VISIBLE);
                     if (url.contains("?code=") && !authComplete) {

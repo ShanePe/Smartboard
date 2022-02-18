@@ -64,13 +64,11 @@ public class DBEngine extends SQLiteOpenHelper {
         ExecuteSQL(Queries.getCreateDatastore());
     }
 
-    public void deleteFromDatabase(IDatabaseObject data)
-    {
+    public void deleteFromDatabase(IDatabaseObject data) {
         ExecuteSQL(Queries.getDeleteFromDatastore(data));
     }
 
-    public void updatePosition(IDatabaseObject object)
-    {
+    public void updatePosition(IDatabaseObject object) {
         ExecuteSQL(Queries.getUpdatePosition(object));
     }
 
@@ -108,7 +106,7 @@ public class DBEngine extends SQLiteOpenHelper {
                     default:
                         throw new Exception("Invalid Database Type : " + c.getString(1));
                 }
-                if(dbO != null) {
+                if (dbO != null) {
                     dbO.setPosition(c.getInt(2));
                     items.add(dbO);
                 }
@@ -132,14 +130,18 @@ public class DBEngine extends SQLiteOpenHelper {
             return "CREATE TABLE IF NOT EXISTS datastore (id text PRIMARY KEY unique,type text not null, position integer, object text not null)";
         }
 
-        static String getDropDatastore(){return "drop table datastore"; }
+        static String getDropDatastore() {
+            return "drop table datastore";
+        }
+
         static String getDeleteDatastore() {
             return "delete from datastore ";
         }
-        static String getDeleteFromDatastore(IDatabaseObject object)
-        {
+
+        static String getDeleteFromDatastore(IDatabaseObject object) {
             return String.format("Delete from datastore where id='%s'", object.getDataID());
         }
+
         static String getUpdateDatastore(IDatabaseObject object) {
             return String.format("replace into datastore (id, type, position, object) values('%s','%s', %s, '%s')",
                     object.getDataID(),
@@ -161,8 +163,7 @@ public class DBEngine extends SQLiteOpenHelper {
             return String.format("select id, type, position, object from datastore where type = '%s' order by position", type);
         }
 
-        static String getUpdatePosition(IDatabaseObject object)
-        {
+        static String getUpdatePosition(IDatabaseObject object) {
             return String.format("update datastore set position = %s where id = '%s'", object.getPosition(), object.getDataID());
         }
     }

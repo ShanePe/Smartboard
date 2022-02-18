@@ -19,5 +19,6 @@ package com.h6ah4i.android.widget.advrecyclerview.event;
 @SuppressWarnings("WeakerAccess")
 public interface RecyclerViewEventDistributorListener {
     void onAddedToEventDistributor(BaseRecyclerViewEventDistributor distributor);
+
     void onRemovedFromEventDistributor(BaseRecyclerViewEventDistributor distributor);
 }

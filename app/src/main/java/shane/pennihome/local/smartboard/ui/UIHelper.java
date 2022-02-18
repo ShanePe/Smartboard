@@ -72,7 +72,7 @@ import shane.pennihome.local.smartboard.ui.listeners.OnPropertyWindowListener;
 
 @SuppressWarnings("ALL")
 public class UIHelper {
-    public static void doLongClickReact(View v){
+    public static void doLongClickReact(View v) {
         v.setEnabled(false);
         v.setAlpha(0.5f);
     }
@@ -124,7 +124,7 @@ public class UIHelper {
         });
     }
 
-    public static void showBlockTemplateWindow(final AppCompatActivity activity, final IBlock block,  final OnBlockSetListener onBlockSetListener) {
+    public static void showBlockTemplateWindow(final AppCompatActivity activity, final IBlock block, final OnBlockSetListener onBlockSetListener) {
         if (block == null)
             return;
 
@@ -132,11 +132,10 @@ public class UIHelper {
             @Override
             public void onWindowShown(View view) {
                 block.getUIHandler().buildEditorWindowView(activity, view, null, null);
-                ViewGroup group = (ViewGroup)view;
-                for(int i = 0;i<group.getChildCount();i++)
-                    if(group.getChildAt(i) instanceof ViewSwiper)
-                    {
-                        ((ViewSwiper)group.getChildAt(i)).removeView("Template");
+                ViewGroup group = (ViewGroup) view;
+                for (int i = 0; i < group.getChildCount(); i++)
+                    if (group.getChildAt(i) instanceof ViewSwiper) {
+                        ((ViewSwiper) group.getChildAt(i)).removeView("Template");
                         break;
                     }
             }
@@ -287,8 +286,8 @@ public class UIHelper {
                 .show();
     }
 
-    public static <T> void showDialogWindow(Context context, String title, int resource, OnDialogWindowListener<T> dialogWindowListener){
-       showPropertyWindow(context, title, resource, (OnPropertyWindowListener) dialogWindowListener);
+    public static <T> void showDialogWindow(Context context, String title, int resource, OnDialogWindowListener<T> dialogWindowListener) {
+        showPropertyWindow(context, title, resource, (OnPropertyWindowListener) dialogWindowListener);
     }
 
     public static void showPropertyWindow(Context context, String title, int resource,
@@ -390,39 +389,36 @@ public class UIHelper {
         }
     }
 
-    public static Drawable createColourBlocks(Context context, @ColorInt int colours[], int width, int height)
-    {
+    public static Drawable createColourBlocks(Context context, @ColorInt int colours[], int width, int height) {
         if (width == 0 || height == 0)
             return null;
 
         Bitmap bitmap = Bitmap.createBitmap(width * colours.length, height, Bitmap.Config.ARGB_8888);
         Paint paint = new Paint();
         Canvas canvas = new Canvas(bitmap);
-        for(int i = 0; i< colours.length;i++)
-        {
+        for (int i = 0; i < colours.length; i++) {
             paint.setColor(colours[i]);
-            Rect rect = new Rect(i * width, 0,(i * width) + width, height );
+            Rect rect = new Rect(i * width, 0, (i * width) + width, height);
             canvas.drawRect(rect, paint);
         }
         return new BitmapDrawable(context.getResources(), bitmap);
     }
 
-    public static Drawable combineDrawables(Context context, Drawable draw1, Drawable draw2, int width, int height )
-    {
+    public static Drawable combineDrawables(Context context, Drawable draw1, Drawable draw2, int width, int height) {
         if (width == 0 || height == 0) {
             DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
             width = metrics.widthPixels;
             height = metrics.heightPixels;
         }
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Bitmap bitmap1 = ((BitmapDrawable)draw1).getBitmap();
-        Bitmap bitmap2 = ((BitmapDrawable)draw2).getBitmap();
+        Bitmap bitmap1 = ((BitmapDrawable) draw1).getBitmap();
+        Bitmap bitmap2 = ((BitmapDrawable) draw2).getBitmap();
 
         Rect src1 = new Rect(0, 0, bitmap1.getWidth(), bitmap1.getHeight());
         Rect src2 = new Rect(0, 0, bitmap2.getWidth(), bitmap2.getHeight());
 
-        Rect rect1 = new Rect(0,0, width, height/2);
-        Rect rect2 = new Rect(0, height/2, width, height);
+        Rect rect1 = new Rect(0, 0, width, height / 2);
+        Rect rect2 = new Rect(0, height / 2, width, height);
 
         Paint paint = new Paint();
         Canvas canvas = new Canvas(bitmap);
@@ -457,7 +453,7 @@ public class UIHelper {
                 if (imageRenderType == null)
                     imageRenderType = ImageRenderTypes.Center;
 
-                scaled = scaleDownBitmap(image, width-(padding*2), height-(padding*2), imageRenderType == ImageRenderTypes.Center);
+                scaled = scaleDownBitmap(image, width - (padding * 2), height - (padding * 2), imageRenderType == ImageRenderTypes.Center);
                 if (roundCrns)
                     scaled = getRoundedCornerBitmap(scaled, 4);
 
@@ -470,7 +466,7 @@ public class UIHelper {
 
                     dest = new Rect(destLeft, destTop, (scaled.getWidth() + destLeft), (scaled.getHeight() + destTop));
                 } else if (imageRenderType == ImageRenderTypes.Stretch)
-                    dest = new Rect(padding, padding, width-(padding), height-(padding));
+                    dest = new Rect(padding, padding, width - (padding), height - (padding));
 
                 Paint paint = new Paint();
 
@@ -545,18 +541,18 @@ public class UIHelper {
         return shape;
     }
 
-    public static void showInput(final Context context, String title,final OnProcessCompleteListener<String> onProcessCompleteListener) {
-        showInput(context,title,null,onProcessCompleteListener);
+    public static void showInput(final Context context, String title, final OnProcessCompleteListener<String> onProcessCompleteListener) {
+        showInput(context, title, null, onProcessCompleteListener);
     }
 
-    public static void showInput(final Context context, String title,String defText, final OnProcessCompleteListener<String> onProcessCompleteListener) {
+    public static void showInput(final Context context, String title, String defText, final OnProcessCompleteListener<String> onProcessCompleteListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title);
 
         final EditText input = new EditText(context);
         input.setSelectAllOnFocus(true);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
-        if(defText!=null)
+        if (defText != null)
             input.setText(defText);
         builder.setView(input);
 
@@ -636,8 +632,8 @@ public class UIHelper {
         return drawable;
     }
 
-    public static @ColorInt int getDefaultForegroundColour()
-    {
+    public static @ColorInt
+    int getDefaultForegroundColour() {
         int[] attrs = {R.attr.colorButtonNormal};
         TypedArray ta = Globals.getContext().obtainStyledAttributes(attrs);
         @ColorInt int color = ta.getResourceId(0, android.R.color.black);
@@ -645,9 +641,8 @@ public class UIHelper {
         return color;
     }
 
-    public static class PhilipsHueRgbObject
-    {
-        private int red,green,blue;
+    public static class PhilipsHueRgbObject {
+        private int red, green, blue;
 
         public int getRed() {
             return red;
@@ -680,8 +675,7 @@ public class UIHelper {
         }
     }
 
-    public static PhilipsHueRgbObject xyBriToRgb(double x, double y, double bri)
-    {
+    public static PhilipsHueRgbObject xyBriToRgb(double x, double y, double bri) {
         double z = 1.0d - x - y;
 
         double Y = bri / 255.0d; // Brightness of lamp
@@ -692,9 +686,9 @@ public class UIHelper {
         double g = -X * 0.509d + Y * 1.412d + Z * 0.066d;
         double b = X * 0.026d - Y * 0.072d + Z * 0.962d;
 
-        r =  (r <= 0.0031308d ? 12.92d * r : (1.0d + 0.055d) * Math.pow(r, (1.0d / 2.4d)) - 0.055d);
-        g =  (g <= 0.0031308d ? 12.92d * g : (1.0d + 0.055d) * Math.pow(g, (1.0d / 2.4d)) - 0.055d);
-        b =  (b <= 0.0031308d ? 12.92d * b : (1.0d + 0.055d) * Math.pow(b, (1.0d / 2.4d)) - 0.055d);
+        r = (r <= 0.0031308d ? 12.92d * r : (1.0d + 0.055d) * Math.pow(r, (1.0d / 2.4d)) - 0.055d);
+        g = (g <= 0.0031308d ? 12.92d * g : (1.0d + 0.055d) * Math.pow(g, (1.0d / 2.4d)) - 0.055d);
+        b = (b <= 0.0031308d ? 12.92d * b : (1.0d + 0.055d) * Math.pow(b, (1.0d / 2.4d)) - 0.055d);
 
         double maxValue = Math.max(r, Math.max(g, b));
 
@@ -703,24 +697,21 @@ public class UIHelper {
         b /= maxValue;
 
         r = r * 255;
-        if (r < 0)
-        {
+        if (r < 0) {
             r = 255;
         }
 
         g = g * 255;
-        if (g < 0)
-        {
+        if (g < 0) {
             g = 255;
         }
 
         b = b * 255;
-        if (b < 0)
-        {
+        if (b < 0) {
             b = 255;
         }
 
-        return new PhilipsHueRgbObject((int)r,(int)g,(int)b);
+        return new PhilipsHueRgbObject((int) r, (int) g, (int) b);
 
     }
 

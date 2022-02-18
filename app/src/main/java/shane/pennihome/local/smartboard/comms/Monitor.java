@@ -2,7 +2,6 @@ package shane.pennihome.local.smartboard.comms;
 
 import android.arch.core.util.Function;
 import android.content.Context;
-import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -274,11 +273,15 @@ public class Monitor {
 
     public void stopSlowCheck() throws Exception {
         stop();
-        while(isBusy())
+        while (isBusy())
             Thread.sleep(100);
         setSlowCheck(false);
-        verifyThingsOnDashboard();
-        start();
+        verifyThingsOnDashboardAsync(new OnProcessCompleteListener() {
+            @Override
+            public void complete(boolean success, Object source) {
+                start();
+            }
+        });
     }
 
     public void start() {
@@ -374,24 +377,23 @@ public class Monitor {
     public void verifyDashboardThings(final int delay, final OnProcessCompleteListener onProcessCompleteListener) {
         if (isBusy() || Thread.interrupted())
             return;
+        verifyThingsOnDashboardAsync(onProcessCompleteListener);
+    }
 
-        mVerifier = new Thread(new Runnable() {
+    private void verifyThingsOnDashboardAsync(OnProcessCompleteListener callback) {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(delay);
                     verifyThingsOnDashboard();
-                    if (onProcessCompleteListener != null)
-                        onProcessCompleteListener.complete(true, null);
+                    if (callback != null)
+                        callback.complete(true, null);
                 } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    mVerifier = null;
+                    if (callback != null)
+                        callback.complete(false, e);
                 }
             }
-        });
-
-        mVerifier.start();
+        }).start();
     }
 
     private void verifyThingsOnDashboard() throws Exception {

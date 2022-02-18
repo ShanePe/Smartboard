@@ -331,7 +331,7 @@ public class RecyclerViewExpandableItemManager implements ExpandableItemConstant
      * Expand a group.
      *
      * @param groupPosition The group position to be expanded
-     * @param payload Optional parameter, use null to identify a "full" update the group item
+     * @param payload       Optional parameter, use null to identify a "full" update the group item
      * @return True if the group was expanded, false otherwise  (If the group was already expanded, this will return false)
      */
     public boolean expandGroup(int groupPosition, Object payload) {
@@ -352,7 +352,7 @@ public class RecyclerViewExpandableItemManager implements ExpandableItemConstant
      * Collapse a group.
      *
      * @param groupPosition The group position to be collapsed
-     * @param payload Optional parameter, use null to identify a "full" update the group item
+     * @param payload       Optional parameter, use null to identify a "full" update the group item
      * @return True if the group was collapsed, false otherwise  (If the group was already collapsed, this will return false)
      */
     public boolean collapseGroup(int groupPosition, Object payload) {
@@ -630,8 +630,7 @@ public class RecyclerViewExpandableItemManager implements ExpandableItemConstant
      * attached, the payload will be simply dropped.</p>
      *
      * @param groupPosition Position of the group item that has changed
-     * @param payload Optional parameter, use null to identify a "full" update
-     *
+     * @param payload       Optional parameter, use null to identify a "full" update
      * @see #notifyGroupAndChildrenItemsChanged(int, Object)
      */
     public void notifyGroupItemChanged(int groupPosition, Object payload) {
@@ -659,7 +658,7 @@ public class RecyclerViewExpandableItemManager implements ExpandableItemConstant
      * The item at <code>groupPosition</code> retains the same identity.</p>
      *
      * @param groupPosition Position of the group item which contains changed children
-     * @param payload  A non-null list of merged payloads. Can be empty list if requires full update.
+     * @param payload       A non-null list of merged payloads. Can be empty list if requires full update.
      * @see #notifyGroupItemChanged(int)
      * @see #notifyChildrenOfGroupItemChanged(int)
      * @see #notifyGroupAndChildrenItemsChanged(int)
@@ -692,7 +691,7 @@ public class RecyclerViewExpandableItemManager implements ExpandableItemConstant
      * If the group has also changed, use {@link #notifyGroupAndChildrenItemsChanged(int)} instead.</p>
      *
      * @param groupPosition Position of the group item which contains changed children
-     * @param payload  A non-null list of merged payloads. Can be empty list if requires full update.
+     * @param payload       A non-null list of merged payloads. Can be empty list if requires full update.
      * @see #notifyGroupAndChildrenItemsChanged(int)
      */
     public void notifyChildrenOfGroupItemChanged(int groupPosition, Object payload) {
@@ -721,7 +720,7 @@ public class RecyclerViewExpandableItemManager implements ExpandableItemConstant
      *
      * @param groupPosition Position of the group item which contains the changed child
      * @param childPosition Position of the child item in the group that has changed
-     * @param payload  A non-null list of merged payloads. Can be empty list if requires full update.
+     * @param payload       A non-null list of merged payloads. Can be empty list if requires full update.
      * @see #notifyChildItemRangeChanged(int, int, int)
      */
     public void notifyChildItemChanged(int groupPosition, int childPosition, Object payload) {
@@ -754,7 +753,7 @@ public class RecyclerViewExpandableItemManager implements ExpandableItemConstant
      * @param groupPosition      Position of the group item which contains the changed child
      * @param childPositionStart Position of the first child item in the group that has changed
      * @param itemCount          Number of items that have changed
-     * @param payload  A non-null list of merged payloads. Can be empty list if requires full update.
+     * @param payload            A non-null list of merged payloads. Can be empty list if requires full update.
      * @see #notifyChildItemChanged(int, int)
      */
     public void notifyChildItemRangeChanged(int groupPosition, int childPositionStart, int itemCount, Object payload) {
@@ -940,7 +939,7 @@ public class RecyclerViewExpandableItemManager implements ExpandableItemConstant
      * still considered up to date and will not be rebound, though their positions may be altered.</p>
      *
      * @param fromGroupPosition Previous position of the group item.
-     * @param toGroupPosition New position of the group item.
+     * @param toGroupPosition   New position of the group item.
      */
     public void notifyGroupItemMoved(int fromGroupPosition, int toGroupPosition) {
         mWrapperAdapter.notifyGroupItemMoved(fromGroupPosition, toGroupPosition);
@@ -952,9 +951,9 @@ public class RecyclerViewExpandableItemManager implements ExpandableItemConstant
      * <p>This is a structural change event. Representations of other existing items in the data set are
      * still considered up to date and will not be rebound, though their positions may be altered.</p>
      *
-     * @param groupPosition Group position of the child item.
+     * @param groupPosition     Group position of the child item.
      * @param fromChildPosition Previous child position of the child item.
-     * @param toChildPosition New child position of the child item.
+     * @param toChildPosition   New child position of the child item.
      */
     public void notifyChildItemMoved(int groupPosition, int fromChildPosition, int toChildPosition) {
         mWrapperAdapter.notifyChildItemMoved(groupPosition, fromChildPosition, toChildPosition);
@@ -965,11 +964,11 @@ public class RecyclerViewExpandableItemManager implements ExpandableItemConstant
      * <code>fromGroupPosition, fromChildPosition</code> has been moved to <code>toGroupPosition, toChildPosition</code>.</p>
      * <p>This is a structural change event. Representations of other existing items in the data set are
      * still considered up to date and will not be rebound, though their positions may be altered.</p>
-     * 
+     *
      * @param fromGroupPosition Previous group position of the child item.
      * @param fromChildPosition Previous child position of the child item.
-     * @param toGroupPosition New group position of the child item.
-     * @param toChildPosition New child position of the child item.
+     * @param toGroupPosition   New group position of the child item.
+     * @param toChildPosition   New child position of the child item.
      */
     public void notifyChildItemMoved(int fromGroupPosition, int fromChildPosition, int toGroupPosition, int toChildPosition) {
         mWrapperAdapter.notifyChildItemMoved(fromGroupPosition, fromChildPosition, toGroupPosition, toChildPosition);
@@ -1050,7 +1049,7 @@ public class RecyclerViewExpandableItemManager implements ExpandableItemConstant
      * @param totalChildrenHeight Total height of children items
      * @param topMargin           Top margin
      * @param bottomMargin        Bottom margin
-     * @param path            Adapter path for the wrapped adapter returned by the {@link #createWrappedAdapter(RecyclerView.Adapter)}.
+     * @param path                Adapter path for the wrapped adapter returned by the {@link #createWrappedAdapter(RecyclerView.Adapter)}.
      */
     @SuppressWarnings("StatementWithEmptyBody")
     public void scrollToGroupWithTotalChildrenHeight(int groupPosition, int totalChildrenHeight, int topMargin, int bottomMargin, AdapterPath path) {

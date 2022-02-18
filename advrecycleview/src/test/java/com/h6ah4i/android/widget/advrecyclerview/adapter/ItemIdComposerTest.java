@@ -16,14 +16,14 @@
 
 package com.h6ah4i.android.widget.advrecyclerview.adapter;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import android.support.v7.widget.RecyclerView;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 @SuppressWarnings({"ALL", "CanBeFinal"})
 public class ItemIdComposerTest {

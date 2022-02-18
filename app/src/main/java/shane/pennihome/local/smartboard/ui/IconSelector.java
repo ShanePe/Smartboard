@@ -162,8 +162,7 @@ public class IconSelector extends LinearLayoutCompat {
         }
     }
 
-    public void applyTemplate(Template template)
-    {
+    public void applyTemplate(Template template) {
         mIconPath = template.getBlock(IIconBlock.class).getIcon();
         mIconSize = template.getBlock(IIconBlock.class).getIconSize();
         doPropertyChange();

@@ -13,7 +13,7 @@ import java.util.Random;
  * Created by shane on 27/12/17.
  */
 
-public class Globals extends Application{
+public class Globals extends Application {
     public final static String ACTIVITY = "SmartBoard";
     //public final static int BLOCK_COLUMNS = 8;
     public final static int BLOCK_PADDING = 2;
@@ -41,9 +41,8 @@ public class Globals extends Application{
         }
     }
 
-    public static long GetNextLongId()
-    {
-        long nextId = mPrefs.getLong("uniId", 0 ) + 1;
+    public static long GetNextLongId() {
+        long nextId = mPrefs.getLong("uniId", 0) + 1;
         SharedPreferences.Editor editor = mPrefs.edit();
         editor.putLong("uniId", nextId);
         editor.apply();
@@ -51,13 +50,11 @@ public class Globals extends Application{
         return nextId;
     }
 
-    private static Globals getInstance()
-    {
+    private static Globals getInstance() {
         return mInstance;
     }
 
-    public static Context getContext()
-    {
+    public static Context getContext() {
         return getInstance().getApplicationContext();
     }
 

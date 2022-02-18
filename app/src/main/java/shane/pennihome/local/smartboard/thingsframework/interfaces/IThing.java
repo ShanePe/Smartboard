@@ -58,7 +58,9 @@ public abstract class IThing extends IDatabaseObject implements Cloneable {
     }
 
     public abstract void verifyState(IThing compare);
+
     public abstract boolean isStateful();
+
     public void initialise() {
     }
 
@@ -88,7 +90,7 @@ public abstract class IThing extends IDatabaseObject implements Cloneable {
 
     public IExecutor<?> getExecutor(String id) {
         IService service = Monitor.getMonitor().getServices().getByType(getServiceType());
-        if(service!=null)
+        if (service != null)
             return service.getExecutor(this, id);
         return null;
     }
@@ -132,7 +134,7 @@ public abstract class IThing extends IDatabaseObject implements Cloneable {
         Switch, Routine, Temperature, SmartThingMode, Time, SwitchGroup, RoutineGroup
     }
 
-    public void clear(){
+    public void clear() {
 
     }
 }

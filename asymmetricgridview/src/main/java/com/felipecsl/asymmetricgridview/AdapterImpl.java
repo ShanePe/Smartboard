@@ -4,7 +4,9 @@ import android.content.Context;
 import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.RecyclerView;
@@ -78,6 +80,7 @@ final class AdapterImpl implements View.OnClickListener, View.OnLongClickListene
         return itemsPerRow.size();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     void recalculateItemsPerRow() {
         if (asyncTask != null) {
             asyncTask.cancel(true);
@@ -104,6 +107,7 @@ final class AdapterImpl implements View.OnClickListener, View.OnLongClickListene
         return listView.fireOnItemLongClick(rowItem.rowItem.getIndex(), v);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     void onBindViewHolder(ViewHolder holder, int position, ViewGroup parent) {
         if (debugEnabled) {
             Log.d(TAG, "onBindViewHolder(" + String.valueOf(position) + ")");
@@ -179,6 +183,7 @@ final class AdapterImpl implements View.OnClickListener, View.OnLongClickListene
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     ViewHolder onCreateViewHolder() {
         if (debugEnabled) {
             Log.d(TAG, "onCreateViewHolder()");
@@ -242,6 +247,7 @@ final class AdapterImpl implements View.OnClickListener, View.OnLongClickListene
         return layout;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     private LinearLayout findOrInitializeChildLayout(LinearLayout parentLayout, int childIndex) {
         LinearLayout childLayout = (LinearLayout) parentLayout.getChildAt(childIndex);
 
@@ -267,6 +273,7 @@ final class AdapterImpl implements View.OnClickListener, View.OnLongClickListene
         return childLayout;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     static class ProcessRowsTask extends AsyncTask<Void, Void, List<RowInfo>> {
         private final AdapterImpl mAdapter;
 

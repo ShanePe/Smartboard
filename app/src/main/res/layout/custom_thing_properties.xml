@@ -12,7 +12,7 @@
             android:id="@+id/prop_group_device"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="@string/lbl_device" >
+            app:title="@string/lbl_device">
 
         </shane.pennihome.local.smartboard.ui.GroupTitle>
 
@@ -50,7 +50,6 @@
                 tools:ignore="TouchTargetSizeCheck" />
 
         </LinearLayout>
-
 
 
         <shane.pennihome.local.smartboard.ui.GroupTitle

@@ -33,8 +33,7 @@
                 android:layout_height="wrap_content"
                 android:labelFor="@id/cbv_pad"
                 android:text="@string/txt_padding"
-                android:textColor="?android:attr/textColorPrimaryInverseNoDisable"
-                />
+                android:textColor="?android:attr/textColorPrimaryInverseNoDisable" />
 
             <EditText
                 android:autofillHints=""
@@ -100,8 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/render_options"
-                android:textColor="?android:attr/textColorPrimaryInverseNoDisable"
-                />
+                android:textColor="?android:attr/textColorPrimaryInverseNoDisable" />
 
         </android.support.v7.widget.LinearLayoutCompat>
 

@@ -46,7 +46,7 @@ public class ItemShadowDecorator extends RecyclerView.ItemDecoration {
     /**
      * Constructor.
      *
-     * @param shadow 9-patch drawable used for drop shadow
+     * @param shadow                                 9-patch drawable used for drop shadow
      * @param castShadowForTransparentBackgroundItem Whether to cast shadows for transparent items
      */
     public ItemShadowDecorator(@NonNull NinePatchDrawable shadow, boolean castShadowForTransparentBackgroundItem) {

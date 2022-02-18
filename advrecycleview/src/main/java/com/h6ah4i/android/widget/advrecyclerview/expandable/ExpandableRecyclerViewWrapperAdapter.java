@@ -453,7 +453,7 @@ class ExpandableRecyclerViewWrapperAdapter
             int modDropGroupPosition = dropGroupPosition;
             int modDropChildPosition = dropChildPosition;
 
-            if (draggingFlatPosition < dropFlatPosition)  {
+            if (draggingFlatPosition < dropFlatPosition) {
                 canDrop = true;
                 if (dropIsGroup) {
                     if (isDropGroupExpanded) {

@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
+import shane.pennihome.local.smartboard.R;
 import shane.pennihome.local.smartboard.data.Globals;
 
 /**
@@ -20,6 +22,7 @@ public class ScreenBlocker extends FrameLayout {
     private AlphaAnimation mAnimation;
     private boolean mShown = false;
     private OnBlockListener mOnBlockListener;
+    private ProgressBar mProgressBar;
 
     public ScreenBlocker(@NonNull Context context) {
         super(context);
@@ -62,12 +65,11 @@ public class ScreenBlocker extends FrameLayout {
 
     private void init() {
         this.setVisibility(View.GONE);
-        this.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isShown())
-                    dismiss();
-            }
+        //mProgressBar = findViewById(R.id.db_load_progress);
+        //mProgressBar.setVisibility(GONE);
+        this.setOnClickListener(view -> {
+            if (isShown())
+                dismiss();
         });
     }
 
@@ -109,6 +111,7 @@ public class ScreenBlocker extends FrameLayout {
         mAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
+                //mProgressBar.setVisibility(VISIBLE);
                 getOnBlockListener().OnDismissStart();
                 me.setEnabled(false);
             }
@@ -116,6 +119,7 @@ public class ScreenBlocker extends FrameLayout {
             @Override
             public void onAnimationEnd(Animation animation) {
                 setVisibility(View.GONE);
+                //mProgressBar.setVisibility(GONE);
                 mAnimation = null;
                 me.setEnabled(true);
                 setShown(false);
@@ -148,7 +152,9 @@ public class ScreenBlocker extends FrameLayout {
 
     public interface OnBlockListener {
         void OnShown();
+
         void OnDismiss();
+
         void OnDismissStart();
     }
 }
