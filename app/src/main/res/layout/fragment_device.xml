@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/listItemStyle"
+    android:layout_width="match_parent"
+    android:columnCount="5">
+
+    <ImageView
+        android:id="@+id/device_img"
+        style="@style/listItemIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/img_cnt_device"
+        android:scaleType="fitCenter"
+        app:srcCompat="@mipmap/icon_switch_mm_fg" />
+
+    <TextView
+        android:id="@+id/device_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
+        android:gravity="start|fill"
+        android:textAppearance="?attr/textAppearanceListItem" />
+
+    <TextView
+        android:id="@+id/device_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
+        android:gravity="start|fill"
+        android:textAppearance="?attr/textAppearanceListItem" />
+
+    <TextView
+        android:id="@+id/device_source"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
+        android:gravity="start|fill"
+        android:textAppearance="?attr/textAppearanceListItem" />
+
+    <Switch
+        android:id="@+id/device_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start" />
+
+</GridLayout>

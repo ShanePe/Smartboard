@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:id="@+id/mnu_hub_grp">
+        <item
+            android:id="@+id/mnu_hubs"
+            android:icon="@mipmap/icon_hub_mm_fg"
+            android:title="@string/mnu_hubs" />
+    </group>
+    <group android:id="@+id/mnu_dash_grp">
+        <item
+            android:id="@+id/mnu_dashboard"
+            android:icon="@mipmap/icon_dashboard_mm_fg"
+            android:title="@string/mnu_dashboard" />
+    </group>
+    <group android:id="@+id/mnu_item_grp">
+        <item
+            android:id="@+id/mnu_device"
+            android:icon="@mipmap/icon_switch_mm_fg"
+            android:title="@string/mnu_devices" />
+        <item
+            android:id="@+id/mnu_routine"
+            android:icon="@mipmap/icon_routine_mm_fg"
+            android:title="@string/mnu_routine" />
+        <item
+            android:id="@+id/mnu_template"
+            android:icon="@mipmap/icon_template_mm_fg"
+            android:title="@string/lbl_templates" />
+    </group>
+</menu>

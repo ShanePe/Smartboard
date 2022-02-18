@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="4dp">
+
+        <ImageView
+            android:id="@+id/cbv_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="fill"
+            android:layout_marginEnd="16dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/content_desc_img"
+            android:scaleType="center"
+            app:srcCompat="@mipmap/icon_wait_mm_fg" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/cbv_pad_head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/cbv_pad"
+                android:text="@string/txt_padding"
+                android:textColor="?android:attr/textColorPrimaryInverseNoDisable" />
+
+            <EditText
+                android:autofillHints=""
+                android:id="@+id/cbv_pad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:selectAllOnFocus="true"
+                android:textColor="?android:attr/textColorPrimaryInverseNoDisable" />
+
+            <ImageButton
+                android:id="@+id/cbv_colour"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_gravity="fill"
+                android:adjustViewBounds="true"
+                android:background="@drawable/btn_round_dark"
+                android:contentDescription="@string/content_desc_img"
+                android:scaleType="fitCenter"
+                app:srcCompat="@mipmap/icon_colour_picker_mm_fg" />
+
+            <SeekBar
+                android:id="@+id/cbv_colour_trans"
+                style="@android:style/Widget.Holo.Light.SeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp" />
+
+            <ImageButton
+                android:id="@+id/cbv_image"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_gravity="fill"
+                android:background="@drawable/btn_round_dark"
+                android:contentDescription="@string/content_desc_img"
+                android:scaleType="fitCenter"
+                app:srcCompat="@mipmap/icon_gallery_mm_fg" />
+
+            <SeekBar
+                android:id="@+id/cbv_image_trans"
+                style="@android:style/Widget.Holo.Light.SeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_horizontal"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp" />
+
+            <ImageButton
+                android:id="@+id/cbv_reset"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_gravity="fill"
+                android:background="@drawable/btn_round_dark"
+                android:contentDescription="@string/content_desc_img"
+                android:scaleType="fitCenter"
+                app:srcCompat="@mipmap/icon_delete_mm_fg" />
+
+            <Spinner
+                android:id="@+id/cbv_render_style"
+                style="@style/Platform.Widget.AppCompat.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/render_options"
+                android:textColor="?android:attr/textColorPrimaryInverseNoDisable" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+
+    </android.support.v7.widget.LinearLayoutCompat>
+</merge>

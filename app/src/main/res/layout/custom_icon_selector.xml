@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/white_background_round"
+        android:orientation="vertical"
+        android:padding="4dp">
+
+        <ImageView
+            android:id="@+id/cis_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="fill"
+            android:layout_weight="1"
+            android:background="@drawable/custom_icon_control"
+            android:contentDescription="@string/content_desc_img"
+            android:padding="2dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@mipmap/icon_tap_to_add_mm_fg" />
+
+        <Spinner
+            android:id="@+id/cis_icon_size"
+            style="@style/Platform.Widget.AppCompat.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="2sp"
+            android:layout_weight="1"
+            android:entries="@array/icon_size_options" />
+
+    </android.support.v7.widget.LinearLayoutCompat>
+</merge>

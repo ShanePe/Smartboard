@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorButtonNormal">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/txt_row_dl_name"
+            android:text="@string/lbl_name" />
+
+        <EditText
+            android:id="@+id/txt_row_dl_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/textbox_default"
+            android:inputType="text"
+            android:paddingBottom="3dp"
+            android:paddingEnd="2dp"
+            android:paddingStart="5dp"
+            android:selectAllOnFocus="true"
+            android:textColor="?android:attr/textColorPrimaryInverseNoDisable" />
+
+        <Switch
+            android:id="@+id/sw_row_dl_dispname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_display_name"
+            android:textOff="@string/lbl_name_hidden"
+            android:textOn="@string/lbl_name_shown" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

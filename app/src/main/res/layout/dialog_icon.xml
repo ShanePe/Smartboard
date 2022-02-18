@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dl_image"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:background="@drawable/lst_item_selectable"
+    android:contentDescription="@string/content_desc_img"
+    android:padding="8dp"
+    android:scaleType="fitXY" />

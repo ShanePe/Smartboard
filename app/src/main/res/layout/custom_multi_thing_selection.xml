@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/listItemStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:columnCount="3">
+
+    <ImageView
+        android:id="@+id/cmts_icon"
+        style="@style/listItemIcon"
+        android:contentDescription="@string/content_desc_img"
+        app:srcCompat="@mipmap/icon_routine_mm_fg" />
+
+    <TextView
+        android:id="@+id/cmts_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:layout_gravity="center_vertical|fill_horizontal|clip_horizontal|start"
+        android:gravity="start|fill"
+        android:textAppearance="?attr/textAppearanceListItem" />
+
+</android.support.v7.widget.LinearLayoutCompat>

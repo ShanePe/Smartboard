@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:background="@drawable/btn_round_dark"
+    android:gravity="top"
+    android:orientation="vertical">
+
+    <shane.pennihome.local.smartboard.ui.LabelTextbox
+        android:id="@+id/txt_id_hueman"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start|top"
+        app:label="@string/lbl_id">
+
+    </shane.pennihome.local.smartboard.ui.LabelTextbox>
+
+    <shane.pennihome.local.smartboard.ui.LabelTextbox
+        android:id="@+id/txt_ip_hueman"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start|top"
+        app:label="@string/lbl_ip" />
+
+
+</android.support.v7.widget.LinearLayoutCompat>

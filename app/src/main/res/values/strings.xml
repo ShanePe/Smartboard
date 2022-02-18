@@ -1,0 +1,97 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="img_cnt_device">Switch</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="list_image_content" tools:keep="@string/list_image_content">Device</string>
+    <string name="mnu_authorise_st">SmartThings Connect</string>
+    <string name="mnu_authorise_harm" tools:ignore="UnusedResources">Harmony</string>
+    <string name="mnu_devices">Devices</string>
+    <string name="mnu_routine">Routines</string>
+    <string name="content_desc_img">Image</string>
+    <string name="mnu_auth_ph">Philips Hue Connect</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="device_st_label">SmartThings</string>
+    <string name="device_ph_label">Philips Hue</string>
+    <string name="mnu_dashboard">Dashboards</string>
+    <string name="lbl_name">Name :</string>
+    <string name="lbl_display_name">Display Name</string>
+    <string name="lbl_state">state</string>
+    <string name="lbl_name_hidden">Name Hidden</string>
+    <string name="lbl_name_shown">Name Shown</string>
+    <string name="tab_text_1">Dashboard</string>
+    <string name="tab_text_2">Groups</string>
+    <string name="lbl_add_dashboard">Add Dashboard</string>
+    <string name="lbl_width">Width</string>
+    <string name="lbl_height">Height</string>
+    <string name="lbl_on_clrs">On Colours</string>
+    <string name="lbl_back_clr">Background</string>
+    <string name="lbl_fore_clr">Foreground</string>
+    <string name="lbl_off_clrs">Off Colours</string>
+    <string name="lbl_thing">Thing :</string>
+    <string name="lbl_device">Device</string>
+    <string name="lbl_routine">Routine</string>
+    <string name="lbl_add_group_msg">Please supply a group name.</string>
+    <string name="block_name_switch">Switch</string>
+    <string name="lbl_colours">Colours</string>
+    <string name="lbl_properties">Properties</string>
+    <string name="lbl_background">Background</string>
+    <string name="lbl_transparency">Transparency</string>
+    <string name="lbl_camera">Camera</string>
+    <string name="lbl_gallery">Gallery</string>
+    <string name="lbl_import">Import</string>
+    <string name="lbl_background_image">Background Image</string>
+    <string name="lbl_tab_to_select_colour">Tap to select colour</string>
+    <string name="lbl_tab_to_select_image">Tap to select image</string>
+    <string name="lbl_layout">Layout</string>
+    <string name="title_activity_call_back">CallBackActivity</string>
+    <string name="lbl_background_opacity">Background Opacity</string>
+    <string name="lbl_image_opacity">Image Opacity</string>
+    <string name="lbl_cancel">Cancel</string>
+    <string name="mnu_hubs">Hubs</string>
+    <string name="lbl_yes">Yes</string>
+    <string name="lbl_no">No</string>
+    <string name="lbl_icon">Icon</string>
+    <string name="lbl_templates">Templates</string>
+    <string name="lbl_template">Template</string>
+    <string name="lbl_preview">Preview</string>
+    <string name="lbl_save_as_template">Save as template</string>
+    <string name="lbl_select_a_template">Select a template …</string>
+    <string name="app_name">Smartboard</string>
+    <string name="app_contact">shane.pennicott@gmail.com</string>
+    <string name="lbl_size">Size</string>
+    <string name="lbl_devices">Devices</string>
+
+    <string-array name="render_options">
+        <item>Center</item>
+        <item>Stretch</item>
+    </string-array>
+
+    <string-array name="icon_size_options">
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+    </string-array>
+
+    <string name="lbl_data">Data</string>
+    <string name="lbl_clear_data_store">Clear data store</string>
+    <string name="lbl_options">Options</string>
+    <string name="lbl_keep_on">Keep screen on</string>
+    <string name="lbl_fade_out">Fade screen out after</string>
+    <string name="lbl_minutes">Minutes</string>
+    <string name="a_label">A Label</string>
+    <string name="lbl_id">Id</string>
+    <string name="lbl_ip">IP Address</string>
+    <string name="lbl_ok">OK</string>
+    <string name="lbl_hueman">Could not discover a hue bridge, please enter details manually.</string>
+    <string name="sm_pat">Personal  Access Token</string>
+    <string name="txt_padding">Padding</string>
+    <string name="hide_title">Hide Title</string>
+    <string name="port">Port</string>
+    <string name="device_harm_label">Harmony Hub</string>
+    <string name="lbl_avl_groups">Available Groups</string>
+    <string name="lbl_elipse">…</string>
+
+</resources>

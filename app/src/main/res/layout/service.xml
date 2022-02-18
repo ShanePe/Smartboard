@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ser_name"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:background="@drawable/btn_round"
+    android:drawableTop="@mipmap/icon_st_logo_large_mm_fg"
+    android:drawablePadding="20dp"
+    android:padding="20dp"
+    tools:ignore="SpeakableTextPresentCheck" />

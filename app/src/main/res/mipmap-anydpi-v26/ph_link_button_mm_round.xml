@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ph_link_button_mm_bg" />
+    <foreground android:drawable="@mipmap/ph_link_button_mm_fg" />
+</adaptive-icon>

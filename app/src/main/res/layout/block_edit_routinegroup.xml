@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:layout_gravity="fill_vertical"
+    android:layout_margin="1dp"
+    android:shadowColor="#000"
+    android:shadowDx="0"
+    android:shadowDy="30"
+    android:shadowRadius="50"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="2dp"
+    app:cardUseCompatPadding="true">
+
+    <FrameLayout
+        android:id="@+id/rtg_block_area"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        tools:ignore="UselessParent">
+
+
+        <TextView
+            android:id="@+id/rtg_ba_name"
+            style="@style/blockItemStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/rtg_ba_image"
+            style="@style/blockItemStyle"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/content_desc_img"
+            android:scaleType="fitCenter" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/rtg_ba_device"
+                style="@style/blockItemStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:textAppearance="?attr/textAppearanceListItem" />
+
+            <TextView
+                android:id="@+id/rtg_ba_size"
+                style="@style/blockItemStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:textAppearance="?attr/textAppearanceListItem" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+    </FrameLayout>
+
+</android.support.v7.widget.CardView>

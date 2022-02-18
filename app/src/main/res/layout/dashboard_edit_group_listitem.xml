@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:clipChildren="false"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/group_container"
+        style="@style/listItemStyle"
+        android:layout_width="match_parent"
+        android:layout_margin="0dp"
+        android:layout_marginBottom="0dp"
+        tools:targetApi="m">
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/btn_add_expanded"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center|start"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/lbl_state"
+            app:srcCompat="@android:drawable/arrow_down_float" />
+
+        <TextView
+            android:id="@+id/txt_row_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center|start"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:textAlignment="gravity"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tools:targetApi="m" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:gravity="end">
+
+            <TextView
+                android:id="@+id/txt_row_child_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center|start"
+                android:textAppearance="?attr/textAppearanceListItem" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_move_item"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_margin="5dp"
+                android:background="@drawable/btn_round_dark"
+                android:clickable="true"
+                android:focusable="true"
+                android:requiresFadingEdge="horizontal|vertical"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                app:srcCompat="@mipmap/icon_move_mm_fg"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_copy_item"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_margin="5dp"
+                android:background="@drawable/btn_round_dark"
+                android:clickable="true"
+                android:focusable="true"
+                android:requiresFadingEdge="horizontal|vertical"
+                android:scaleType="fitCenter"
+                app:srcCompat="@mipmap/icon_copy_mm_fg"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_delete_item"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_margin="5dp"
+                android:background="@drawable/btn_round_dark"
+                android:clickable="true"
+                android:focusable="true"
+                android:requiresFadingEdge="horizontal|vertical"
+                android:scaleType="fitCenter"
+                app:srcCompat="@mipmap/icon_delete_mm_fg"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_add_prop"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_margin="5dp"
+                android:background="@drawable/btn_round_dark"
+                android:clickable="true"
+                android:focusable="true"
+                android:requiresFadingEdge="horizontal|vertical"
+                android:scaleType="fitCenter"
+                app:srcCompat="@mipmap/icon_cog_mm_fg"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_add_block"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_margin="5dp"
+                android:background="@drawable/btn_round_dark"
+                android:clickable="true"
+                android:focusable="true"
+                android:requiresFadingEdge="horizontal|vertical"
+                android:scaleType="fitCenter"
+                app:srcCompat="@mipmap/icon_add_mm_fg"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_blocks"
+        style="@style/listStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:background="@drawable/expanded_block_area"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:groupIndicator="@android:color/transparent"
+        android:padding="4dp" />
+
+</android.support.v7.widget.LinearLayoutCompat>

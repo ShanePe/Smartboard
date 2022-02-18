@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="1.6">
+      <module name="smartboard.advrecycleview" target="11" />
+      <module name="smartboard.app" target="11" />
+      <module name="smartboard.asymmetricgridview" target="11" />
+      <module name="smartboard.colourPicker" target="11" />
+      <module name="smartboard.libnetcipher" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

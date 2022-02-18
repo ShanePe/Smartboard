@@ -1,0 +1,7 @@
+int attr minTextSize 0x7f040001
+int attr precision 0x7f040002
+int attr sizeToFit 0x7f040003
+int[] styleable AutofitTextView { 0x7f040001, 0x7f040002, 0x7f040003 }
+int styleable AutofitTextView_minTextSize 0
+int styleable AutofitTextView_precision 1
+int styleable AutofitTextView_sizeToFit 2
