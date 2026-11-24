@@ -1,0 +1,30 @@
+version: 2
+updates:
+  - package-ecosystem: gradle
+    directory: /
+    schedule:
+      interval: weekly
+  - package-ecosystem: gradle
+    directory: /advrecycleview
+    schedule:
+      interval: weekly
+  - package-ecosystem: gradle
+    directory: /app
+    schedule:
+      interval: weekly
+  - package-ecosystem: gradle
+    directory: /asymmetricgridview
+    schedule:
+      interval: weekly
+  - package-ecosystem: gradle
+    directory: /autotextsize
+    schedule:
+      interval: weekly
+  - package-ecosystem: gradle
+    directory: /colourPicker
+    schedule:
+      interval: weekly
+  - package-ecosystem: gradle
+    directory: /libnetcipher
+    schedule:
+      interval: weekly
